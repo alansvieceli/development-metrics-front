@@ -52,6 +52,13 @@ Acesse http://localhost:3000.
 | `npm run test:watch` | Roda os testes unitários em modo watch |
 | `npm run db:generate` | Gera uma nova migração a partir do schema do Drizzle |
 | `npm run db:migrate` | Aplica as migrações pendentes no banco apontado por `DATABASE_URL` |
+| `npm run test:e2e` | Roda os testes de integração/E2E (Playwright) |
+
+Antes do primeiro `npm run test:e2e`, instalar o navegador usado pelos testes:
+
+```sh
+npx playwright install chromium
+```
 
 ## Git hooks
 
