@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import type { CurrentTeamStore } from "@/application/team/ports/current-team-store";
-import { createFakeTeamRepository } from "./test-helpers/create-fake-team-repository";
 import { getCurrentTeam } from "./get-current-team";
+import { createFakeTeamRepository } from "./test-helpers/create-fake-team-repository";
 
 function createFakeCurrentTeamStore(initial: string | null): CurrentTeamStore {
 	let value = initial;

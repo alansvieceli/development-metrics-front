@@ -1,6 +1,6 @@
+import type { TeamRepository } from "@/application/team/ports/team-repository";
 import type { Member } from "@/domain/team/entities/member";
 import type { Team } from "@/domain/team/entities/team";
-import type { TeamRepository } from "@/application/team/ports/team-repository";
 
 export type TeamWithMembers = {
 	team: Team;

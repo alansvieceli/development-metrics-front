@@ -1,6 +1,6 @@
-import type { Team } from "@/domain/team/entities/team";
 import type { CurrentTeamStore } from "@/application/team/ports/current-team-store";
 import type { TeamRepository } from "@/application/team/ports/team-repository";
+import type { Team } from "@/domain/team/entities/team";
 
 export async function getCurrentTeam(
 	store: CurrentTeamStore,

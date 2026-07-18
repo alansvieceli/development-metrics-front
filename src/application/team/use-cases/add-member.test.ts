@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createFakeTeamRepository } from "./test-helpers/create-fake-team-repository";
 import { addMember } from "./add-member";
+import { createFakeTeamRepository } from "./test-helpers/create-fake-team-repository";
 
 describe("addMember", () => {
 	it("adiciona um membro ao time", async () => {
