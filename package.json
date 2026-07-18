@@ -11,7 +11,8 @@
 		"lint:fix": "biome check --write .",
 		"knip": "knip",
 		"test": "vitest run",
-		"test:watch": "vitest"
+		"test:watch": "vitest",
+		"test:e2e": "playwright test"
 	},
 	"dependencies": {
 		"next": "16.2.10",
@@ -20,6 +21,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.5.4",
+		"@playwright/test": "^1.61.1",
 		"@tailwindcss/postcss": "^4.3.3",
 		"@types/node": "^20",
 		"@types/react": "^19",
