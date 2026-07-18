@@ -13,14 +13,14 @@ test("sem time selecionado, acessar / redireciona para /teams", async ({
 	await expect(page.getByText("Nenhum time cadastrado ainda.")).toBeVisible();
 });
 
-test("criar e selecionar um time redireciona para / e mostra o time no header", async ({
+test("criar e selecionar um time redireciona para /board e mostra o time no header", async ({
 	page,
 }) => {
 	await page.goto("/teams");
 	await page.getByPlaceholder("Nome do time").fill("Time A");
 	await page.getByRole("button", { name: "Criar time" }).click();
 	await page.getByRole("button", { name: "Time A" }).click();
-	await expect(page).toHaveURL("/");
+	await expect(page).toHaveURL("/board");
 	await expect(
 		page.getByRole("button", { name: "Time A", exact: true }),
 	).toBeVisible();
@@ -35,7 +35,7 @@ test("trocar de time pelo dropdown do header", async ({ page }) => {
 	await page.getByRole("button", { name: "Criar time" }).click();
 	await expect(page.getByRole("button", { name: "Time B" })).toBeVisible();
 	await page.getByRole("button", { name: "Time A" }).click();
-	await expect(page).toHaveURL("/");
+	await expect(page).toHaveURL("/board");
 
 	await page.getByRole("button", { name: "Time A", exact: true }).click();
 	await page.getByRole("button", { name: "Time B" }).click();
