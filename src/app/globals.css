@@ -9,6 +9,7 @@
 	--accent: #2563eb;
 	--accent-fg: #ffffff;
 	--border: #dbe2ee;
+	--chart-secondary: #008300;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,6 +22,7 @@
 		--accent: #3b82f6;
 		--accent-fg: #ffffff;
 		--border: #1e293b;
+		--chart-secondary: #008300;
 	}
 }
 
