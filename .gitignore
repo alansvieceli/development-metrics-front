@@ -23,6 +23,10 @@ npm-debug.log*
 # vercel
 .vercel
 
+# playwright
+/test-results/
+/playwright-report/
+
 # superpowers brainstorming companion
 .superpowers/
 
