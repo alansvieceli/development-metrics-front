@@ -22,7 +22,7 @@ export function TaskCard({
 	return (
 		<div
 			title={taskType?.name}
-			className="flex flex-col gap-2 rounded-lg border-l-4 bg-(--background) p-3 shadow-sm"
+			className="flex flex-col gap-2 rounded-lg border border-l-4 border-(--border) bg-(--surface) p-3 shadow-sm"
 			style={{ borderLeftColor: taskType?.color ?? "#94a3b8" }}
 		>
 			<div className="flex items-start justify-between gap-2">

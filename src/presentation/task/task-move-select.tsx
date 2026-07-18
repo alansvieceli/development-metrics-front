@@ -20,7 +20,7 @@ export function TaskMoveSelect({ taskId, currentStatus }: TaskMoveSelectProps) {
 			onChange={(event) => {
 				moveTaskAction(taskId, event.target.value as TaskStatus);
 			}}
-			className="rounded-lg border border-(--border) px-2 py-1 text-sm"
+			className="rounded-lg border border-(--border) bg-(--surface) px-2 py-1 text-sm text-(--foreground)"
 		>
 			{STATUS_ORDER.map((status) => (
 				<option key={status} value={status}>
