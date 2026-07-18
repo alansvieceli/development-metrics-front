@@ -51,6 +51,7 @@ React e Node.js fazem parte do Next.js neste projeto; não são tratados como st
 - Não criar abstrações especulativas. Um port existe para inverter uma dependência externa real, não para antecipar uma segunda implementação hipotética.
 - Não criar pastas vazias para reproduzir toda a arquitetura: cada pasta nasce com o primeiro código que realmente pertence a ela.
 - Testes unitários priorizam regras de `domain` e `application`; fluxos críticos de `presentation` usam testes de integração ou E2E.
+- Manter o `README.md` atualizado: stack, como rodar o projeto e scripts disponíveis devem refletir o estado atual do repositório. Alterações que mudam esses pontos (nova dependência, novo script, novo pré-requisito) atualizam o README na mesma mudança.
 
 ## Padronização de commits
 
