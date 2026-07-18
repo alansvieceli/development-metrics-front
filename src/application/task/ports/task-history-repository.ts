@@ -8,4 +8,5 @@ export type TaskHistoryRepository = {
 	): Promise<void>;
 	openBlockedPeriod(taskId: string): Promise<void>;
 	closeBlockedPeriod(taskId: string): Promise<void>;
+	getStatusChangedAtForTasks(taskIds: string[]): Promise<Record<string, Date>>;
 };

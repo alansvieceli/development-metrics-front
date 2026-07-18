@@ -41,5 +41,23 @@ export function createFakeTaskHistoryRepository(): FakeTaskHistoryRepository {
 			}
 			open.unblockedAt = new Date();
 		},
+		async getStatusChangedAtForTasks(taskIds) {
+			const result: Record<string, Date> = {};
+			for (const taskId of taskIds) {
+				const latest = statusChanges
+					.filter((change) => change.taskId === taskId)
+					.reduce<Date | undefined>(
+						(latestSoFar, change) =>
+							!latestSoFar || change.changedAt > latestSoFar
+								? change.changedAt
+								: latestSoFar,
+						undefined,
+					);
+				if (latest) {
+					result[taskId] = latest;
+				}
+			}
+			return result;
+		},
 	};
 }

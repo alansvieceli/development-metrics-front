@@ -69,4 +69,29 @@ describe("drizzleTaskHistoryRepository", () => {
 			drizzleTaskHistoryRepository.closeBlockedPeriod(taskId),
 		).rejects.toThrow("Não há período de bloqueio aberto para esta task");
 	});
+
+	it("retorna a data da mudança de status mais recente por task", async () => {
+		await drizzleTaskHistoryRepository.recordStatusChange(taskId, null, "TODO");
+		await drizzleTaskHistoryRepository.recordStatusChange(
+			taskId,
+			"TODO",
+			"IN_DEVELOPMENT",
+		);
+		const rows = await db
+			.select()
+			.from(taskStatusChanges)
+			.where(eq(taskStatusChanges.taskId, taskId));
+		const latest = rows.reduce((a, b) => (a.changedAt > b.changedAt ? a : b));
+
+		const result =
+			await drizzleTaskHistoryRepository.getStatusChangedAtForTasks([taskId]);
+
+		expect(result[taskId]).toEqual(latest.changedAt);
+	});
+
+	it("retorna objeto vazio quando não há ids de task", async () => {
+		const result =
+			await drizzleTaskHistoryRepository.getStatusChangedAtForTasks([]);
+		expect(result).toEqual({});
+	});
 });

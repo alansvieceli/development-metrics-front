@@ -1,16 +1,26 @@
-import type { Task } from "@/domain/task/entities/task";
+import type { TaskWithStatusSince } from "@/application/task/use-cases/list-tasks-by-team";
 import type { TaskType } from "@/domain/task/entities/task-type";
 import type { Member } from "@/domain/team/entities/member";
 import { TaskFormModal } from "@/presentation/task/task-form-modal";
 import { TaskMoveSelect } from "@/presentation/task/task-move-select";
 
 type TaskCardProps = {
-	task: Task;
+	task: TaskWithStatusSince;
 	taskType: TaskType | undefined;
 	assignee: Member | undefined;
 	taskTypes: TaskType[];
 	members: Member[];
 };
+
+function formatElapsed(since: Date): string {
+	const minutes = Math.floor((Date.now() - since.getTime()) / 60_000);
+	if (minutes < 1) return "agora mesmo";
+	if (minutes < 60) return `há ${minutes}min`;
+	const hours = Math.floor(minutes / 60);
+	if (hours < 24) return `há ${hours}h`;
+	const days = Math.floor(hours / 24);
+	return `há ${days}d`;
+}
 
 export function TaskCard({
 	task,
@@ -37,6 +47,9 @@ export function TaskCard({
 			<p className="text-sm">{task.description}</p>
 			<p className="text-xs opacity-70">
 				{assignee ? assignee.name : "Sem responsável"}
+			</p>
+			<p className="text-xs opacity-50">
+				{formatElapsed(task.statusChangedAt)}
 			</p>
 			{task.blocked ? (
 				<p className="text-xs font-semibold text-red-600">⛔ Bloqueado</p>

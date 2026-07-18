@@ -37,7 +37,11 @@ export function createTaskUseCases() {
 				blocked,
 			),
 		listTasksByTeam: (teamId: string) =>
-			listTasksByTeam(drizzleTaskRepository, teamId),
+			listTasksByTeam(
+				drizzleTaskRepository,
+				drizzleTaskHistoryRepository,
+				teamId,
+			),
 		createTaskType: (name: string, color: string) =>
 			createTaskType(drizzleTaskTypeRepository, name, color),
 		updateTaskType: (typeId: string, name: string, color: string) =>
