@@ -1,7 +1,7 @@
 import { db } from "@/infrastructure/db/client";
 import { taskTypes } from "./schema";
 
-export const DEFAULT_TASK_TYPES = [
+const DEFAULT_TASK_TYPES = [
 	{ name: "História", color: "#2563eb" },
 	{ name: "Tarefa Técnica", color: "#64748b" },
 	{ name: "Bug", color: "#dc2626" },
