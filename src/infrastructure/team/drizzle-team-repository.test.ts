@@ -1,0 +1,49 @@
+import { sql } from "drizzle-orm";
+import { afterEach, describe, expect, it } from "vitest";
+import { db } from "@/infrastructure/db/client";
+import { drizzleTeamRepository } from "./drizzle-team-repository";
+
+async function resetDatabase() {
+	await db.execute(sql`TRUNCATE TABLE members, teams RESTART IDENTITY CASCADE`);
+}
+
+describe("drizzleTeamRepository", () => {
+	afterEach(async () => {
+		await resetDatabase();
+	});
+
+	it("cria e busca um time por id", async () => {
+		const created = await drizzleTeamRepository.create("Time A");
+		const found = await drizzleTeamRepository.findById(created.id);
+		expect(found).toEqual(created);
+	});
+
+	it("retorna null ao buscar um time inexistente", async () => {
+		expect(
+			await drizzleTeamRepository.findById(
+				"00000000-0000-0000-0000-000000000000",
+			),
+		).toBeNull();
+	});
+
+	it("renomeia um time", async () => {
+		const team = await drizzleTeamRepository.create("Time A");
+		const renamed = await drizzleTeamRepository.rename(team.id, "Time B");
+		expect(renamed.name).toBe("Time B");
+	});
+
+	it("adiciona e lista membros de um time", async () => {
+		const team = await drizzleTeamRepository.create("Time A");
+		await drizzleTeamRepository.addMember(team.id, "Ana");
+		const teamMembers = await drizzleTeamRepository.listMembers(team.id);
+		expect(teamMembers).toHaveLength(1);
+		expect(teamMembers[0].name).toBe("Ana");
+	});
+
+	it("excluir o time remove os membros (cascade)", async () => {
+		const team = await drizzleTeamRepository.create("Time A");
+		await drizzleTeamRepository.addMember(team.id, "Ana");
+		await drizzleTeamRepository.delete(team.id);
+		expect(await drizzleTeamRepository.listMembers(team.id)).toHaveLength(0);
+	});
+});
