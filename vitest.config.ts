@@ -18,5 +18,6 @@ export default defineConfig({
 			DATABASE_URL: TEST_DATABASE_URL,
 		},
 		globalSetup: "./vitest.global-setup.ts",
+		fileParallelism: false,
 	},
 });
