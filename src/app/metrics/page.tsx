@@ -19,9 +19,8 @@ export default async function MetricsPage({
 	}
 
 	const resolvedSearchParams = await searchParams;
-	const { periodType, referenceDate } = parseMetricsFilter(
-		resolvedSearchParams,
-	);
+	const { periodType, referenceDate } =
+		parseMetricsFilter(resolvedSearchParams);
 
 	const metricsUseCases = createMetricsUseCases();
 	const [current, weeklySeries, monthlySeries] = await Promise.all([

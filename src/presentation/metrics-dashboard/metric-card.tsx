@@ -39,7 +39,7 @@ export function MetricCard({
 						definition.key,
 						definition.shape,
 					)}
-					formatValue={shapeToFormatter(definition.shape)}
+					format={shapeToFormat(definition.shape)}
 				/>
 			)}
 		</div>
@@ -58,16 +58,16 @@ function shapeToVariant(
 	return "bar";
 }
 
-function shapeToFormatter(
+function shapeToFormat(
 	shape: MetricDefinition["shape"],
-): (value: number) => string {
+): "duration" | "percent" | "count" {
 	if (shape === "duration-dual") {
-		return formatDuration;
+		return "duration";
 	}
 	if (shape === "percent-single") {
-		return formatPercent;
+		return "percent";
 	}
-	return (value: number) => String(value);
+	return "count";
 }
 
 function CurrentValue({

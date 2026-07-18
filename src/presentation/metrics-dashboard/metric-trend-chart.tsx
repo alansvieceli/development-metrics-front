@@ -14,13 +14,16 @@ import {
 	YAxis,
 } from "recharts";
 import type { PeriodType } from "@/application/metrics/period";
+import { formatDuration, formatPercent } from "./format-metric-value";
 import type { TrendPoint } from "./to-trend-points";
+
+type MetricValueFormat = "duration" | "percent" | "count";
 
 type MetricTrendChartProps = {
 	variant: "dual-line" | "single-line" | "bar";
 	weeklyPoints: TrendPoint[];
 	monthlyPoints: TrendPoint[];
-	formatValue: (value: number) => string;
+	format: MetricValueFormat;
 };
 
 function formatAxisLabel(date: Date, granularity: PeriodType): string {
@@ -29,11 +32,21 @@ function formatAxisLabel(date: Date, granularity: PeriodType): string {
 		: date.toLocaleDateString("pt-BR", { month: "short", year: "2-digit" });
 }
 
+function formatValue(format: MetricValueFormat, value: number): string {
+	if (format === "duration") {
+		return formatDuration(value);
+	}
+	if (format === "percent") {
+		return formatPercent(value);
+	}
+	return String(value);
+}
+
 export function MetricTrendChart({
 	variant,
 	weeklyPoints,
 	monthlyPoints,
-	formatValue,
+	format,
 }: MetricTrendChartProps) {
 	const [granularity, setGranularity] = useState<PeriodType>("WEEK");
 	const points = granularity === "WEEK" ? weeklyPoints : monthlyPoints;
@@ -79,7 +92,9 @@ export function MetricTrendChart({
 						<YAxis width={32} tick={{ fontSize: 11 }} />
 						<Tooltip
 							formatter={(value) =>
-								typeof value === "number" ? formatValue(value) : String(value)
+								typeof value === "number"
+									? formatValue(format, value)
+									: String(value)
 							}
 						/>
 						<Bar
@@ -96,7 +111,9 @@ export function MetricTrendChart({
 						<YAxis width={32} tick={{ fontSize: 11 }} />
 						<Tooltip
 							formatter={(value) =>
-								typeof value === "number" ? formatValue(value) : String(value)
+								typeof value === "number"
+									? formatValue(format, value)
+									: String(value)
 							}
 						/>
 						{variant === "dual-line" ? <Legend /> : null}
