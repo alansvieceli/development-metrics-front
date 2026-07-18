@@ -1512,7 +1512,7 @@ git commit -m "chore(banco)!: adiciona schema e migracao de task"
 
 **Interfaces:**
 - Consumes: `db` (`@/infrastructure/db/client`), `taskTypes` (`@/infrastructure/task/drizzle/schema`, Task 8).
-- Produces: `DEFAULT_TASK_TYPES` e `seedDefaultTaskTypes(): Promise<void>` exportados de `@/infrastructure/task/drizzle/seed-task-types`, usados por `tests/integration/reset-db.ts` (esta task) para manter os 3 tipos padrão disponíveis em cada teste E2E. A migração `0002_seed_task_types.sql` garante o seed em qualquer banco onde as migrações forem aplicadas (dev, produção futura).
+- Produces: `seedDefaultTaskTypes(): Promise<void>` exportado de `@/infrastructure/task/drizzle/seed-task-types`, usado por `tests/integration/reset-db.ts` (esta task) para manter os 3 tipos padrão disponíveis em cada teste E2E. A migração `0002_seed_task_types.sql` garante o seed em qualquer banco onde as migrações forem aplicadas (dev, produção futura). `DEFAULT_TASK_TYPES` não é exportado — é um detalhe interno deste módulo, sem consumidor fora dele (o `knip` acusa exports não usados).
 
 - [ ] **Step 1: Criar o módulo de seed**
 
@@ -1522,7 +1522,7 @@ git commit -m "chore(banco)!: adiciona schema e migracao de task"
 import { db } from "@/infrastructure/db/client";
 import { taskTypes } from "./schema";
 
-export const DEFAULT_TASK_TYPES = [
+const DEFAULT_TASK_TYPES = [
 	{ name: "História", color: "#2563eb" },
 	{ name: "Tarefa Técnica", color: "#64748b" },
 	{ name: "Bug", color: "#dc2626" },
