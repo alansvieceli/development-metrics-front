@@ -1,0 +1,24 @@
+#!/bin/sh
+
+message_file=$1
+subject=$(sed -n '1p' "$message_file")
+pattern='^(feat|fix|refactor|test|docs|chore|build|ci|perf|style|revert)(\([0-9]+\)|\([a-z0-9]+\)!|\?): [a-zà-ú].+$'
+
+fail() {
+  printf '%s\n' "Commit inválido: $1" >&2
+  printf '%s\n' 'Use tipo(card): descrição, tipo(contexto)!: descrição ou tipo?: descrição' >&2
+  exit 1
+}
+
+printf '%s\n' "$subject" | grep -Eq "$pattern" || fail 'formato não permitido'
+
+case "$subject" in
+  *.) fail 'a descrição não deve terminar com ponto final' ;;
+esac
+
+description=${subject#*: }
+case "$description" in
+  ajuste|ajustes|alteracao|alteracoes|alteração|alterações|outro|outros)
+    fail 'use uma descrição objetiva'
+    ;;
+esac
