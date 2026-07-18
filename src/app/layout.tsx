@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import type { ReactNode } from "react";
 import { createTeamUseCases } from "@/composition/team";
 import { RootShell } from "@/presentation/shared/root-shell";
@@ -27,7 +28,15 @@ export default async function RootLayout({
 					Development Metrics
 				</span>
 				{currentTeam ? (
-					<TeamSwitcher currentTeam={currentTeam} teams={teams} />
+					<div className="flex items-center gap-4">
+						<Link
+							href="/task-types"
+							className="text-sm text-(--header-fg) hover:underline"
+						>
+							Tipos de task
+						</Link>
+						<TeamSwitcher currentTeam={currentTeam} teams={teams} />
+					</div>
 				) : null}
 			</header>
 			{children}
