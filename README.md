@@ -2,6 +2,54 @@
 
 Frontend do projeto Development Metrics.
 
+## Funcionalidades
+
+- Cadastro de equipes e de seus colaboradores, com seleção do time atual.
+- Quadro Kanban para cadastrar, editar, excluir e mover tarefas entre `TODO`,
+  `IN_DEVELOPMENT`, `CODE_REVIEW` e `DONE`.
+- Cada tarefa pertence a um time e pode ter tipo, responsável e data prevista de
+  entrega (`dueDate`). O identificador externo da tarefa é único dentro do time.
+- Toda mudança de status gera histórico. Bloqueios são registrados como períodos
+  com início e fim, que alimentam o cálculo das métricas.
+- Dashboard com oito métricas do time atual, filtro semanal ou mensal e séries
+  históricas das últimas 8 semanas e dos últimos 6 meses.
+
+## Regras das métricas
+
+### Período e apresentação
+
+- A semana começa na segunda-feira às `00:00 UTC` e termina no início da
+  segunda-feira seguinte. O mês começa no primeiro dia às `00:00 UTC` e termina
+  no início do mês seguinte. O fim do intervalo é exclusivo.
+- Uma tarefa é considerada concluída no período quando possui ao menos uma
+  transição para `DONE` dentro dele. Se houver mais de uma, a conclusão usada nos
+  cálculos é a última transição para `DONE` no período, mas a tarefa conta uma
+  única vez.
+- Lead time, cycle time, tempo bloqueado e tempo em code review exibem média e
+  mediana das tarefas elegíveis. Os percentuais são arredondados apenas na
+  apresentação.
+- Sem tarefas elegíveis, as durações, retrabalho e previsibilidade aparecem como
+  `sem dados`; throughput e WIP aparecem como `0`.
+
+| Métrica | Regra implementada |
+| --- | --- |
+| **Lead time** | Para cada tarefa concluída no período: `última entrada em DONE no período - data de criação`. O card mostra média e mediana. |
+| **Cycle time** | Para cada tarefa concluída no período: `última entrada em DONE no período - primeira entrada em IN_DEVELOPMENT de todo o histórico`. Tarefas que nunca entraram em desenvolvimento não participam desta métrica. O card mostra média e mediana. |
+| **Tempo bloqueado** | Para cada tarefa concluída no período, soma todos os seus períodos de bloqueio. Um bloqueio ainda aberto é contado até o momento do cálculo. O histórico não é recortado pelo início do período selecionado; tarefas sem bloqueio contribuem com zero. O card mostra média e mediana. |
+| **Tempo aguardando code review** | Para cada tarefa concluída no período, soma cada intervalo entre a entrada em `CODE_REVIEW` e a mudança de status seguinte. Uma entrada sem mudança posterior ainda não contribui; tarefas que nunca passaram por review contribuem com zero. O histórico não é recortado pelo início do período. O card mostra média e mediana. |
+| **Taxa de retrabalho** | Percentual das tarefas concluídas no período que tiveram ao menos uma volta de `CODE_REVIEW` ou `DONE` para `IN_DEVELOPMENT`: `tarefas com retrabalho / tarefas concluídas × 100`. Cada tarefa conta no máximo uma vez. |
+| **Throughput** | Quantidade de tarefas distintas concluídas no período selecionado. Uma tarefa com múltiplas entradas em `DONE` no mesmo período conta uma vez. No filtro semanal, representa as entregas da semana; no mensal, as entregas do mês. |
+| **WIP** | Fotografia atual da quantidade de tarefas do time em `IN_DEVELOPMENT` ou `CODE_REVIEW`. Não é média histórica e não é limitado pelo período selecionado. |
+| **Previsibilidade** | Considera tarefas cuja `dueDate` está no período selecionado. Calcula `tarefas concluídas pela primeira vez até 23:59:59.999 UTC da dueDate / tarefas com dueDate no período × 100`. Tarefas atrasadas ou não concluídas contam como não atendidas. Portanto, a implementação atual mede cumprimento da data prevista, não um snapshot separado de itens planejados. |
+
+### Manutenção destas regras
+
+As regras executáveis estão nas fórmulas de `src/application/metrics/formulas`,
+na orquestração de `src/application/metrics/use-cases/get-metrics-for-period.ts`
+e nas consultas de `src/infrastructure/metrics/drizzle-metrics-query-port.ts`.
+Qualquer mudança de definição, período, população elegível ou fórmula deve
+atualizar esta seção do README e os testes correspondentes na mesma alteração.
+
 ## Stack
 
 - Next.js (App Router)
