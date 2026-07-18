@@ -1,6 +1,12 @@
-import { getPreviousPeriods, type PeriodType } from "@/application/metrics/period";
+import {
+	getPreviousPeriods,
+	type PeriodType,
+} from "@/application/metrics/period";
 import type { MetricsQueryPort } from "@/application/metrics/ports/metrics-query-port";
-import { getMetricsForRange, type PeriodMetrics } from "./get-metrics-for-period";
+import {
+	getMetricsForRange,
+	type PeriodMetrics,
+} from "./get-metrics-for-period";
 
 export type MetricsSeriesEntry = {
 	periodStart: Date;

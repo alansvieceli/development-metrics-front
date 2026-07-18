@@ -2,7 +2,9 @@ import type { CompletedTaskMetrics } from "@/application/metrics/ports/metrics-q
 
 export type DurationStats = { averageMs: number; medianMs: number };
 
-export function computeDurationStats(durationsMs: number[]): DurationStats | null {
+export function computeDurationStats(
+	durationsMs: number[],
+): DurationStats | null {
 	if (durationsMs.length === 0) {
 		return null;
 	}
@@ -33,7 +35,9 @@ export function calculateCycleTime(
 				.filter((change) => change.toStatus === "IN_DEVELOPMENT")
 				.reduce<Date | null>(
 					(earliest, change) =>
-						!earliest || change.changedAt < earliest ? change.changedAt : earliest,
+						!earliest || change.changedAt < earliest
+							? change.changedAt
+							: earliest,
 					null,
 				);
 			if (!firstInDevelopment) {
@@ -52,7 +56,9 @@ export function calculateBlockedTime(
 	const durations = tasks.map((task) =>
 		task.blockedPeriods.reduce(
 			(sum, period) =>
-				sum + (period.unblockedAt ?? now).getTime() - period.blockedAt.getTime(),
+				sum +
+				(period.unblockedAt ?? now).getTime() -
+				period.blockedAt.getTime(),
 			0,
 		),
 	);

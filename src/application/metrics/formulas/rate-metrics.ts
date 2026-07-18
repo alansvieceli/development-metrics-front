@@ -3,7 +3,9 @@ import type {
 	DueDateTaskMetrics,
 } from "@/application/metrics/ports/metrics-query-port";
 
-export function calculateReworkRate(tasks: CompletedTaskMetrics[]): number | null {
+export function calculateReworkRate(
+	tasks: CompletedTaskMetrics[],
+): number | null {
 	if (tasks.length === 0) {
 		return null;
 	}

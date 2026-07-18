@@ -52,7 +52,11 @@ function getMonthRange(referenceDate: Date): PeriodRange {
 		Date.UTC(referenceDate.getUTCFullYear(), referenceDate.getUTCMonth(), 1),
 	);
 	const end = new Date(
-		Date.UTC(referenceDate.getUTCFullYear(), referenceDate.getUTCMonth() + 1, 1),
+		Date.UTC(
+			referenceDate.getUTCFullYear(),
+			referenceDate.getUTCMonth() + 1,
+			1,
+		),
 	);
 	return { start, end };
 }

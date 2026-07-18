@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
+import {
+	getMetricsForPeriod,
+	getMetricsForRange,
+} from "./get-metrics-for-period";
 import { createFakeMetricsQueryPort } from "./test-helpers/create-fake-metrics-query-port";
-import { getMetricsForPeriod, getMetricsForRange } from "./get-metrics-for-period";
 
 describe("getMetricsForRange", () => {
 	it("monta as 8 métricas a partir dos dados retornados pelo port", async () => {

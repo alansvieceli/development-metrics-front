@@ -37,7 +37,11 @@ describe("drizzleMetricsQueryPort", () => {
 			status: "TODO",
 			dueDate: null,
 		});
-		await drizzleTaskHistoryRepository.recordStatusChange(task.id, null, "TODO");
+		await drizzleTaskHistoryRepository.recordStatusChange(
+			task.id,
+			null,
+			"TODO",
+		);
 		await drizzleTaskHistoryRepository.recordStatusChange(
 			task.id,
 			"TODO",
@@ -73,7 +77,11 @@ describe("drizzleMetricsQueryPort", () => {
 			status: "DONE",
 			dueDate: null,
 		});
-		await drizzleTaskHistoryRepository.recordStatusChange(task.id, null, "DONE");
+		await drizzleTaskHistoryRepository.recordStatusChange(
+			task.id,
+			null,
+			"DONE",
+		);
 
 		const periodStart = new Date(Date.now() + 24 * 60 * 60 * 1000);
 		const periodEnd = new Date(Date.now() + 48 * 60 * 60 * 1000);
@@ -96,7 +104,11 @@ describe("drizzleMetricsQueryPort", () => {
 			status: "TODO",
 			dueDate: "2026-07-10",
 		});
-		await drizzleTaskHistoryRepository.recordStatusChange(task.id, null, "DONE");
+		await drizzleTaskHistoryRepository.recordStatusChange(
+			task.id,
+			null,
+			"DONE",
+		);
 		await drizzleTaskRepository.updateStatus(task.id, "DONE");
 
 		const result = await drizzleMetricsQueryPort.listTasksWithDueDateInPeriod(

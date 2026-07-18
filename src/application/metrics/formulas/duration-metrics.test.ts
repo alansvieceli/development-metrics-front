@@ -8,7 +8,9 @@ import {
 	computeDurationStats,
 } from "./duration-metrics";
 
-function task(overrides: Partial<CompletedTaskMetrics> = {}): CompletedTaskMetrics {
+function task(
+	overrides: Partial<CompletedTaskMetrics> = {},
+): CompletedTaskMetrics {
 	return {
 		taskId: "task-1",
 		createdAt: new Date("2026-07-01T00:00:00Z"),
@@ -124,7 +126,9 @@ describe("calculateBlockedTime", () => {
 			}),
 		];
 		const now = new Date("2026-07-01T02:00:00Z");
-		expect(calculateBlockedTime(tasks, now)?.averageMs).toBe(2 * 60 * 60 * 1000);
+		expect(calculateBlockedTime(tasks, now)?.averageMs).toBe(
+			2 * 60 * 60 * 1000,
+		);
 	});
 });
 

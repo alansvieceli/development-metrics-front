@@ -32,7 +32,13 @@ describe("getMetricsSeries", () => {
 			},
 		};
 
-		const series = await getMetricsSeries(port, "team-1", "WEEK", referenceDate, 3);
+		const series = await getMetricsSeries(
+			port,
+			"team-1",
+			"WEEK",
+			referenceDate,
+			3,
+		);
 
 		expect(series).toHaveLength(3);
 		expect(series.map((entry) => entry.periodStart)).toEqual(

@@ -24,7 +24,11 @@ describe("getPeriodRange", () => {
 
 describe("getPreviousPeriods", () => {
 	it("retorna os últimos N períodos em ordem cronológica, terminando no período de referência", () => {
-		const ranges = getPreviousPeriods("WEEK", new Date("2026-07-15T12:00:00Z"), 3);
+		const ranges = getPreviousPeriods(
+			"WEEK",
+			new Date("2026-07-15T12:00:00Z"),
+			3,
+		);
 		expect(ranges).toHaveLength(3);
 		expect(ranges[0].start).toEqual(new Date("2026-06-29T00:00:00Z"));
 		expect(ranges[1].start).toEqual(new Date("2026-07-06T00:00:00Z"));
