@@ -21,19 +21,25 @@ test("criar e selecionar um time redireciona para / e mostra o time no header", 
 	await page.getByRole("button", { name: "Criar time" }).click();
 	await page.getByRole("button", { name: "Time A" }).click();
 	await expect(page).toHaveURL("/");
-	await expect(page.getByText("Time A ▾")).toBeVisible();
+	await expect(
+		page.getByRole("button", { name: "Time A", exact: true }),
+	).toBeVisible();
 });
 
 test("trocar de time pelo dropdown do header", async ({ page }) => {
 	await page.goto("/teams");
 	await page.getByPlaceholder("Nome do time").fill("Time A");
 	await page.getByRole("button", { name: "Criar time" }).click();
+	await expect(page.getByRole("button", { name: "Time A" })).toBeVisible();
 	await page.getByPlaceholder("Nome do time").fill("Time B");
 	await page.getByRole("button", { name: "Criar time" }).click();
+	await expect(page.getByRole("button", { name: "Time B" })).toBeVisible();
 	await page.getByRole("button", { name: "Time A" }).click();
 	await expect(page).toHaveURL("/");
 
-	await page.getByRole("button", { name: "Time A ▾" }).click();
+	await page.getByRole("button", { name: "Time A", exact: true }).click();
 	await page.getByRole("button", { name: "Time B" }).click();
-	await expect(page.getByText("Time B ▾")).toBeVisible();
+	await expect(
+		page.getByRole("button", { name: "Time B", exact: true }),
+	).toBeVisible();
 });

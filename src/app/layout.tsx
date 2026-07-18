@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
+import type { ReactNode } from "react";
 import { createTeamUseCases } from "@/composition/team";
 import { RootShell } from "@/presentation/shared/root-shell";
 import { TeamSwitcher } from "@/presentation/team/team-switcher";
@@ -9,25 +9,29 @@ export const metadata: Metadata = {
 	description: "Development Metrics",
 };
 
-export default async function MainLayout({
+export default async function RootLayout({
 	children,
+	modal,
 }: {
-	children: React.ReactNode;
+	children: ReactNode;
+	modal: ReactNode;
 }) {
 	const useCases = createTeamUseCases();
 	const currentTeam = await useCases.getCurrentTeam();
-	if (!currentTeam) {
-		redirect("/teams");
-	}
-	const teams = await useCases.listTeams();
+	const teams = currentTeam ? await useCases.listTeams() : [];
 
 	return (
 		<RootShell>
-			<header className="flex items-center justify-between border-b px-6 py-4">
-				<span className="font-semibold">Development Metrics</span>
-				<TeamSwitcher currentTeam={currentTeam} teams={teams} />
+			<header className="flex items-center justify-between bg-(--header-bg) px-6 py-4">
+				<span className="font-semibold text-(--header-fg)">
+					Development Metrics
+				</span>
+				{currentTeam ? (
+					<TeamSwitcher currentTeam={currentTeam} teams={teams} />
+				) : null}
 			</header>
 			{children}
+			{modal}
 		</RootShell>
 	);
 }
