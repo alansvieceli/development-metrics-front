@@ -6,6 +6,7 @@ Este documento orienta qualquer agente de IA ou pessoa trabalhando neste projeto
 
 - **Next.js** com App Router.
 - **TypeScript** em modo estrito.
+- **Tailwind CSS** para estilização.
 - **Biome** para lint, formatação e organização de imports.
 - **Knip** para detectar arquivos, exports e dependências não usados.
 
@@ -43,6 +44,11 @@ React e Node.js fazem parte do Next.js neste projeto; não são tratados como st
 - Não devolver stack traces, detalhes de infraestrutura ou mensagens internas cruas ao cliente.
 - Definir explicitamente o runtime apenas quando houver necessidade. Código destinado ao Edge não pode depender de APIs exclusivas do Node.js.
 - Usar uma biblioteca de validação somente se ela já estiver adotada ou se a complexidade dos contratos justificar a dependência; validações simples não exigem uma abstração própria.
+
+## Banco de dados
+
+- **Postgres** local via `devops/docker-compose.yml`.
+- **Drizzle ORM** é a biblioteca adotada para acesso ao banco. Schema, migrações e queries do Drizzle ficam confinados à camada `infrastructure`, seguindo a regra de dependência do [architecture.md](./architecture.md).
 
 ## Convenções gerais
 
