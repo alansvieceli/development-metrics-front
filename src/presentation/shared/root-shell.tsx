@@ -1,6 +1,5 @@
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "@/app/globals.css";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -12,16 +11,7 @@ const geistMono = Geist_Mono({
 	subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-	title: "Development Metrics",
-	description: "Development Metrics",
-};
-
-export default function RootLayout({
-	children,
-}: Readonly<{
-	children: React.ReactNode;
-}>) {
+export function RootShell({ children }: { children: React.ReactNode }) {
 	return (
 		<html
 			lang="pt-BR"
