@@ -25,7 +25,7 @@ Não há invariantes de negócio além de nome não vazio. Não há entidade ric
 
 ## Rotas e telas
 
-- `/` — home. Conteúdo é o placeholder existente; vai receber Kanban/Dashboard nos próximos sub-projetos.
+- `/` — redireciona para `/board` quando há um time válido selecionado (rota definida na spec de Kanban/Tasks). Sem time selecionado, o gate redireciona para `/teams` antes disso.
 - `/teams` — **selecionar/criar time**. Layout: lista vertical simples de times existentes (cada linha clicável seleciona o time, seta o cookie e redireciona para `/`) com um formulário de criação (campo "nome") abaixo. Se não houver nenhum time cadastrado, mostra só o formulário de criação com uma mensagem indicando a ausência de times. É a rota de entrada quando não há cookie válido, e também acessível pelo header.
 - `/teams/[teamId]` — **gerenciar time**. Layout: tudo em uma página só — campo de nome do time, lista de membros (cada um com ações de renomear/remover), campo para adicionar novo membro, e um botão de excluir o time ao final.
 - **Header** (presente em todas as páginas exceto `/teams`): mostra o nome do time atual como um botão/dropdown no canto. O dropdown lista os outros times (clicar troca, via Server Action que seta o cookie), e tem as opções "Gerenciar time atual" (→ `/teams/[teamId]` do time corrente) e "Criar novo time" (→ `/teams`).
