@@ -6,6 +6,7 @@ Frontend do projeto Development Metrics.
 
 - Next.js (App Router)
 - TypeScript (modo estrito)
+- Tailwind CSS (estilização)
 - Biome (lint, formatação e organização de imports)
 - Knip (detecção de código não usado)
 
