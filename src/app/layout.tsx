@@ -29,6 +29,20 @@ export default async function RootLayout({
 				</span>
 				{currentTeam ? (
 					<div className="flex items-center gap-4">
+						<nav className="flex items-center gap-4">
+							<Link
+								href="/board"
+								className="text-sm text-(--header-fg) hover:underline"
+							>
+								Quadro
+							</Link>
+							<Link
+								href="/metrics"
+								className="text-sm text-(--header-fg) hover:underline"
+							>
+								Métricas
+							</Link>
+						</nav>
 						<Link
 							href="/task-types"
 							className="text-sm text-(--header-fg) hover:underline"
