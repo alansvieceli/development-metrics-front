@@ -39,20 +39,20 @@ Acesse http://localhost:3000.
 
 ## Scripts
 
-| Script | Descrição |
-| --- | --- |
-| `npm run dev` | Sobe o servidor de desenvolvimento |
-| `npm run build` | Gera o build de produção |
-| `npm run start` | Sobe o build de produção |
-| `npm run typecheck` | Roda `tsc --noEmit` |
-| `npm run lint` | Roda o Biome em modo de checagem |
-| `npm run lint:fix` | Roda o Biome corrigindo o que for possível |
-| `npm run knip` | Detecta arquivos, exports e dependências não usados |
-| `npm test` | Roda os testes unitários (Vitest) |
-| `npm run test:watch` | Roda os testes unitários em modo watch |
-| `npm run db:generate` | Gera uma nova migração a partir do schema do Drizzle |
-| `npm run db:migrate` | Aplica as migrações pendentes no banco apontado por `DATABASE_URL` |
-| `npm run test:e2e` | Roda os testes de integração/E2E (Playwright) |
+| Script                  | Descrição                                                           |
+| ----------------------- | --------------------------------------------------------------------- |
+| `npm run dev`         | Sobe o servidor de desenvolvimento                                    |
+| `npm run build`       | Gera o build de produção                                            |
+| `npm run start`       | Sobe o build de produção                                            |
+| `npm run typecheck`   | Roda`tsc --noEmit`                                                  |
+| `npm run lint`        | Roda o Biome em modo de checagem                                      |
+| `npm run lint:fix`    | Roda o Biome corrigindo o que for possível                           |
+| `npm run knip`        | Detecta arquivos, exports e dependências não usados                 |
+| `npm test`            | Roda os testes unitários (Vitest)                                    |
+| `npm run test:watch`  | Roda os testes unitários em modo watch                               |
+| `npm run db:generate` | Gera uma nova migração a partir do schema do Drizzle                |
+| `npm run db:migrate`  | Aplica as migrações pendentes no banco apontado por`DATABASE_URL` |
+| `npm run test:e2e`    | Roda os testes de integração/E2E (Playwright)                       |
 
 Antes do primeiro `npm run test:e2e`, instalar o navegador usado pelos testes:
 
