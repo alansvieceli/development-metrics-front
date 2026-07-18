@@ -11,10 +11,7 @@ export async function createTaskTypeAction(formData: FormData) {
 	revalidatePath("/task-types");
 }
 
-export async function updateTaskTypeAction(
-	typeId: string,
-	formData: FormData,
-) {
+export async function updateTaskTypeAction(typeId: string, formData: FormData) {
 	const name = String(formData.get("name") ?? "");
 	const color = String(formData.get("color") ?? "");
 	const useCases = createTaskUseCases();

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { createTask } from "./create-task";
 import { createFakeTaskHistoryRepository } from "./test-helpers/create-fake-task-history-repository";
 import { createFakeTaskRepository } from "./test-helpers/create-fake-task-repository";
-import { createTask } from "./create-task";
 
 const baseInput = {
 	externalId: "TASK-1",
@@ -58,7 +58,9 @@ describe("createTask", () => {
 		await createTask(repository, historyRepository, baseInput);
 		await expect(
 			createTask(repository, historyRepository, baseInput),
-		).rejects.toThrow('Já existe uma task com o id externo "TASK-1" neste time');
+		).rejects.toThrow(
+			'Já existe uma task com o id externo "TASK-1" neste time',
+		);
 	});
 
 	it("permite o mesmo id externo em times diferentes", async () => {

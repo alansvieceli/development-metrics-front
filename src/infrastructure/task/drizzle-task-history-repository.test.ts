@@ -2,9 +2,9 @@ import { eq, sql } from "drizzle-orm";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { db } from "@/infrastructure/db/client";
 import { taskBlockedPeriods, taskStatusChanges } from "./drizzle/schema";
-import { drizzleTaskTypeRepository } from "./drizzle-task-type-repository";
-import { drizzleTaskRepository } from "./drizzle-task-repository";
 import { drizzleTaskHistoryRepository } from "./drizzle-task-history-repository";
+import { drizzleTaskRepository } from "./drizzle-task-repository";
+import { drizzleTaskTypeRepository } from "./drizzle-task-type-repository";
 
 describe("drizzleTaskHistoryRepository", () => {
 	let typeId: string;

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createFakeTaskTypeRepository } from "./test-helpers/create-fake-task-type-repository";
 import { createTaskType } from "./create-task-type";
+import { createFakeTaskTypeRepository } from "./test-helpers/create-fake-task-type-repository";
 
 describe("createTaskType", () => {
 	it("cria um tipo com nome e cor informados", async () => {

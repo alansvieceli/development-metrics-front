@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createFakeTaskRepository } from "./test-helpers/create-fake-task-repository";
 import { deleteTask } from "./delete-task";
+import { createFakeTaskRepository } from "./test-helpers/create-fake-task-repository";
 
 describe("deleteTask", () => {
 	it("remove a task do repositório", async () => {

@@ -2,7 +2,10 @@
 
 import { moveTaskAction } from "@/app/board/actions";
 import type { TaskStatus } from "@/domain/task/entities/task";
-import { STATUS_LABELS, STATUS_ORDER } from "@/presentation/task/task-status-labels";
+import {
+	STATUS_LABELS,
+	STATUS_ORDER,
+} from "@/presentation/task/task-status-labels";
 
 type TaskMoveSelectProps = {
 	taskId: string;

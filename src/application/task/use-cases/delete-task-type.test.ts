@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { deleteTaskType } from "./delete-task-type";
 import { createFakeTaskRepository } from "./test-helpers/create-fake-task-repository";
 import { createFakeTaskTypeRepository } from "./test-helpers/create-fake-task-type-repository";
-import { deleteTaskType } from "./delete-task-type";
 
 describe("deleteTaskType", () => {
 	it("remove um tipo que não está em uso", async () => {

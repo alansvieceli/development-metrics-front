@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { listTaskTypes } from "./list-task-types";
 import { createFakeTaskRepository } from "./test-helpers/create-fake-task-repository";
 import { createFakeTaskTypeRepository } from "./test-helpers/create-fake-task-type-repository";
-import { listTaskTypes } from "./list-task-types";
 
 describe("listTaskTypes", () => {
 	it("lista os tipos marcando quais estão em uso", async () => {

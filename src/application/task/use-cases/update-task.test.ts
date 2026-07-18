@@ -32,10 +32,15 @@ describe("updateTask", () => {
 	it("rejeita id externo duplicado no mesmo time", async () => {
 		const repository = createFakeTaskRepository();
 		await repository.create(baseData);
-		const other = await repository.create({ ...baseData, externalId: "TASK-2" });
+		const other = await repository.create({
+			...baseData,
+			externalId: "TASK-2",
+		});
 		await expect(
 			updateTask(repository, other.id, { ...baseData, externalId: "TASK-1" }),
-		).rejects.toThrow('Já existe uma task com o id externo "TASK-1" neste time');
+		).rejects.toThrow(
+			'Já existe uma task com o id externo "TASK-1" neste time',
+		);
 	});
 
 	it("permite manter o próprio id externo ao editar", async () => {

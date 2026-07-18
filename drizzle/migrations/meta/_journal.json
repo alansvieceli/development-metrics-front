@@ -1,27 +1,27 @@
 {
-  "version": "7",
-  "dialect": "postgresql",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "7",
-      "when": 1784341556174,
-      "tag": "0000_classy_punisher",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1784405135795,
-      "tag": "0001_regular_venus",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1784405272257,
-      "tag": "0002_seed-task-types",
-      "breakpoints": true
-    }
-  ]
+	"version": "7",
+	"dialect": "postgresql",
+	"entries": [
+		{
+			"idx": 0,
+			"version": "7",
+			"when": 1784341556174,
+			"tag": "0000_classy_punisher",
+			"breakpoints": true
+		},
+		{
+			"idx": 1,
+			"version": "7",
+			"when": 1784405135795,
+			"tag": "0001_regular_venus",
+			"breakpoints": true
+		},
+		{
+			"idx": 2,
+			"version": "7",
+			"when": 1784405272257,
+			"tag": "0002_seed-task-types",
+			"breakpoints": true
+		}
+	]
 }

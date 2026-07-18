@@ -1,8 +1,8 @@
 import { sql } from "drizzle-orm";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { db } from "@/infrastructure/db/client";
-import { drizzleTaskTypeRepository } from "./drizzle-task-type-repository";
 import { drizzleTaskRepository } from "./drizzle-task-repository";
+import { drizzleTaskTypeRepository } from "./drizzle-task-type-repository";
 
 async function resetTasksTable() {
 	await db.execute(
@@ -23,7 +23,9 @@ describe("drizzleTaskRepository", () => {
 		await drizzleTaskTypeRepository.delete(typeId);
 	});
 
-	function baseData(overrides: Partial<Parameters<typeof drizzleTaskRepository.create>[0]> = {}) {
+	function baseData(
+		overrides: Partial<Parameters<typeof drizzleTaskRepository.create>[0]> = {},
+	) {
 		return {
 			externalId: "TASK-1",
 			description: "Corrigir bug de login",
@@ -55,7 +57,10 @@ describe("drizzleTaskRepository", () => {
 	it("lista as tasks de um time", async () => {
 		await drizzleTaskRepository.create(baseData());
 		await drizzleTaskRepository.create(
-			baseData({ externalId: "TASK-2", teamId: "22222222-2222-2222-2222-222222222222" }),
+			baseData({
+				externalId: "TASK-2",
+				teamId: "22222222-2222-2222-2222-222222222222",
+			}),
 		);
 		const list = await drizzleTaskRepository.listByTeam(
 			"11111111-1111-1111-1111-111111111111",

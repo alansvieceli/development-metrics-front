@@ -19,7 +19,12 @@ describe("toggleBlocked", () => {
 		const historyRepository = createFakeTaskHistoryRepository();
 		const task = await repository.create(baseData);
 
-		const blocked = await toggleBlocked(repository, historyRepository, task.id, true);
+		const blocked = await toggleBlocked(
+			repository,
+			historyRepository,
+			task.id,
+			true,
+		);
 
 		expect(blocked.blocked).toBe(true);
 		expect(historyRepository.blockedPeriods).toHaveLength(1);

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createFakeTaskRepository } from "./test-helpers/create-fake-task-repository";
 import { listTasksByTeam } from "./list-tasks-by-team";
+import { createFakeTaskRepository } from "./test-helpers/create-fake-task-repository";
 
 const baseData = {
 	description: "Corrigir bug",
@@ -13,7 +13,11 @@ const baseData = {
 describe("listTasksByTeam", () => {
 	it("agrupa as tasks do time por status", async () => {
 		const repository = createFakeTaskRepository();
-		await repository.create({ ...baseData, externalId: "TASK-1", status: "TODO" });
+		await repository.create({
+			...baseData,
+			externalId: "TASK-1",
+			status: "TODO",
+		});
 		await repository.create({
 			...baseData,
 			externalId: "TASK-2",

@@ -11,7 +11,10 @@ import {
 import type { Task, TaskStatus } from "@/domain/task/entities/task";
 import type { TaskType } from "@/domain/task/entities/task-type";
 import type { Member } from "@/domain/team/entities/member";
-import { STATUS_LABELS, STATUS_ORDER } from "@/presentation/task/task-status-labels";
+import {
+	STATUS_LABELS,
+	STATUS_ORDER,
+} from "@/presentation/task/task-status-labels";
 
 type TaskFormModalProps =
 	| {
@@ -170,7 +173,9 @@ export function TaskFormModal(props: TaskFormModalProps) {
 								<select
 									id="typeId"
 									name="typeId"
-									defaultValue={isEdit ? props.task.typeId : props.taskTypes[0]?.id}
+									defaultValue={
+										isEdit ? props.task.typeId : props.taskTypes[0]?.id
+									}
 									className="rounded-lg border border-(--border) px-3 py-2"
 									required
 								>

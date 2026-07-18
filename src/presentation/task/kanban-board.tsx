@@ -3,7 +3,10 @@ import type { TaskType } from "@/domain/task/entities/task-type";
 import type { Member } from "@/domain/team/entities/member";
 import { TaskCard } from "@/presentation/task/task-card";
 import { TaskFormModal } from "@/presentation/task/task-form-modal";
-import { STATUS_LABELS, STATUS_ORDER } from "@/presentation/task/task-status-labels";
+import {
+	STATUS_LABELS,
+	STATUS_ORDER,
+} from "@/presentation/task/task-status-labels";
 
 type KanbanBoardProps = {
 	teamId: string;
@@ -18,7 +21,9 @@ export function KanbanBoard({
 	taskTypes,
 	members,
 }: KanbanBoardProps) {
-	const taskTypesById = new Map(taskTypes.map((taskType) => [taskType.id, taskType]));
+	const taskTypesById = new Map(
+		taskTypes.map((taskType) => [taskType.id, taskType]),
+	);
 	const membersById = new Map(members.map((member) => [member.id, member]));
 
 	return (

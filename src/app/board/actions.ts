@@ -12,10 +12,7 @@ export async function createTaskAction(input: CreateTaskInput) {
 	revalidatePath("/board");
 }
 
-export async function updateTaskAction(
-	taskId: string,
-	input: UpdateTaskInput,
-) {
+export async function updateTaskAction(taskId: string, input: UpdateTaskInput) {
 	const useCases = createTaskUseCases();
 	await useCases.updateTask(taskId, input);
 	revalidatePath("/board");

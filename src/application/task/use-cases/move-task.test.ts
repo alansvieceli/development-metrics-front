@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { moveTask } from "./move-task";
 import { createFakeTaskHistoryRepository } from "./test-helpers/create-fake-task-history-repository";
 import { createFakeTaskRepository } from "./test-helpers/create-fake-task-repository";
-import { moveTask } from "./move-task";
 
 const baseData = {
 	externalId: "TASK-1",
@@ -39,7 +39,10 @@ describe("moveTask", () => {
 	it("detecta transições de retrabalho (code review -> em desenvolvimento)", async () => {
 		const repository = createFakeTaskRepository();
 		const historyRepository = createFakeTaskHistoryRepository();
-		const task = await repository.create({ ...baseData, status: "CODE_REVIEW" });
+		const task = await repository.create({
+			...baseData,
+			status: "CODE_REVIEW",
+		});
 
 		await moveTask(repository, historyRepository, task.id, "IN_DEVELOPMENT");
 
@@ -59,7 +62,10 @@ describe("moveTask", () => {
 		await moveTask(repository, historyRepository, task.id, "IN_DEVELOPMENT");
 
 		expect(historyRepository.statusChanges).toEqual([
-			expect.objectContaining({ fromStatus: "DONE", toStatus: "IN_DEVELOPMENT" }),
+			expect.objectContaining({
+				fromStatus: "DONE",
+				toStatus: "IN_DEVELOPMENT",
+			}),
 		]);
 	});
 

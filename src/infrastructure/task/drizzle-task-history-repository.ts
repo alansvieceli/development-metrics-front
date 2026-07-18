@@ -5,9 +5,7 @@ import { taskBlockedPeriods, taskStatusChanges } from "./drizzle/schema";
 
 export const drizzleTaskHistoryRepository: TaskHistoryRepository = {
 	async recordStatusChange(taskId, fromStatus, toStatus) {
-		await db
-			.insert(taskStatusChanges)
-			.values({ taskId, fromStatus, toStatus });
+		await db.insert(taskStatusChanges).values({ taskId, fromStatus, toStatus });
 	},
 	async openBlockedPeriod(taskId) {
 		await db.insert(taskBlockedPeriods).values({ taskId });

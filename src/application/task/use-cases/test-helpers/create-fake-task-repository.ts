@@ -49,9 +49,8 @@ export function createFakeTaskRepository(): TaskRepository {
 		},
 		async findByExternalId(teamId: string, externalId: string) {
 			return (
-				tasks.find(
-					(t) => t.teamId === teamId && t.externalId === externalId,
-				) ?? null
+				tasks.find((t) => t.teamId === teamId && t.externalId === externalId) ??
+				null
 			);
 		},
 		async listByTeam(teamId: string) {
