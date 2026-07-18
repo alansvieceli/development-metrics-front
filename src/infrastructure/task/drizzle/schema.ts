@@ -1,6 +1,7 @@
 import {
 	boolean,
 	date,
+	index,
 	pgTable,
 	text,
 	timestamp,
@@ -41,24 +42,48 @@ export const tasks = pgTable(
 			table.teamId,
 			table.externalId,
 		),
+		index("tasks_team_id_status_idx").on(table.teamId, table.status),
+		index("tasks_team_id_due_date_idx").on(table.teamId, table.dueDate),
 	],
 );
 
-export const taskStatusChanges = pgTable("task_status_changes", {
-	id: uuid("id").defaultRandom().primaryKey(),
-	taskId: uuid("task_id")
-		.notNull()
-		.references(() => tasks.id, { onDelete: "cascade" }),
-	fromStatus: text("from_status"),
-	toStatus: text("to_status").notNull(),
-	changedAt: timestamp("changed_at").notNull().defaultNow(),
-});
+export const taskStatusChanges = pgTable(
+	"task_status_changes",
+	{
+		id: uuid("id").defaultRandom().primaryKey(),
+		taskId: uuid("task_id")
+			.notNull()
+			.references(() => tasks.id, { onDelete: "cascade" }),
+		fromStatus: text("from_status"),
+		toStatus: text("to_status").notNull(),
+		changedAt: timestamp("changed_at").notNull().defaultNow(),
+	},
+	(table) => [
+		index("task_status_changes_task_id_changed_at_idx").on(
+			table.taskId,
+			table.changedAt,
+		),
+		index("task_status_changes_to_status_changed_at_idx").on(
+			table.toStatus,
+			table.changedAt,
+		),
+	],
+);
 
-export const taskBlockedPeriods = pgTable("task_blocked_periods", {
-	id: uuid("id").defaultRandom().primaryKey(),
-	taskId: uuid("task_id")
-		.notNull()
-		.references(() => tasks.id, { onDelete: "cascade" }),
-	blockedAt: timestamp("blocked_at").notNull().defaultNow(),
-	unblockedAt: timestamp("unblocked_at"),
-});
+export const taskBlockedPeriods = pgTable(
+	"task_blocked_periods",
+	{
+		id: uuid("id").defaultRandom().primaryKey(),
+		taskId: uuid("task_id")
+			.notNull()
+			.references(() => tasks.id, { onDelete: "cascade" }),
+		blockedAt: timestamp("blocked_at").notNull().defaultNow(),
+		unblockedAt: timestamp("unblocked_at"),
+	},
+	(table) => [
+		index("task_blocked_periods_task_id_blocked_at_idx").on(
+			table.taskId,
+			table.blockedAt,
+		),
+	],
+);
