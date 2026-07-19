@@ -48,48 +48,54 @@ const SEGMENTS = [
 
 export function FlowCompositionChart({ current }: FlowCompositionChartProps) {
 	const data = toFlowCompositionData(current);
+	const cycleTime = current.cycleTime;
 
 	return (
 		<ChartCard metricKey="flowComposition">
-			{data ? (
-				<ResponsiveContainer width="100%" height={110}>
-					<BarChart
-						layout="vertical"
-						data={[{ name: "Cycle time", ...data }]}
-						margin={{ left: 0, right: 16 }}
-					>
-						<XAxis
-							type="number"
-							tickFormatter={(value: number) => formatDuration(value)}
-							tick={{ fontSize: 11, fill: "var(--foreground-muted)" }}
-						/>
-						<YAxis type="category" dataKey="name" hide />
-						<Tooltip
-							contentStyle={{
-								background: "var(--surface)",
-								border: "1px solid var(--border)",
-								borderRadius: 6,
-								fontSize: 12,
-							}}
-							itemStyle={{ color: "var(--foreground)" }}
-							formatter={(value) =>
-								typeof value === "number"
-									? formatDuration(value)
-									: String(value)
-							}
-						/>
-						<Legend wrapperStyle={{ fontSize: 11 }} iconSize={8} />
-						{SEGMENTS.map((segment) => (
-							<Bar
-								key={segment.dataKey}
-								dataKey={segment.dataKey}
-								name={segment.name}
-								stackId="flow"
-								fill={segment.fill}
+			{data && cycleTime ? (
+				<>
+					<p className="font-mono text-lg font-semibold">
+						Cycle time: {formatDuration(cycleTime.averageMs)}
+					</p>
+					<ResponsiveContainer width="100%" height={110}>
+						<BarChart
+							layout="vertical"
+							data={[{ name: "Cycle time", ...data }]}
+							margin={{ left: 0, right: 16 }}
+						>
+							<XAxis
+								type="number"
+								tickFormatter={(value: number) => formatDuration(value)}
+								tick={{ fontSize: 11, fill: "var(--foreground-muted)" }}
 							/>
-						))}
-					</BarChart>
-				</ResponsiveContainer>
+							<YAxis type="category" dataKey="name" hide />
+							<Tooltip
+								contentStyle={{
+									background: "var(--surface)",
+									border: "1px solid var(--border)",
+									borderRadius: 6,
+									fontSize: 12,
+								}}
+								itemStyle={{ color: "var(--foreground)" }}
+								formatter={(value) =>
+									typeof value === "number"
+										? formatDuration(value)
+										: String(value)
+								}
+							/>
+							<Legend wrapperStyle={{ fontSize: 11 }} iconSize={8} />
+							{SEGMENTS.map((segment) => (
+								<Bar
+									key={segment.dataKey}
+									dataKey={segment.dataKey}
+									name={segment.name}
+									stackId="flow"
+									fill={segment.fill}
+								/>
+							))}
+						</BarChart>
+					</ResponsiveContainer>
+				</>
 			) : (
 				<p className="text-sm opacity-70">sem dados</p>
 			)}

@@ -19,9 +19,16 @@ export function ChartsSection({
 	current,
 	history,
 }: ChartsSectionProps) {
+	const windowLabel =
+		periodType === "WEEK"
+			? `últimas ${history.length} semanas`
+			: `últimos ${history.length} meses`;
+
 	return (
-		<section className="flex flex-col gap-3">
-			<h2 className="text-sm font-semibold opacity-70">Gráficos</h2>
+		<section className="flex flex-col gap-3 border-t border-(--border) pt-6">
+			<h2 className="text-sm font-semibold opacity-70">
+				Tendência · {windowLabel}
+			</h2>
 			<div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
 				<ThroughputChart history={history} periodType={periodType} />
 				<PlannedDeliveredChart history={history} periodType={periodType} />
