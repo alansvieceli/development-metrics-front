@@ -30,6 +30,7 @@ describe("getMetricsForRange", () => {
 				},
 			],
 			currentWipTasks: [],
+			bugEvents: [],
 		};
 		const start = new Date("2026-07-01T00:00:00Z");
 		const end = new Date("2026-07-08T00:00:00Z");
@@ -55,6 +56,7 @@ describe("getMetricsForRange", () => {
 				blockedPeriods: [],
 				dueDateTasks: [],
 				currentWipTasks: [],
+				bugEvents: [],
 			},
 			new Date("2026-07-01T00:00:00Z"),
 			new Date("2026-07-08T00:00:00Z"),
@@ -93,6 +95,7 @@ describe("getMetricsForRange", () => {
 			blockedPeriods: [],
 			dueDateTasks: [],
 			currentWipTasks: [],
+			bugEvents: [],
 		};
 		const metrics = getMetricsForRange(
 			snapshot,

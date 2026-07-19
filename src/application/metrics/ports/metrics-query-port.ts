@@ -48,12 +48,20 @@ export type CurrentWipTaskMetrics = {
 	blockedAt: Date | null;
 };
 
+export type BugEvent = {
+	taskId: string;
+	createdAt: Date;
+	parentTaskId: string | null;
+	parentExternalId: string | null;
+};
+
 export type MetricsSnapshot = {
 	completionEvents: CompletionEvent[];
 	statusChanges: SnapshotStatusChange[];
 	blockedPeriods: SnapshotBlockedPeriod[];
 	dueDateTasks: DueDateTaskMetrics[];
 	currentWipTasks: CurrentWipTaskMetrics[];
+	bugEvents: BugEvent[];
 };
 
 export type MetricsQueryPort = {

@@ -1,5 +1,5 @@
 import type { InferInsertModel } from "drizzle-orm";
-import { sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
@@ -8,6 +8,7 @@ import {
 	taskBlockedPeriods,
 	taskStatusChanges,
 	tasks,
+	taskTypes,
 } from "@/infrastructure/task/drizzle/schema";
 import { drizzleTaskTypeRepository } from "@/infrastructure/task/drizzle-task-type-repository";
 import { getTestDatabaseUrl } from "../../../scripts/test-database-url";
@@ -200,7 +201,47 @@ describe("drizzleMetricsQueryPort", () => {
 		]);
 	});
 
-	it("carrega o snapshot em no máximo cinco queries", async () => {
+	it("carrega os bugs abertos com a task de origem resolvida via self-join", async () => {
+		const [bugType] = await db
+			.insert(taskTypes)
+			.values({ name: "Bug-teste", color: "#dc2626", isBug: true })
+			.returning();
+		try {
+			const parent = await insertTask({ externalId: "TASK-PAI" });
+			const bugWithParent = await insertTask({
+				externalId: "TASK-BUG-1",
+				typeId: bugType.id,
+				parentTaskId: parent.id,
+			});
+			const orphanBug = await insertTask({
+				externalId: "TASK-BUG-2",
+				typeId: bugType.id,
+			});
+
+			const snapshot = await drizzleMetricsQueryPort.loadSnapshot(
+				TEAM_ID,
+				new Date("2026-07-01T00:00:00Z"),
+				new Date("2026-08-01T00:00:00Z"),
+			);
+
+			expect(snapshot.bugEvents).toHaveLength(2);
+			const withParent = snapshot.bugEvents.find(
+				(event) => event.taskId === bugWithParent.id,
+			);
+			expect(withParent?.parentTaskId).toBe(parent.id);
+			expect(withParent?.parentExternalId).toBe("TASK-PAI");
+			const orphan = snapshot.bugEvents.find(
+				(event) => event.taskId === orphanBug.id,
+			);
+			expect(orphan?.parentTaskId).toBeNull();
+			expect(orphan?.parentExternalId).toBeNull();
+		} finally {
+			await resetTasksTable();
+			await db.delete(taskTypes).where(eq(taskTypes.id, bugType.id));
+		}
+	});
+
+	it("carrega o snapshot em no máximo seis queries", async () => {
 		const task = await insertTask({ status: "DONE", dueDate: "2026-07-10" });
 		await db.insert(taskStatusChanges).values({
 			taskId: task.id,
@@ -224,7 +265,7 @@ describe("drizzleMetricsQueryPort", () => {
 				new Date("2026-07-01T00:00:00Z"),
 				new Date("2026-08-01T00:00:00Z"),
 			);
-			expect(queryCount).toBeLessThanOrEqual(5);
+			expect(queryCount).toBeLessThanOrEqual(6);
 		} finally {
 			await client.end();
 		}

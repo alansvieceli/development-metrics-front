@@ -54,6 +54,7 @@ describe("getMetricsDashboard", () => {
 					blockedAt: null,
 				},
 			],
+			bugEvents: [],
 		};
 		let loadSnapshotCalls = 0;
 		let capturedRange: { start: Date; end: Date } | null = null;
