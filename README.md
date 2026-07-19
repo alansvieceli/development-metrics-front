@@ -13,7 +13,12 @@ Frontend do projeto Development Metrics.
 - Cada tarefa pertence a um time, possui tipo e data prevista de entrega
   (`dueDate`) obrigatórios e pode ter responsável. O identificador externo da
   tarefa é único dentro do time.
-- Cadastro dos tipos de task disponíveis para classificação dos cards.
+- Cadastro dos tipos de task disponíveis para classificação dos cards. O tipo
+  `Bug` não pode ser excluído, mesmo sem uso, pois é a referência usada para
+  contar bugs vinculados a outras tasks.
+- Uma task pode registrar uma task de origem opcional, do mesmo time. O card
+  da task de origem mostra badges separados de bugs (🐛) e de outros vínculos
+  (🔗) recebidos; o card do vínculo mostra a task de origem.
 - O card de tarefa destaca o prazo (`dueDate`) em amarelo quando está a até 2
   dias do vencimento e em vermelho quando já venceu, exceto para tarefas
   concluídas.
