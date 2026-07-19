@@ -1,6 +1,5 @@
 import { ApplicationError } from "@/application/shared/application-error";
 import { parseDateOnly } from "@/application/shared/validation";
-import type { TaskHistoryRepository } from "@/application/task/ports/task-history-repository";
 import type { TaskRepository } from "@/application/task/ports/task-repository";
 import type { TaskTypeRepository } from "@/application/task/ports/task-type-repository";
 import type { TeamAccess } from "@/application/team/contracts/team-access";
@@ -18,7 +17,6 @@ export type CreateTaskInput = {
 
 export async function createTask(
 	repository: TaskRepository,
-	historyRepository: TaskHistoryRepository,
 	typeRepository: TaskTypeRepository,
 	teamAccess: TeamAccess,
 	input: CreateTaskInput,
@@ -52,7 +50,7 @@ export async function createTask(
 			`Já existe uma task com o id externo "${externalId}" neste time`,
 		);
 	}
-	const task = await repository.create({
+	return repository.createWithInitialHistory({
 		externalId,
 		description,
 		typeId: input.typeId,
@@ -61,6 +59,4 @@ export async function createTask(
 		status: input.status,
 		dueDate: input.dueDate,
 	});
-	await historyRepository.recordStatusChange(task.id, null, task.status);
-	return task;
 }

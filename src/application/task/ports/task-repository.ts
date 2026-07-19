@@ -19,13 +19,13 @@ export type UpdateTaskData = {
 };
 
 export type TaskRepository = {
-	create(data: CreateTaskData): Promise<Task>;
+	createWithInitialHistory(data: CreateTaskData): Promise<Task>;
+	moveWithHistory(taskId: string, toStatus: TaskStatus): Promise<Task>;
+	setBlockedWithHistory(taskId: string, blocked: boolean): Promise<Task>;
 	update(taskId: string, data: UpdateTaskData): Promise<Task>;
 	delete(taskId: string): Promise<void>;
 	findById(taskId: string): Promise<Task | null>;
 	findByExternalId(teamId: string, externalId: string): Promise<Task | null>;
 	listByTeam(teamId: string): Promise<Task[]>;
-	updateStatus(taskId: string, status: TaskStatus): Promise<Task>;
-	updateBlocked(taskId: string, blocked: boolean): Promise<Task>;
 	countByType(typeId: string): Promise<number>;
 };

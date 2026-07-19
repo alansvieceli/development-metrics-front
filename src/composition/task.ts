@@ -21,7 +21,6 @@ export function createTaskUseCases() {
 		createTask: (input: CreateTaskInput) =>
 			createTask(
 				drizzleTaskRepository,
-				drizzleTaskHistoryRepository,
 				drizzleTaskTypeRepository,
 				drizzleTeamRepository,
 				input,
@@ -38,21 +37,9 @@ export function createTaskUseCases() {
 		deleteTask: (teamId: string, taskId: string) =>
 			deleteTask(drizzleTaskRepository, teamId, taskId),
 		moveTask: (teamId: string, taskId: string, toStatus: TaskStatus) =>
-			moveTask(
-				drizzleTaskRepository,
-				drizzleTaskHistoryRepository,
-				teamId,
-				taskId,
-				toStatus,
-			),
+			moveTask(drizzleTaskRepository, teamId, taskId, toStatus),
 		toggleBlocked: (teamId: string, taskId: string, blocked: boolean) =>
-			toggleBlocked(
-				drizzleTaskRepository,
-				drizzleTaskHistoryRepository,
-				teamId,
-				taskId,
-				blocked,
-			),
+			toggleBlocked(drizzleTaskRepository, teamId, taskId, blocked),
 		listTasksByTeam: (teamId: string) =>
 			listTasksByTeam(
 				drizzleTaskRepository,

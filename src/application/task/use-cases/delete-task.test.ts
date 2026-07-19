@@ -5,7 +5,7 @@ import { createFakeTaskRepository } from "./test-helpers/create-fake-task-reposi
 describe("deleteTask", () => {
 	it("remove a task do repositório", async () => {
 		const repository = createFakeTaskRepository();
-		const task = await repository.create({
+		const task = await repository.seed({
 			externalId: "TASK-1",
 			description: "Corrigir bug",
 			typeId: "type-1",
@@ -20,7 +20,7 @@ describe("deleteTask", () => {
 
 	it("não remove task de outro time", async () => {
 		const repository = createFakeTaskRepository();
-		const task = await repository.create({
+		const task = await repository.seed({
 			externalId: "TASK-1",
 			description: "Corrigir bug",
 			typeId: "type-1",

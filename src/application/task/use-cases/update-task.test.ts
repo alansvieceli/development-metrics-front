@@ -13,7 +13,7 @@ async function setup() {
 		memberBelongsToTeam: async (memberId: string, teamId: string) =>
 			memberId === "member-1" && teamId === "team-1",
 	};
-	const task = await repository.create({
+	const task = await repository.seed({
 		externalId: "TASK-1",
 		description: "Corrigir bug de login",
 		typeId: type.id,
@@ -52,7 +52,7 @@ describe("updateTask", () => {
 	it("rejeita id externo duplicado no mesmo time", async () => {
 		const { repository, typeRepository, teamAccess, task, type } =
 			await setup();
-		const other = await repository.create({
+		const other = await repository.seed({
 			externalId: "TASK-2",
 			description: task.description,
 			typeId: type.id,

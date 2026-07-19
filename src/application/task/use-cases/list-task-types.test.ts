@@ -9,7 +9,7 @@ describe("listTaskTypes", () => {
 		const taskRepository = createFakeTaskRepository();
 		const bug = await taskTypeRepository.create("Bug", "#dc2626");
 		const historia = await taskTypeRepository.create("História", "#2563eb");
-		await taskRepository.create({
+		await taskRepository.seed({
 			externalId: "TASK-1",
 			description: "Corrigir bug",
 			typeId: bug.id,

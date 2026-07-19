@@ -16,7 +16,7 @@ describe("deleteTaskType", () => {
 		const taskTypeRepository = createFakeTaskTypeRepository();
 		const taskRepository = createFakeTaskRepository();
 		const taskType = await taskTypeRepository.create("Bug", "#dc2626");
-		await taskRepository.create({
+		await taskRepository.seed({
 			externalId: "TASK-1",
 			description: "Corrigir bug",
 			typeId: taskType.id,

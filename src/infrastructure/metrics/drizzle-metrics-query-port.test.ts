@@ -1,8 +1,8 @@
+import type { InferInsertModel } from "drizzle-orm";
 import { sql } from "drizzle-orm";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { db } from "@/infrastructure/db/client";
-import { drizzleTaskHistoryRepository } from "@/infrastructure/task/drizzle-task-history-repository";
-import { drizzleTaskRepository } from "@/infrastructure/task/drizzle-task-repository";
+import { taskStatusChanges, tasks } from "@/infrastructure/task/drizzle/schema";
 import { drizzleTaskTypeRepository } from "@/infrastructure/task/drizzle-task-type-repository";
 import { drizzleMetricsQueryPort } from "./drizzle-metrics-query-port";
 
@@ -10,7 +10,9 @@ const TEAM_ID = "11111111-1111-1111-1111-111111111111";
 
 async function resetTasksTable() {
 	await db.execute(
-		sql`TRUNCATE TABLE task_blocked_periods, task_status_changes, tasks RESTART IDENTITY CASCADE`,
+		sql.raw(
+			"TRUNCATE TABLE task_blocked_periods, task_status_changes, tasks RESTART IDENTITY CASCADE",
+		),
 	);
 }
 
@@ -27,32 +29,40 @@ describe("drizzleMetricsQueryPort", () => {
 		await drizzleTaskTypeRepository.delete(typeId);
 	});
 
+	async function insertTask(
+		overrides: Partial<InferInsertModel<typeof tasks>> = {},
+	) {
+		const [task] = await db
+			.insert(tasks)
+			.values({
+				externalId: "TASK-1",
+				description: "Corrigir bug",
+				typeId,
+				assigneeId: null,
+				teamId: TEAM_ID,
+				status: "TODO",
+				dueDate: null,
+				...overrides,
+			})
+			.returning();
+		return task;
+	}
+
 	it("lista tasks concluídas no período com o histórico completo", async () => {
-		const task = await drizzleTaskRepository.create({
-			externalId: "TASK-1",
-			description: "Corrigir bug",
-			typeId,
-			assigneeId: null,
-			teamId: TEAM_ID,
-			status: "TODO",
-			dueDate: null,
-		});
-		await drizzleTaskHistoryRepository.recordStatusChange(
-			task.id,
-			null,
-			"TODO",
-		);
-		await drizzleTaskHistoryRepository.recordStatusChange(
-			task.id,
-			"TODO",
-			"IN_DEVELOPMENT",
-		);
-		await drizzleTaskHistoryRepository.recordStatusChange(
-			task.id,
-			"IN_DEVELOPMENT",
-			"DONE",
-		);
-		await drizzleTaskRepository.updateStatus(task.id, "DONE");
+		const task = await insertTask({ status: "DONE" });
+		await db.insert(taskStatusChanges).values([
+			{ taskId: task.id, fromStatus: null, toStatus: "TODO" },
+			{
+				taskId: task.id,
+				fromStatus: "TODO",
+				toStatus: "IN_DEVELOPMENT",
+			},
+			{
+				taskId: task.id,
+				fromStatus: "IN_DEVELOPMENT",
+				toStatus: "DONE",
+			},
+		]);
 
 		const periodStart = new Date(Date.now() - 24 * 60 * 60 * 1000);
 		const periodEnd = new Date(Date.now() + 24 * 60 * 60 * 1000);
@@ -68,48 +78,28 @@ describe("drizzleMetricsQueryPort", () => {
 	});
 
 	it("não lista tasks concluídas fora do período", async () => {
-		const task = await drizzleTaskRepository.create({
-			externalId: "TASK-1",
-			description: "Corrigir bug",
-			typeId,
-			assigneeId: null,
-			teamId: TEAM_ID,
-			status: "DONE",
-			dueDate: null,
+		const task = await insertTask({ status: "DONE" });
+		await db.insert(taskStatusChanges).values({
+			taskId: task.id,
+			fromStatus: null,
+			toStatus: "DONE",
 		});
-		await drizzleTaskHistoryRepository.recordStatusChange(
-			task.id,
-			null,
-			"DONE",
-		);
 
-		const periodStart = new Date(Date.now() + 24 * 60 * 60 * 1000);
-		const periodEnd = new Date(Date.now() + 48 * 60 * 60 * 1000);
 		const completed = await drizzleMetricsQueryPort.listCompletedTasksInPeriod(
 			TEAM_ID,
-			periodStart,
-			periodEnd,
+			new Date(Date.now() + 24 * 60 * 60 * 1000),
+			new Date(Date.now() + 48 * 60 * 60 * 1000),
 		);
-
 		expect(completed).toEqual([]);
 	});
 
 	it("lista tasks com dueDate no período informando a primeira conclusão", async () => {
-		const task = await drizzleTaskRepository.create({
-			externalId: "TASK-1",
-			description: "Corrigir bug",
-			typeId,
-			assigneeId: null,
-			teamId: TEAM_ID,
-			status: "TODO",
-			dueDate: "2026-07-10",
+		const task = await insertTask({ status: "DONE", dueDate: "2026-07-10" });
+		await db.insert(taskStatusChanges).values({
+			taskId: task.id,
+			fromStatus: null,
+			toStatus: "DONE",
 		});
-		await drizzleTaskHistoryRepository.recordStatusChange(
-			task.id,
-			null,
-			"DONE",
-		);
-		await drizzleTaskRepository.updateStatus(task.id, "DONE");
 
 		const result = await drizzleMetricsQueryPort.listTasksWithDueDateInPeriod(
 			TEAM_ID,
@@ -122,54 +112,20 @@ describe("drizzleMetricsQueryPort", () => {
 		expect(result[0].firstCompletedAt).not.toBeNull();
 	});
 
-	it("retorna firstCompletedAt nulo para task com dueDate ainda não concluída", async () => {
-		await drizzleTaskRepository.create({
-			externalId: "TASK-1",
-			description: "Corrigir bug",
-			typeId,
-			assigneeId: null,
-			teamId: TEAM_ID,
-			status: "TODO",
-			dueDate: "2026-07-10",
-		});
-
+	it("retorna firstCompletedAt nulo para task ainda não concluída", async () => {
+		await insertTask({ dueDate: "2026-07-10" });
 		const result = await drizzleMetricsQueryPort.listTasksWithDueDateInPeriod(
 			TEAM_ID,
 			new Date("2026-07-01T00:00:00Z"),
 			new Date("2026-08-01T00:00:00Z"),
 		);
-
 		expect(result[0].firstCompletedAt).toBeNull();
 	});
 
-	it("conta o WIP como tasks em IN_DEVELOPMENT ou CODE_REVIEW", async () => {
-		await drizzleTaskRepository.create({
-			externalId: "TASK-1",
-			description: "A",
-			typeId,
-			assigneeId: null,
-			teamId: TEAM_ID,
-			status: "IN_DEVELOPMENT",
-			dueDate: null,
-		});
-		await drizzleTaskRepository.create({
-			externalId: "TASK-2",
-			description: "B",
-			typeId,
-			assigneeId: null,
-			teamId: TEAM_ID,
-			status: "CODE_REVIEW",
-			dueDate: null,
-		});
-		await drizzleTaskRepository.create({
-			externalId: "TASK-3",
-			description: "C",
-			typeId,
-			assigneeId: null,
-			teamId: TEAM_ID,
-			status: "TODO",
-			dueDate: null,
-		});
+	it("conta o WIP como tasks em desenvolvimento ou code review", async () => {
+		await insertTask({ externalId: "TASK-1", status: "IN_DEVELOPMENT" });
+		await insertTask({ externalId: "TASK-2", status: "CODE_REVIEW" });
+		await insertTask({ externalId: "TASK-3", status: "TODO" });
 
 		expect(await drizzleMetricsQueryPort.countWip(TEAM_ID)).toBe(2);
 	});

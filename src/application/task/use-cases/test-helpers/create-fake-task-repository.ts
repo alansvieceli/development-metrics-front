@@ -1,81 +1,118 @@
+import { ApplicationError } from "@/application/shared/application-error";
 import type {
 	CreateTaskData,
 	TaskRepository,
 	UpdateTaskData,
 } from "@/application/task/ports/task-repository";
-import type { Task, TaskStatus } from "@/domain/task/entities/task";
+import type { Task } from "@/domain/task/entities/task";
+import type { TaskBlockedPeriod } from "@/domain/task/entities/task-blocked-period";
+import type { TaskStatusChange } from "@/domain/task/entities/task-status-change";
 
-export function createFakeTaskRepository(): TaskRepository {
+export type FakeTaskRepository = TaskRepository & {
+	statusChanges: TaskStatusChange[];
+	blockedPeriods: TaskBlockedPeriod[];
+	seed(data: CreateTaskData): Promise<Task>;
+};
+
+export function createFakeTaskRepository(): FakeTaskRepository {
 	let tasks: Task[] = [];
 	let nextId = 1;
+	const statusChanges: TaskStatusChange[] = [];
+	const blockedPeriods: TaskBlockedPeriod[] = [];
+
+	async function seed(data: CreateTaskData) {
+		const now = new Date();
+		const task: Task = {
+			id: `task-${nextId++}`,
+			...data,
+			blocked: false,
+			createdAt: now,
+			updatedAt: now,
+		};
+		tasks.push(task);
+		return task;
+	}
 
 	return {
-		async create(data: CreateTaskData) {
-			const now = new Date();
-			const task: Task = {
-				id: `task-${nextId++}`,
-				externalId: data.externalId,
-				description: data.description,
-				typeId: data.typeId,
-				assigneeId: data.assigneeId,
-				teamId: data.teamId,
-				status: data.status,
-				blocked: false,
-				dueDate: data.dueDate,
-				createdAt: now,
-				updatedAt: now,
-			};
-			tasks.push(task);
+		statusChanges,
+		blockedPeriods,
+		seed,
+		async createWithInitialHistory(data) {
+			const task = await seed(data);
+			statusChanges.push({
+				id: `status-change-${nextId++}`,
+				taskId: task.id,
+				fromStatus: null,
+				toStatus: task.status,
+				changedAt: new Date(),
+			});
 			return task;
 		},
-		async update(taskId: string, data: UpdateTaskData) {
-			const task = tasks.find((t) => t.id === taskId);
-			if (!task) {
-				throw new Error("Task não encontrada");
-			}
-			task.externalId = data.externalId;
-			task.description = data.description;
-			task.typeId = data.typeId;
-			task.assigneeId = data.assigneeId;
-			task.dueDate = data.dueDate;
+		async moveWithHistory(taskId, toStatus) {
+			const task = tasks.find((item) => item.id === taskId);
+			if (!task) throw new ApplicationError("Task não encontrada");
+			if (task.status === toStatus) return task;
+			const fromStatus = task.status;
+			task.status = toStatus;
 			task.updatedAt = new Date();
+			statusChanges.push({
+				id: `status-change-${nextId++}`,
+				taskId,
+				fromStatus,
+				toStatus,
+				changedAt: new Date(),
+			});
 			return task;
 		},
-		async delete(taskId: string) {
-			tasks = tasks.filter((t) => t.id !== taskId);
-		},
-		async findById(taskId: string) {
-			return tasks.find((t) => t.id === taskId) ?? null;
-		},
-		async findByExternalId(teamId: string, externalId: string) {
-			return (
-				tasks.find((t) => t.teamId === teamId && t.externalId === externalId) ??
-				null
-			);
-		},
-		async listByTeam(teamId: string) {
-			return tasks.filter((t) => t.teamId === teamId);
-		},
-		async updateStatus(taskId: string, status: TaskStatus) {
-			const task = tasks.find((t) => t.id === taskId);
-			if (!task) {
-				throw new Error("Task não encontrada");
-			}
-			task.status = status;
-			task.updatedAt = new Date();
-			return task;
-		},
-		async updateBlocked(taskId: string, blocked: boolean) {
-			const task = tasks.find((t) => t.id === taskId);
-			if (!task) {
-				throw new Error("Task não encontrada");
+		async setBlockedWithHistory(taskId, blocked) {
+			const task = tasks.find((item) => item.id === taskId);
+			if (!task) throw new ApplicationError("Task não encontrada");
+			if (task.blocked === blocked) return task;
+			if (blocked) {
+				blockedPeriods.push({
+					id: `blocked-period-${nextId++}`,
+					taskId,
+					blockedAt: new Date(),
+					unblockedAt: null,
+				});
+			} else {
+				const open = [...blockedPeriods]
+					.reverse()
+					.find((period) => period.taskId === taskId && !period.unblockedAt);
+				if (!open)
+					throw new ApplicationError(
+						"Não há período de bloqueio aberto para esta task",
+					);
+				open.unblockedAt = new Date();
 			}
 			task.blocked = blocked;
 			task.updatedAt = new Date();
 			return task;
 		},
-		async countByType(typeId: string) {
-			return tasks.filter((t) => t.typeId === typeId).length;
+		async update(taskId: string, data: UpdateTaskData) {
+			const task = tasks.find((item) => item.id === taskId);
+			if (!task) throw new ApplicationError("Task não encontrada");
+			Object.assign(task, data, { updatedAt: new Date() });
+			return task;
+		},
+		async delete(taskId) {
+			tasks = tasks.filter((task) => task.id !== taskId);
+		},
+		async findById(taskId) {
+			return tasks.find((task) => task.id === taskId) ?? null;
+		},
+		async findByExternalId(teamId, externalId) {
+			return (
+				tasks.find(
+					(task) => task.teamId === teamId && task.externalId === externalId,
+				) ?? null
+			);
+		},
+		async listByTeam(teamId) {
+			return tasks.filter((task) => task.teamId === teamId);
+		},
+		async countByType(typeId) {
+			return tasks.filter((task) => task.typeId === typeId).length;
 		},
 	};
 }

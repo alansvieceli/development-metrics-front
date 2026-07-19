@@ -1,12 +1,15 @@
-import { sql } from "drizzle-orm";
+import { and, eq, isNull, sql } from "drizzle-orm";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { db } from "@/infrastructure/db/client";
+import { taskBlockedPeriods, taskStatusChanges, tasks } from "./drizzle/schema";
 import { drizzleTaskRepository } from "./drizzle-task-repository";
 import { drizzleTaskTypeRepository } from "./drizzle-task-type-repository";
 
 async function resetTasksTable() {
 	await db.execute(
-		sql`TRUNCATE TABLE task_blocked_periods, task_status_changes, tasks RESTART IDENTITY CASCADE`,
+		sql.raw(
+			"TRUNCATE TABLE task_blocked_periods, task_status_changes, tasks RESTART IDENTITY CASCADE",
+		),
 	);
 }
 
@@ -19,12 +22,20 @@ describe("drizzleTaskRepository", () => {
 	});
 
 	afterEach(async () => {
+		await db.execute(
+			sql.raw(
+				"DROP TRIGGER IF EXISTS reject_task_history ON task_status_changes",
+			),
+		);
+		await db.execute(sql.raw("DROP FUNCTION IF EXISTS reject_task_history()"));
 		await resetTasksTable();
 		await drizzleTaskTypeRepository.delete(typeId);
 	});
 
 	function baseData(
-		overrides: Partial<Parameters<typeof drizzleTaskRepository.create>[0]> = {},
+		overrides: Partial<
+			Parameters<typeof drizzleTaskRepository.createWithInitialHistory>[0]
+		> = {},
 	) {
 		return {
 			externalId: "TASK-1",
@@ -38,53 +49,159 @@ describe("drizzleTaskRepository", () => {
 		};
 	}
 
-	it("cria e busca uma task por id", async () => {
-		const created = await drizzleTaskRepository.create(baseData());
-		const found = await drizzleTaskRepository.findById(created.id);
-		expect(found).toEqual(created);
-		expect(found?.blocked).toBe(false);
-	});
-
-	it("busca por id externo dentro do time", async () => {
-		const created = await drizzleTaskRepository.create(baseData());
-		const found = await drizzleTaskRepository.findByExternalId(
-			created.teamId,
-			"TASK-1",
+	it("cria a task e o histórico inicial na mesma operação", async () => {
+		const created = await drizzleTaskRepository.createWithInitialHistory(
+			baseData(),
 		);
-		expect(found?.id).toBe(created.id);
+		const history = await db
+			.select()
+			.from(taskStatusChanges)
+			.where(eq(taskStatusChanges.taskId, created.id));
+
+		expect(await drizzleTaskRepository.findById(created.id)).toEqual(created);
+		expect(history).toEqual([
+			expect.objectContaining({ fromStatus: null, toStatus: "TODO" }),
+		]);
 	});
 
-	it("lista as tasks de um time", async () => {
-		await drizzleTaskRepository.create(baseData());
-		await drizzleTaskRepository.create(
+	it("busca por id externo e lista apenas as tasks do time", async () => {
+		const created = await drizzleTaskRepository.createWithInitialHistory(
+			baseData(),
+		);
+		await drizzleTaskRepository.createWithInitialHistory(
 			baseData({
 				externalId: "TASK-2",
 				teamId: "22222222-2222-2222-2222-222222222222",
 			}),
 		);
-		const list = await drizzleTaskRepository.listByTeam(
-			"11111111-1111-1111-1111-111111111111",
+
+		expect(
+			await drizzleTaskRepository.findByExternalId(created.teamId, "TASK-1"),
+		).toEqual(created);
+		expect(
+			(
+				await drizzleTaskRepository.listByTeam(
+					"11111111-1111-1111-1111-111111111111",
+				)
+			).map((task) => task.externalId),
+		).toEqual(["TASK-1"]);
+	});
+
+	it("move a task e registra uma única transição", async () => {
+		const created = await drizzleTaskRepository.createWithInitialHistory(
+			baseData(),
 		);
-		expect(list.map((t) => t.externalId)).toEqual(["TASK-1"]);
+		await drizzleTaskRepository.moveWithHistory(created.id, "IN_DEVELOPMENT");
+		await drizzleTaskRepository.moveWithHistory(created.id, "IN_DEVELOPMENT");
+
+		const history = await db
+			.select()
+			.from(taskStatusChanges)
+			.where(eq(taskStatusChanges.taskId, created.id));
+		expect(
+			history.map(({ fromStatus, toStatus }) => ({ fromStatus, toStatus })),
+		).toEqual([
+			{ fromStatus: null, toStatus: "TODO" },
+			{ fromStatus: "TODO", toStatus: "IN_DEVELOPMENT" },
+		]);
 	});
 
-	it("atualiza o status", async () => {
-		const created = await drizzleTaskRepository.create(baseData());
-		const updated = await drizzleTaskRepository.updateStatus(
-			created.id,
-			"IN_DEVELOPMENT",
+	it("reverte a mudança de status quando o histórico falha", async () => {
+		const created = await drizzleTaskRepository.createWithInitialHistory(
+			baseData(),
 		);
-		expect(updated.status).toBe("IN_DEVELOPMENT");
+		const quote = String.fromCharCode(39);
+		const delimiter = String.fromCharCode(36, 36);
+		await db.execute(
+			sql.raw(
+				"CREATE FUNCTION reject_task_history() RETURNS trigger AS " +
+					delimiter +
+					"BEGIN RAISE EXCEPTION " +
+					quote +
+					"falha deliberada" +
+					quote +
+					"; END;" +
+					delimiter +
+					" LANGUAGE plpgsql",
+			),
+		);
+		await db.execute(
+			sql.raw(
+				"CREATE TRIGGER reject_task_history BEFORE INSERT ON task_status_changes FOR EACH ROW EXECUTE FUNCTION reject_task_history()",
+			),
+		);
+
+		await expect(
+			drizzleTaskRepository.moveWithHistory(created.id, "DONE"),
+		).rejects.toThrow();
+		expect((await drizzleTaskRepository.findById(created.id))?.status).toBe(
+			"TODO",
+		);
 	});
 
-	it("atualiza o campo bloqueado", async () => {
-		const created = await drizzleTaskRepository.create(baseData());
-		const updated = await drizzleTaskRepository.updateBlocked(created.id, true);
-		expect(updated.blocked).toBe(true);
+	it("abre e fecha o período de bloqueio atomicamente", async () => {
+		const created = await drizzleTaskRepository.createWithInitialHistory(
+			baseData(),
+		);
+		expect(
+			(await drizzleTaskRepository.setBlockedWithHistory(created.id, true))
+				.blocked,
+		).toBe(true);
+		expect(
+			(await drizzleTaskRepository.setBlockedWithHistory(created.id, false))
+				.blocked,
+		).toBe(false);
+
+		const periods = await db
+			.select()
+			.from(taskBlockedPeriods)
+			.where(eq(taskBlockedPeriods.taskId, created.id));
+		expect(periods).toHaveLength(1);
+		expect(periods[0].unblockedAt).not.toBeNull();
 	});
 
-	it("atualiza os campos editáveis", async () => {
-		const created = await drizzleTaskRepository.create(baseData());
+	it("serializa bloqueios concorrentes sem duplicar períodos", async () => {
+		const created = await drizzleTaskRepository.createWithInitialHistory(
+			baseData(),
+		);
+		await Promise.all([
+			drizzleTaskRepository.setBlockedWithHistory(created.id, true),
+			drizzleTaskRepository.setBlockedWithHistory(created.id, true),
+		]);
+
+		const openPeriods = await db
+			.select()
+			.from(taskBlockedPeriods)
+			.where(
+				and(
+					eq(taskBlockedPeriods.taskId, created.id),
+					isNull(taskBlockedPeriods.unblockedAt),
+				),
+			);
+		expect(openPeriods).toHaveLength(1);
+	});
+
+	it("reverte o desbloqueio quando não existe período aberto", async () => {
+		const created = await drizzleTaskRepository.createWithInitialHistory(
+			baseData(),
+		);
+		await db
+			.update(tasks)
+			.set({ blocked: true })
+			.where(eq(tasks.id, created.id));
+
+		await expect(
+			drizzleTaskRepository.setBlockedWithHistory(created.id, false),
+		).rejects.toThrow("Não há período de bloqueio aberto");
+		expect((await drizzleTaskRepository.findById(created.id))?.blocked).toBe(
+			true,
+		);
+	});
+
+	it("atualiza, conta por tipo e exclui a task", async () => {
+		const created = await drizzleTaskRepository.createWithInitialHistory(
+			baseData(),
+		);
 		const updated = await drizzleTaskRepository.update(created.id, {
 			externalId: "TASK-1",
 			description: "Nova descrição",
@@ -93,16 +210,8 @@ describe("drizzleTaskRepository", () => {
 			dueDate: "2026-08-01",
 		});
 		expect(updated.description).toBe("Nova descrição");
-		expect(updated.dueDate).toBe("2026-08-01");
-	});
-
-	it("conta as tasks de um tipo", async () => {
-		await drizzleTaskRepository.create(baseData());
 		expect(await drizzleTaskRepository.countByType(typeId)).toBe(1);
-	});
 
-	it("exclui uma task", async () => {
-		const created = await drizzleTaskRepository.create(baseData());
 		await drizzleTaskRepository.delete(created.id);
 		expect(await drizzleTaskRepository.findById(created.id)).toBeNull();
 	});

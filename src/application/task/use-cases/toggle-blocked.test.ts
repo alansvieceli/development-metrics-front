@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { createFakeTaskHistoryRepository } from "./test-helpers/create-fake-task-history-repository";
 import { createFakeTaskRepository } from "./test-helpers/create-fake-task-repository";
 import { toggleBlocked } from "./toggle-blocked";
 
@@ -16,74 +15,51 @@ const baseData = {
 describe("toggleBlocked", () => {
 	it("bloqueia a task e abre um período de bloqueio", async () => {
 		const repository = createFakeTaskRepository();
-		const historyRepository = createFakeTaskHistoryRepository();
-		const task = await repository.create(baseData);
+		const task = await repository.seed(baseData);
 
-		const blocked = await toggleBlocked(
-			repository,
-			historyRepository,
-			"team-1",
-			task.id,
-			true,
-		);
+		const blocked = await toggleBlocked(repository, "team-1", task.id, true);
 
 		expect(blocked.blocked).toBe(true);
-		expect(historyRepository.blockedPeriods).toHaveLength(1);
-		expect(historyRepository.blockedPeriods[0].unblockedAt).toBeNull();
+		expect(repository.blockedPeriods).toHaveLength(1);
+		expect(repository.blockedPeriods[0].unblockedAt).toBeNull();
 	});
 
 	it("desbloqueia a task e fecha o período de bloqueio", async () => {
 		const repository = createFakeTaskRepository();
-		const historyRepository = createFakeTaskHistoryRepository();
-		const task = await repository.create(baseData);
-		await toggleBlocked(repository, historyRepository, "team-1", task.id, true);
+		const task = await repository.seed(baseData);
+		await toggleBlocked(repository, "team-1", task.id, true);
 
-		const unblocked = await toggleBlocked(
-			repository,
-			historyRepository,
-			"team-1",
-			task.id,
-			false,
-		);
+		const unblocked = await toggleBlocked(repository, "team-1", task.id, false);
 
 		expect(unblocked.blocked).toBe(false);
-		expect(historyRepository.blockedPeriods[0].unblockedAt).not.toBeNull();
+		expect(repository.blockedPeriods[0].unblockedAt).not.toBeNull();
 	});
 
 	it("é idempotente ao bloquear uma task já bloqueada", async () => {
 		const repository = createFakeTaskRepository();
-		const historyRepository = createFakeTaskHistoryRepository();
-		const task = await repository.create(baseData);
-		await toggleBlocked(repository, historyRepository, "team-1", task.id, true);
+		const task = await repository.seed(baseData);
+		await toggleBlocked(repository, "team-1", task.id, true);
 
-		await toggleBlocked(repository, historyRepository, "team-1", task.id, true);
+		await toggleBlocked(repository, "team-1", task.id, true);
 
-		expect(historyRepository.blockedPeriods).toHaveLength(1);
+		expect(repository.blockedPeriods).toHaveLength(1);
 	});
 
 	it("é idempotente ao desbloquear uma task já desbloqueada", async () => {
 		const repository = createFakeTaskRepository();
-		const historyRepository = createFakeTaskHistoryRepository();
-		const task = await repository.create(baseData);
+		const task = await repository.seed(baseData);
 
-		await toggleBlocked(
-			repository,
-			historyRepository,
-			"team-1",
-			task.id,
-			false,
-		);
+		await toggleBlocked(repository, "team-1", task.id, false);
 
-		expect(historyRepository.blockedPeriods).toHaveLength(0);
+		expect(repository.blockedPeriods).toHaveLength(0);
 	});
 
 	it("não altera task de outro time", async () => {
 		const repository = createFakeTaskRepository();
-		const historyRepository = createFakeTaskHistoryRepository();
-		const task = await repository.create(baseData);
+		const task = await repository.seed(baseData);
 
 		await expect(
-			toggleBlocked(repository, historyRepository, "team-2", task.id, true),
+			toggleBlocked(repository, "team-2", task.id, true),
 		).rejects.toThrow("Task não encontrada");
 		expect((await repository.findById(task.id))?.blocked).toBe(false);
 	});

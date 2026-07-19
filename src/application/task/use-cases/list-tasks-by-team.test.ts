@@ -15,17 +15,17 @@ describe("listTasksByTeam", () => {
 	it("agrupa as tasks do time por status", async () => {
 		const repository = createFakeTaskRepository();
 		const historyRepository = createFakeTaskHistoryRepository();
-		await repository.create({
+		repository.seed({
 			...baseData,
 			externalId: "TASK-1",
 			status: "TODO",
 		});
-		await repository.create({
+		repository.seed({
 			...baseData,
 			externalId: "TASK-2",
 			status: "IN_DEVELOPMENT",
 		});
-		await repository.create({
+		repository.seed({
 			...baseData,
 			externalId: "TASK-3",
 			teamId: "team-2",
@@ -47,22 +47,26 @@ describe("listTasksByTeam", () => {
 	it("usa a última mudança de status registrada como statusChangedAt", async () => {
 		const repository = createFakeTaskRepository();
 		const historyRepository = createFakeTaskHistoryRepository();
-		const task = await repository.create({
+		const task = await repository.seed({
 			...baseData,
 			externalId: "TASK-1",
 			status: "TODO",
 		});
-		await historyRepository.recordStatusChange(task.id, null, "TODO");
-		await historyRepository.recordStatusChange(
-			task.id,
-			"TODO",
-			"IN_DEVELOPMENT",
-		);
-		await repository.updateStatus(task.id, "IN_DEVELOPMENT");
-		const expectedChangedAt =
-			historyRepository.statusChanges[
-				historyRepository.statusChanges.length - 1
-			].changedAt;
+		const initialChangedAt = new Date("2026-07-17T10:00:00Z");
+		const expectedChangedAt = new Date("2026-07-18T10:00:00Z");
+		historyRepository.seedStatusChange({
+			taskId: task.id,
+			fromStatus: null,
+			toStatus: "TODO",
+			changedAt: initialChangedAt,
+		});
+		historyRepository.seedStatusChange({
+			taskId: task.id,
+			fromStatus: "TODO",
+			toStatus: "IN_DEVELOPMENT",
+			changedAt: expectedChangedAt,
+		});
+		await repository.moveWithHistory(task.id, "IN_DEVELOPMENT");
 
 		const result = await listTasksByTeam(
 			repository,
@@ -76,7 +80,7 @@ describe("listTasksByTeam", () => {
 	it("usa createdAt como fallback quando não há histórico registrado", async () => {
 		const repository = createFakeTaskRepository();
 		const historyRepository = createFakeTaskHistoryRepository();
-		const task = await repository.create({
+		const task = await repository.seed({
 			...baseData,
 			externalId: "TASK-1",
 			status: "TODO",
