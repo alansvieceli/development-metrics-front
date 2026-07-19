@@ -87,6 +87,18 @@ test("card retroativo concluído hoje entra no throughput da semana", async ({
 	await expect(throughputCard.locator("p.font-mono")).toHaveText("1");
 });
 
+test("mostra o rótulo do período no cabeçalho e atualiza ao trocar de mês", async ({
+	page,
+}) => {
+	await page.getByRole("link", { name: "Métricas" }).click();
+	await expect(
+		page.getByText(/^Semana \d+ · \d{2}\/\d{2} – \d{2}\/\d{2}$/),
+	).toBeVisible();
+
+	await page.getByRole("button", { name: "Mês" }).click();
+	await expect(page.getByText(/^[A-ZÀ-Ú][a-zà-ú]+ de \d{4}$/)).toBeVisible();
+});
+
 test("o filtro de período atualiza a URL ao trocar semana/mês e navegar", async ({
 	page,
 }) => {
