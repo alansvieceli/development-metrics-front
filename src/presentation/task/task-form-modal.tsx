@@ -160,9 +160,6 @@ export function TaskFormModal(props: TaskFormModalProps) {
 					onClose={() => setOpen(false)}
 				>
 					<form action={handleSubmit} className="flex flex-col gap-4">
-						<h2 className="text-xl font-semibold">
-							{isEdit ? "Editar task" : "Nova task"}
-						</h2>
 						<div className="flex flex-col gap-2">
 							<label htmlFor="externalId" className="text-sm opacity-70">
 								Id externo
@@ -187,76 +184,80 @@ export function TaskFormModal(props: TaskFormModalProps) {
 								required
 							/>
 						</div>
-						<div className="flex flex-col gap-2">
-							<label htmlFor="typeId" className="text-sm opacity-70">
-								Tipo
-							</label>
-							<select
-								id="typeId"
-								name="typeId"
-								defaultValue={
-									isEdit ? props.task.typeId : props.taskTypes[0]?.id
-								}
-								className="rounded-lg border border-(--border) px-3 py-2"
-								required
-							>
-								{props.taskTypes.map((taskType) => (
-									<option key={taskType.id} value={taskType.id}>
-										{taskType.name}
-									</option>
-								))}
-							</select>
-						</div>
-						<div className="flex flex-col gap-2">
-							<label htmlFor="assigneeId" className="text-sm opacity-70">
-								Responsável
-							</label>
-							<select
-								id="assigneeId"
-								name="assigneeId"
-								defaultValue={isEdit ? (props.task.assigneeId ?? "") : ""}
-								className="rounded-lg border border-(--border) px-3 py-2"
-							>
-								<option value="">Sem responsável</option>
-								{props.members.map((member) => (
-									<option key={member.id} value={member.id}>
-										{member.name}
-									</option>
-								))}
-							</select>
-						</div>
-						<div className="flex flex-col gap-2">
-							<label htmlFor="dueDate" className="text-sm opacity-70">
-								Data prevista de entrega
-							</label>
-							<input
-								id="dueDate"
-								type="date"
-								name="dueDate"
-								defaultValue={isEdit ? props.task.dueDate : ""}
-								className="rounded-lg border border-(--border) px-3 py-2"
-								required
-							/>
-						</div>
-						{!isEdit ? (
+						<div className="grid grid-cols-2 gap-4">
 							<div className="flex flex-col gap-2">
-								<label htmlFor="status" className="text-sm opacity-70">
-									Coluna inicial
+								<label htmlFor="typeId" className="text-sm opacity-70">
+									Tipo
 								</label>
 								<select
-									id="status"
-									name="status"
-									defaultValue="TODO"
+									id="typeId"
+									name="typeId"
+									defaultValue={
+										isEdit ? props.task.typeId : props.taskTypes[0]?.id
+									}
 									className="rounded-lg border border-(--border) px-3 py-2"
+									required
 								>
-									{STATUS_ORDER.map((status) => (
-										<option key={status} value={status}>
-											{STATUS_LABELS[status]}
+									{props.taskTypes.map((taskType) => (
+										<option key={taskType.id} value={taskType.id}>
+											{taskType.name}
 										</option>
 									))}
 								</select>
 							</div>
-						) : null}
+							<div className="flex flex-col gap-2">
+								<label htmlFor="assigneeId" className="text-sm opacity-70">
+									Responsável
+								</label>
+								<select
+									id="assigneeId"
+									name="assigneeId"
+									defaultValue={isEdit ? (props.task.assigneeId ?? "") : ""}
+									className="rounded-lg border border-(--border) px-3 py-2"
+								>
+									<option value="">Sem responsável</option>
+									{props.members.map((member) => (
+										<option key={member.id} value={member.id}>
+											{member.name}
+										</option>
+									))}
+								</select>
+							</div>
+						</div>
+						<div className={isEdit ? "" : "grid grid-cols-2 gap-4"}>
+							<div className="flex flex-col gap-2">
+								<label htmlFor="dueDate" className="text-sm opacity-70">
+									Data prevista de entrega
+								</label>
+								<input
+									id="dueDate"
+									type="date"
+									name="dueDate"
+									defaultValue={isEdit ? props.task.dueDate : ""}
+									className="rounded-lg border border-(--border) px-3 py-2"
+									required
+								/>
+							</div>
+							{!isEdit ? (
+								<div className="flex flex-col gap-2">
+									<label htmlFor="status" className="text-sm opacity-70">
+										Coluna inicial
+									</label>
+									<select
+										id="status"
+										name="status"
+										defaultValue="TODO"
+										className="rounded-lg border border-(--border) px-3 py-2"
+									>
+										{STATUS_ORDER.map((status) => (
+											<option key={status} value={status}>
+												{STATUS_LABELS[status]}
+											</option>
+										))}
+									</select>
+								</div>
+							) : null}
+						</div>
 						{isEdit ? (
 							<label className="flex items-center gap-2 text-sm">
 								<input

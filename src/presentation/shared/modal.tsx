@@ -7,9 +7,15 @@ type ModalProps = {
 	children: ReactNode;
 	label: string;
 	onClose: () => void;
+	size?: "md" | "lg";
 };
 
-export function Modal({ children, label, onClose }: ModalProps) {
+const SIZE_CLASSES = {
+	md: "max-w-md",
+	lg: "max-w-lg",
+} as const;
+
+export function Modal({ children, label, onClose, size = "md" }: ModalProps) {
 	const ref = useRef<HTMLDialogElement>(null);
 
 	useEffect(() => {
@@ -33,16 +39,19 @@ export function Modal({ children, label, onClose }: ModalProps) {
 			onClick={(event) => {
 				if (event.target === event.currentTarget) close();
 			}}
-			className="m-auto max-h-[85vh] w-full max-w-md overflow-y-auto rounded-lg bg-(--background) p-6 text-(--foreground) shadow-xl backdrop:bg-black/50"
+			className={`m-auto max-h-[85vh] w-full ${SIZE_CLASSES[size]} overflow-y-auto rounded-lg bg-(--background) p-6 text-(--foreground) shadow-xl backdrop:bg-black/50`}
 		>
-			<button
-				type="button"
-				aria-label="Fechar"
-				onClick={close}
-				className="absolute top-3 right-3 rounded-lg p-1 hover:bg-white/10"
-			>
-				<X size={18} aria-hidden="true" />
-			</button>
+			<div className="mb-4 flex items-center justify-between gap-4 border-b border-(--border) pb-3">
+				<h2 className="text-xl font-semibold">{label}</h2>
+				<button
+					type="button"
+					aria-label="Fechar"
+					onClick={close}
+					className="flex-none rounded-lg border border-(--border) p-1.5 hover:bg-white/10"
+				>
+					<X size={18} aria-hidden="true" />
+				</button>
+			</div>
 			{children}
 		</dialog>
 	);

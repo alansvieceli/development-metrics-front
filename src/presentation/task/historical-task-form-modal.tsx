@@ -84,7 +84,6 @@ export function HistoricalTaskFormModal({
 			{open ? (
 				<Modal label="Card retroativo" onClose={() => setOpen(false)}>
 					<form action={handleSubmit} className="flex flex-col gap-4">
-						<h2 className="text-xl font-semibold">Card retroativo</h2>
 						<div className="flex flex-col gap-2">
 							<label htmlFor="hist-externalId" className="text-sm opacity-70">
 								Id externo
@@ -107,41 +106,43 @@ export function HistoricalTaskFormModal({
 								required
 							/>
 						</div>
-						<div className="flex flex-col gap-2">
-							<label htmlFor="hist-typeId" className="text-sm opacity-70">
-								Tipo
-							</label>
-							<select
-								id="hist-typeId"
-								name="typeId"
-								defaultValue={taskTypes[0]?.id}
-								className="rounded-lg border border-(--border) px-3 py-2"
-								required
-							>
-								{taskTypes.map((taskType) => (
-									<option key={taskType.id} value={taskType.id}>
-										{taskType.name}
-									</option>
-								))}
-							</select>
-						</div>
-						<div className="flex flex-col gap-2">
-							<label htmlFor="hist-assigneeId" className="text-sm opacity-70">
-								Responsável
-							</label>
-							<select
-								id="hist-assigneeId"
-								name="assigneeId"
-								defaultValue=""
-								className="rounded-lg border border-(--border) px-3 py-2"
-							>
-								<option value="">Sem responsável</option>
-								{members.map((member) => (
-									<option key={member.id} value={member.id}>
-										{member.name}
-									</option>
-								))}
-							</select>
+						<div className="grid grid-cols-2 gap-4">
+							<div className="flex flex-col gap-2">
+								<label htmlFor="hist-typeId" className="text-sm opacity-70">
+									Tipo
+								</label>
+								<select
+									id="hist-typeId"
+									name="typeId"
+									defaultValue={taskTypes[0]?.id}
+									className="rounded-lg border border-(--border) px-3 py-2"
+									required
+								>
+									{taskTypes.map((taskType) => (
+										<option key={taskType.id} value={taskType.id}>
+											{taskType.name}
+										</option>
+									))}
+								</select>
+							</div>
+							<div className="flex flex-col gap-2">
+								<label htmlFor="hist-assigneeId" className="text-sm opacity-70">
+									Responsável
+								</label>
+								<select
+									id="hist-assigneeId"
+									name="assigneeId"
+									defaultValue=""
+									className="rounded-lg border border-(--border) px-3 py-2"
+								>
+									<option value="">Sem responsável</option>
+									{members.map((member) => (
+										<option key={member.id} value={member.id}>
+											{member.name}
+										</option>
+									))}
+								</select>
+							</div>
 						</div>
 						<div className="flex flex-col gap-2">
 							<label htmlFor="hist-dueDate" className="text-sm opacity-70">
