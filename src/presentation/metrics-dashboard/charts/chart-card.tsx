@@ -1,3 +1,4 @@
+import { Info } from "lucide-react";
 import type { ReactNode } from "react";
 import { METRIC_DEFINITIONS, type MetricKey } from "../metric-definitions";
 
@@ -16,9 +17,12 @@ export function ChartCard({ metricKey, children }: ChartCardProps) {
 		>
 			<h3
 				title={definition?.description}
-				className="text-sm font-semibold text-(--foreground-muted)"
+				className="flex items-center gap-1.5 text-sm font-semibold text-(--foreground-muted) cursor-help"
 			>
 				{definition?.label ?? metricKey}
+				{definition?.description ? (
+					<Info size={13} aria-hidden="true" className="opacity-60" />
+				) : null}
 			</h3>
 			{children}
 		</div>

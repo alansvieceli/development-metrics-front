@@ -47,7 +47,7 @@ export function Modal({ children, label, onClose, size = "md" }: ModalProps) {
 					type="button"
 					aria-label="Fechar"
 					onClick={close}
-					className="flex-none rounded-lg border border-(--border) p-1.5 hover:bg-white/10"
+					className="flex-none cursor-pointer rounded-lg border border-(--border) p-1.5 transition-colors hover:bg-white/10"
 				>
 					<X size={18} aria-hidden="true" />
 				</button>

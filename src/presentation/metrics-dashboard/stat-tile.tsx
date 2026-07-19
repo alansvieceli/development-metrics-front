@@ -4,6 +4,7 @@ import {
 	ClipboardCheck,
 	Clock3,
 	FlaskConical,
+	Info,
 	LockKeyhole,
 	type LucideIcon,
 	RefreshCcw,
@@ -86,9 +87,12 @@ export function StatTile({
 				<div className="min-w-0 flex-1">
 					<h3
 						title={definition?.description}
-						className="mb-1 text-xs font-semibold tracking-[0.08em] text-(--foreground-muted) uppercase"
+						className="mb-1 flex cursor-help items-center gap-1 text-xs font-semibold tracking-[0.08em] text-(--foreground-muted) uppercase"
 					>
 						{definition?.label ?? metricKey}
+						{definition?.description ? (
+							<Info size={12} aria-hidden="true" className="opacity-60" />
+						) : null}
 					</h3>
 					<p
 						className={`font-mono font-semibold tracking-tight ${featured ? "text-3xl" : "text-2xl"}`}

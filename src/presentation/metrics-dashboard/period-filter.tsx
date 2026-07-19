@@ -40,8 +40,10 @@ export function PeriodFilter({ periodType, referenceDate }: PeriodFilterProps) {
 					type="button"
 					onClick={() => goTo("WEEK", referenceDate)}
 					aria-pressed={periodType === "WEEK"}
-					className={`px-4 text-sm ${
-						periodType === "WEEK" ? "bg-(--accent) text-(--accent-fg)" : ""
+					className={`cursor-pointer px-4 text-sm transition-colors ${
+						periodType === "WEEK"
+							? "bg-(--accent) text-(--accent-fg)"
+							: "hover:bg-white/10"
 					}`}
 				>
 					Semana
@@ -50,8 +52,10 @@ export function PeriodFilter({ periodType, referenceDate }: PeriodFilterProps) {
 					type="button"
 					onClick={() => goTo("FORTNIGHT", referenceDate)}
 					aria-pressed={periodType === "FORTNIGHT"}
-					className={`px-4 text-sm ${
-						periodType === "FORTNIGHT" ? "bg-(--accent) text-(--accent-fg)" : ""
+					className={`cursor-pointer px-4 text-sm transition-colors ${
+						periodType === "FORTNIGHT"
+							? "bg-(--accent) text-(--accent-fg)"
+							: "hover:bg-white/10"
 					}`}
 				>
 					Quinzena
@@ -60,8 +64,10 @@ export function PeriodFilter({ periodType, referenceDate }: PeriodFilterProps) {
 					type="button"
 					onClick={() => goTo("MONTH", referenceDate)}
 					aria-pressed={periodType === "MONTH"}
-					className={`px-4 text-sm ${
-						periodType === "MONTH" ? "bg-(--accent) text-(--accent-fg)" : ""
+					className={`cursor-pointer px-4 text-sm transition-colors ${
+						periodType === "MONTH"
+							? "bg-(--accent) text-(--accent-fg)"
+							: "hover:bg-white/10"
 					}`}
 				>
 					Mês
@@ -70,7 +76,7 @@ export function PeriodFilter({ periodType, referenceDate }: PeriodFilterProps) {
 			<button
 				type="button"
 				onClick={() => goTo(periodType, new Date())}
-				className="flex h-9 items-center rounded-lg border border-(--border) px-3 text-sm"
+				className="flex h-9 cursor-pointer items-center rounded-lg border border-(--border) px-3 text-sm transition-colors hover:bg-white/10"
 			>
 				Período atual
 			</button>
@@ -80,7 +86,7 @@ export function PeriodFilter({ periodType, referenceDate }: PeriodFilterProps) {
 				onClick={() =>
 					goTo(periodType, shiftReferenceDate(periodType, referenceDate, -1))
 				}
-				className="flex h-9 w-10 items-center justify-center rounded-lg border border-(--border)"
+				className="flex h-9 w-10 cursor-pointer items-center justify-center rounded-lg border border-(--border) transition-colors hover:bg-white/10"
 			>
 				‹
 			</button>
@@ -90,7 +96,7 @@ export function PeriodFilter({ periodType, referenceDate }: PeriodFilterProps) {
 				onClick={() =>
 					goTo(periodType, shiftReferenceDate(periodType, referenceDate, 1))
 				}
-				className="flex h-9 w-10 items-center justify-center rounded-lg border border-(--border)"
+				className="flex h-9 w-10 cursor-pointer items-center justify-center rounded-lg border border-(--border) transition-colors hover:bg-white/10"
 			>
 				›
 			</button>
