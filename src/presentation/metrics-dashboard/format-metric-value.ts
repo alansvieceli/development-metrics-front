@@ -15,18 +15,3 @@ export function formatDuration(ms: number): string {
 export function formatPercent(value: number): string {
 	return `${Math.round(value)}%`;
 }
-
-export function formatDurationCompact(ms: number): string {
-	if (ms === 0) {
-		return "0";
-	}
-	const totalMinutes = Math.round(ms / 60_000);
-	if (totalMinutes < 60) {
-		return `${totalMinutes}min`;
-	}
-	const totalHours = Math.round(ms / 3_600_000);
-	if (totalHours < 24) {
-		return `${totalHours}h`;
-	}
-	return `${Math.round(ms / 86_400_000)}d`;
-}

@@ -20,20 +20,17 @@ export default async function MetricsPage({
 		parseMetricsFilter(resolvedSearchParams);
 
 	const metricsUseCases = createMetricsUseCases();
-	const { current, weeklySeries, monthlySeries } =
-		await metricsUseCases.getMetricsDashboard(
-			currentTeam.id,
-			periodType,
-			referenceDate,
-		);
+	const { current } = await metricsUseCases.getMetricsDashboard(
+		currentTeam.id,
+		periodType,
+		referenceDate,
+	);
 
 	return (
 		<MetricsDashboard
 			periodType={periodType}
 			referenceDate={referenceDate}
 			current={current}
-			weeklySeries={weeklySeries}
-			monthlySeries={monthlySeries}
 		/>
 	);
 }

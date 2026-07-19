@@ -15,6 +15,7 @@ function task(
 		taskId: "task-1",
 		createdAt: new Date("2026-07-01T00:00:00Z"),
 		completedAt: new Date("2026-07-01T00:00:01Z"),
+		dueDate: "2026-07-01",
 		statusChanges: [],
 		blockedPeriods: [],
 		...overrides,

@@ -7,7 +7,6 @@ Este documento orienta qualquer agente de IA ou pessoa trabalhando neste projeto
 - **Next.js** com App Router.
 - **TypeScript** em modo estrito.
 - **Tailwind CSS** para estilização.
-- **Recharts** para gráficos do dashboard de métricas.
 - **Biome** para lint, formatação e organização de imports.
 - **Knip** para detectar arquivos, exports e dependências não usados.
 
