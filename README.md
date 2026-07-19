@@ -9,6 +9,9 @@ Frontend do projeto Development Metrics.
   `IN_DEVELOPMENT`, `CODE_REVIEW`, `TESTING`, `AWAITING_PUBLICATION` e `DONE`.
 - Cada tarefa pertence a um time e pode ter tipo, responsável e data prevista de
   entrega (`dueDate`). O identificador externo da tarefa é único dentro do time.
+- O card de tarefa destaca o prazo (`dueDate`) em amarelo quando está a até 2
+  dias do vencimento e em vermelho quando já venceu, exceto para tarefas
+  concluídas.
 - Toda mudança de status gera histórico. Bloqueios são registrados como períodos
   com início e fim, que alimentam o cálculo das métricas.
 - Dashboard com dez métricas do time atual, filtro semanal ou mensal e séries

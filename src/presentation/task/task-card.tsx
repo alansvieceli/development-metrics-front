@@ -4,6 +4,7 @@ import type { UpdateTaskInput } from "@/application/task/use-cases/update-task";
 import type { TaskStatus } from "@/domain/task/entities/task";
 import type { TaskType } from "@/domain/task/entities/task-type";
 import type { Member } from "@/domain/team/entities/member";
+import { getDueDateStatus } from "@/presentation/task/due-date-status";
 import { TaskFormModal } from "@/presentation/task/task-form-modal";
 import { TaskMoveSelect } from "@/presentation/task/task-move-select";
 
@@ -33,6 +34,17 @@ function formatElapsed(since: Date): string {
 	if (hours < 24) return `há ${hours}h`;
 	const days = Math.floor(hours / 24);
 	return `há ${days}d`;
+}
+
+function formatDueDate(dueDate: string): string {
+	const [, month, day] = dueDate.split("-");
+	return `${day}/${month}`;
+}
+
+function dueDateClassName(status: ReturnType<typeof getDueDateStatus>): string {
+	if (status === "warning") return "text-(--warn)";
+	if (status === "overdue") return "text-(--critical)";
+	return "opacity-70";
 }
 
 export function TaskCard({
@@ -71,6 +83,15 @@ export function TaskCard({
 			<p className="text-xs opacity-50">
 				{formatElapsed(task.statusChangedAt)}
 			</p>
+			{task.dueDate ? (
+				<p
+					className={`text-xs font-semibold ${dueDateClassName(
+						getDueDateStatus(task.dueDate, task.status, new Date()),
+					)}`}
+				>
+					Prazo: {formatDueDate(task.dueDate)}
+				</p>
+			) : null}
 			{task.blocked ? (
 				<p className="text-xs font-semibold text-(--critical)">⛔ Bloqueado</p>
 			) : null}
