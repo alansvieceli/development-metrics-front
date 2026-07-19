@@ -19,6 +19,8 @@ Frontend do projeto Development Metrics.
 - Uma task pode registrar uma task de origem opcional, do mesmo time. O card
   da task de origem mostra badges separados de bugs (🐛) e de outros vínculos
   (🔗) recebidos; o card do vínculo mostra a task de origem.
+- O dashboard mostra quantos bugs foram abertos por período e as até 5 tasks
+  que mais geraram bugs no período atual, via o vínculo de task de origem.
 - O card de tarefa destaca o prazo (`dueDate`) em amarelo quando está a até 2
   dias do vencimento e em vermelho quando já venceu, exceto para tarefas
   concluídas.
@@ -28,7 +30,7 @@ Frontend do projeto Development Metrics.
 - Toda mudança de status gera histórico. Bloqueios são registrados como períodos
   com início e fim, que alimentam o cálculo das métricas.
 - Dashboard com 15 indicadores do time atual, filtros semanal, quinzenal ou
-  mensal e quatro gráficos baseados no período atual e nos últimos 8 períodos.
+  mensal e seis gráficos baseados no período atual e nos últimos 8 períodos.
 
 ## Regras das métricas
 
@@ -61,6 +63,8 @@ Frontend do projeto Development Metrics.
 | **Throughput** | Quantidade de tarefas distintas concluídas no período selecionado. Uma tarefa com múltiplas entradas em `DONE` no mesmo período conta uma vez. Representa as entregas da semana, quinzena ou mês, conforme o filtro. |
 | **WIP** | Fotografia atual da quantidade de tarefas do time em qualquer status diferente de `TODO` e `DONE` (`IN_DEVELOPMENT`, `CODE_REVIEW`, `TESTING` ou `AWAITING_PUBLICATION`). Não é média histórica e não é limitado pelo período selecionado. |
 | **Previsibilidade** | Considera tarefas cuja `dueDate` está no período selecionado. Calcula `tarefas concluídas pela primeira vez até 23:59:59.999 UTC da dueDate / tarefas com dueDate no período × 100`. Tarefas atrasadas ou não concluídas contam como não atendidas. Portanto, a implementação atual mede cumprimento da data prevista, não um snapshot separado de itens planejados. |
+| **Bugs abertos** | Quantidade de tasks do tipo `Bug` cujo `createdAt` cai no período selecionado, com ou sem vínculo de task de origem. |
+| **Ranking de bugs** | Bugs do período **com** task de origem, agrupados por task-pai, ordenados por quantidade decrescente e limitados às 5 primeiras. Bugs órfãos (sem task de origem) não entram no ranking, mas contam em "Bugs abertos". |
 
 ### Manutenção destas regras
 
