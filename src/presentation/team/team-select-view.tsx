@@ -72,6 +72,19 @@ export function TeamSelectView({
 					className="rounded-lg border border-(--border) px-3 py-2"
 					required
 				/>
+				<label htmlFor="new-team-wip-limit" className="text-sm opacity-70">
+					Limite de WIP
+				</label>
+				<input
+					id="new-team-wip-limit"
+					name="wipLimit"
+					type="number"
+					min="1"
+					step="1"
+					defaultValue={6}
+					className="rounded-lg border border-(--border) px-3 py-2"
+					required
+				/>
 				{createState.error ? <p role="alert">{createState.error}</p> : null}
 				<SubmitButton className="rounded-lg bg-(--accent) px-4 py-2 text-(--accent-fg) disabled:opacity-60">
 					Criar time

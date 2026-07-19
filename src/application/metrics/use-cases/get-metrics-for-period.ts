@@ -1,3 +1,4 @@
+import type { CurrentWipMetrics } from "@/application/metrics/formulas/current-wip-metrics";
 import type { DurationStats } from "@/application/metrics/formulas/duration-metrics";
 import {
 	calculateBlockedTime,
@@ -16,7 +17,6 @@ import {
 import type {
 	CompletedTaskMetrics,
 	MetricsSnapshot,
-	WipBreakdown,
 } from "@/application/metrics/ports/metrics-query-port";
 
 export type PeriodMetrics = {
@@ -31,7 +31,7 @@ export type PeriodMetrics = {
 	reworkRate: number | null;
 	reworkCount: number | null;
 	throughput: number;
-	wip: WipBreakdown;
+	wip: CurrentWipMetrics;
 	predictability: number | null;
 	predictabilityCounts: PredictabilityCounts | null;
 	unplannedCount: number | null;

@@ -22,8 +22,22 @@ export const drizzleTeamRepository: TeamRepository = {
 			.limit(1);
 		return Boolean(member);
 	},
-	async create(name) {
-		const [team] = await db.insert(teams).values({ name }).returning();
+	async create(name, wipLimit) {
+		const [team] = await db
+			.insert(teams)
+			.values({ name, wipLimit })
+			.returning();
+		return team as Team;
+	},
+	async setWipLimit(teamId, wipLimit) {
+		const [team] = await db
+			.update(teams)
+			.set({ wipLimit })
+			.where(eq(teams.id, teamId))
+			.returning();
+		if (!team) {
+			throw new Error("Time não encontrado");
+		}
 		return team as Team;
 	},
 	async rename(teamId, name) {

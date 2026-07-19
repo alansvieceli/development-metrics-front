@@ -5,8 +5,10 @@ import {
 	gte,
 	inArray,
 	isNotNull,
+	isNull,
 	lt,
 	min,
+	notInArray,
 	sql,
 } from "drizzle-orm";
 import type {
@@ -30,59 +32,85 @@ export function createDrizzleMetricsQueryPort(
 ): MetricsQueryPort {
 	return {
 		async loadSnapshot(teamId, periodStart, periodEnd) {
-			const [completionEvents, dueDateRows, wipRows] = await Promise.all([
-				database
-					.select({
-						taskId: taskStatusChanges.taskId,
-						createdAt: tasks.createdAt,
-						completedAt: taskStatusChanges.changedAt,
-						dueDate: tasks.dueDate,
-					})
-					.from(taskStatusChanges)
-					.innerJoin(tasks, eq(tasks.id, taskStatusChanges.taskId))
-					.where(
-						and(
-							eq(tasks.teamId, teamId),
-							eq(taskStatusChanges.toStatus, "DONE"),
-							gte(taskStatusChanges.changedAt, periodStart),
-							lt(taskStatusChanges.changedAt, periodEnd),
-						),
-					)
-					.orderBy(asc(taskStatusChanges.changedAt)),
-				database
-					.select({
-						taskId: tasks.id,
-						dueDate: tasks.dueDate,
-						firstCompletedAt: min(taskStatusChanges.changedAt),
-					})
-					.from(tasks)
-					.leftJoin(
-						taskStatusChanges,
-						and(
-							eq(taskStatusChanges.taskId, tasks.id),
-							eq(taskStatusChanges.toStatus, "DONE"),
-						),
-					)
-					.where(
-						and(
-							eq(tasks.teamId, teamId),
-							isNotNull(tasks.dueDate),
-							gte(tasks.dueDate, toDateOnly(periodStart)),
-							lt(tasks.dueDate, toDateOnly(periodEnd)),
-						),
-					)
-					.groupBy(tasks.id, tasks.dueDate),
-				database
-					.select({
-						total: sql<number>`count(*) filter (where ${tasks.status} not in ('TODO', 'DONE'))::int`,
-						blocked: sql<number>`count(*) filter (where ${tasks.blocked} and ${tasks.status} not in ('TODO', 'DONE'))::int`,
-						inReview: sql<number>`count(*) filter (where ${tasks.status} = 'CODE_REVIEW')::int`,
-						inTesting: sql<number>`count(*) filter (where ${tasks.status} = 'TESTING')::int`,
-						inPublication: sql<number>`count(*) filter (where ${tasks.status} = 'AWAITING_PUBLICATION')::int`,
-					})
-					.from(tasks)
-					.where(eq(tasks.teamId, teamId)),
-			]);
+			const [completionEvents, dueDateRows, currentWipRows] = await Promise.all(
+				[
+					database
+						.select({
+							taskId: taskStatusChanges.taskId,
+							createdAt: tasks.createdAt,
+							completedAt: taskStatusChanges.changedAt,
+							dueDate: tasks.dueDate,
+						})
+						.from(taskStatusChanges)
+						.innerJoin(tasks, eq(tasks.id, taskStatusChanges.taskId))
+						.where(
+							and(
+								eq(tasks.teamId, teamId),
+								eq(taskStatusChanges.toStatus, "DONE"),
+								gte(taskStatusChanges.changedAt, periodStart),
+								lt(taskStatusChanges.changedAt, periodEnd),
+							),
+						)
+						.orderBy(asc(taskStatusChanges.changedAt)),
+					database
+						.select({
+							taskId: tasks.id,
+							dueDate: tasks.dueDate,
+							firstCompletedAt: min(taskStatusChanges.changedAt),
+						})
+						.from(tasks)
+						.leftJoin(
+							taskStatusChanges,
+							and(
+								eq(taskStatusChanges.taskId, tasks.id),
+								eq(taskStatusChanges.toStatus, "DONE"),
+							),
+						)
+						.where(
+							and(
+								eq(tasks.teamId, teamId),
+								isNotNull(tasks.dueDate),
+								gte(tasks.dueDate, toDateOnly(periodStart)),
+								lt(tasks.dueDate, toDateOnly(periodEnd)),
+							),
+						)
+						.groupBy(tasks.id, tasks.dueDate),
+					database
+						.select({
+							status: tasks.status,
+							statusChangedAt:
+								sql<Date>`coalesce(max(${taskStatusChanges.changedAt}), ${tasks.createdAt})`.mapWith(
+									tasks.createdAt,
+								),
+							blockedAt:
+								sql<Date | null>`case when ${tasks.blocked} then max(${taskBlockedPeriods.blockedAt}) else null end`.mapWith(
+									taskBlockedPeriods.blockedAt,
+								),
+						})
+						.from(tasks)
+						.leftJoin(
+							taskStatusChanges,
+							and(
+								eq(taskStatusChanges.taskId, tasks.id),
+								eq(taskStatusChanges.toStatus, tasks.status),
+							),
+						)
+						.leftJoin(
+							taskBlockedPeriods,
+							and(
+								eq(taskBlockedPeriods.taskId, tasks.id),
+								isNull(taskBlockedPeriods.unblockedAt),
+							),
+						)
+						.where(
+							and(
+								eq(tasks.teamId, teamId),
+								notInArray(tasks.status, ["TODO", "DONE"]),
+							),
+						)
+						.groupBy(tasks.id),
+				],
+			);
 
 			const taskIds = [
 				...new Set(completionEvents.map((event) => event.taskId)),
@@ -123,13 +151,11 @@ export function createDrizzleMetricsQueryPort(
 						firstCompletedAt: row.firstCompletedAt,
 					}),
 				),
-				wip: wipRows[0] ?? {
-					total: 0,
-					blocked: 0,
-					inReview: 0,
-					inTesting: 0,
-					inPublication: 0,
-				},
+				currentWipTasks: currentWipRows.map((row) => ({
+					status: row.status as TaskStatus,
+					statusChangedAt: row.statusChangedAt,
+					blockedAt: row.blockedAt,
+				})),
 			};
 		},
 	};

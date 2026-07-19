@@ -18,8 +18,10 @@ export async function createTeamAction(
 ): Promise<ActionState> {
 	try {
 		const name = String(formData.get("name") ?? "");
+		const rawWipLimit = formData.get("wipLimit");
+		const wipLimit = rawWipLimit === null ? undefined : Number(rawWipLimit);
 		const useCases = createTeamUseCases();
-		await useCases.createTeam(name);
+		await useCases.createTeam(name, wipLimit);
 		revalidatePath("/teams");
 	} catch (error) {
 		return toActionState(error);

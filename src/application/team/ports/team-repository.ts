@@ -3,8 +3,9 @@ import type { Member } from "@/domain/team/entities/member";
 import type { Team } from "@/domain/team/entities/team";
 
 export type TeamRepository = TeamAccess & {
-	create(name: string): Promise<Team>;
+	create(name: string, wipLimit?: number): Promise<Team>;
 	rename(teamId: string, name: string): Promise<Team>;
+	setWipLimit(teamId: string, wipLimit: number): Promise<Team>;
 	delete(teamId: string): Promise<void>;
 	listAll(): Promise<Team[]>;
 	findById(teamId: string): Promise<Team | null>;

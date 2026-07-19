@@ -50,6 +50,13 @@
 			"when": 1784469021303,
 			"tag": "0006_task-due-date-required",
 			"breakpoints": true
+		},
+		{
+			"idx": 7,
+			"version": "7",
+			"when": 1784481341414,
+			"tag": "0007_silent_midnight",
+			"breakpoints": true
 		}
 	]
 }

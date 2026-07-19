@@ -15,3 +15,11 @@ export function formatDuration(ms: number): string {
 export function formatPercent(value: number): string {
 	return `${Math.round(value)}%`;
 }
+
+export function formatAge(ms: number): string {
+	if (ms < 86_400_000) {
+		return formatDuration(ms);
+	}
+	const days = Math.floor(ms / 86_400_000);
+	return `${days} ${days === 1 ? "dia" : "dias"}`;
+}

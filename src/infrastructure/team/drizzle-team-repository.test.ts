@@ -16,6 +16,15 @@ describe("drizzleTeamRepository", () => {
 		const created = await drizzleTeamRepository.create("Time A");
 		const found = await drizzleTeamRepository.findById(created.id);
 		expect(found).toEqual(created);
+		expect(found?.wipLimit).toBe(6);
+	});
+
+	it("cria e atualiza um limite de WIP específico", async () => {
+		const created = await drizzleTeamRepository.create("Time A", 8);
+		expect(created.wipLimit).toBe(8);
+
+		const updated = await drizzleTeamRepository.setWipLimit(created.id, 10);
+		expect(updated.wipLimit).toBe(10);
 	});
 
 	it("retorna null ao buscar um time inexistente", async () => {

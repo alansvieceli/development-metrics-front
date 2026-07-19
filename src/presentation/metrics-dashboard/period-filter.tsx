@@ -29,7 +29,7 @@ export function PeriodFilter({ periodType, referenceDate }: PeriodFilterProps) {
 	}
 
 	return (
-		<div className="flex h-9 items-center gap-2">
+		<div className="flex flex-wrap items-center gap-2">
 			<div className="flex h-9 rounded-lg border border-(--border)">
 				<button
 					type="button"

@@ -12,11 +12,11 @@ export function ChartCard({ metricKey, children }: ChartCardProps) {
 	return (
 		<div
 			data-testid={`metric-chart-${metricKey}`}
-			className="flex flex-col gap-2 rounded-xl border border-(--border) bg-(--surface) p-4"
+			className="flex min-w-0 flex-col gap-3 rounded-xl border border-(--border) bg-(--background) p-5"
 		>
 			<h3
 				title={definition?.description}
-				className="text-sm font-semibold opacity-70"
+				className="text-sm font-semibold text-(--foreground-muted)"
 			>
 				{definition?.label ?? metricKey}
 			</h3>

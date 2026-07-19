@@ -25,10 +25,18 @@ export function ChartsSection({
 			: `últimos ${history.length} meses`;
 
 	return (
-		<section className="flex flex-col gap-3 border-t border-(--border) pt-6">
-			<h2 className="text-sm font-semibold opacity-70">
-				Tendência · {windowLabel}
-			</h2>
+		<section className="flex flex-col gap-5 rounded-2xl border border-(--border) bg-(--surface) p-5 shadow-[inset_0_3px_0_var(--accent)] sm:p-6">
+			<div>
+				<p className="mb-1 font-mono text-xs font-semibold tracking-[0.16em] text-(--accent) uppercase">
+					Histórico
+				</p>
+				<h2 className="text-lg font-semibold">
+					Tendência
+					<span className="ml-2 text-sm font-normal text-(--foreground-muted)">
+						· {windowLabel}
+					</span>
+				</h2>
+			</div>
 			<div className="grid grid-cols-1 gap-4 xl:grid-cols-2">
 				<ThroughputChart history={history} periodType={periodType} />
 				<PlannedDeliveredChart history={history} periodType={periodType} />

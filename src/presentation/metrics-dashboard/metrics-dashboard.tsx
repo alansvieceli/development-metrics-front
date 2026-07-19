@@ -1,3 +1,4 @@
+import { CalendarDays } from "lucide-react";
 import type { PeriodType } from "@/application/metrics/period";
 import type {
 	HistoricalPeriodMetrics,
@@ -25,28 +26,37 @@ export function MetricsDashboard({
 	history,
 }: MetricsDashboardProps) {
 	return (
-		<div className="flex flex-1 flex-col gap-6 p-6">
-			<div className="flex items-center justify-between">
-				<div className="flex items-center gap-2">
-					<h1 className="text-xl font-semibold">Métricas</h1>
-					<span className="text-xl font-semibold text-(--foreground-muted)">
-						|
-					</span>
-					<span className="text-xl font-semibold">
-						{formatPeriodLabel(
-							periodType,
-							current.periodStart,
-							current.periodEnd,
-						)}
-					</span>
+		<div className="flex flex-1 flex-col gap-8 px-4 py-6 sm:px-6 lg:px-8">
+			<header className="flex flex-col gap-5 border-b border-(--border) pb-6 lg:flex-row lg:items-end lg:justify-between">
+				<div className="min-w-0">
+					<p className="mb-2 font-mono text-xs font-semibold tracking-[0.2em] text-(--accent) uppercase">
+						Visão do time
+					</p>
+					<div className="flex flex-wrap items-center gap-3">
+						<h1 className="text-2xl font-semibold sm:text-3xl">Métricas</h1>
+						<span className="flex items-center gap-2 rounded-lg border border-(--border) bg-(--surface) px-3 py-1.5 font-mono text-sm font-semibold sm:text-base">
+							<CalendarDays
+								size={16}
+								className="text-(--accent)"
+								aria-hidden="true"
+							/>
+							{formatPeriodLabel(
+								periodType,
+								current.periodStart,
+								current.periodEnd,
+							)}
+						</span>
+					</div>
 				</div>
-				<div className="flex items-center gap-2">
+				<div className="flex flex-wrap items-center gap-2 self-start rounded-xl border border-(--border) bg-(--surface) p-2 lg:self-auto">
 					<MetricInfoButton />
 					<PeriodFilter periodType={periodType} referenceDate={referenceDate} />
 				</div>
+			</header>
+			<div className="grid items-stretch gap-6 xl:grid-cols-2">
+				<WeekResultSection current={current} />
+				<CurrentStatusSection wip={current.wip} />
 			</div>
-			<CurrentStatusSection wip={current.wip} />
-			<WeekResultSection current={current} />
 			<FlowTimeSection current={current} />
 			<ChartsSection
 				periodType={periodType}

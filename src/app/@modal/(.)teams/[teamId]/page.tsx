@@ -9,6 +9,7 @@ import {
 	removeMemberAction,
 	renameMemberAction,
 	renameTeamAction,
+	setWipLimitAction,
 } from "../../../teams/[teamId]/actions";
 
 export default async function ManageTeamModal({
@@ -33,6 +34,7 @@ export default async function ManageTeamModal({
 				team={team}
 				members={members}
 				renameTeamAction={renameTeamAction.bind(null, teamId)}
+				setWipLimitAction={setWipLimitAction.bind(null, teamId)}
 				addMemberAction={addMemberAction.bind(null, teamId)}
 				renameMemberAction={renameMemberAction.bind(null, teamId)}
 				removeMemberAction={removeMemberAction.bind(null, teamId)}

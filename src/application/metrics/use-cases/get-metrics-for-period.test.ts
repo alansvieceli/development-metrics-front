@@ -29,13 +29,7 @@ describe("getMetricsForRange", () => {
 					firstCompletedAt: new Date("2026-07-03T00:00:00Z"),
 				},
 			],
-			wip: {
-				total: 4,
-				blocked: 1,
-				inReview: 1,
-				inTesting: 1,
-				inPublication: 1,
-			},
+			currentWipTasks: [],
 		};
 		const start = new Date("2026-07-01T00:00:00Z");
 		const end = new Date("2026-07-08T00:00:00Z");
@@ -60,13 +54,7 @@ describe("getMetricsForRange", () => {
 				statusChanges: [],
 				blockedPeriods: [],
 				dueDateTasks: [],
-				wip: {
-					total: 0,
-					blocked: 0,
-					inReview: 0,
-					inTesting: 0,
-					inPublication: 0,
-				},
+				currentWipTasks: [],
 			},
 			new Date("2026-07-01T00:00:00Z"),
 			new Date("2026-07-08T00:00:00Z"),
@@ -104,13 +92,7 @@ describe("getMetricsForRange", () => {
 			],
 			blockedPeriods: [],
 			dueDateTasks: [],
-			wip: {
-				total: 1,
-				blocked: 0,
-				inReview: 0,
-				inTesting: 1,
-				inPublication: 0,
-			},
+			currentWipTasks: [],
 		};
 		const metrics = getMetricsForRange(
 			snapshot,

@@ -8,12 +8,14 @@ export function createMetricsUseCases() {
 			teamId: string,
 			periodType: PeriodType,
 			referenceDate: Date,
+			wipLimit: number,
 		) =>
 			getMetricsDashboard(
 				drizzleMetricsQueryPort,
 				teamId,
 				periodType,
 				referenceDate,
+				wipLimit,
 			),
 	};
 }

@@ -15,6 +15,7 @@ describe("selectTeam", () => {
 		vi.spyOn(repository, "findById").mockResolvedValue({
 			id: TEAM_ID,
 			name: "Time A",
+			wipLimit: 6,
 		});
 		const store = createStore();
 

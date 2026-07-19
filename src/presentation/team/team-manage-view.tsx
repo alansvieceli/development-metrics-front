@@ -18,6 +18,10 @@ type TeamManageViewProps = {
 		previousState: ActionState,
 		formData: FormData,
 	) => Promise<ActionState>;
+	setWipLimitAction: (
+		previousState: ActionState,
+		formData: FormData,
+	) => Promise<ActionState>;
 	addMemberAction: (
 		previousState: ActionState,
 		formData: FormData,
@@ -90,6 +94,7 @@ export function TeamManageView({
 	team,
 	members,
 	renameTeamAction,
+	setWipLimitAction,
 	addMemberAction,
 	renameMemberAction,
 	removeMemberAction,
@@ -101,6 +106,10 @@ export function TeamManageView({
 	);
 	const [addState, addAction] = useActionState(
 		addMemberAction,
+		INITIAL_ACTION_STATE,
+	);
+	const [wipLimitState, wipLimitAction] = useActionState(
+		setWipLimitAction,
 		INITIAL_ACTION_STATE,
 	);
 
@@ -120,6 +129,26 @@ export function TeamManageView({
 				{renameState.error ? <p role="alert">{renameState.error}</p> : null}
 				<SubmitButton className="self-start rounded-lg border border-(--border) px-4 py-2 disabled:opacity-60">
 					Salvar nome
+				</SubmitButton>
+			</form>
+
+			<form action={wipLimitAction} className="flex flex-col gap-2">
+				<label htmlFor="team-wip-limit" className="text-sm opacity-70">
+					Limite de WIP
+				</label>
+				<input
+					id="team-wip-limit"
+					name="wipLimit"
+					type="number"
+					min="1"
+					step="1"
+					defaultValue={team.wipLimit}
+					className="rounded-lg border border-(--border) px-3 py-2"
+					required
+				/>
+				{wipLimitState.error ? <p role="alert">{wipLimitState.error}</p> : null}
+				<SubmitButton className="self-start rounded-lg border border-(--border) px-4 py-2 disabled:opacity-60">
+					Salvar limite
 				</SubmitButton>
 			</form>
 

@@ -24,6 +24,7 @@ export default async function MetricsPage({
 		currentTeam.id,
 		periodType,
 		referenceDate,
+		currentTeam.wipLimit,
 	);
 
 	return (

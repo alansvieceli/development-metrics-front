@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { formatDuration, formatPercent } from "./format-metric-value";
+import {
+	formatAge,
+	formatDuration,
+	formatPercent,
+} from "./format-metric-value";
 
 describe("formatDuration", () => {
 	it("formata minutos quando menor que uma hora", () => {
@@ -24,5 +28,16 @@ describe("formatDuration", () => {
 describe("formatPercent", () => {
 	it("arredonda e adiciona o símbolo de porcentagem", () => {
 		expect(formatPercent(33.333)).toBe("33%");
+	});
+});
+
+describe("formatAge", () => {
+	it("usa horas antes de completar um dia", () => {
+		expect(formatAge(6 * 60 * 60 * 1000)).toBe("6h");
+	});
+
+	it("escreve dias por extenso", () => {
+		expect(formatAge(24 * 60 * 60 * 1000)).toBe("1 dia");
+		expect(formatAge(3 * 24 * 60 * 60 * 1000)).toBe("3 dias");
 	});
 });

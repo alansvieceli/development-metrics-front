@@ -42,12 +42,10 @@ type SnapshotBlockedPeriod = {
 	unblockedAt: Date | null;
 };
 
-export type WipBreakdown = {
-	total: number;
-	blocked: number;
-	inReview: number;
-	inTesting: number;
-	inPublication: number;
+export type CurrentWipTaskMetrics = {
+	status: TaskStatus;
+	statusChangedAt: Date;
+	blockedAt: Date | null;
 };
 
 export type MetricsSnapshot = {
@@ -55,7 +53,7 @@ export type MetricsSnapshot = {
 	statusChanges: SnapshotStatusChange[];
 	blockedPeriods: SnapshotBlockedPeriod[];
 	dueDateTasks: DueDateTaskMetrics[];
-	wip: WipBreakdown;
+	currentWipTasks: CurrentWipTaskMetrics[];
 };
 
 export type MetricsQueryPort = {

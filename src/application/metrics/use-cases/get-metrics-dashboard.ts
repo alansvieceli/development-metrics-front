@@ -1,3 +1,4 @@
+import { calculateCurrentWipMetrics } from "@/application/metrics/formulas/current-wip-metrics";
 import type { PeriodType } from "@/application/metrics/period";
 import { getPreviousPeriods } from "@/application/metrics/period";
 import type { MetricsQueryPort } from "@/application/metrics/ports/metrics-query-port";
@@ -19,6 +20,7 @@ export async function getMetricsDashboard(
 	teamId: string,
 	periodType: PeriodType,
 	referenceDate: Date,
+	wipLimit: number,
 ): Promise<MetricsDashboardResult> {
 	const periods = getPreviousPeriods(periodType, referenceDate, HISTORY_LENGTH);
 	const windowStart = periods[0].start;
@@ -32,7 +34,10 @@ export async function getMetricsDashboard(
 	const current = history[history.length - 1];
 
 	return {
-		current: { ...current, wip: snapshot.wip },
+		current: {
+			...current,
+			wip: calculateCurrentWipMetrics(snapshot.currentWipTasks, wipLimit, now),
+		},
 		history,
 	};
 }

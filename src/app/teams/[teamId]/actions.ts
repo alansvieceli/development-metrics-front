@@ -43,6 +43,24 @@ export async function renameTeamAction(
 	redirect(path);
 }
 
+export async function setWipLimitAction(
+	teamId: string,
+	_previousState: ActionState,
+	formData: FormData,
+): Promise<ActionState> {
+	const path = `/teams/${teamId}`;
+	try {
+		validateUuid(teamId, "Time inválido");
+		const useCases = createTeamUseCases();
+		await useCases.setWipLimit(teamId, Number(formData.get("wipLimit")));
+		revalidatePath(path);
+		revalidatePath("/metrics");
+	} catch (error) {
+		return toActionState(error);
+	}
+	redirect(path);
+}
+
 export async function deleteTeamAction(teamId: string): Promise<ActionState> {
 	try {
 		validateUuid(teamId, "Time inválido");

@@ -4,7 +4,11 @@ import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { db } from "@/infrastructure/db/client";
-import { taskStatusChanges, tasks } from "@/infrastructure/task/drizzle/schema";
+import {
+	taskBlockedPeriods,
+	taskStatusChanges,
+	tasks,
+} from "@/infrastructure/task/drizzle/schema";
 import { drizzleTaskTypeRepository } from "@/infrastructure/task/drizzle-task-type-repository";
 import { getTestDatabaseUrl } from "../../../scripts/test-database-url";
 import {
@@ -129,7 +133,7 @@ describe("drizzleMetricsQueryPort", () => {
 		expect(snapshot.dueDateTasks[0].firstCompletedAt).toBeNull();
 	});
 
-	it("conta o WIP estruturado por status e bloqueio", async () => {
+	it("carrega os cards do WIP atual", async () => {
 		await insertTask({ externalId: "TASK-1", status: "IN_DEVELOPMENT" });
 		await insertTask({
 			externalId: "TASK-2",
@@ -147,13 +151,53 @@ describe("drizzleMetricsQueryPort", () => {
 			new Date("2026-07-01T00:00:00Z"),
 			new Date("2026-08-01T00:00:00Z"),
 		);
-		expect(snapshot.wip).toEqual({
-			total: 5,
-			blocked: 1,
-			inReview: 1,
-			inTesting: 1,
-			inPublication: 1,
+		expect(snapshot.currentWipTasks).toHaveLength(5);
+		expect(
+			snapshot.currentWipTasks.filter((task) => task.blockedAt !== null),
+		).toHaveLength(0);
+		expect(snapshot.currentWipTasks.map((task) => task.status)).toEqual(
+			expect.arrayContaining([
+				"IN_DEVELOPMENT",
+				"CODE_REVIEW",
+				"TESTING",
+				"AWAITING_PUBLICATION",
+			]),
+		);
+	});
+
+	it("carrega a entrada no status e o bloqueio aberto do WIP atual", async () => {
+		const statusChangedAt = new Date("2026-07-18T06:00:00Z");
+		const blockedAt = new Date("2026-07-18T12:00:00Z");
+		const task = await insertTask({
+			externalId: "TASK-WIP",
+			status: "CODE_REVIEW",
+			blocked: true,
+			createdAt: new Date("2026-07-17T00:00:00Z"),
 		});
+		await db.insert(taskStatusChanges).values({
+			taskId: task.id,
+			fromStatus: "IN_DEVELOPMENT",
+			toStatus: "CODE_REVIEW",
+			changedAt: statusChangedAt,
+		});
+		await db.insert(taskBlockedPeriods).values({
+			taskId: task.id,
+			blockedAt,
+		});
+
+		const snapshot = await drizzleMetricsQueryPort.loadSnapshot(
+			TEAM_ID,
+			new Date("2026-07-01T00:00:00Z"),
+			new Date("2026-08-01T00:00:00Z"),
+		);
+
+		expect(snapshot.currentWipTasks).toEqual([
+			{
+				status: "CODE_REVIEW",
+				statusChangedAt,
+				blockedAt,
+			},
+		]);
 	});
 
 	it("carrega o snapshot em no máximo cinco queries", async () => {

@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import type {
 	MetricsQueryPort,
 	MetricsSnapshot,
@@ -6,7 +6,10 @@ import type {
 import { getMetricsDashboard } from "./get-metrics-dashboard";
 
 describe("getMetricsDashboard", () => {
+	afterEach(() => vi.useRealTimers());
+
 	it("calcula o dashboard inteiro a partir de um único snapshot largo", async () => {
+		vi.setSystemTime(new Date("2026-07-19T12:00:00Z"));
 		const snapshot: MetricsSnapshot = {
 			completionEvents: [
 				{
@@ -44,13 +47,13 @@ describe("getMetricsDashboard", () => {
 					firstCompletedAt: new Date("2026-07-16T00:00:00Z"),
 				},
 			],
-			wip: {
-				total: 3,
-				blocked: 0,
-				inReview: 0,
-				inTesting: 0,
-				inPublication: 0,
-			},
+			currentWipTasks: [
+				{
+					status: "CODE_REVIEW",
+					statusChangedAt: new Date("2026-07-19T06:00:00Z"),
+					blockedAt: null,
+				},
+			],
 		};
 		let loadSnapshotCalls = 0;
 		let capturedRange: { start: Date; end: Date } | null = null;
@@ -67,6 +70,7 @@ describe("getMetricsDashboard", () => {
 			"team-1",
 			"WEEK",
 			new Date("2026-07-15T12:00:00Z"),
+			8,
 		);
 
 		expect(loadSnapshotCalls).toBe(1);
@@ -91,11 +95,16 @@ describe("getMetricsDashboard", () => {
 		);
 		expect(dashboard.current.throughput).toBe(1);
 		expect(dashboard.current.wip).toEqual({
-			total: 3,
+			total: 1,
+			limit: 8,
 			blocked: 0,
-			inReview: 0,
+			oldestBlockedAgeMs: null,
+			inReview: 1,
+			averageReviewAgeMs: 6 * 3_600_000,
 			inTesting: 0,
+			oldestTestingAgeMs: null,
 			inPublication: 0,
+			oldestPublicationAgeMs: null,
 		});
 		expect(dashboard.current.leadTime?.averageMs).toBe(15 * 86_400_000);
 		expect(dashboard.current.cycleTime?.averageMs).toBe(14 * 86_400_000);
