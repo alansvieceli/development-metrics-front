@@ -234,3 +234,43 @@ test("vincula uma task a uma task de origem pelo formulário", async ({
 		page.getByTestId("column-TODO").getByText("TASK-BUG-1"),
 	).toBeVisible();
 });
+
+test("mostra os badges de bugs e vínculos originados de uma task", async ({
+	page,
+}) => {
+	await page.getByRole("button", { name: "Task" }).click();
+	await page.getByLabel("Id externo").fill("TASK-PAI");
+	await page.getByLabel("Descrição").fill("Tarefa que vai gerar bugs");
+	await page.getByLabel("Tipo").selectOption({ label: "História" });
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
+	await page.getByRole("button", { name: "Salvar" }).click();
+
+	await page.getByRole("button", { name: "Task", exact: true }).click();
+	await page.getByLabel("Id externo").fill("TASK-FILHO-BUG");
+	await page.getByLabel("Descrição").fill("Bug 1");
+	await page.getByLabel("Tipo").selectOption({ label: "Bug" });
+	await page
+		.getByLabel("Task de origem (opcional)")
+		.selectOption({ label: "TASK-PAI — Tarefa que vai gerar bugs" });
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
+	await page.getByRole("button", { name: "Salvar" }).click();
+
+	await page.getByRole("button", { name: "Task", exact: true }).click();
+	await page.getByLabel("Id externo").fill("TASK-FILHO-OUTRO");
+	await page.getByLabel("Descrição").fill("Subtarefa técnica");
+	await page.getByLabel("Tipo").selectOption({ label: "Tarefa Técnica" });
+	await page
+		.getByLabel("Task de origem (opcional)")
+		.selectOption({ label: "TASK-PAI — Tarefa que vai gerar bugs" });
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
+	await page.getByRole("button", { name: "Salvar" }).click();
+
+	const parentCard = page
+		.getByTitle("História")
+		.filter({ hasText: "TASK-PAI" });
+	await expect(parentCard.getByText("🐛 1")).toBeVisible();
+	await expect(parentCard.getByText("🔗 1")).toBeVisible();
+
+	const bugCard = page.getByTitle("Bug").filter({ hasText: "TASK-FILHO-BUG" });
+	await expect(bugCard.getByText("Origem: #TASK-PAI")).toBeVisible();
+});

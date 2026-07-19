@@ -97,6 +97,25 @@ export function TaskCard({
 			{task.blocked ? (
 				<p className="text-xs font-semibold text-(--critical)">⛔ Bloqueado</p>
 			) : null}
+			{task.parentTask ? (
+				<p className="text-xs opacity-50">
+					Origem: #{task.parentTask.externalId}
+				</p>
+			) : null}
+			{task.bugChildCount > 0 || task.otherChildCount > 0 ? (
+				<div className="flex gap-2 text-xs">
+					{task.bugChildCount > 0 ? (
+						<span title="Bugs originados desta task">
+							🐛 {task.bugChildCount}
+						</span>
+					) : null}
+					{task.otherChildCount > 0 ? (
+						<span title="Outras tasks originadas desta task">
+							🔗 {task.otherChildCount}
+						</span>
+					) : null}
+				</div>
+			) : null}
 			<TaskMoveSelect
 				taskId={task.id}
 				currentStatus={task.status}
