@@ -45,13 +45,13 @@ export function TeamSwitcher({
 			<button
 				type="button"
 				onClick={() => (open ? close() : setOpen(true))}
-				className="flex items-center gap-1 rounded-lg border border-white/20 px-3 py-1 text-(--header-fg)"
+				className="flex items-center gap-1 rounded-lg border border-white/20 px-3 py-1 font-mono text-xs uppercase tracking-wide text-(--header-fg)"
 			>
 				{currentTeam.name}
 				<ChevronDown size={14} aria-hidden="true" />
 			</button>
 			{open ? (
-				<div className="absolute right-0 z-10 mt-2 flex w-48 flex-col gap-1 rounded-lg border border-(--border) bg-(--background) p-2 text-(--foreground) shadow-xl">
+				<div className="absolute right-0 z-10 mt-2 flex w-56 flex-col gap-1 whitespace-nowrap rounded-lg border border-(--border) bg-(--background) p-2 font-mono text-sm text-(--foreground) shadow-xl">
 					{otherTeams.map((team) => (
 						<button
 							key={team.id}
