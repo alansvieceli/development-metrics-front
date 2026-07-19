@@ -9,14 +9,12 @@ import {
 } from "@/presentation/task/task-status-labels";
 
 type KanbanBoardProps = {
-	teamId: string;
 	tasksByStatus: TasksByStatus;
 	taskTypes: TaskType[];
 	members: Member[];
 };
 
 export function KanbanBoard({
-	teamId,
 	tasksByStatus,
 	taskTypes,
 	members,
@@ -30,12 +28,7 @@ export function KanbanBoard({
 		<div className="flex flex-1 flex-col gap-4 p-6">
 			<div className="flex items-center justify-between">
 				<h1 className="text-xl font-semibold">Quadro</h1>
-				<TaskFormModal
-					mode="create"
-					teamId={teamId}
-					taskTypes={taskTypes}
-					members={members}
-				/>
+				<TaskFormModal mode="create" taskTypes={taskTypes} members={members} />
 			</div>
 			<div className="flex flex-1 gap-4 overflow-x-auto">
 				{STATUS_ORDER.map((status, index) => (

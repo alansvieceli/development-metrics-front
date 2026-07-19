@@ -29,6 +29,13 @@
 			"when": 1784409613373,
 			"tag": "0003_sweet_living_tribunal",
 			"breakpoints": true
+		},
+		{
+			"idx": 4,
+			"version": "7",
+			"when": 1784421977022,
+			"tag": "0004_validate-task-status",
+			"breakpoints": true
 		}
 	]
 }

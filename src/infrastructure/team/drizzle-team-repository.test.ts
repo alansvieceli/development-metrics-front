@@ -26,6 +26,29 @@ describe("drizzleTeamRepository", () => {
 		).toBeNull();
 	});
 
+	it("informa se o time existe", async () => {
+		const team = await drizzleTeamRepository.create("Time A");
+		expect(await drizzleTeamRepository.teamExists(team.id)).toBe(true);
+		expect(
+			await drizzleTeamRepository.teamExists(
+				"00000000-0000-0000-0000-000000000000",
+			),
+		).toBe(false);
+	});
+
+	it("rejeita membro de outro time", async () => {
+		const teamA = await drizzleTeamRepository.create("Time A");
+		const teamB = await drizzleTeamRepository.create("Time B");
+		const member = await drizzleTeamRepository.addMember(teamA.id, "Ana");
+
+		expect(
+			await drizzleTeamRepository.memberBelongsToTeam(member.id, teamA.id),
+		).toBe(true);
+		expect(
+			await drizzleTeamRepository.memberBelongsToTeam(member.id, teamB.id),
+		).toBe(false);
+	});
+
 	it("renomeia um time", async () => {
 		const team = await drizzleTeamRepository.create("Time A");
 		const renamed = await drizzleTeamRepository.rename(team.id, "Time B");

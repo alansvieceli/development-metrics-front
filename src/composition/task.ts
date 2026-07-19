@@ -14,25 +14,42 @@ import type { TaskStatus } from "@/domain/task/entities/task";
 import { drizzleTaskHistoryRepository } from "@/infrastructure/task/drizzle-task-history-repository";
 import { drizzleTaskRepository } from "@/infrastructure/task/drizzle-task-repository";
 import { drizzleTaskTypeRepository } from "@/infrastructure/task/drizzle-task-type-repository";
+import { drizzleTeamRepository } from "@/infrastructure/team/drizzle-team-repository";
 
 export function createTaskUseCases() {
 	return {
 		createTask: (input: CreateTaskInput) =>
-			createTask(drizzleTaskRepository, drizzleTaskHistoryRepository, input),
-		updateTask: (taskId: string, input: UpdateTaskInput) =>
-			updateTask(drizzleTaskRepository, taskId, input),
-		deleteTask: (taskId: string) => deleteTask(drizzleTaskRepository, taskId),
-		moveTask: (taskId: string, toStatus: TaskStatus) =>
+			createTask(
+				drizzleTaskRepository,
+				drizzleTaskHistoryRepository,
+				drizzleTaskTypeRepository,
+				drizzleTeamRepository,
+				input,
+			),
+		updateTask: (teamId: string, taskId: string, input: UpdateTaskInput) =>
+			updateTask(
+				drizzleTaskRepository,
+				drizzleTaskTypeRepository,
+				drizzleTeamRepository,
+				teamId,
+				taskId,
+				input,
+			),
+		deleteTask: (teamId: string, taskId: string) =>
+			deleteTask(drizzleTaskRepository, teamId, taskId),
+		moveTask: (teamId: string, taskId: string, toStatus: TaskStatus) =>
 			moveTask(
 				drizzleTaskRepository,
 				drizzleTaskHistoryRepository,
+				teamId,
 				taskId,
 				toStatus,
 			),
-		toggleBlocked: (taskId: string, blocked: boolean) =>
+		toggleBlocked: (teamId: string, taskId: string, blocked: boolean) =>
 			toggleBlocked(
 				drizzleTaskRepository,
 				drizzleTaskHistoryRepository,
+				teamId,
 				taskId,
 				blocked,
 			),

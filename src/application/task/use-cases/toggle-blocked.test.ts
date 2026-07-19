@@ -22,6 +22,7 @@ describe("toggleBlocked", () => {
 		const blocked = await toggleBlocked(
 			repository,
 			historyRepository,
+			"team-1",
 			task.id,
 			true,
 		);
@@ -35,11 +36,12 @@ describe("toggleBlocked", () => {
 		const repository = createFakeTaskRepository();
 		const historyRepository = createFakeTaskHistoryRepository();
 		const task = await repository.create(baseData);
-		await toggleBlocked(repository, historyRepository, task.id, true);
+		await toggleBlocked(repository, historyRepository, "team-1", task.id, true);
 
 		const unblocked = await toggleBlocked(
 			repository,
 			historyRepository,
+			"team-1",
 			task.id,
 			false,
 		);
@@ -52,9 +54,9 @@ describe("toggleBlocked", () => {
 		const repository = createFakeTaskRepository();
 		const historyRepository = createFakeTaskHistoryRepository();
 		const task = await repository.create(baseData);
-		await toggleBlocked(repository, historyRepository, task.id, true);
+		await toggleBlocked(repository, historyRepository, "team-1", task.id, true);
 
-		await toggleBlocked(repository, historyRepository, task.id, true);
+		await toggleBlocked(repository, historyRepository, "team-1", task.id, true);
 
 		expect(historyRepository.blockedPeriods).toHaveLength(1);
 	});
@@ -64,8 +66,25 @@ describe("toggleBlocked", () => {
 		const historyRepository = createFakeTaskHistoryRepository();
 		const task = await repository.create(baseData);
 
-		await toggleBlocked(repository, historyRepository, task.id, false);
+		await toggleBlocked(
+			repository,
+			historyRepository,
+			"team-1",
+			task.id,
+			false,
+		);
 
 		expect(historyRepository.blockedPeriods).toHaveLength(0);
+	});
+
+	it("não altera task de outro time", async () => {
+		const repository = createFakeTaskRepository();
+		const historyRepository = createFakeTaskHistoryRepository();
+		const task = await repository.create(baseData);
+
+		await expect(
+			toggleBlocked(repository, historyRepository, "team-2", task.id, true),
+		).rejects.toThrow("Task não encontrada");
+		expect((await repository.findById(task.id))?.blocked).toBe(false);
 	});
 });

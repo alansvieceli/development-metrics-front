@@ -21,10 +21,10 @@ export function createTeamUseCases() {
 		getTeam: (teamId: string) => getTeam(drizzleTeamRepository, teamId),
 		addMember: (teamId: string, name: string) =>
 			addMember(drizzleTeamRepository, teamId, name),
-		renameMember: (memberId: string, name: string) =>
-			renameMember(drizzleTeamRepository, memberId, name),
-		removeMember: (memberId: string) =>
-			removeMember(drizzleTeamRepository, memberId),
+		renameMember: (teamId: string, memberId: string, name: string) =>
+			renameMember(drizzleTeamRepository, teamId, memberId, name),
+		removeMember: (teamId: string, memberId: string) =>
+			removeMember(drizzleTeamRepository, teamId, memberId),
 		getCurrentTeam: () =>
 			getCurrentTeam(cookieCurrentTeamStore, drizzleTeamRepository),
 		selectTeam: (teamId: string) =>

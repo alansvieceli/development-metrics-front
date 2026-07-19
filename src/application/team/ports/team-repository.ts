@@ -1,7 +1,8 @@
+import type { TeamAccess } from "@/application/team/contracts/team-access";
 import type { Member } from "@/domain/team/entities/member";
 import type { Team } from "@/domain/team/entities/team";
 
-export type TeamRepository = {
+export type TeamRepository = TeamAccess & {
 	create(name: string): Promise<Team>;
 	rename(teamId: string, name: string): Promise<Team>;
 	delete(teamId: string): Promise<void>;

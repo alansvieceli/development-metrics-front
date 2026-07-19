@@ -19,7 +19,6 @@ export default async function BoardPage() {
 
 	return (
 		<KanbanBoard
-			teamId={currentTeam.id}
 			tasksByStatus={tasksByStatus}
 			taskTypes={taskTypes}
 			members={members}

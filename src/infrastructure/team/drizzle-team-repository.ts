@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import type { TeamRepository } from "@/application/team/ports/team-repository";
 import type { Member } from "@/domain/team/entities/member";
 import type { Team } from "@/domain/team/entities/team";
@@ -6,6 +6,22 @@ import { db } from "@/infrastructure/db/client";
 import { members, teams } from "./drizzle/schema";
 
 export const drizzleTeamRepository: TeamRepository = {
+	async teamExists(teamId) {
+		const [team] = await db
+			.select({ id: teams.id })
+			.from(teams)
+			.where(eq(teams.id, teamId))
+			.limit(1);
+		return Boolean(team);
+	},
+	async memberBelongsToTeam(memberId, teamId) {
+		const [member] = await db
+			.select({ id: members.id })
+			.from(members)
+			.where(and(eq(members.id, memberId), eq(members.teamId, teamId)))
+			.limit(1);
+		return Boolean(member);
+	},
 	async create(name) {
 		const [team] = await db.insert(teams).values({ name }).returning();
 		return team as Team;

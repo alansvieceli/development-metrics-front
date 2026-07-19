@@ -19,7 +19,6 @@ import {
 type TaskFormModalProps =
 	| {
 			mode: "create";
-			teamId: string;
 			taskTypes: TaskType[];
 			members: Member[];
 	  }
@@ -54,7 +53,6 @@ export function TaskFormModal(props: TaskFormModalProps) {
 					typeId,
 					assigneeId,
 					dueDate,
-					teamId: props.teamId,
 					status,
 				});
 			} else {

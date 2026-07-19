@@ -1,4 +1,12 @@
-export type TaskStatus = "TODO" | "IN_DEVELOPMENT" | "CODE_REVIEW" | "DONE";
+export const TASK_STATUSES = [
+	"TODO",
+	"IN_DEVELOPMENT",
+	"CODE_REVIEW",
+	"DONE",
+] as const;
+export type TaskStatus = (typeof TASK_STATUSES)[number];
+export const isTaskStatus = (value: unknown): value is TaskStatus =>
+	typeof value === "string" && TASK_STATUSES.includes(value as TaskStatus);
 
 export type Task = {
 	id: string;

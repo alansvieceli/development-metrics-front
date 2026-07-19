@@ -8,6 +8,14 @@ export function createFakeTeamRepository(): TeamRepository {
 	let nextId = 1;
 
 	return {
+		async teamExists(teamId) {
+			return teams.some((team) => team.id === teamId);
+		},
+		async memberBelongsToTeam(memberId, teamId) {
+			return members.some(
+				(member) => member.id === memberId && member.teamId === teamId,
+			);
+		},
 		async create(name) {
 			const team: Team = { id: `team-${nextId++}`, name };
 			teams.push(team);

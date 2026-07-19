@@ -22,6 +22,7 @@ describe("moveTask", () => {
 		const moved = await moveTask(
 			repository,
 			historyRepository,
+			"team-1",
 			task.id,
 			"IN_DEVELOPMENT",
 		);
@@ -44,7 +45,13 @@ describe("moveTask", () => {
 			status: "CODE_REVIEW",
 		});
 
-		await moveTask(repository, historyRepository, task.id, "IN_DEVELOPMENT");
+		await moveTask(
+			repository,
+			historyRepository,
+			"team-1",
+			task.id,
+			"IN_DEVELOPMENT",
+		);
 
 		expect(historyRepository.statusChanges).toEqual([
 			expect.objectContaining({
@@ -59,7 +66,13 @@ describe("moveTask", () => {
 		const historyRepository = createFakeTaskHistoryRepository();
 		const task = await repository.create({ ...baseData, status: "DONE" });
 
-		await moveTask(repository, historyRepository, task.id, "IN_DEVELOPMENT");
+		await moveTask(
+			repository,
+			historyRepository,
+			"team-1",
+			task.id,
+			"IN_DEVELOPMENT",
+		);
 
 		expect(historyRepository.statusChanges).toEqual([
 			expect.objectContaining({
@@ -74,8 +87,19 @@ describe("moveTask", () => {
 		const historyRepository = createFakeTaskHistoryRepository();
 		const task = await repository.create(baseData);
 
-		await moveTask(repository, historyRepository, task.id, "TODO");
+		await moveTask(repository, historyRepository, "team-1", task.id, "TODO");
 
 		expect(historyRepository.statusChanges).toEqual([]);
+	});
+
+	it("não move task de outro time", async () => {
+		const repository = createFakeTaskRepository();
+		const historyRepository = createFakeTaskHistoryRepository();
+		const task = await repository.create(baseData);
+
+		await expect(
+			moveTask(repository, historyRepository, "team-2", task.id, "DONE"),
+		).rejects.toThrow("Task não encontrada");
+		expect((await repository.findById(task.id))?.status).toBe("TODO");
 	});
 });
