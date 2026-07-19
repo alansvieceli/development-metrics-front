@@ -207,3 +207,30 @@ test("cadastro retroativo cria o card já na coluna da última etapa", async ({
 		page.getByTestId("column-CODE_REVIEW").getByText("TASK-HIST-1"),
 	).toBeVisible();
 });
+
+test("vincula uma task a uma task de origem pelo formulário", async ({
+	page,
+}) => {
+	await page.getByRole("button", { name: "Task" }).click();
+	await page.getByLabel("Id externo").fill("TASK-ORIGEM");
+	await page.getByLabel("Descrição").fill("História original");
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
+	await page.getByRole("button", { name: "Salvar" }).click();
+	await expect(
+		page.getByTestId("column-TODO").getByText("TASK-ORIGEM"),
+	).toBeVisible();
+
+	await page.getByRole("button", { name: "Task", exact: true }).click();
+	await page.getByLabel("Id externo").fill("TASK-BUG-1");
+	await page.getByLabel("Descrição").fill("Bug encontrado na história");
+	await page.getByLabel("Tipo").selectOption({ label: "Bug" });
+	await page
+		.getByLabel("Task de origem (opcional)")
+		.selectOption({ label: "TASK-ORIGEM — História original" });
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
+	await page.getByRole("button", { name: "Salvar" }).click();
+
+	await expect(
+		page.getByTestId("column-TODO").getByText("TASK-BUG-1"),
+	).toBeVisible();
+});

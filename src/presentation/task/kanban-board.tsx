@@ -54,6 +54,14 @@ export function KanbanBoard({
 		taskTypes.map((taskType) => [taskType.id, taskType]),
 	);
 	const membersById = new Map(members.map((member) => [member.id, member]));
+	const teamTasks = Object.values(tasksByStatus)
+		.flat()
+		.map((task) => ({
+			id: task.id,
+			externalId: task.externalId,
+			description: task.description,
+		}))
+		.sort((a, b) => a.externalId.localeCompare(b.externalId));
 	const visibleTasksByStatus = {
 		...tasksByStatus,
 		DONE: [...tasksByStatus.DONE]
@@ -81,6 +89,7 @@ export function KanbanBoard({
 						mode="create"
 						taskTypes={taskTypes}
 						members={members}
+						teamTasks={teamTasks}
 						createTaskAction={createTaskAction}
 					/>
 				</div>
@@ -108,6 +117,7 @@ export function KanbanBoard({
 								}
 								taskTypes={taskTypes}
 								members={members}
+								teamTasks={teamTasks}
 								updateTaskAction={updateTaskAction}
 								deleteTaskAction={deleteTaskAction}
 								moveTaskAction={moveTaskAction}

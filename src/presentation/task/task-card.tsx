@@ -5,6 +5,7 @@ import type { TaskStatus } from "@/domain/task/entities/task";
 import type { TaskType } from "@/domain/task/entities/task-type";
 import type { Member } from "@/domain/team/entities/member";
 import { getDueDateStatus } from "@/presentation/task/due-date-status";
+import type { TeamTaskOption } from "@/presentation/task/task-form-modal";
 import { TaskFormModal } from "@/presentation/task/task-form-modal";
 import { TaskMoveSelect } from "@/presentation/task/task-move-select";
 
@@ -14,6 +15,7 @@ type TaskCardProps = {
 	assignee: Member | undefined;
 	taskTypes: TaskType[];
 	members: Member[];
+	teamTasks: TeamTaskOption[];
 	updateTaskAction: (
 		taskId: string,
 		input: UpdateTaskInput,
@@ -53,6 +55,7 @@ export function TaskCard({
 	assignee,
 	taskTypes,
 	members,
+	teamTasks,
 	updateTaskAction,
 	deleteTaskAction,
 	moveTaskAction,
@@ -71,6 +74,7 @@ export function TaskCard({
 					task={task}
 					taskTypes={taskTypes}
 					members={members}
+					teamTasks={teamTasks}
 					updateTaskAction={updateTaskAction}
 					deleteTaskAction={deleteTaskAction}
 					toggleBlockedAction={toggleBlockedAction}

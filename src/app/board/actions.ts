@@ -51,6 +51,8 @@ function validateInput(input: unknown): asserts input is UpdateTaskInput {
 		throw new ApplicationError("Data prevista é obrigatória");
 	if (!parseDateOnly(value.dueDate))
 		throw new ApplicationError("Data prevista inválida");
+	if (value.parentTaskId !== null)
+		validateUuid(value.parentTaskId, "Task de origem inválida");
 }
 
 async function getCurrentTeamId() {

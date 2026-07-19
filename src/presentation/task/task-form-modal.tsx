@@ -14,11 +14,18 @@ import {
 	STATUS_ORDER,
 } from "@/presentation/task/task-status-labels";
 
+export type TeamTaskOption = {
+	id: string;
+	externalId: string;
+	description: string;
+};
+
 type TaskFormModalProps =
 	| {
 			mode: "create";
 			taskTypes: TaskType[];
 			members: Member[];
+			teamTasks: TeamTaskOption[];
 			createTaskAction: (
 				input: Omit<CreateTaskInput, "teamId">,
 			) => Promise<ActionState>;
@@ -28,6 +35,7 @@ type TaskFormModalProps =
 			task: Task;
 			taskTypes: TaskType[];
 			members: Member[];
+			teamTasks: TeamTaskOption[];
 			updateTaskAction: (
 				taskId: string,
 				input: UpdateTaskInput,
@@ -52,6 +60,8 @@ export function TaskFormModal(props: TaskFormModalProps) {
 		const assigneeIdValue = String(formData.get("assigneeId") ?? "");
 		const assigneeId = assigneeIdValue === "" ? null : assigneeIdValue;
 		const dueDate = String(formData.get("dueDate") ?? "");
+		const parentTaskIdValue = String(formData.get("parentTaskId") ?? "");
+		const parentTaskId = parentTaskIdValue === "" ? null : parentTaskIdValue;
 
 		setPending(true);
 		setError(null);
@@ -66,7 +76,7 @@ export function TaskFormModal(props: TaskFormModalProps) {
 					assigneeId,
 					dueDate,
 					status,
-					parentTaskId: null,
+					parentTaskId,
 				});
 			} else {
 				result = await props.updateTaskAction(props.task.id, {
@@ -75,7 +85,7 @@ export function TaskFormModal(props: TaskFormModalProps) {
 					typeId,
 					assigneeId,
 					dueDate,
-					parentTaskId: props.task.parentTaskId,
+					parentTaskId,
 				});
 			}
 			if (result.error) {
@@ -259,6 +269,28 @@ export function TaskFormModal(props: TaskFormModalProps) {
 									</select>
 								</div>
 							) : null}
+						</div>
+						<div className="flex flex-col gap-2">
+							<label htmlFor="parentTaskId" className="text-sm opacity-70">
+								Task de origem (opcional)
+							</label>
+							<select
+								id="parentTaskId"
+								name="parentTaskId"
+								defaultValue={isEdit ? (props.task.parentTaskId ?? "") : ""}
+								className="rounded-lg border border-(--border) px-3 py-2"
+							>
+								<option value="">Nenhuma</option>
+								{props.teamTasks
+									.filter(
+										(teamTask) => !isEdit || teamTask.id !== props.task.id,
+									)
+									.map((teamTask) => (
+										<option key={teamTask.id} value={teamTask.id}>
+											{teamTask.externalId} — {teamTask.description}
+										</option>
+									))}
+							</select>
 						</div>
 						{isEdit ? (
 							<label className="flex items-center gap-2 text-sm">
