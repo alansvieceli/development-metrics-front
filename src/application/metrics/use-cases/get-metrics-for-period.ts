@@ -46,12 +46,11 @@ export type PeriodMetrics = {
 
 export type HistoricalPeriodMetrics = Omit<PeriodMetrics, "wip">;
 
-export function getMetricsForRange(
+export function getCompletedTasksForRange(
 	snapshot: MetricsSnapshot,
 	periodStart: Date,
 	periodEnd: Date,
-	now: Date = new Date(),
-): HistoricalPeriodMetrics {
+): CompletedTaskMetrics[] {
 	const completionByTask = new Map<
 		string,
 		MetricsSnapshot["completionEvents"][number]
@@ -67,7 +66,7 @@ export function getMetricsForRange(
 			}
 		}
 	}
-	const completedTasks = [...completionByTask.values()].map(
+	return [...completionByTask.values()].map(
 		(completion): CompletedTaskMetrics => ({
 			...completion,
 			statusChanges: snapshot.statusChanges
@@ -77,6 +76,19 @@ export function getMetricsForRange(
 				.filter((period) => period.taskId === completion.taskId)
 				.map(({ taskId: _taskId, ...period }) => period),
 		}),
+	);
+}
+
+export function getMetricsForRange(
+	snapshot: MetricsSnapshot,
+	periodStart: Date,
+	periodEnd: Date,
+	now: Date = new Date(),
+): HistoricalPeriodMetrics {
+	const completedTasks = getCompletedTasksForRange(
+		snapshot,
+		periodStart,
+		periodEnd,
 	);
 	const startDate = periodStart.toISOString().slice(0, 10);
 	const endDate = periodEnd.toISOString().slice(0, 10);

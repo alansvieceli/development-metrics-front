@@ -3,16 +3,24 @@ import type {
 	DueDateTaskMetrics,
 } from "@/application/metrics/ports/metrics-query-port";
 
-function isReworkTransition(change: {
-	fromStatus: string | null;
-	toStatus: string;
-}): boolean {
-	return (
-		change.toStatus === "IN_DEVELOPMENT" &&
-		change.fromStatus !== null &&
-		change.fromStatus !== "TODO" &&
-		change.fromStatus !== "IN_DEVELOPMENT"
+export function hasRework(task: CompletedTaskMetrics): boolean {
+	return task.statusChanges.some(
+		(change) =>
+			change.toStatus === "IN_DEVELOPMENT" &&
+			change.fromStatus !== null &&
+			change.fromStatus !== "TODO" &&
+			change.fromStatus !== "IN_DEVELOPMENT",
 	);
+}
+
+export function isUnplanned(
+	task: CompletedTaskMetrics,
+	periodStart: Date,
+	periodEnd: Date,
+): boolean {
+	const startDate = periodStart.toISOString().slice(0, 10);
+	const endDate = periodEnd.toISOString().slice(0, 10);
+	return task.dueDate < startDate || task.dueDate >= endDate;
 }
 
 export function calculateReworkCount(
@@ -21,8 +29,7 @@ export function calculateReworkCount(
 	if (tasks.length === 0) {
 		return null;
 	}
-	return tasks.filter((task) => task.statusChanges.some(isReworkTransition))
-		.length;
+	return tasks.filter(hasRework).length;
 }
 
 export function calculateReworkRate(
@@ -40,11 +47,8 @@ export function calculateUnplannedCount(
 	if (tasks.length === 0) {
 		return null;
 	}
-	const startDate = periodStart.toISOString().slice(0, 10);
-	const endDate = periodEnd.toISOString().slice(0, 10);
-	return tasks.filter(
-		(task) => task.dueDate < startDate || task.dueDate >= endDate,
-	).length;
+	return tasks.filter((task) => isUnplanned(task, periodStart, periodEnd))
+		.length;
 }
 
 export type PredictabilityCounts = {

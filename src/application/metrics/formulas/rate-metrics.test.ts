@@ -8,6 +8,8 @@ import {
 	calculateReworkCount,
 	calculateReworkRate,
 	calculateUnplannedCount,
+	hasRework,
+	isUnplanned,
 } from "./rate-metrics";
 
 function completedTask(
@@ -132,6 +134,34 @@ describe("calculateReworkCount", () => {
 			completedTask({ taskId: "task-2" }),
 		];
 		expect(calculateReworkCount(tasks)).toBe(1);
+	});
+});
+
+describe("predicados de evidência", () => {
+	it("identifica a mesma transição usada no cálculo de retrabalho", () => {
+		expect(
+			hasRework(
+				completedTask({
+					statusChanges: [
+						{
+							fromStatus: "CODE_REVIEW",
+							toStatus: "IN_DEVELOPMENT",
+							changedAt: new Date("2026-07-01T01:00:00Z"),
+						},
+					],
+				}),
+			),
+		).toBe(true);
+	});
+
+	it("identifica a mesma data usada no cálculo de não planejados", () => {
+		expect(
+			isUnplanned(
+				completedTask({ dueDate: "2026-07-10" }),
+				new Date("2026-07-13T00:00:00Z"),
+				new Date("2026-07-20T00:00:00Z"),
+			),
+		).toBe(true);
 	});
 });
 
