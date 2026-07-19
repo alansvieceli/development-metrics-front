@@ -39,7 +39,7 @@ test("lista os tipos padrão e permite criar e editar um tipo", async ({
 
 test("não permite excluir um tipo em uso por uma task", async ({ page }) => {
 	await page.goto("/board");
-	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByRole("button", { name: "Task" }).click();
 	await page.getByLabel("Id externo").fill("TASK-1");
 	await page.getByLabel("Descrição").fill("Primeira task");
 	await page.getByLabel("Tipo").selectOption({ label: "História" });

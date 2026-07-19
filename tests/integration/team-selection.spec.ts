@@ -82,7 +82,7 @@ test("mostra erros ao remover vínculos usados por task", async ({ page }) => {
 	await page.getByRole("button", { name: "Adicionar membro" }).click();
 
 	await page.goto("/board");
-	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByRole("button", { name: "Task" }).click();
 	await page.getByLabel("Id externo").fill("TASK-1");
 	await page.getByLabel("Descrição").fill("Task da Ana");
 	await page.getByLabel("Responsável").selectOption({ label: "Ana" });

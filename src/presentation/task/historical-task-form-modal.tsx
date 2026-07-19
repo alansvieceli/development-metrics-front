@@ -77,10 +77,10 @@ export function HistoricalTaskFormModal({
 			<button
 				type="button"
 				onClick={() => setOpen(true)}
-				className="flex items-center gap-1 rounded-lg border border-(--border) px-4 py-2"
+				className="flex items-center gap-1 rounded-lg bg-(--accent) px-4 py-2 text-(--accent-fg)"
 			>
 				<Plus size={16} aria-hidden="true" />
-				Card retroativo
+				Retroativo
 			</button>
 			{open ? (
 				<Modal label="Card retroativo" onClose={() => setOpen(false)}>

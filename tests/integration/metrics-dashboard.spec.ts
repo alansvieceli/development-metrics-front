@@ -46,15 +46,15 @@ test("mostra os 10 cards de métricas sem dados quando o time não tem tasks", a
 });
 
 test("WIP reflete tasks fora de todo e concluído", async ({ page }) => {
-	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByRole("button", { name: "Task" }).click();
 	await page.getByLabel("Id externo").fill("TASK-1");
 	await page.getByLabel("Descrição").fill("Corrigir bug de login");
 	await page
 		.getByLabel("Coluna inicial")
-		.selectOption({ label: "Em Desenvolvimento" });
+		.selectOption({ label: "Desenvolvimento" });
 	await page.getByRole("button", { name: "Salvar" }).click();
 
-	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByRole("button", { name: "Task" }).click();
 	await page.getByLabel("Id externo").fill("TASK-2");
 	await page.getByLabel("Descrição").fill("Escrever testes de login");
 	await page.getByLabel("Coluna inicial").selectOption({ label: "Testes" });
@@ -70,10 +70,10 @@ test("card retroativo concluído hoje entra no throughput da semana", async ({
 	page,
 }) => {
 	const today = new Date().toISOString().slice(0, 10);
-	await page.getByRole("button", { name: "Card retroativo" }).click();
+	await page.getByRole("button", { name: "Retroativo" }).click();
 	await page.getByLabel("Id externo").fill("TASK-HIST-1");
 	await page.getByLabel("Descrição").fill("Migração legada");
-	await page.getByLabel("Status da etapa 1").selectOption({ label: "A Fazer" });
+	await page.getByLabel("Status da etapa 1").selectOption({ label: "Backlog" });
 	await page.getByLabel("Data da etapa 1").fill(today);
 	await page.getByRole("button", { name: "+ Adicionar etapa" }).click();
 	await page

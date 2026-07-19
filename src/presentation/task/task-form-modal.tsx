@@ -152,7 +152,7 @@ export function TaskFormModal(props: TaskFormModalProps) {
 					className="flex items-center gap-1 rounded-lg bg-(--accent) px-4 py-2 text-(--accent-fg)"
 				>
 					<Plus size={16} aria-hidden="true" />
-					Nova task
+					Task
 				</button>
 			)}
 			{open ? (

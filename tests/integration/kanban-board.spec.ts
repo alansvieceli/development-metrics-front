@@ -13,13 +13,11 @@ test("criar uma task pelo modal a coloca na coluna escolhida", async ({
 	page,
 }) => {
 	await expect(page).toHaveURL("/board");
-	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByRole("button", { name: "Task" }).click();
 	await page.getByLabel("Id externo").fill("TASK-1");
 	await page.getByLabel("Descrição").fill("Corrigir bug de login");
 	await page.getByLabel("Tipo").selectOption({ label: "Bug" });
-	await page
-		.getByLabel("Coluna inicial")
-		.selectOption({ label: "Code Review" });
+	await page.getByLabel("Coluna inicial").selectOption({ label: "Revisão" });
 	await page.getByRole("button", { name: "Salvar" }).click();
 
 	await expect(
@@ -28,7 +26,7 @@ test("criar uma task pelo modal a coloca na coluna escolhida", async ({
 });
 
 test("mover uma task pelo select atualiza a coluna", async ({ page }) => {
-	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByRole("button", { name: "Task" }).click();
 	await page.getByLabel("Id externo").fill("TASK-2");
 	await page.getByLabel("Descrição").fill("Ajustar layout");
 	await page.getByRole("button", { name: "Salvar" }).click();
@@ -40,7 +38,7 @@ test("mover uma task pelo select atualiza a coluna", async ({ page }) => {
 	await page
 		.getByTestId("column-TODO")
 		.getByRole("combobox", { name: "Mover para" })
-		.selectOption({ label: "Em Desenvolvimento" });
+		.selectOption({ label: "Desenvolvimento" });
 
 	await expect(
 		page.getByTestId("column-IN_DEVELOPMENT").getByText("TASK-2"),
@@ -48,7 +46,7 @@ test("mover uma task pelo select atualiza a coluna", async ({ page }) => {
 });
 
 test("a cor do tipo aparece na borda do card", async ({ page }) => {
-	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByRole("button", { name: "Task" }).click();
 	await page.getByLabel("Id externo").fill("TASK-3");
 	await page.getByLabel("Descrição").fill("Investigar lentidão");
 	await page.getByLabel("Tipo").selectOption({ label: "Bug" });
@@ -59,7 +57,7 @@ test("a cor do tipo aparece na borda do card", async ({ page }) => {
 });
 
 test("fecha o modal de task com Escape e devolve o foco", async ({ page }) => {
-	const trigger = page.getByRole("button", { name: "Nova task" });
+	const trigger = page.getByRole("button", { name: "Task" });
 	await trigger.click();
 	const dialog = page.getByRole("dialog", { name: "Nova task" });
 	await expect(dialog).toBeVisible();
@@ -70,14 +68,14 @@ test("fecha o modal de task com Escape e devolve o foco", async ({ page }) => {
 });
 
 test("fecha o modal de task pelo botão Fechar", async ({ page }) => {
-	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByRole("button", { name: "Task" }).click();
 	const dialog = page.getByRole("dialog", { name: "Nova task" });
 	await dialog.getByRole("button", { name: "Fechar" }).click();
 	await expect(dialog).toBeHidden();
 });
 
 test("fecha o modal de task ao clicar no backdrop", async ({ page }) => {
-	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByRole("button", { name: "Task" }).click();
 	const dialog = page.getByRole("dialog", { name: "Nova task" });
 	await expect(dialog).toBeVisible();
 	await page.mouse.click(5, 5);
@@ -87,7 +85,7 @@ test("fecha o modal de task ao clicar no backdrop", async ({ page }) => {
 test("restaura o status quando a movimentação é rejeitada", async ({
 	page,
 }) => {
-	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByRole("button", { name: "Task" }).click();
 	await page.getByLabel("Id externo").fill("TASK-INVALID-MOVE");
 	await page.getByLabel("Descrição").fill("Testar status inválido");
 	await page.getByRole("button", { name: "Salvar" }).click();
@@ -113,25 +111,25 @@ test("restaura o status quando a movimentação é rejeitada", async ({
 });
 
 test("a contagem da coluna reflete o número de cards", async ({ page }) => {
-	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByRole("button", { name: "Task" }).click();
 	await page.getByLabel("Id externo").fill("TASK-COUNT-1");
 	await page.getByLabel("Descrição").fill("Primeira task");
 	await page.getByRole("button", { name: "Salvar" }).click();
 
 	await expect(
-		page.getByRole("heading", { name: "A Fazer (1)" }),
+		page.getByRole("heading", { name: "Backlog (1)" }),
 	).toBeVisible();
 
-	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByRole("button", { name: "Task" }).click();
 	await page.getByLabel("Id externo").fill("TASK-COUNT-2");
 	await page.getByLabel("Descrição").fill("Segunda task");
 	await page.getByRole("button", { name: "Salvar" }).click();
 
 	await expect(
-		page.getByRole("heading", { name: "A Fazer (2)" }),
+		page.getByRole("heading", { name: "Backlog (2)" }),
 	).toBeVisible();
 	await expect(
-		page.getByRole("heading", { name: "Em Desenvolvimento (0)" }),
+		page.getByRole("heading", { name: "Desenvolvimento (0)" }),
 	).toBeVisible();
 });
 
@@ -148,7 +146,7 @@ test("o chip de responsável mostra a contagem de cards ativos", async ({
 		.getByRole("button", { name: "Fechar" })
 		.click();
 
-	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByRole("button", { name: "Task" }).click();
 	await page.getByLabel("Id externo").fill("TASK-ANA-1");
 	await page.getByLabel("Descrição").fill("Task da Ana");
 	await page.getByLabel("Responsável").selectOption({ label: "Ana" });
@@ -160,7 +158,7 @@ test("o chip de responsável mostra a contagem de cards ativos", async ({
 test("o chip de bloqueados aparece e some conforme o card é bloqueado", async ({
 	page,
 }) => {
-	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByRole("button", { name: "Task" }).click();
 	await page.getByLabel("Id externo").fill("TASK-BLOCK-1");
 	await page.getByLabel("Descrição").fill("Task a bloquear");
 	await page.getByLabel("Tipo").selectOption({ label: "Bug" });
@@ -186,15 +184,13 @@ test("o chip de bloqueados aparece e some conforme o card é bloqueado", async (
 test("cadastro retroativo cria o card já na coluna da última etapa", async ({
 	page,
 }) => {
-	await page.getByRole("button", { name: "Card retroativo" }).click();
+	await page.getByRole("button", { name: "Retroativo" }).click();
 	await page.getByLabel("Id externo").fill("TASK-HIST-1");
 	await page.getByLabel("Descrição").fill("Migração legada");
-	await page.getByLabel("Status da etapa 1").selectOption({ label: "A Fazer" });
+	await page.getByLabel("Status da etapa 1").selectOption({ label: "Backlog" });
 	await page.getByLabel("Data da etapa 1").fill("2026-07-01");
 	await page.getByRole("button", { name: "+ Adicionar etapa" }).click();
-	await page
-		.getByLabel("Status da etapa 2")
-		.selectOption({ label: "Code Review" });
+	await page.getByLabel("Status da etapa 2").selectOption({ label: "Revisão" });
 	await page.getByLabel("Data da etapa 2").fill("2026-07-05");
 	await page.getByRole("button", { name: "Salvar" }).click();
 

@@ -1,11 +1,11 @@
 import type { TaskStatus } from "@/domain/task/entities/task";
 
 export const STATUS_LABELS: Record<TaskStatus, string> = {
-	TODO: "A Fazer",
-	IN_DEVELOPMENT: "Em Desenvolvimento",
-	CODE_REVIEW: "Code Review",
+	TODO: "Backlog",
+	IN_DEVELOPMENT: "Desenvolvimento",
+	CODE_REVIEW: "Revisão",
 	TESTING: "Testes",
-	AWAITING_PUBLICATION: "Aguardando Publicação",
+	AWAITING_PUBLICATION: "Publicação",
 	DONE: "Concluído",
 };
 
