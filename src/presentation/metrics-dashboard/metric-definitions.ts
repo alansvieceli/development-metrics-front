@@ -17,7 +17,9 @@ export type MetricKey =
 	| "throughputTrend"
 	| "plannedDeliveredTrend"
 	| "leadCycleTimeTrend"
-	| "flowComposition";
+	| "flowComposition"
+	| "bugsOpenedTrend"
+	| "bugsRanking";
 
 export type MetricDefinition = {
 	key: MetricKey;
@@ -129,5 +131,17 @@ export const METRIC_DEFINITIONS: MetricDefinition[] = [
 		label: "Composição do fluxo",
 		description:
 			"Média do tempo do card em cada etapa (desenvolvimento, code review, testes, bloqueado, aguardando publicação) no período atual. Desenvolvimento é o tempo restante do cycle time depois de somar as outras etapas.",
+	},
+	{
+		key: "bugsOpenedTrend",
+		label: "Bugs abertos por período",
+		description:
+			"Bugs abertos (tasks do tipo Bug) em cada um dos últimos 8 períodos (semanas, quinzenas ou meses).",
+	},
+	{
+		key: "bugsRanking",
+		label: "Ranking de bugs",
+		description:
+			"As até 5 tasks que mais geraram bugs no período atual, via o vínculo de task de origem.",
 	},
 ];

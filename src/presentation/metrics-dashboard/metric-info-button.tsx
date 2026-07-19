@@ -32,6 +32,8 @@ const GROUPS: { title: string; keys: MetricKey[] }[] = [
 			"plannedDeliveredTrend",
 			"leadCycleTimeTrend",
 			"flowComposition",
+			"bugsOpenedTrend",
+			"bugsRanking",
 		],
 	},
 ];
