@@ -1,21 +1,23 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { IBM_Plex_Sans, JetBrains_Mono } from "next/font/google";
 import "@/app/globals.css";
 
-const geistSans = Geist({
-	variable: "--font-geist-sans",
+const jetbrainsMono = JetBrains_Mono({
+	variable: "--font-jetbrains-mono",
 	subsets: ["latin"],
+	weight: ["500", "700"],
 });
 
-const geistMono = Geist_Mono({
-	variable: "--font-geist-mono",
+const ibmPlexSans = IBM_Plex_Sans({
+	variable: "--font-ibm-plex-sans",
 	subsets: ["latin"],
+	weight: ["400", "500", "600"],
 });
 
 export function RootShell({ children }: { children: React.ReactNode }) {
 	return (
 		<html
 			lang="pt-BR"
-			className={`${geistSans.variable} ${geistMono.variable}`}
+			className={`${jetbrainsMono.variable} ${ibmPlexSans.variable}`}
 		>
 			<body>{children}</body>
 		</html>
