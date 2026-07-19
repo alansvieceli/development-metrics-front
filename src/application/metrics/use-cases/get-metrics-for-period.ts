@@ -8,12 +8,15 @@ import {
 import {
 	calculatePredictability,
 	calculatePredictabilityCounts,
+	calculateReworkCount,
 	calculateReworkRate,
+	calculateUnplannedCount,
 	type PredictabilityCounts,
 } from "@/application/metrics/formulas/rate-metrics";
 import type {
 	CompletedTaskMetrics,
 	MetricsSnapshot,
+	WipBreakdown,
 } from "@/application/metrics/ports/metrics-query-port";
 
 export type PeriodMetrics = {
@@ -26,10 +29,12 @@ export type PeriodMetrics = {
 	testingTime: DurationStats | null;
 	awaitingPublicationTime: DurationStats | null;
 	reworkRate: number | null;
+	reworkCount: number | null;
 	throughput: number;
-	wip: number;
+	wip: WipBreakdown;
 	predictability: number | null;
 	predictabilityCounts: PredictabilityCounts | null;
+	unplannedCount: number | null;
 };
 
 export type HistoricalPeriodMetrics = Omit<PeriodMetrics, "wip">;
@@ -84,8 +89,14 @@ export function getMetricsForRange(
 			"AWAITING_PUBLICATION",
 		),
 		reworkRate: calculateReworkRate(completedTasks),
+		reworkCount: calculateReworkCount(completedTasks),
 		throughput: completedTasks.length,
 		predictability: calculatePredictability(dueDateTasks),
 		predictabilityCounts: calculatePredictabilityCounts(dueDateTasks),
+		unplannedCount: calculateUnplannedCount(
+			completedTasks,
+			periodStart,
+			periodEnd,
+		),
 	};
 }

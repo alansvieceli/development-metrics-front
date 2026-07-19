@@ -10,6 +10,7 @@ describe("getMetricsForRange", () => {
 					taskId: "task-1",
 					createdAt: new Date("2026-07-01T00:00:00Z"),
 					completedAt: new Date("2026-07-03T00:00:00Z"),
+					dueDate: "2026-07-03",
 				},
 			],
 			statusChanges: [
@@ -28,7 +29,13 @@ describe("getMetricsForRange", () => {
 					firstCompletedAt: new Date("2026-07-03T00:00:00Z"),
 				},
 			],
-			wip: 4,
+			wip: {
+				total: 4,
+				blocked: 1,
+				inReview: 1,
+				inTesting: 1,
+				inPublication: 1,
+			},
 		};
 		const start = new Date("2026-07-01T00:00:00Z");
 		const end = new Date("2026-07-08T00:00:00Z");
@@ -41,6 +48,8 @@ describe("getMetricsForRange", () => {
 		expect(metrics.cycleTime?.averageMs).toBe(2 * 86_400_000);
 		expect(metrics.throughput).toBe(1);
 		expect(metrics.predictability).toBe(100);
+		expect(metrics.reworkCount).toBe(0);
+		expect(metrics.unplannedCount).toBe(0);
 		expect(metrics).not.toHaveProperty("wip");
 	});
 
@@ -51,7 +60,13 @@ describe("getMetricsForRange", () => {
 				statusChanges: [],
 				blockedPeriods: [],
 				dueDateTasks: [],
-				wip: 0,
+				wip: {
+					total: 0,
+					blocked: 0,
+					inReview: 0,
+					inTesting: 0,
+					inPublication: 0,
+				},
 			},
 			new Date("2026-07-01T00:00:00Z"),
 			new Date("2026-07-08T00:00:00Z"),
@@ -66,6 +81,8 @@ describe("getMetricsForRange", () => {
 		expect(metrics.reworkRate).toBeNull();
 		expect(metrics.throughput).toBe(0);
 		expect(metrics.predictability).toBeNull();
+		expect(metrics.reworkCount).toBeNull();
+		expect(metrics.unplannedCount).toBeNull();
 	});
 
 	it("card retroativo sem chegar em DONE conta no WIP mas nao em throughput/lead/cycle", () => {
@@ -87,7 +104,13 @@ describe("getMetricsForRange", () => {
 			],
 			blockedPeriods: [],
 			dueDateTasks: [],
-			wip: 1,
+			wip: {
+				total: 1,
+				blocked: 0,
+				inReview: 0,
+				inTesting: 1,
+				inPublication: 0,
+			},
 		};
 		const metrics = getMetricsForRange(
 			snapshot,
