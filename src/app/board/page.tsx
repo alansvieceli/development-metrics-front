@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import {
+	createHistoricalTaskAction,
 	createTaskAction,
 	deleteTaskAction,
 	moveTaskAction,
@@ -30,6 +31,7 @@ export default async function BoardPage() {
 			taskTypes={taskTypes}
 			members={members}
 			createTaskAction={createTaskAction}
+			createHistoricalTaskAction={createHistoricalTaskAction}
 			updateTaskAction={updateTaskAction}
 			deleteTaskAction={deleteTaskAction}
 			moveTaskAction={moveTaskAction}

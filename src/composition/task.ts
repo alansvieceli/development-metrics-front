@@ -1,3 +1,5 @@
+import type { CreateHistoricalTaskInput } from "@/application/task/use-cases/create-historical-task";
+import { createHistoricalTask } from "@/application/task/use-cases/create-historical-task";
 import type { CreateTaskInput } from "@/application/task/use-cases/create-task";
 import { createTask } from "@/application/task/use-cases/create-task";
 import { createTaskType } from "@/application/task/use-cases/create-task-type";
@@ -20,6 +22,13 @@ export function createTaskUseCases() {
 	return {
 		createTask: (input: CreateTaskInput) =>
 			createTask(
+				drizzleTaskRepository,
+				drizzleTaskTypeRepository,
+				drizzleTeamRepository,
+				input,
+			),
+		createHistoricalTask: (input: CreateHistoricalTaskInput) =>
+			createHistoricalTask(
 				drizzleTaskRepository,
 				drizzleTaskTypeRepository,
 				drizzleTeamRepository,

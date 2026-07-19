@@ -1,3 +1,4 @@
+import type { CreateHistoricalTaskActionInput } from "@/app/board/actions";
 import type { ActionState } from "@/application/shared/action-state";
 import type { CreateTaskInput } from "@/application/task/use-cases/create-task";
 import type { TasksByStatus } from "@/application/task/use-cases/list-tasks-by-team";
@@ -6,6 +7,7 @@ import type { TaskStatus } from "@/domain/task/entities/task";
 import type { TaskType } from "@/domain/task/entities/task-type";
 import type { Member } from "@/domain/team/entities/member";
 import { BoardSummary } from "@/presentation/task/board-summary";
+import { HistoricalTaskFormModal } from "@/presentation/task/historical-task-form-modal";
 import { TaskCard } from "@/presentation/task/task-card";
 import { TaskFormModal } from "@/presentation/task/task-form-modal";
 import {
@@ -19,6 +21,9 @@ type KanbanBoardProps = {
 	members: Member[];
 	createTaskAction: (
 		input: Omit<CreateTaskInput, "teamId">,
+	) => Promise<ActionState>;
+	createHistoricalTaskAction: (
+		input: CreateHistoricalTaskActionInput,
 	) => Promise<ActionState>;
 	updateTaskAction: (
 		taskId: string,
@@ -37,6 +42,7 @@ export function KanbanBoard({
 	taskTypes,
 	members,
 	createTaskAction,
+	createHistoricalTaskAction,
 	updateTaskAction,
 	deleteTaskAction,
 	moveTaskAction,
@@ -51,12 +57,19 @@ export function KanbanBoard({
 		<div className="flex flex-1 flex-col gap-4 p-6">
 			<div className="flex items-center justify-between">
 				<h1 className="text-xl font-semibold">Quadro</h1>
-				<TaskFormModal
-					mode="create"
-					taskTypes={taskTypes}
-					members={members}
-					createTaskAction={createTaskAction}
-				/>
+				<div className="flex items-center gap-2">
+					<HistoricalTaskFormModal
+						taskTypes={taskTypes}
+						members={members}
+						createHistoricalTaskAction={createHistoricalTaskAction}
+					/>
+					<TaskFormModal
+						mode="create"
+						taskTypes={taskTypes}
+						members={members}
+						createTaskAction={createTaskAction}
+					/>
+				</div>
 			</div>
 			<BoardSummary tasksByStatus={tasksByStatus} members={members} />
 			<div className="flex flex-1 gap-4 overflow-x-auto">

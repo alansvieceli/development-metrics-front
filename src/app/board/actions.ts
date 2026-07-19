@@ -57,6 +57,57 @@ async function getCurrentTeamId() {
 	return team.id;
 }
 
+export type CreateHistoricalTaskActionInput = {
+	externalId: string;
+	description: string;
+	typeId: string;
+	assigneeId: string | null;
+	dueDate: string | null;
+	steps: { status: TaskStatus; date: string }[];
+};
+
+function validateSteps(
+	steps: unknown,
+): asserts steps is { status: TaskStatus; date: string }[] {
+	if (!Array.isArray(steps) || steps.length === 0) {
+		throw new ApplicationError("Informe ao menos uma etapa");
+	}
+	for (const step of steps) {
+		const candidate = step as { status?: unknown; date?: unknown };
+		if (!isTaskStatus(candidate.status) || typeof candidate.date !== "string") {
+			throw new ApplicationError("Etapa inválida");
+		}
+	}
+}
+
+export async function createHistoricalTaskAction(
+	input: CreateHistoricalTaskActionInput,
+) {
+	return runTaskAction(async () => {
+		if (
+			typeof input.externalId !== "string" ||
+			typeof input.description !== "string"
+		)
+			throw new ApplicationError("Dados da task inválidos");
+		validateUuid(input.typeId, "Tipo de task inválido");
+		if (input.assigneeId !== null)
+			validateUuid(input.assigneeId, "Responsável inválido");
+		if (input.dueDate !== null && !parseDateOnly(input.dueDate))
+			throw new ApplicationError("Data prevista inválida");
+		validateSteps(input.steps);
+		const teamId = await getCurrentTeamId();
+		await createTaskUseCases().createHistoricalTask({
+			externalId: input.externalId,
+			description: input.description,
+			typeId: input.typeId,
+			assigneeId: input.assigneeId,
+			teamId,
+			dueDate: input.dueDate,
+			steps: input.steps,
+		});
+	});
+}
+
 export async function createTaskAction(input: CreateTaskActionInput) {
 	return runTaskAction(async () => {
 		validateInput(input);
