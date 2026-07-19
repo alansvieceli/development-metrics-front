@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import {
 	Bar,
 	BarChart,
@@ -14,16 +13,23 @@ import {
 	YAxis,
 } from "recharts";
 import type { PeriodType } from "@/application/metrics/period";
-import { formatDuration, formatPercent } from "./format-metric-value";
+import {
+	formatDuration,
+	formatDurationCompact,
+	formatPercent,
+} from "./format-metric-value";
 import type { TrendPoint } from "./to-trend-points";
 
 type MetricValueFormat = "duration" | "percent" | "count";
 
 type MetricTrendChartProps = {
 	variant: "dual-line" | "single-line" | "bar";
+	granularity: PeriodType;
 	weeklyPoints: TrendPoint[];
 	monthlyPoints: TrendPoint[];
 	format: MetricValueFormat;
+	primaryLabel?: string;
+	secondaryLabel?: string;
 };
 
 function formatAxisLabel(date: Date, granularity: PeriodType): string {
@@ -42,13 +48,25 @@ function formatValue(format: MetricValueFormat, value: number): string {
 	return String(value);
 }
 
+function formatAxisTick(format: MetricValueFormat, value: number): string {
+	if (format === "duration") {
+		return formatDurationCompact(value);
+	}
+	if (format === "percent") {
+		return formatPercent(value);
+	}
+	return String(Math.round(value));
+}
+
 export function MetricTrendChart({
 	variant,
+	granularity,
 	weeklyPoints,
 	monthlyPoints,
 	format,
+	primaryLabel = "Média",
+	secondaryLabel = "Mediana",
 }: MetricTrendChartProps) {
-	const [granularity, setGranularity] = useState<PeriodType>("WEEK");
 	const points = granularity === "WEEK" ? weeklyPoints : monthlyPoints;
 	const data = points.map((point) => ({
 		label: formatAxisLabel(point.periodStart, granularity),
@@ -58,32 +76,6 @@ export function MetricTrendChart({
 
 	return (
 		<div className="flex flex-col gap-2">
-			<div className="flex justify-end gap-1 text-xs">
-				<button
-					type="button"
-					onClick={() => setGranularity("WEEK")}
-					aria-pressed={granularity === "WEEK"}
-					className={`rounded px-2 py-0.5 ${
-						granularity === "WEEK"
-							? "bg-(--accent) text-(--accent-fg)"
-							: "opacity-60"
-					}`}
-				>
-					Semanal
-				</button>
-				<button
-					type="button"
-					onClick={() => setGranularity("MONTH")}
-					aria-pressed={granularity === "MONTH"}
-					className={`rounded px-2 py-0.5 ${
-						granularity === "MONTH"
-							? "bg-(--accent) text-(--accent-fg)"
-							: "opacity-60"
-					}`}
-				>
-					Mensal
-				</button>
-			</div>
 			<ResponsiveContainer width="100%" height={140}>
 				{variant === "bar" ? (
 					<BarChart data={data}>
@@ -93,8 +85,9 @@ export function MetricTrendChart({
 							tick={{ fontSize: 11, fill: "var(--foreground-muted)" }}
 						/>
 						<YAxis
-							width={32}
+							width={36}
 							tick={{ fontSize: 11, fill: "var(--foreground-muted)" }}
+							tickFormatter={(value: number) => formatAxisTick(format, value)}
 						/>
 						<Tooltip
 							contentStyle={{
@@ -126,8 +119,9 @@ export function MetricTrendChart({
 							tick={{ fontSize: 11, fill: "var(--foreground-muted)" }}
 						/>
 						<YAxis
-							width={32}
+							width={36}
 							tick={{ fontSize: 11, fill: "var(--foreground-muted)" }}
+							tickFormatter={(value: number) => formatAxisTick(format, value)}
 						/>
 						<Tooltip
 							contentStyle={{
@@ -144,11 +138,13 @@ export function MetricTrendChart({
 									: String(value)
 							}
 						/>
-						{variant === "dual-line" ? <Legend /> : null}
+						{variant === "dual-line" ? (
+							<Legend wrapperStyle={{ fontSize: 11 }} iconSize={8} />
+						) : null}
 						<Line
 							type="monotone"
 							dataKey="primary"
-							name={variant === "dual-line" ? "Média" : "Valor"}
+							name={variant === "dual-line" ? primaryLabel : "Valor"}
 							stroke="var(--chart-primary)"
 							strokeWidth={2}
 							dot={{ r: 4 }}
@@ -158,7 +154,7 @@ export function MetricTrendChart({
 							<Line
 								type="monotone"
 								dataKey="secondary"
-								name="Mediana"
+								name={secondaryLabel}
 								stroke="var(--chart-secondary)"
 								strokeWidth={2}
 								dot={{ r: 4 }}

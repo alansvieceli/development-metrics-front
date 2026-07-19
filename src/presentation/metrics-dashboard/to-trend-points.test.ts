@@ -23,6 +23,7 @@ function entry(
 			reworkRate: null,
 			throughput: 0,
 			predictability: null,
+			predictabilityCounts: null,
 			...overrides,
 		},
 	};
@@ -40,6 +41,17 @@ describe("toTrendPoints", () => {
 		const entries = [entry({ reworkRate: 25 })];
 		expect(toTrendPoints(entries, "reworkRate", "percent-single")).toEqual([
 			{ periodStart: entries[0].periodStart, primary: 25, secondary: null },
+		]);
+	});
+
+	it("mapeia planejado/entregue para predictability-dual", () => {
+		const entries = [
+			entry({ predictabilityCounts: { planned: 4, delivered: 3 } }),
+		];
+		expect(
+			toTrendPoints(entries, "predictability", "predictability-dual"),
+		).toEqual([
+			{ periodStart: entries[0].periodStart, primary: 4, secondary: 3 },
 		]);
 	});
 

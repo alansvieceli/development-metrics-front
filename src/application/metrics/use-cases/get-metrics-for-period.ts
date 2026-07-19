@@ -7,7 +7,9 @@ import {
 } from "@/application/metrics/formulas/duration-metrics";
 import {
 	calculatePredictability,
+	calculatePredictabilityCounts,
 	calculateReworkRate,
+	type PredictabilityCounts,
 } from "@/application/metrics/formulas/rate-metrics";
 import type {
 	CompletedTaskMetrics,
@@ -27,6 +29,7 @@ export type PeriodMetrics = {
 	throughput: number;
 	wip: number;
 	predictability: number | null;
+	predictabilityCounts: PredictabilityCounts | null;
 };
 
 export type HistoricalPeriodMetrics = Omit<PeriodMetrics, "wip">;
@@ -83,5 +86,6 @@ export function getMetricsForRange(
 		reworkRate: calculateReworkRate(completedTasks),
 		throughput: completedTasks.length,
 		predictability: calculatePredictability(dueDateTasks),
+		predictabilityCounts: calculatePredictabilityCounts(dueDateTasks),
 	};
 }

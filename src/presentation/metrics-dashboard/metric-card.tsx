@@ -1,4 +1,5 @@
 import type { DurationStats } from "@/application/metrics/formulas/duration-metrics";
+import type { PeriodType } from "@/application/metrics/period";
 import type { MetricsSeriesEntry } from "@/application/metrics/use-cases/get-metrics-dashboard";
 import type { PeriodMetrics } from "@/application/metrics/use-cases/get-metrics-for-period";
 import { formatDuration, formatPercent } from "./format-metric-value";
@@ -8,6 +9,7 @@ import { toTrendPoints } from "./to-trend-points";
 
 type MetricCardProps = {
 	definition: MetricDefinition;
+	periodType: PeriodType;
 	current: PeriodMetrics;
 	weeklySeries: MetricsSeriesEntry[];
 	monthlySeries: MetricsSeriesEntry[];
@@ -15,6 +17,7 @@ type MetricCardProps = {
 
 export function MetricCard({
 	definition,
+	periodType,
 	current,
 	weeklySeries,
 	monthlySeries,
@@ -29,6 +32,7 @@ export function MetricCard({
 			{definition.shape === "number-only" ? null : (
 				<MetricTrendChart
 					variant={shapeToVariant(definition.shape)}
+					granularity={periodType}
 					weeklyPoints={toTrendPoints(
 						weeklySeries,
 						definition.key,
@@ -40,6 +44,7 @@ export function MetricCard({
 						definition.shape,
 					)}
 					format={shapeToFormat(definition.shape)}
+					{...shapeToLabels(definition.shape)}
 				/>
 			)}
 		</div>
@@ -49,7 +54,7 @@ export function MetricCard({
 function shapeToVariant(
 	shape: MetricDefinition["shape"],
 ): "dual-line" | "single-line" | "bar" {
-	if (shape === "duration-dual") {
+	if (shape === "duration-dual" || shape === "predictability-dual") {
 		return "dual-line";
 	}
 	if (shape === "percent-single") {
@@ -68,6 +73,13 @@ function shapeToFormat(
 		return "percent";
 	}
 	return "count";
+}
+
+function shapeToLabels(shape: MetricDefinition["shape"]) {
+	if (shape === "predictability-dual") {
+		return { primaryLabel: "Planejado", secondaryLabel: "Entregue" };
+	}
+	return { primaryLabel: "Média", secondaryLabel: "Mediana" };
 }
 
 function CurrentValue({
@@ -89,7 +101,10 @@ function CurrentValue({
 			</p>
 		);
 	}
-	if (definition.shape === "percent-single") {
+	if (
+		definition.shape === "percent-single" ||
+		definition.shape === "predictability-dual"
+	) {
 		const percent = value as number | null;
 		if (percent === null) {
 			return <p className="text-sm opacity-60">sem dados</p>;
@@ -98,6 +113,11 @@ function CurrentValue({
 			<p className="font-mono text-lg font-semibold">
 				{formatPercent(percent)}
 			</p>
+		);
+	}
+	if (definition.shape === "count-bar") {
+		return (
+			<p className="font-mono text-lg font-semibold">{value as number} itens</p>
 		);
 	}
 	return <p className="font-mono text-lg font-semibold">{value as number}</p>;

@@ -14,6 +14,14 @@ export function toTrendPoints(
 	shape: MetricShape,
 ): TrendPoint[] {
 	const points = entries.map((entry): TrendPoint => {
+		if (shape === "predictability-dual") {
+			const counts = entry.metrics.predictabilityCounts;
+			return {
+				periodStart: entry.periodStart,
+				primary: counts?.planned ?? null,
+				secondary: counts?.delivered ?? null,
+			};
+		}
 		const value = entry.metrics[key as keyof typeof entry.metrics];
 		if (shape === "duration-dual") {
 			const stats = value as DurationStats | null;

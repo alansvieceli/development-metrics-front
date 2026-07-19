@@ -29,13 +29,13 @@ export function PeriodFilter({ periodType, referenceDate }: PeriodFilterProps) {
 	}
 
 	return (
-		<div className="flex items-center gap-2">
-			<div className="flex rounded-lg border border-(--border)">
+		<div className="flex h-9 items-center gap-2">
+			<div className="flex h-9 rounded-lg border border-(--border)">
 				<button
 					type="button"
 					onClick={() => goTo("WEEK", referenceDate)}
 					aria-pressed={periodType === "WEEK"}
-					className={`px-3 py-1 text-sm ${
+					className={`px-4 text-sm ${
 						periodType === "WEEK" ? "bg-(--accent) text-(--accent-fg)" : ""
 					}`}
 				>
@@ -45,7 +45,7 @@ export function PeriodFilter({ periodType, referenceDate }: PeriodFilterProps) {
 					type="button"
 					onClick={() => goTo("MONTH", referenceDate)}
 					aria-pressed={periodType === "MONTH"}
-					className={`px-3 py-1 text-sm ${
+					className={`px-4 text-sm ${
 						periodType === "MONTH" ? "bg-(--accent) text-(--accent-fg)" : ""
 					}`}
 				>
@@ -58,7 +58,7 @@ export function PeriodFilter({ periodType, referenceDate }: PeriodFilterProps) {
 				onClick={() =>
 					goTo(periodType, shiftReferenceDate(periodType, referenceDate, -1))
 				}
-				className="rounded-lg border border-(--border) px-2 py-1"
+				className="flex h-9 w-10 items-center justify-center rounded-lg border border-(--border)"
 			>
 				‹
 			</button>
@@ -68,7 +68,7 @@ export function PeriodFilter({ periodType, referenceDate }: PeriodFilterProps) {
 				onClick={() =>
 					goTo(periodType, shiftReferenceDate(periodType, referenceDate, 1))
 				}
-				className="rounded-lg border border-(--border) px-2 py-1"
+				className="flex h-9 w-10 items-center justify-center rounded-lg border border-(--border)"
 			>
 				›
 			</button>
