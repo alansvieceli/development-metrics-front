@@ -32,6 +32,8 @@ Frontend do projeto Development Metrics.
 - Dashboard com 15 indicadores do time atual, filtros semanal, quinzenal ou
   mensal, cinco gráficos e uma lista de ranking baseados no período atual e
   nos últimos 8 períodos.
+- Líderes podem consultar métricas por desenvolvedor, trocar o membro e o
+  período e abrir as tasks usadas como evidência de cada indicador.
 
 ## Regras das métricas
 
@@ -51,6 +53,8 @@ Frontend do projeto Development Metrics.
   mediana. Os percentuais são arredondados apenas na apresentação.
 - Sem tarefas elegíveis, as durações, retrabalho e previsibilidade aparecem como
   `sem dados`; throughput e WIP aparecem como `0`.
+- As métricas individuais usam o responsável atual da task. Bugs são associados
+  ao desenvolvedor por meio da task de origem vinculada.
 
 | Métrica | Regra implementada |
 | --- | --- |

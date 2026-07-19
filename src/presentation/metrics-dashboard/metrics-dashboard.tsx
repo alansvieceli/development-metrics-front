@@ -1,4 +1,5 @@
 import { CalendarDays } from "lucide-react";
+import Link from "next/link";
 import type { PeriodType } from "@/application/metrics/period";
 import type {
 	HistoricalPeriodMetrics,
@@ -51,6 +52,12 @@ export function MetricsDashboard({
 					</div>
 				</div>
 				<div className="flex flex-wrap items-center gap-2 self-start rounded-xl border border-(--border) bg-(--surface) p-2 lg:self-auto">
+					<Link
+						href="/metrics/developers"
+						className="flex h-9 items-center rounded-lg border border-(--border) px-3 text-sm transition-colors hover:bg-white/10"
+					>
+						Por desenvolvedor
+					</Link>
 					<MetricInfoButton />
 					<PeriodFilter
 						periodType={periodType}

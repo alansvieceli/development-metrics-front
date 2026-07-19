@@ -19,6 +19,7 @@ export type MetricKey =
 	| "leadCycleTimeTrend"
 	| "flowComposition"
 	| "bugsOpenedTrend"
+	| "bugsAssociated"
 	| "bugsRanking";
 
 export type MetricDefinition = {
@@ -137,6 +138,12 @@ export const METRIC_DEFINITIONS: MetricDefinition[] = [
 		label: "Bugs abertos por período",
 		description:
 			"Bugs abertos (tasks do tipo Bug) em cada um dos últimos 8 períodos (semanas, quinzenas ou meses).",
+	},
+	{
+		key: "bugsAssociated",
+		label: "Bugs associados",
+		description:
+			"Bugs abertos no período vinculados às entregas do desenvolvedor.",
 	},
 	{
 		key: "bugsRanking",

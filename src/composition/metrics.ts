@@ -1,4 +1,5 @@
 import type { PeriodType } from "@/application/metrics/period";
+import { getDeveloperMetrics } from "@/application/metrics/use-cases/get-developer-metrics";
 import {
 	getMetricsDashboard,
 	getMetricsDashboardForRange,
@@ -7,6 +8,21 @@ import { drizzleMetricsQueryPort } from "@/infrastructure/metrics/drizzle-metric
 
 export function createMetricsUseCases() {
 	return {
+		getDeveloperMetrics: (
+			teamId: string,
+			assigneeId: string,
+			previousStart: Date,
+			start: Date,
+			end: Date,
+		) =>
+			getDeveloperMetrics(
+				drizzleMetricsQueryPort,
+				teamId,
+				assigneeId,
+				previousStart,
+				start,
+				end,
+			),
 		getMetricsDashboard: (
 			teamId: string,
 			periodType: PeriodType,

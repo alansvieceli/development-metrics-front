@@ -14,6 +14,7 @@ import {
 	UsersRound,
 } from "lucide-react";
 import type { CSSProperties, ReactNode } from "react";
+import type { MetricTaskEvidence } from "@/application/metrics/ports/metrics-query-port";
 import { METRIC_DEFINITIONS, type MetricKey } from "./metric-definitions";
 
 type StatTileProps = {
@@ -23,6 +24,7 @@ type StatTileProps = {
 	detail?: ReactNode;
 	detailIcon?: LucideIcon;
 	featured?: boolean;
+	evidence?: MetricTaskEvidence[];
 };
 
 type MetricVisual = { color: string; icon: LucideIcon };
@@ -52,6 +54,7 @@ export function StatTile({
 	detail,
 	detailIcon: DetailIcon = Clock3,
 	featured = false,
+	evidence,
 }: StatTileProps) {
 	const definition = METRIC_DEFINITIONS.find((item) => item.key === metricKey);
 	const visual = METRIC_VISUALS[metricKey] ?? {
@@ -111,6 +114,23 @@ export function StatTile({
 					<DetailIcon size={15} aria-hidden="true" style={{ color }} />
 					<span>{detail}</span>
 				</div>
+			) : null}
+			{evidence && evidence.length > 0 ? (
+				<details className="mt-3 border-t border-(--border) pt-3 text-xs text-(--foreground-muted)">
+					<summary className="cursor-pointer">
+						Ver tasks ({evidence.length})
+					</summary>
+					<ul className="mt-2 flex flex-col gap-1">
+						{evidence.map((task) => (
+							<li key={task.taskId}>
+								<span className="font-mono text-(--accent)">
+									{task.externalId}
+								</span>{" "}
+								— {task.description}
+							</li>
+						))}
+					</ul>
+				</details>
 			) : null}
 		</div>
 	);

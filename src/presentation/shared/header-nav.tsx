@@ -15,7 +15,10 @@ export function HeaderNav() {
 	return (
 		<nav className="flex items-center gap-5 font-mono text-xs uppercase tracking-wide">
 			{NAV_LINKS.map((link) => {
-				const active = pathname === link.href;
+				const active =
+					link.href === "/metrics"
+						? pathname.startsWith("/metrics")
+						: pathname === link.href;
 				return (
 					<Link
 						key={link.href}
