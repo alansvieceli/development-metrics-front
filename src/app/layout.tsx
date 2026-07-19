@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import type { ReactNode } from "react";
 import { selectTeamAction } from "@/app/actions";
 import { createTeamUseCases } from "@/composition/team";
+import { HeaderNav } from "@/presentation/shared/header-nav";
 import { RootShell } from "@/presentation/shared/root-shell";
 import { TeamSwitcher } from "@/presentation/team/team-switcher";
 
@@ -25,31 +25,13 @@ export default async function RootLayout({
 	return (
 		<RootShell>
 			<header className="flex items-center justify-between bg-(--header-bg) px-6 py-4">
-				<span className="font-semibold text-(--header-fg)">
-					Development Metrics
+				<span className="font-mono font-bold text-(--header-fg)">
+					DEV·METRICS
+					<span className="brand-cursor text-(--accent)">_</span>
 				</span>
 				{currentTeam ? (
-					<div className="flex items-center gap-4">
-						<nav className="flex items-center gap-4">
-							<Link
-								href="/board"
-								className="text-sm text-(--header-fg) hover:underline"
-							>
-								Quadro
-							</Link>
-							<Link
-								href="/metrics"
-								className="text-sm text-(--header-fg) hover:underline"
-							>
-								Métricas
-							</Link>
-						</nav>
-						<Link
-							href="/task-types"
-							className="text-sm text-(--header-fg) hover:underline"
-						>
-							Tipos de task
-						</Link>
+					<div className="flex items-center gap-5">
+						<HeaderNav />
 						<TeamSwitcher
 							currentTeam={currentTeam}
 							teams={teams}
