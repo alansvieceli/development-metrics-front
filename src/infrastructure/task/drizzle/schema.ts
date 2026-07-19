@@ -42,7 +42,7 @@ export const tasks = pgTable(
 	(table) => [
 		check(
 			"tasks_status_check",
-			sql`${table.status} IN ('TODO', 'IN_DEVELOPMENT', 'CODE_REVIEW', 'DONE')`,
+			sql`${table.status} IN ('TODO', 'IN_DEVELOPMENT', 'CODE_REVIEW', 'TESTING', 'AWAITING_PUBLICATION', 'DONE')`,
 		),
 		uniqueIndex("tasks_team_id_external_id_idx").on(
 			table.teamId,
@@ -67,11 +67,11 @@ export const taskStatusChanges = pgTable(
 	(table) => [
 		check(
 			"task_status_changes_from_status_check",
-			sql`${table.fromStatus} IS NULL OR ${table.fromStatus} IN ('TODO', 'IN_DEVELOPMENT', 'CODE_REVIEW', 'DONE')`,
+			sql`${table.fromStatus} IS NULL OR ${table.fromStatus} IN ('TODO', 'IN_DEVELOPMENT', 'CODE_REVIEW', 'TESTING', 'AWAITING_PUBLICATION', 'DONE')`,
 		),
 		check(
 			"task_status_changes_to_status_check",
-			sql`${table.toStatus} IN ('TODO', 'IN_DEVELOPMENT', 'CODE_REVIEW', 'DONE')`,
+			sql`${table.toStatus} IN ('TODO', 'IN_DEVELOPMENT', 'CODE_REVIEW', 'TESTING', 'AWAITING_PUBLICATION', 'DONE')`,
 		),
 		index("task_status_changes_task_id_changed_at_idx").on(
 			table.taskId,
