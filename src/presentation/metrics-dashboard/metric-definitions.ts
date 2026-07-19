@@ -13,7 +13,11 @@ export type MetricKey =
 	| "codeReviewTime"
 	| "testingTime"
 	| "blockedTime"
-	| "awaitingPublicationTime";
+	| "awaitingPublicationTime"
+	| "throughputTrend"
+	| "plannedDeliveredTrend"
+	| "leadCycleTimeTrend"
+	| "flowComposition";
 
 export type MetricDefinition = {
 	key: MetricKey;
@@ -101,5 +105,29 @@ export const METRIC_DEFINITIONS: MetricDefinition[] = [
 		key: "awaitingPublicationTime",
 		label: "Aguardando publicação",
 		description: "Média do tempo que o card esperou para ser publicado.",
+	},
+	{
+		key: "throughputTrend",
+		label: "Throughput por período",
+		description:
+			"Cards entregues em cada um dos últimos 8 períodos (semanas ou meses).",
+	},
+	{
+		key: "plannedDeliveredTrend",
+		label: "Planejado x entregue",
+		description:
+			"Cards com prazo (planejado) e cards entregues até o prazo (entregue) em cada um dos últimos 8 períodos.",
+	},
+	{
+		key: "leadCycleTimeTrend",
+		label: "Lead time x Cycle time",
+		description:
+			"Mediana do lead time e do cycle time em cada um dos últimos 8 períodos.",
+	},
+	{
+		key: "flowComposition",
+		label: "Composição do fluxo",
+		description:
+			"Média do tempo do card em cada etapa (desenvolvimento, code review, testes, bloqueado, aguardando publicação) no período atual. Desenvolvimento é o tempo restante do cycle time depois de somar as outras etapas.",
 	},
 ];

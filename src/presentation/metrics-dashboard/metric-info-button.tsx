@@ -25,6 +25,15 @@ const GROUPS: { title: string; keys: MetricKey[] }[] = [
 			"awaitingPublicationTime",
 		],
 	},
+	{
+		title: "Gráficos",
+		keys: [
+			"throughputTrend",
+			"plannedDeliveredTrend",
+			"leadCycleTimeTrend",
+			"flowComposition",
+		],
+	},
 ];
 
 export function MetricInfoButton() {
