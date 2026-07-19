@@ -32,4 +32,17 @@ describe("deleteTaskType", () => {
 			"Não é possível excluir um tipo de task que está em uso por tasks",
 		);
 	});
+
+	it("rejeita excluir o tipo Bug mesmo sem uso", async () => {
+		const taskTypeRepository = createFakeTaskTypeRepository();
+		const taskRepository = createFakeTaskRepository();
+		const bugType = await taskTypeRepository.seedType({
+			name: "Bug",
+			color: "#dc2626",
+			isBug: true,
+		});
+		await expect(
+			deleteTaskType(taskTypeRepository, taskRepository, bugType.id),
+		).rejects.toThrow("O tipo Bug não pode ser excluído");
+	});
 });

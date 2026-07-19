@@ -6,6 +6,10 @@ export async function deleteTaskType(
 	taskRepository: TaskRepository,
 	typeId: string,
 ) {
+	const taskType = await taskTypeRepository.findById(typeId);
+	if (taskType?.isBug) {
+		throw new Error("O tipo Bug não pode ser excluído");
+	}
 	const tasksUsingType = await taskRepository.countByType(typeId);
 	if (tasksUsingType > 0) {
 		throw new Error(
