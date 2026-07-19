@@ -45,8 +45,7 @@ export function HistoricalTaskFormModal({
 		const typeId = String(formData.get("typeId") ?? "");
 		const assigneeIdValue = String(formData.get("assigneeId") ?? "");
 		const assigneeId = assigneeIdValue === "" ? null : assigneeIdValue;
-		const dueDateValue = String(formData.get("dueDate") ?? "");
-		const dueDate = dueDateValue === "" ? null : dueDateValue;
+		const dueDate = String(formData.get("dueDate") ?? "");
 
 		setPending(true);
 		setError(null);
@@ -153,6 +152,7 @@ export function HistoricalTaskFormModal({
 								type="date"
 								name="dueDate"
 								className="rounded-lg border border-(--border) px-3 py-2"
+								required
 							/>
 						</div>
 						<div className="flex flex-col gap-2">

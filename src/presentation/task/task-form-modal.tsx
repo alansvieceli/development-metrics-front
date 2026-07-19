@@ -51,8 +51,7 @@ export function TaskFormModal(props: TaskFormModalProps) {
 		const typeId = String(formData.get("typeId") ?? "");
 		const assigneeIdValue = String(formData.get("assigneeId") ?? "");
 		const assigneeId = assigneeIdValue === "" ? null : assigneeIdValue;
-		const dueDateValue = String(formData.get("dueDate") ?? "");
-		const dueDate = dueDateValue === "" ? null : dueDateValue;
+		const dueDate = String(formData.get("dueDate") ?? "");
 
 		setPending(true);
 		setError(null);
@@ -234,8 +233,9 @@ export function TaskFormModal(props: TaskFormModalProps) {
 								id="dueDate"
 								type="date"
 								name="dueDate"
-								defaultValue={isEdit ? (props.task.dueDate ?? "") : ""}
+								defaultValue={isEdit ? props.task.dueDate : ""}
 								className="rounded-lg border border-(--border) px-3 py-2"
+								required
 							/>
 						</div>
 						{!isEdit ? (
