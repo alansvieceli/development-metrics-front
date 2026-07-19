@@ -75,6 +75,7 @@ export function TaskFormModal(props: TaskFormModalProps) {
 					typeId,
 					assigneeId,
 					dueDate,
+					parentTaskId: props.task.parentTaskId,
 				});
 			}
 			if (result.error) {

@@ -42,6 +42,7 @@ describe("updateTask", () => {
 				typeId: otherType.id,
 				assigneeId: "member-1",
 				dueDate: "2026-08-01",
+				parentTaskId: null,
 			},
 		);
 		expect(updated.description).toBe("Corrigir bug de login (revisado)");
@@ -70,6 +71,7 @@ describe("updateTask", () => {
 				typeId: type.id,
 				assigneeId: null,
 				dueDate: "2026-07-01",
+				parentTaskId: null,
 			}),
 		).rejects.toThrow(
 			'Já existe uma task com o id externo "TASK-1" neste time',
@@ -107,8 +109,70 @@ describe("updateTask", () => {
 				typeId: type.id,
 				assigneeId: null,
 				dueDate: "2026-07-01",
+				parentTaskId: null,
 				...change,
 			}),
 		).rejects.toThrow(message);
+	});
+
+	it("vincula a uma task de origem do mesmo time", async () => {
+		const { repository, typeRepository, teamAccess, task, type } =
+			await setup();
+		const parent = await repository.seed({
+			externalId: "TASK-PAI",
+			description: "Origem",
+			typeId: type.id,
+			assigneeId: null,
+			teamId: "team-1",
+			status: "TODO",
+			dueDate: "2026-07-01",
+			parentTaskId: null,
+		});
+		const updated = await updateTask(
+			repository,
+			typeRepository,
+			teamAccess,
+			"team-1",
+			task.id,
+			{
+				externalId: task.externalId,
+				description: task.description,
+				typeId: type.id,
+				assigneeId: null,
+				dueDate: "2026-07-01",
+				parentTaskId: parent.id,
+			},
+		);
+		expect(updated.parentTaskId).toBe(parent.id);
+	});
+
+	it("rejeita se tornar origem dela mesma", async () => {
+		const { repository, typeRepository, teamAccess, task, type } =
+			await setup();
+		await expect(
+			updateTask(repository, typeRepository, teamAccess, "team-1", task.id, {
+				externalId: task.externalId,
+				description: task.description,
+				typeId: type.id,
+				assigneeId: null,
+				dueDate: "2026-07-01",
+				parentTaskId: task.id,
+			}),
+		).rejects.toThrow("Uma task não pode ser origem dela mesma");
+	});
+
+	it("rejeita task de origem inexistente", async () => {
+		const { repository, typeRepository, teamAccess, task, type } =
+			await setup();
+		await expect(
+			updateTask(repository, typeRepository, teamAccess, "team-1", task.id, {
+				externalId: task.externalId,
+				description: task.description,
+				typeId: type.id,
+				assigneeId: null,
+				dueDate: "2026-07-01",
+				parentTaskId: "missing",
+			}),
+		).rejects.toThrow("Task de origem não encontrada");
 	});
 });

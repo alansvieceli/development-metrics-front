@@ -10,6 +10,7 @@ export type UpdateTaskInput = {
 	typeId: string;
 	assigneeId: string | null;
 	dueDate: string;
+	parentTaskId: string | null;
 };
 
 export async function updateTask(
@@ -47,6 +48,15 @@ export async function updateTask(
 	if (!parseDateOnly(input.dueDate)) {
 		throw new ApplicationError("Data prevista inválida");
 	}
+	if (input.parentTaskId) {
+		if (input.parentTaskId === taskId) {
+			throw new ApplicationError("Uma task não pode ser origem dela mesma");
+		}
+		const parentTask = await repository.findById(input.parentTaskId);
+		if (!parentTask || parentTask.teamId !== teamId) {
+			throw new ApplicationError("Task de origem não encontrada");
+		}
+	}
 	const existing = await repository.findByExternalId(task.teamId, externalId);
 	if (existing && existing.id !== taskId) {
 		throw new ApplicationError(
@@ -59,6 +69,6 @@ export async function updateTask(
 		typeId: input.typeId,
 		assigneeId: input.assigneeId,
 		dueDate: input.dueDate,
-		parentTaskId: null,
+		parentTaskId: input.parentTaskId,
 	});
 }
