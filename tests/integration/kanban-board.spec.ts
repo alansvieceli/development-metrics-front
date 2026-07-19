@@ -18,6 +18,7 @@ test("criar uma task pelo modal a coloca na coluna escolhida", async ({
 	await page.getByLabel("Descrição").fill("Corrigir bug de login");
 	await page.getByLabel("Tipo").selectOption({ label: "Bug" });
 	await page.getByLabel("Coluna inicial").selectOption({ label: "Revisão" });
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
 	await page.getByRole("button", { name: "Salvar" }).click();
 
 	await expect(
@@ -29,6 +30,7 @@ test("mover uma task pelo select atualiza a coluna", async ({ page }) => {
 	await page.getByRole("button", { name: "Task" }).click();
 	await page.getByLabel("Id externo").fill("TASK-2");
 	await page.getByLabel("Descrição").fill("Ajustar layout");
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
 	await page.getByRole("button", { name: "Salvar" }).click();
 
 	await expect(
@@ -50,6 +52,7 @@ test("a cor do tipo aparece na borda do card", async ({ page }) => {
 	await page.getByLabel("Id externo").fill("TASK-3");
 	await page.getByLabel("Descrição").fill("Investigar lentidão");
 	await page.getByLabel("Tipo").selectOption({ label: "Bug" });
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
 	await page.getByRole("button", { name: "Salvar" }).click();
 
 	const card = page.getByTitle("Bug").filter({ hasText: "TASK-3" });
@@ -88,6 +91,7 @@ test("restaura o status quando a movimentação é rejeitada", async ({
 	await page.getByRole("button", { name: "Task" }).click();
 	await page.getByLabel("Id externo").fill("TASK-INVALID-MOVE");
 	await page.getByLabel("Descrição").fill("Testar status inválido");
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
 	await page.getByRole("button", { name: "Salvar" }).click();
 	const select = page
 		.getByTestId("column-TODO")
@@ -114,15 +118,17 @@ test("a contagem da coluna reflete o número de cards", async ({ page }) => {
 	await page.getByRole("button", { name: "Task" }).click();
 	await page.getByLabel("Id externo").fill("TASK-COUNT-1");
 	await page.getByLabel("Descrição").fill("Primeira task");
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
 	await page.getByRole("button", { name: "Salvar" }).click();
 
 	await expect(
 		page.getByRole("heading", { name: "Backlog (1)" }),
 	).toBeVisible();
 
-	await page.getByRole("button", { name: "Task" }).click();
+	await page.getByRole("button", { name: "Task", exact: true }).click();
 	await page.getByLabel("Id externo").fill("TASK-COUNT-2");
 	await page.getByLabel("Descrição").fill("Segunda task");
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
 	await page.getByRole("button", { name: "Salvar" }).click();
 
 	await expect(
@@ -150,6 +156,7 @@ test("o chip de responsável mostra a contagem de cards ativos", async ({
 	await page.getByLabel("Id externo").fill("TASK-ANA-1");
 	await page.getByLabel("Descrição").fill("Task da Ana");
 	await page.getByLabel("Responsável").selectOption({ label: "Ana" });
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
 	await page.getByRole("button", { name: "Salvar" }).click();
 
 	await expect(page.getByText("Ana: 1")).toBeVisible();
@@ -162,6 +169,7 @@ test("o chip de bloqueados aparece e some conforme o card é bloqueado", async (
 	await page.getByLabel("Id externo").fill("TASK-BLOCK-1");
 	await page.getByLabel("Descrição").fill("Task a bloquear");
 	await page.getByLabel("Tipo").selectOption({ label: "Bug" });
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
 	await page.getByRole("button", { name: "Salvar" }).click();
 
 	await expect(page.getByText("bloqueados")).toHaveCount(0);
@@ -192,6 +200,7 @@ test("cadastro retroativo cria o card já na coluna da última etapa", async ({
 	await page.getByRole("button", { name: "+ Adicionar etapa" }).click();
 	await page.getByLabel("Status da etapa 2").selectOption({ label: "Revisão" });
 	await page.getByLabel("Data da etapa 2").fill("2026-07-05");
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
 	await page.getByRole("button", { name: "Salvar" }).click();
 
 	await expect(

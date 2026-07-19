@@ -86,6 +86,7 @@ test("mostra erros ao remover vínculos usados por task", async ({ page }) => {
 	await page.getByLabel("Id externo").fill("TASK-1");
 	await page.getByLabel("Descrição").fill("Task da Ana");
 	await page.getByLabel("Responsável").selectOption({ label: "Ana" });
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
 	await page.getByRole("button", { name: "Salvar" }).click();
 	await page.getByRole("button", { name: "Time A", exact: true }).click();
 	await page.getByRole("link", { name: "Gerenciar time atual" }).click();

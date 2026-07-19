@@ -43,6 +43,7 @@ test("não permite excluir um tipo em uso por uma task", async ({ page }) => {
 	await page.getByLabel("Id externo").fill("TASK-1");
 	await page.getByLabel("Descrição").fill("Primeira task");
 	await page.getByLabel("Tipo").selectOption({ label: "História" });
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
 	await page.getByRole("button", { name: "Salvar" }).click();
 
 	await page.getByRole("link", { name: "Tipos de task" }).click();
