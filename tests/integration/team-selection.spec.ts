@@ -55,3 +55,18 @@ test("trocar de time pelo dropdown do header", async ({ page }) => {
 		page.getByRole("button", { name: "Time B", exact: true }),
 	).toBeVisible();
 });
+
+test("abre o gerenciamento em dialog e fecha pelo botão", async ({ page }) => {
+	await page.goto("/teams");
+	await page.getByPlaceholder("Nome do time").fill("Time A");
+	await page.getByRole("button", { name: "Criar time" }).click();
+	await page.getByRole("button", { name: "Time A" }).click();
+	await page.getByRole("button", { name: "Time A", exact: true }).click();
+	await page.getByRole("link", { name: "Gerenciar time atual" }).click();
+
+	const dialog = page.getByRole("dialog", { name: "Gerenciar time" });
+	await expect(dialog).toBeVisible();
+	await dialog.getByRole("button", { name: "Fechar" }).click();
+	await expect(dialog).toBeHidden();
+	await expect(page).toHaveURL("/board");
+});

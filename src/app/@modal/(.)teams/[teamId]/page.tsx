@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { isUuid } from "@/application/shared/validation";
 import { createTeamUseCases } from "@/composition/team";
-import { Modal } from "@/presentation/shared/modal";
+import { RouteModal } from "@/presentation/shared/route-modal";
 import { TeamManageView } from "@/presentation/team/team-manage-view";
 import {
 	addMemberAction,
@@ -28,7 +28,7 @@ export default async function ManageTeamModal({
 	const { team, members } = result;
 
 	return (
-		<Modal>
+		<RouteModal label="Gerenciar time">
 			<TeamManageView
 				team={team}
 				members={members}
@@ -38,6 +38,6 @@ export default async function ManageTeamModal({
 				removeMemberAction={removeMemberAction.bind(null, teamId)}
 				deleteTeamAction={deleteTeamAction.bind(null, teamId)}
 			/>
-		</Modal>
+		</RouteModal>
 	);
 }

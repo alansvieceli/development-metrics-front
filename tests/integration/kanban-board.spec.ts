@@ -57,3 +57,29 @@ test("a cor do tipo aparece na borda do card", async ({ page }) => {
 	const card = page.getByTitle("Bug").filter({ hasText: "TASK-3" });
 	await expect(card).toHaveCSS("border-left-color", "rgb(220, 38, 38)");
 });
+
+test("fecha o modal de task com Escape e devolve o foco", async ({ page }) => {
+	const trigger = page.getByRole("button", { name: "Nova task" });
+	await trigger.click();
+	const dialog = page.getByRole("dialog", { name: "Nova task" });
+	await expect(dialog).toBeVisible();
+
+	await page.keyboard.press("Escape");
+	await expect(dialog).toBeHidden();
+	await expect(trigger).toBeFocused();
+});
+
+test("fecha o modal de task pelo botão Fechar", async ({ page }) => {
+	await page.getByRole("button", { name: "Nova task" }).click();
+	const dialog = page.getByRole("dialog", { name: "Nova task" });
+	await dialog.getByRole("button", { name: "Fechar" }).click();
+	await expect(dialog).toBeHidden();
+});
+
+test("fecha o modal de task ao clicar no backdrop", async ({ page }) => {
+	await page.getByRole("button", { name: "Nova task" }).click();
+	const dialog = page.getByRole("dialog", { name: "Nova task" });
+	await expect(dialog).toBeVisible();
+	await page.mouse.click(5, 5);
+	await expect(dialog).toBeHidden();
+});
