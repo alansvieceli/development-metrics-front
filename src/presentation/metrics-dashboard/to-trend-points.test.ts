@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
+import type { MetricsSeriesEntry } from "@/application/metrics/use-cases/get-metrics-dashboard";
 import type { PeriodMetrics } from "@/application/metrics/use-cases/get-metrics-for-period";
-import type { MetricsSeriesEntry } from "@/application/metrics/use-cases/get-metrics-series";
 import { toTrendPoints } from "./to-trend-points";
 
 function entry(
@@ -20,7 +20,6 @@ function entry(
 			codeReviewTime: null,
 			reworkRate: null,
 			throughput: 0,
-			wip: 0,
 			predictability: null,
 			...overrides,
 		},

@@ -1,6 +1,6 @@
 import type { PeriodType } from "@/application/metrics/period";
+import type { MetricsSeriesEntry } from "@/application/metrics/use-cases/get-metrics-dashboard";
 import type { PeriodMetrics } from "@/application/metrics/use-cases/get-metrics-for-period";
-import type { MetricsSeriesEntry } from "@/application/metrics/use-cases/get-metrics-series";
 import { MetricCard } from "./metric-card";
 import { METRIC_DEFINITIONS } from "./metric-definitions";
 import { PeriodFilter } from "./period-filter";

@@ -1,10 +1,16 @@
 import type { InferInsertModel } from "drizzle-orm";
 import { sql } from "drizzle-orm";
+import { drizzle } from "drizzle-orm/postgres-js";
+import postgres from "postgres";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { db } from "@/infrastructure/db/client";
 import { taskStatusChanges, tasks } from "@/infrastructure/task/drizzle/schema";
 import { drizzleTaskTypeRepository } from "@/infrastructure/task/drizzle-task-type-repository";
-import { drizzleMetricsQueryPort } from "./drizzle-metrics-query-port";
+import { getTestDatabaseUrl } from "../../../scripts/test-database-url";
+import {
+	createDrizzleMetricsQueryPort,
+	drizzleMetricsQueryPort,
+} from "./drizzle-metrics-query-port";
 
 const TEAM_ID = "11111111-1111-1111-1111-111111111111";
 
@@ -66,15 +72,15 @@ describe("drizzleMetricsQueryPort", () => {
 
 		const periodStart = new Date(Date.now() - 24 * 60 * 60 * 1000);
 		const periodEnd = new Date(Date.now() + 24 * 60 * 60 * 1000);
-		const completed = await drizzleMetricsQueryPort.listCompletedTasksInPeriod(
+		const snapshot = await drizzleMetricsQueryPort.loadSnapshot(
 			TEAM_ID,
 			periodStart,
 			periodEnd,
 		);
 
-		expect(completed).toHaveLength(1);
-		expect(completed[0].taskId).toBe(task.id);
-		expect(completed[0].statusChanges).toHaveLength(3);
+		expect(snapshot.completionEvents).toHaveLength(1);
+		expect(snapshot.completionEvents[0].taskId).toBe(task.id);
+		expect(snapshot.statusChanges).toHaveLength(3);
 	});
 
 	it("não lista tasks concluídas fora do período", async () => {
@@ -85,12 +91,12 @@ describe("drizzleMetricsQueryPort", () => {
 			toStatus: "DONE",
 		});
 
-		const completed = await drizzleMetricsQueryPort.listCompletedTasksInPeriod(
+		const snapshot = await drizzleMetricsQueryPort.loadSnapshot(
 			TEAM_ID,
 			new Date(Date.now() + 24 * 60 * 60 * 1000),
 			new Date(Date.now() + 48 * 60 * 60 * 1000),
 		);
-		expect(completed).toEqual([]);
+		expect(snapshot.completionEvents).toEqual([]);
 	});
 
 	it("lista tasks com dueDate no período informando a primeira conclusão", async () => {
@@ -101,25 +107,25 @@ describe("drizzleMetricsQueryPort", () => {
 			toStatus: "DONE",
 		});
 
-		const result = await drizzleMetricsQueryPort.listTasksWithDueDateInPeriod(
+		const snapshot = await drizzleMetricsQueryPort.loadSnapshot(
 			TEAM_ID,
 			new Date("2026-07-01T00:00:00Z"),
 			new Date("2026-08-01T00:00:00Z"),
 		);
 
-		expect(result).toHaveLength(1);
-		expect(result[0].dueDate).toBe("2026-07-10");
-		expect(result[0].firstCompletedAt).not.toBeNull();
+		expect(snapshot.dueDateTasks).toHaveLength(1);
+		expect(snapshot.dueDateTasks[0].dueDate).toBe("2026-07-10");
+		expect(snapshot.dueDateTasks[0].firstCompletedAt).not.toBeNull();
 	});
 
 	it("retorna firstCompletedAt nulo para task ainda não concluída", async () => {
 		await insertTask({ dueDate: "2026-07-10" });
-		const result = await drizzleMetricsQueryPort.listTasksWithDueDateInPeriod(
+		const snapshot = await drizzleMetricsQueryPort.loadSnapshot(
 			TEAM_ID,
 			new Date("2026-07-01T00:00:00Z"),
 			new Date("2026-08-01T00:00:00Z"),
 		);
-		expect(result[0].firstCompletedAt).toBeNull();
+		expect(snapshot.dueDateTasks[0].firstCompletedAt).toBeNull();
 	});
 
 	it("conta o WIP como tasks em desenvolvimento ou code review", async () => {
@@ -127,6 +133,41 @@ describe("drizzleMetricsQueryPort", () => {
 		await insertTask({ externalId: "TASK-2", status: "CODE_REVIEW" });
 		await insertTask({ externalId: "TASK-3", status: "TODO" });
 
-		expect(await drizzleMetricsQueryPort.countWip(TEAM_ID)).toBe(2);
+		const snapshot = await drizzleMetricsQueryPort.loadSnapshot(
+			TEAM_ID,
+			new Date("2026-07-01T00:00:00Z"),
+			new Date("2026-08-01T00:00:00Z"),
+		);
+		expect(snapshot.wip).toBe(2);
+	});
+
+	it("carrega o snapshot em no máximo cinco queries", async () => {
+		const task = await insertTask({ status: "DONE", dueDate: "2026-07-10" });
+		await db.insert(taskStatusChanges).values({
+			taskId: task.id,
+			fromStatus: "IN_DEVELOPMENT",
+			toStatus: "DONE",
+		});
+		let queryCount = 0;
+		const client = postgres(getTestDatabaseUrl(), {
+			max: 1,
+			debug() {
+				queryCount += 1;
+			},
+		});
+		const port = createDrizzleMetricsQueryPort(drizzle(client));
+
+		try {
+			await client.unsafe("select 1");
+			queryCount = 0;
+			await port.loadSnapshot(
+				TEAM_ID,
+				new Date("2026-07-01T00:00:00Z"),
+				new Date("2026-08-01T00:00:00Z"),
+			);
+			expect(queryCount).toBeLessThanOrEqual(5);
+		} finally {
+			await client.end();
+		}
 	});
 });

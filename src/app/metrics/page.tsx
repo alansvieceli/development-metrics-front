@@ -4,9 +4,6 @@ import { createTeamUseCases } from "@/composition/team";
 import { MetricsDashboard } from "@/presentation/metrics-dashboard/metrics-dashboard";
 import { parseMetricsFilter } from "@/presentation/metrics-dashboard/parse-metrics-search-params";
 
-const WEEKLY_SERIES_LENGTH = 8;
-const MONTHLY_SERIES_LENGTH = 6;
-
 export default async function MetricsPage({
 	searchParams,
 }: {
@@ -23,25 +20,12 @@ export default async function MetricsPage({
 		parseMetricsFilter(resolvedSearchParams);
 
 	const metricsUseCases = createMetricsUseCases();
-	const [current, weeklySeries, monthlySeries] = await Promise.all([
-		metricsUseCases.getMetricsForPeriod(
+	const { current, weeklySeries, monthlySeries } =
+		await metricsUseCases.getMetricsDashboard(
 			currentTeam.id,
 			periodType,
 			referenceDate,
-		),
-		metricsUseCases.getMetricsSeries(
-			currentTeam.id,
-			"WEEK",
-			referenceDate,
-			WEEKLY_SERIES_LENGTH,
-		),
-		metricsUseCases.getMetricsSeries(
-			currentTeam.id,
-			"MONTH",
-			referenceDate,
-			MONTHLY_SERIES_LENGTH,
-		),
-	]);
+		);
 
 	return (
 		<MetricsDashboard

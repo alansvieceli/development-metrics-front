@@ -21,16 +21,37 @@ export type DueDateTaskMetrics = {
 	firstCompletedAt: Date | null;
 };
 
+type CompletionEvent = {
+	taskId: string;
+	createdAt: Date;
+	completedAt: Date;
+};
+
+type SnapshotStatusChange = {
+	taskId: string;
+	fromStatus: TaskStatus | null;
+	toStatus: TaskStatus;
+	changedAt: Date;
+};
+
+type SnapshotBlockedPeriod = {
+	taskId: string;
+	blockedAt: Date;
+	unblockedAt: Date | null;
+};
+
+export type MetricsSnapshot = {
+	completionEvents: CompletionEvent[];
+	statusChanges: SnapshotStatusChange[];
+	blockedPeriods: SnapshotBlockedPeriod[];
+	dueDateTasks: DueDateTaskMetrics[];
+	wip: number;
+};
+
 export type MetricsQueryPort = {
-	listCompletedTasksInPeriod(
+	loadSnapshot(
 		teamId: string,
 		periodStart: Date,
 		periodEnd: Date,
-	): Promise<CompletedTaskMetrics[]>;
-	listTasksWithDueDateInPeriod(
-		teamId: string,
-		periodStart: Date,
-		periodEnd: Date,
-	): Promise<DueDateTaskMetrics[]>;
-	countWip(teamId: string): Promise<number>;
+	): Promise<MetricsSnapshot>;
 };

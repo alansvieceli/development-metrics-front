@@ -9,8 +9,10 @@ import {
 	calculatePredictability,
 	calculateReworkRate,
 } from "@/application/metrics/formulas/rate-metrics";
-import { getPeriodRange, type PeriodType } from "@/application/metrics/period";
-import type { MetricsQueryPort } from "@/application/metrics/ports/metrics-query-port";
+import type {
+	CompletedTaskMetrics,
+	MetricsSnapshot,
+} from "@/application/metrics/ports/metrics-query-port";
 
 export type PeriodMetrics = {
 	periodStart: Date;
@@ -25,19 +27,45 @@ export type PeriodMetrics = {
 	predictability: number | null;
 };
 
-export async function getMetricsForRange(
-	port: MetricsQueryPort,
-	teamId: string,
+export type HistoricalPeriodMetrics = Omit<PeriodMetrics, "wip">;
+
+export function getMetricsForRange(
+	snapshot: MetricsSnapshot,
 	periodStart: Date,
 	periodEnd: Date,
 	now: Date = new Date(),
-): Promise<PeriodMetrics> {
-	const [completedTasks, dueDateTasks, wip] = await Promise.all([
-		port.listCompletedTasksInPeriod(teamId, periodStart, periodEnd),
-		port.listTasksWithDueDateInPeriod(teamId, periodStart, periodEnd),
-		port.countWip(teamId),
-	]);
-
+): HistoricalPeriodMetrics {
+	const completionByTask = new Map<
+		string,
+		MetricsSnapshot["completionEvents"][number]
+	>();
+	for (const completion of snapshot.completionEvents) {
+		if (
+			completion.completedAt >= periodStart &&
+			completion.completedAt < periodEnd
+		) {
+			const previous = completionByTask.get(completion.taskId);
+			if (!previous || completion.completedAt > previous.completedAt) {
+				completionByTask.set(completion.taskId, completion);
+			}
+		}
+	}
+	const completedTasks = [...completionByTask.values()].map(
+		(completion): CompletedTaskMetrics => ({
+			...completion,
+			statusChanges: snapshot.statusChanges
+				.filter((change) => change.taskId === completion.taskId)
+				.map(({ taskId: _taskId, ...change }) => change),
+			blockedPeriods: snapshot.blockedPeriods
+				.filter((period) => period.taskId === completion.taskId)
+				.map(({ taskId: _taskId, ...period }) => period),
+		}),
+	);
+	const startDate = periodStart.toISOString().slice(0, 10);
+	const endDate = periodEnd.toISOString().slice(0, 10);
+	const dueDateTasks = snapshot.dueDateTasks.filter(
+		(task) => task.dueDate >= startDate && task.dueDate < endDate,
+	);
 	return {
 		periodStart,
 		periodEnd,
@@ -47,17 +75,6 @@ export async function getMetricsForRange(
 		codeReviewTime: calculateCodeReviewTime(completedTasks),
 		reworkRate: calculateReworkRate(completedTasks),
 		throughput: completedTasks.length,
-		wip,
 		predictability: calculatePredictability(dueDateTasks),
 	};
-}
-
-export async function getMetricsForPeriod(
-	port: MetricsQueryPort,
-	teamId: string,
-	periodType: PeriodType,
-	referenceDate: Date,
-): Promise<PeriodMetrics> {
-	const { start, end } = getPeriodRange(periodType, referenceDate);
-	return getMetricsForRange(port, teamId, start, end);
 }

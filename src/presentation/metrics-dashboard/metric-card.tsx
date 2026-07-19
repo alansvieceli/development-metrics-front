@@ -1,6 +1,6 @@
 import type { DurationStats } from "@/application/metrics/formulas/duration-metrics";
+import type { MetricsSeriesEntry } from "@/application/metrics/use-cases/get-metrics-dashboard";
 import type { PeriodMetrics } from "@/application/metrics/use-cases/get-metrics-for-period";
-import type { MetricsSeriesEntry } from "@/application/metrics/use-cases/get-metrics-series";
 import { formatDuration, formatPercent } from "./format-metric-value";
 import type { MetricDefinition } from "./metric-definitions";
 import { MetricTrendChart } from "./metric-trend-chart";
