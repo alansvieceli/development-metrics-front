@@ -6,7 +6,7 @@ import type {
 import { getMetricsDashboard } from "./get-metrics-dashboard";
 
 describe("getMetricsDashboard", () => {
-	it("calcula o dashboard inteiro a partir de um único snapshot", async () => {
+	it("calcula o dashboard inteiro a partir de um único snapshot largo", async () => {
 		const snapshot: MetricsSnapshot = {
 			completionEvents: [
 				{
@@ -53,9 +53,11 @@ describe("getMetricsDashboard", () => {
 			},
 		};
 		let loadSnapshotCalls = 0;
+		let capturedRange: { start: Date; end: Date } | null = null;
 		const port: MetricsQueryPort = {
-			async loadSnapshot() {
+			async loadSnapshot(_teamId, periodStart, periodEnd) {
 				loadSnapshotCalls += 1;
+				capturedRange = { start: periodStart, end: periodEnd };
 				return snapshot;
 			},
 		};
@@ -68,6 +70,19 @@ describe("getMetricsDashboard", () => {
 		);
 
 		expect(loadSnapshotCalls).toBe(1);
+		expect(capturedRange).toEqual({
+			start: new Date("2026-05-25T00:00:00Z"),
+			end: new Date("2026-07-20T00:00:00Z"),
+		});
+		expect(dashboard.history).toHaveLength(8);
+		expect(dashboard.history.at(-1)?.periodStart).toEqual(
+			new Date("2026-07-13T00:00:00Z"),
+		);
+		expect(dashboard.history.at(-1)?.throughput).toBe(1);
+		expect(dashboard.history[0]?.periodStart).toEqual(
+			new Date("2026-05-25T00:00:00Z"),
+		);
+		expect(dashboard.history[0]?.throughput).toBe(0);
 		expect(dashboard.current.periodStart).toEqual(
 			new Date("2026-07-13T00:00:00Z"),
 		);
