@@ -25,6 +25,34 @@ export const drizzleTaskRepository: TaskRepository = {
 			return toTask(row);
 		});
 	},
+	async createWithExplicitHistory(data, history) {
+		return db.transaction(async (tx) => {
+			const [row] = await tx
+				.insert(tasks)
+				.values({
+					...data,
+					status: history[0].status,
+					createdAt: history[0].changedAt,
+				})
+				.returning();
+			let fromStatus: TaskStatus | null = null;
+			for (const step of history) {
+				await tx.insert(taskStatusChanges).values({
+					taskId: row.id,
+					fromStatus,
+					toStatus: step.status,
+					changedAt: step.changedAt,
+				});
+				fromStatus = step.status;
+			}
+			const [finalRow] = await tx
+				.update(tasks)
+				.set({ status: data.status })
+				.where(eq(tasks.id, row.id))
+				.returning();
+			return toTask(finalRow);
+		});
+	},
 	async moveWithHistory(taskId, toStatus) {
 		return db.transaction(async (tx) => {
 			const [current] = await tx

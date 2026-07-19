@@ -50,6 +50,29 @@ export function createFakeTaskRepository(): FakeTaskRepository {
 			});
 			return task;
 		},
+		async createWithExplicitHistory(data, history) {
+			const task: Task = {
+				id: `task-${nextId++}`,
+				...data,
+				status: data.status,
+				blocked: false,
+				createdAt: history[0].changedAt,
+				updatedAt: history[history.length - 1].changedAt,
+			};
+			tasks.push(task);
+			let fromStatus: Task["status"] | null = null;
+			for (const step of history) {
+				statusChanges.push({
+					id: `status-change-${nextId++}`,
+					taskId: task.id,
+					fromStatus,
+					toStatus: step.status,
+					changedAt: step.changedAt,
+				});
+				fromStatus = step.status;
+			}
+			return task;
+		},
 		async moveWithHistory(taskId, toStatus) {
 			const task = tasks.find((item) => item.id === taskId);
 			if (!task) throw new ApplicationError("Task não encontrada");

@@ -21,6 +21,10 @@ export type UpdateTaskData = {
 
 export type TaskRepository = TaskUsageQuery & {
 	createWithInitialHistory(data: CreateTaskData): Promise<Task>;
+	createWithExplicitHistory(
+		data: CreateTaskData,
+		history: { status: TaskStatus; changedAt: Date }[],
+	): Promise<Task>;
 	moveWithHistory(taskId: string, toStatus: TaskStatus): Promise<Task>;
 	setBlockedWithHistory(taskId: string, blocked: boolean): Promise<Task>;
 	update(taskId: string, data: UpdateTaskData): Promise<Task>;

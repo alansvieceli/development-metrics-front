@@ -64,6 +64,56 @@ describe("drizzleTaskRepository", () => {
 		]);
 	});
 
+	it("cria a task com createdAt explícito e uma transição por etapa", async () => {
+		const created = await drizzleTaskRepository.createWithExplicitHistory(
+			baseData({ status: "AWAITING_PUBLICATION" }),
+			[
+				{ status: "TODO", changedAt: new Date("2026-07-01T00:00:00Z") },
+				{
+					status: "IN_DEVELOPMENT",
+					changedAt: new Date("2026-07-03T00:00:00Z"),
+				},
+				{
+					status: "AWAITING_PUBLICATION",
+					changedAt: new Date("2026-07-10T00:00:00Z"),
+				},
+			],
+		);
+
+		expect(created.createdAt).toEqual(new Date("2026-07-01T00:00:00Z"));
+		expect(created.status).toBe("AWAITING_PUBLICATION");
+
+		const history = await db
+			.select()
+			.from(taskStatusChanges)
+			.where(eq(taskStatusChanges.taskId, created.id));
+		expect(
+			history
+				.sort((a, b) => a.changedAt.getTime() - b.changedAt.getTime())
+				.map(({ fromStatus, toStatus, changedAt }) => ({
+					fromStatus,
+					toStatus,
+					changedAt,
+				})),
+		).toEqual([
+			{
+				fromStatus: null,
+				toStatus: "TODO",
+				changedAt: new Date("2026-07-01T00:00:00Z"),
+			},
+			{
+				fromStatus: "TODO",
+				toStatus: "IN_DEVELOPMENT",
+				changedAt: new Date("2026-07-03T00:00:00Z"),
+			},
+			{
+				fromStatus: "IN_DEVELOPMENT",
+				toStatus: "AWAITING_PUBLICATION",
+				changedAt: new Date("2026-07-10T00:00:00Z"),
+			},
+		]);
+	});
+
 	it("busca por id externo e lista apenas as tasks do time", async () => {
 		const created = await drizzleTaskRepository.createWithInitialHistory(
 			baseData(),
