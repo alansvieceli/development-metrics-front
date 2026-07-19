@@ -111,6 +111,11 @@ Antes do primeiro `npm run test:e2e`, instalar o navegador usado pelos testes:
 npx playwright install chromium
 ```
 
+## Integração contínua
+
+O GitHub Actions executa os jobs `quality` e `e2e` em pushes para `master` e
+pull requests, sempre com um Postgres isolado terminado em `_test`.
+
 ## Git hooks
 
 Após clonar o repositório, ativar os hooks de commit:
