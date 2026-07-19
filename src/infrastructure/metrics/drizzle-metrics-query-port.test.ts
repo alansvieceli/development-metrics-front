@@ -80,6 +80,7 @@ describe("drizzleMetricsQueryPort", () => {
 
 		expect(snapshot.completionEvents).toHaveLength(1);
 		expect(snapshot.completionEvents[0].taskId).toBe(task.id);
+		expect(snapshot.completionEvents[0].dueDate).toBe("2026-07-01");
 		expect(snapshot.statusChanges).toHaveLength(3);
 	});
 
@@ -128,20 +129,31 @@ describe("drizzleMetricsQueryPort", () => {
 		expect(snapshot.dueDateTasks[0].firstCompletedAt).toBeNull();
 	});
 
-	it("conta o WIP como tasks fora de todo e concluido", async () => {
+	it("conta o WIP estruturado por status e bloqueio", async () => {
 		await insertTask({ externalId: "TASK-1", status: "IN_DEVELOPMENT" });
-		await insertTask({ externalId: "TASK-2", status: "CODE_REVIEW" });
-		await insertTask({ externalId: "TASK-3", status: "TESTING" });
-		await insertTask({ externalId: "TASK-4", status: "AWAITING_PUBLICATION" });
-		await insertTask({ externalId: "TASK-5", status: "TODO" });
-		await insertTask({ externalId: "TASK-6", status: "DONE" });
+		await insertTask({
+			externalId: "TASK-2",
+			status: "IN_DEVELOPMENT",
+			blocked: true,
+		});
+		await insertTask({ externalId: "TASK-3", status: "CODE_REVIEW" });
+		await insertTask({ externalId: "TASK-4", status: "TESTING" });
+		await insertTask({ externalId: "TASK-5", status: "AWAITING_PUBLICATION" });
+		await insertTask({ externalId: "TASK-6", status: "TODO" });
+		await insertTask({ externalId: "TASK-7", status: "DONE" });
 
 		const snapshot = await drizzleMetricsQueryPort.loadSnapshot(
 			TEAM_ID,
 			new Date("2026-07-01T00:00:00Z"),
 			new Date("2026-08-01T00:00:00Z"),
 		);
-		expect(snapshot.wip).toBe(4);
+		expect(snapshot.wip).toEqual({
+			total: 5,
+			blocked: 1,
+			inReview: 1,
+			inTesting: 1,
+			inPublication: 1,
+		});
 	});
 
 	it("carrega o snapshot em no máximo cinco queries", async () => {

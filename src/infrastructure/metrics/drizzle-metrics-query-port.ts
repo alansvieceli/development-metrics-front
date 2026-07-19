@@ -1,14 +1,13 @@
 import {
 	and,
 	asc,
-	count,
 	eq,
 	gte,
 	inArray,
 	isNotNull,
 	lt,
 	min,
-	ne,
+	sql,
 } from "drizzle-orm";
 import type {
 	DueDateTaskMetrics,
@@ -37,6 +36,7 @@ export function createDrizzleMetricsQueryPort(
 						taskId: taskStatusChanges.taskId,
 						createdAt: tasks.createdAt,
 						completedAt: taskStatusChanges.changedAt,
+						dueDate: tasks.dueDate,
 					})
 					.from(taskStatusChanges)
 					.innerJoin(tasks, eq(tasks.id, taskStatusChanges.taskId))
@@ -73,15 +73,15 @@ export function createDrizzleMetricsQueryPort(
 					)
 					.groupBy(tasks.id, tasks.dueDate),
 				database
-					.select({ count: count() })
+					.select({
+						total: sql<number>`count(*) filter (where ${tasks.status} not in ('TODO', 'DONE'))::int`,
+						blocked: sql<number>`count(*) filter (where ${tasks.blocked} and ${tasks.status} not in ('TODO', 'DONE'))::int`,
+						inReview: sql<number>`count(*) filter (where ${tasks.status} = 'CODE_REVIEW')::int`,
+						inTesting: sql<number>`count(*) filter (where ${tasks.status} = 'TESTING')::int`,
+						inPublication: sql<number>`count(*) filter (where ${tasks.status} = 'AWAITING_PUBLICATION')::int`,
+					})
 					.from(tasks)
-					.where(
-						and(
-							eq(tasks.teamId, teamId),
-							ne(tasks.status, "TODO"),
-							ne(tasks.status, "DONE"),
-						),
-					),
+					.where(eq(tasks.teamId, teamId)),
 			]);
 
 			const taskIds = [
@@ -123,7 +123,13 @@ export function createDrizzleMetricsQueryPort(
 						firstCompletedAt: row.firstCompletedAt,
 					}),
 				),
-				wip: wipRows[0]?.count ?? 0,
+				wip: wipRows[0] ?? {
+					total: 0,
+					blocked: 0,
+					inReview: 0,
+					inTesting: 0,
+					inPublication: 0,
+				},
 			};
 		},
 	};
