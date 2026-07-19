@@ -3,7 +3,12 @@ import type {
 	CompletedTaskMetrics,
 	DueDateTaskMetrics,
 } from "@/application/metrics/ports/metrics-query-port";
-import { calculatePredictability, calculateReworkRate } from "./rate-metrics";
+import {
+	calculatePredictability,
+	calculateReworkCount,
+	calculateReworkRate,
+	calculateUnplannedCount,
+} from "./rate-metrics";
 
 function completedTask(
 	overrides: Partial<CompletedTaskMetrics> = {},
@@ -12,6 +17,7 @@ function completedTask(
 		taskId: "task-1",
 		createdAt: new Date("2026-07-01T00:00:00Z"),
 		completedAt: new Date("2026-07-02T00:00:00Z"),
+		dueDate: "2026-07-01",
 		statusChanges: [],
 		blockedPeriods: [],
 		...overrides,
@@ -102,6 +108,51 @@ describe("calculateReworkRate", () => {
 			}),
 		];
 		expect(calculateReworkRate(tasks)).toBe(0);
+	});
+});
+
+describe("calculateReworkCount", () => {
+	it("retorna null quando não há tasks concluídas no período", () => {
+		expect(calculateReworkCount([])).toBeNull();
+	});
+
+	it("conta quantas tasks tiveram retrabalho", () => {
+		const tasks = [
+			completedTask({
+				statusChanges: [
+					{
+						fromStatus: "CODE_REVIEW",
+						toStatus: "IN_DEVELOPMENT",
+						changedAt: new Date("2026-07-01T01:00:00Z"),
+					},
+				],
+			}),
+			completedTask({ taskId: "task-2" }),
+		];
+		expect(calculateReworkCount(tasks)).toBe(1);
+	});
+});
+
+describe("calculateUnplannedCount", () => {
+	const periodStart = new Date("2026-07-13T00:00:00Z");
+	const periodEnd = new Date("2026-07-20T00:00:00Z");
+
+	it("retorna null quando não há tasks concluídas no período", () => {
+		expect(calculateUnplannedCount([], periodStart, periodEnd)).toBeNull();
+	});
+
+	it("não conta task cuja dueDate cai dentro do período", () => {
+		const tasks = [completedTask({ dueDate: "2026-07-15" })];
+		expect(calculateUnplannedCount(tasks, periodStart, periodEnd)).toBe(0);
+	});
+
+	it("conta task cuja dueDate cai fora do período", () => {
+		const tasks = [
+			completedTask({ taskId: "task-1", dueDate: "2026-07-10" }),
+			completedTask({ taskId: "task-2", dueDate: "2026-07-25" }),
+			completedTask({ taskId: "task-3", dueDate: "2026-07-16" }),
+		];
+		expect(calculateUnplannedCount(tasks, periodStart, periodEnd)).toBe(2);
 	});
 });
 
