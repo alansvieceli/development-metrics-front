@@ -25,7 +25,9 @@ test("mostra os 3 blocos com zeros/sem dados quando o time não tem tasks", asyn
 		page.getByRole("heading", { name: "Tempo do fluxo" }),
 	).toBeVisible();
 
-	await expect(page.getByTestId("metric-tile-wip").getByText("0")).toBeVisible();
+	await expect(
+		page.getByTestId("metric-tile-wip").getByText("0"),
+	).toBeVisible();
 	await expect(
 		page.getByTestId("metric-tile-leadTime").getByText("sem dados"),
 	).toBeVisible();
@@ -59,11 +61,16 @@ test("Situação atual reflete WIP, bloqueados e coluna atual das tasks", async 
 		.getByRole("button", { name: "Editar task" })
 		.click();
 	await page.getByRole("checkbox", { name: "⛔ Bloqueado" }).click();
-	await page.getByRole("dialog").getByRole("button", { name: "Fechar" }).click();
+	await page
+		.getByRole("dialog")
+		.getByRole("button", { name: "Fechar" })
+		.click();
 
 	await page.getByRole("link", { name: "Métricas" }).click();
 
-	await expect(page.getByTestId("metric-tile-wip").getByText("2")).toBeVisible();
+	await expect(
+		page.getByTestId("metric-tile-wip").getByText("2"),
+	).toBeVisible();
 	await expect(
 		page.getByTestId("metric-tile-blocked").getByText("1"),
 	).toBeVisible();
@@ -87,9 +94,7 @@ test("card retroativo concluído hoje entra em Entregues e Retrabalho", async ({
 		.selectOption({ label: "Desenvolvimento" });
 	await page.getByLabel("Data da etapa 2").fill(today);
 	await page.getByRole("button", { name: "+ Adicionar etapa" }).click();
-	await page
-		.getByLabel("Status da etapa 3")
-		.selectOption({ label: "Revisão" });
+	await page.getByLabel("Status da etapa 3").selectOption({ label: "Revisão" });
 	await page.getByLabel("Data da etapa 3").fill(today);
 	await page.getByRole("button", { name: "+ Adicionar etapa" }).click();
 	// Volta pra Desenvolvimento: essa é a transição que conta como retrabalho.
@@ -98,9 +103,7 @@ test("card retroativo concluído hoje entra em Entregues e Retrabalho", async ({
 		.selectOption({ label: "Desenvolvimento" });
 	await page.getByLabel("Data da etapa 4").fill(today);
 	await page.getByRole("button", { name: "+ Adicionar etapa" }).click();
-	await page
-		.getByLabel("Status da etapa 5")
-		.selectOption({ label: "Revisão" });
+	await page.getByLabel("Status da etapa 5").selectOption({ label: "Revisão" });
 	await page.getByLabel("Data da etapa 5").fill(today);
 	await page.getByRole("button", { name: "+ Adicionar etapa" }).click();
 	await page
