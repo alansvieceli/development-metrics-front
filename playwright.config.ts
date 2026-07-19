@@ -1,8 +1,7 @@
 import { defineConfig } from "@playwright/test";
+import { getTestDatabaseUrl } from "./scripts/test-database-url";
 
-const TEST_DATABASE_URL =
-	process.env.DATABASE_URL ??
-	"postgresql://postgres:postgres@localhost:5432/development_metrics_test";
+const TEST_DATABASE_URL = getTestDatabaseUrl();
 process.env.DATABASE_URL = TEST_DATABASE_URL;
 
 export default defineConfig({

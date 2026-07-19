@@ -1,9 +1,8 @@
 import path from "node:path";
 import { defineConfig } from "vitest/config";
+import { getTestDatabaseUrl } from "./scripts/test-database-url";
 
-const TEST_DATABASE_URL =
-	process.env.DATABASE_URL ??
-	"postgresql://postgres:postgres@localhost:5432/development_metrics_test";
+const TEST_DATABASE_URL = getTestDatabaseUrl();
 
 export default defineConfig({
 	resolve: {
@@ -13,7 +12,7 @@ export default defineConfig({
 	},
 	test: {
 		environment: "node",
-		include: ["src/**/*.test.ts"],
+		include: ["src/**/*.test.ts", "scripts/**/*.test.ts"],
 		env: {
 			DATABASE_URL: TEST_DATABASE_URL,
 		},

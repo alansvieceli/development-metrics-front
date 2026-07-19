@@ -1,8 +1,6 @@
 import { migrateDatabase } from "./scripts/migrate-database";
+import { getTestDatabaseUrl } from "./scripts/test-database-url";
 
 export default async function setup() {
-	await migrateDatabase(
-		process.env.DATABASE_URL ??
-			"postgresql://postgres:postgres@localhost:5432/development_metrics_test",
-	);
+	await migrateDatabase(getTestDatabaseUrl());
 }

@@ -74,7 +74,10 @@ Criar um arquivo `.env` na raiz com:
 
 ```
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/development_metrics
+TEST_DATABASE_URL=postgresql://postgres:postgres@localhost:5432/development_metrics_test
 ```
+
+Os testes recusam bancos cujo nome não termine em `_test`.
 
 Aplicar as migrações e subir o servidor:
 
