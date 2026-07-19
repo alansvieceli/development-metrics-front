@@ -8,6 +8,7 @@ import { removeMember } from "@/application/team/use-cases/remove-member";
 import { renameMember } from "@/application/team/use-cases/rename-member";
 import { renameTeam } from "@/application/team/use-cases/rename-team";
 import { selectTeam } from "@/application/team/use-cases/select-team";
+import { drizzleTaskRepository } from "@/infrastructure/task/drizzle-task-repository";
 import { cookieCurrentTeamStore } from "@/infrastructure/team/cookie-current-team-store";
 import { drizzleTeamRepository } from "@/infrastructure/team/drizzle-team-repository";
 
@@ -16,7 +17,8 @@ export function createTeamUseCases() {
 		createTeam: (name: string) => createTeam(drizzleTeamRepository, name),
 		renameTeam: (teamId: string, name: string) =>
 			renameTeam(drizzleTeamRepository, teamId, name),
-		deleteTeam: (teamId: string) => deleteTeam(drizzleTeamRepository, teamId),
+		deleteTeam: (teamId: string) =>
+			deleteTeam(drizzleTeamRepository, drizzleTaskRepository, teamId),
 		listTeams: () => listTeams(drizzleTeamRepository),
 		getTeam: (teamId: string) => getTeam(drizzleTeamRepository, teamId),
 		addMember: (teamId: string, name: string) =>
@@ -24,7 +26,12 @@ export function createTeamUseCases() {
 		renameMember: (teamId: string, memberId: string, name: string) =>
 			renameMember(drizzleTeamRepository, teamId, memberId, name),
 		removeMember: (teamId: string, memberId: string) =>
-			removeMember(drizzleTeamRepository, teamId, memberId),
+			removeMember(
+				drizzleTeamRepository,
+				drizzleTaskRepository,
+				teamId,
+				memberId,
+			),
 		getCurrentTeam: () =>
 			getCurrentTeam(cookieCurrentTeamStore, drizzleTeamRepository),
 		selectTeam: (teamId: string) =>

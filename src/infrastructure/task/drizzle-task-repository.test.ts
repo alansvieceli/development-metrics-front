@@ -215,4 +215,30 @@ describe("drizzleTaskRepository", () => {
 		await drizzleTaskRepository.delete(created.id);
 		expect(await drizzleTaskRepository.findById(created.id)).toBeNull();
 	});
+
+	it("informa uso por time e responsável", async () => {
+		const assigneeId = "33333333-3333-3333-3333-333333333333";
+		await drizzleTaskRepository.createWithInitialHistory(
+			baseData({ assigneeId }),
+		);
+
+		expect(
+			await drizzleTaskRepository.hasTasksForTeam(
+				"11111111-1111-1111-1111-111111111111",
+			),
+		).toBe(true);
+		expect(
+			await drizzleTaskRepository.hasTasksForTeam(
+				"22222222-2222-2222-2222-222222222222",
+			),
+		).toBe(false);
+		expect(await drizzleTaskRepository.hasTasksForAssignee(assigneeId)).toBe(
+			true,
+		);
+		expect(
+			await drizzleTaskRepository.hasTasksForAssignee(
+				"44444444-4444-4444-4444-444444444444",
+			),
+		).toBe(false);
+	});
 });

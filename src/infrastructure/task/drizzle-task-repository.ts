@@ -128,4 +128,20 @@ export const drizzleTaskRepository: TaskRepository = {
 			.where(eq(tasks.typeId, typeId));
 		return result?.count ?? 0;
 	},
+	async hasTasksForTeam(teamId) {
+		const [row] = await db
+			.select({ id: tasks.id })
+			.from(tasks)
+			.where(eq(tasks.teamId, teamId))
+			.limit(1);
+		return Boolean(row);
+	},
+	async hasTasksForAssignee(assigneeId) {
+		const [row] = await db
+			.select({ id: tasks.id })
+			.from(tasks)
+			.where(eq(tasks.assigneeId, assigneeId))
+			.limit(1);
+		return Boolean(row);
+	},
 };

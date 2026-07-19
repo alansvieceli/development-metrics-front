@@ -114,5 +114,11 @@ export function createFakeTaskRepository(): FakeTaskRepository {
 		async countByType(typeId) {
 			return tasks.filter((task) => task.typeId === typeId).length;
 		},
+		async hasTasksForTeam(teamId) {
+			return tasks.some((task) => task.teamId === teamId);
+		},
+		async hasTasksForAssignee(assigneeId) {
+			return tasks.some((task) => task.assigneeId === assigneeId);
+		},
 	};
 }

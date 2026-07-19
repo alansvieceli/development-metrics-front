@@ -1,3 +1,4 @@
+import type { TaskUsageQuery } from "@/application/task/contracts/task-usage-query";
 import type { Task, TaskStatus } from "@/domain/task/entities/task";
 
 export type CreateTaskData = {
@@ -18,7 +19,7 @@ export type UpdateTaskData = {
 	dueDate: string | null;
 };
 
-export type TaskRepository = {
+export type TaskRepository = TaskUsageQuery & {
 	createWithInitialHistory(data: CreateTaskData): Promise<Task>;
 	moveWithHistory(taskId: string, toStatus: TaskStatus): Promise<Task>;
 	setBlockedWithHistory(taskId: string, blocked: boolean): Promise<Task>;
