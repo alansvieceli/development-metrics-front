@@ -72,7 +72,7 @@ export function TaskCard({
 				{formatElapsed(task.statusChangedAt)}
 			</p>
 			{task.blocked ? (
-				<p className="text-xs font-semibold text-red-600">⛔ Bloqueado</p>
+				<p className="text-xs font-semibold text-(--critical)">⛔ Bloqueado</p>
 			) : null}
 			<TaskMoveSelect
 				taskId={task.id}

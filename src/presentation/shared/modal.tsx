@@ -39,7 +39,7 @@ export function Modal({ children, label, onClose }: ModalProps) {
 				type="button"
 				aria-label="Fechar"
 				onClick={close}
-				className="absolute top-3 right-3 rounded-lg p-1 hover:bg-black/5"
+				className="absolute top-3 right-3 rounded-lg p-1 hover:bg-white/10"
 			>
 				<X size={18} aria-hidden="true" />
 			</button>

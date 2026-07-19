@@ -57,7 +57,7 @@ export function TeamSelectView({
 								type="button"
 								disabled={pending}
 								onClick={() => select(team.id)}
-								className="w-full rounded-lg border border-(--border) px-4 py-2 text-left hover:bg-black/5 disabled:opacity-60"
+								className="w-full rounded-lg border border-(--border) px-4 py-2 text-left hover:bg-white/10 disabled:opacity-60"
 							>
 								{team.name}
 							</button>

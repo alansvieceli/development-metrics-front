@@ -51,7 +51,7 @@ export function TeamSwitcher({
 									setPending(false);
 								}
 							}}
-							className="rounded-lg px-2 py-1 text-left hover:bg-black/5"
+							className="rounded-lg px-2 py-1 text-left hover:bg-white/10"
 						>
 							{team.name}
 						</button>
@@ -61,14 +61,14 @@ export function TeamSwitcher({
 					<Link
 						href={`/teams/${currentTeam.id}`}
 						onClick={() => setOpen(false)}
-						className="rounded-lg px-2 py-1 hover:bg-black/5"
+						className="rounded-lg px-2 py-1 hover:bg-white/10"
 					>
 						Gerenciar time atual
 					</Link>
 					<Link
 						href="/teams"
 						onClick={() => setOpen(false)}
-						className="rounded-lg px-2 py-1 hover:bg-black/5"
+						className="rounded-lg px-2 py-1 hover:bg-white/10"
 					>
 						+ Criar novo time
 					</Link>
