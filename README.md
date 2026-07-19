@@ -30,7 +30,8 @@ Frontend do projeto Development Metrics.
 - Toda mudança de status gera histórico. Bloqueios são registrados como períodos
   com início e fim, que alimentam o cálculo das métricas.
 - Dashboard com 15 indicadores do time atual, filtros semanal, quinzenal ou
-  mensal e seis gráficos baseados no período atual e nos últimos 8 períodos.
+  mensal, cinco gráficos e uma lista de ranking baseados no período atual e
+  nos últimos 8 períodos.
 
 ## Regras das métricas
 
