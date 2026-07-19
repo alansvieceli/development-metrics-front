@@ -115,4 +115,43 @@ describe("createTask", () => {
 			}),
 		).rejects.toThrow(message);
 	});
+
+	it("salva a task de origem quando informada", async () => {
+		const { repository, typeRepository, teamAccess, input } = await setup();
+		const parent = await repository.seed({
+			...input,
+			externalId: "TASK-PAI",
+		});
+		const task = await createTask(repository, typeRepository, teamAccess, {
+			...input,
+			externalId: "TASK-FILHO",
+			parentTaskId: parent.id,
+		});
+		expect(task.parentTaskId).toBe(parent.id);
+	});
+
+	it("rejeita task de origem inexistente", async () => {
+		const { repository, typeRepository, teamAccess, input } = await setup();
+		await expect(
+			createTask(repository, typeRepository, teamAccess, {
+				...input,
+				parentTaskId: "missing",
+			}),
+		).rejects.toThrow("Task de origem não encontrada");
+	});
+
+	it("rejeita task de origem de outro time", async () => {
+		const { repository, typeRepository, teamAccess, input } = await setup();
+		const parent = await repository.seed({
+			...input,
+			externalId: "TASK-PAI",
+			teamId: "team-2",
+		});
+		await expect(
+			createTask(repository, typeRepository, teamAccess, {
+				...input,
+				parentTaskId: parent.id,
+			}),
+		).rejects.toThrow("Task de origem não encontrada");
+	});
 });

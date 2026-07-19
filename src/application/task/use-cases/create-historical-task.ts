@@ -58,6 +58,7 @@ export async function createHistoricalTask(
 		assigneeId: input.assigneeId,
 		dueDate: input.dueDate,
 		externalId,
+		parentTaskId: null,
 	});
 	return repository.createWithExplicitHistory(
 		{

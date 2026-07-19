@@ -66,6 +66,7 @@ export function TaskFormModal(props: TaskFormModalProps) {
 					assigneeId,
 					dueDate,
 					status,
+					parentTaskId: null,
 				});
 			} else {
 				result = await props.updateTaskAction(props.task.id, {

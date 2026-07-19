@@ -14,6 +14,7 @@ export async function validateTaskReferences(
 		assigneeId: string | null;
 		dueDate: string;
 		externalId: string;
+		parentTaskId: string | null;
 	},
 ) {
 	if (!(await teamAccess.teamExists(input.teamId))) {
@@ -33,6 +34,12 @@ export async function validateTaskReferences(
 	}
 	if (!parseDateOnly(input.dueDate)) {
 		throw new ApplicationError("Data prevista inválida");
+	}
+	if (input.parentTaskId) {
+		const parentTask = await repository.findById(input.parentTaskId);
+		if (!parentTask || parentTask.teamId !== input.teamId) {
+			throw new ApplicationError("Task de origem não encontrada");
+		}
 	}
 	const existing = await repository.findByExternalId(
 		input.teamId,

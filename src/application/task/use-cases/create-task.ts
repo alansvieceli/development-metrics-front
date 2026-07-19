@@ -13,6 +13,7 @@ export type CreateTaskInput = {
 	teamId: string;
 	status: TaskStatus;
 	dueDate: string;
+	parentTaskId: string | null;
 };
 
 export async function createTask(
@@ -35,6 +36,7 @@ export async function createTask(
 		assigneeId: input.assigneeId,
 		dueDate: input.dueDate,
 		externalId,
+		parentTaskId: input.parentTaskId,
 	});
 	return repository.createWithInitialHistory({
 		externalId,
@@ -44,6 +46,6 @@ export async function createTask(
 		teamId: input.teamId,
 		status: input.status,
 		dueDate: input.dueDate,
-		parentTaskId: null,
+		parentTaskId: input.parentTaskId,
 	});
 }
