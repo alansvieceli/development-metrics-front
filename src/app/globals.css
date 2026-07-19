@@ -54,6 +54,13 @@ a {
 	text-decoration: none;
 }
 
+button,
+input,
+select,
+textarea {
+	font-family: inherit;
+}
+
 option {
 	background-color: var(--surface);
 	color: var(--foreground);

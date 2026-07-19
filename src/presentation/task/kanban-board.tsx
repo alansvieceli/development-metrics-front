@@ -71,6 +71,7 @@ export function KanbanBoard({
 					/>
 				</div>
 			</div>
+			<hr className="border-(--border)" />
 			<BoardSummary tasksByStatus={tasksByStatus} members={members} />
 			<div className="flex flex-1 gap-2 overflow-x-auto md:gap-4">
 				{STATUS_ORDER.map((status, index) => (
