@@ -11,7 +11,9 @@ import {
 	notInArray,
 	sql,
 } from "drizzle-orm";
+import { alias } from "drizzle-orm/pg-core";
 import type {
+	BugEvent,
 	DueDateTaskMetrics,
 	MetricsQueryPort,
 } from "@/application/metrics/ports/metrics-query-port";
@@ -21,7 +23,10 @@ import {
 	taskBlockedPeriods,
 	taskStatusChanges,
 	tasks,
+	taskTypes,
 } from "@/infrastructure/task/drizzle/schema";
+
+const parentTasks = alias(tasks, "parent_tasks");
 
 function toDateOnly(date: Date): string {
 	return date.toISOString().slice(0, 10);
@@ -32,8 +37,8 @@ export function createDrizzleMetricsQueryPort(
 ): MetricsQueryPort {
 	return {
 		async loadSnapshot(teamId, periodStart, periodEnd) {
-			const [completionEvents, dueDateRows, currentWipRows] = await Promise.all(
-				[
+			const [completionEvents, dueDateRows, currentWipRows, bugRows] =
+				await Promise.all([
 					database
 						.select({
 							taskId: taskStatusChanges.taskId,
@@ -109,8 +114,25 @@ export function createDrizzleMetricsQueryPort(
 							),
 						)
 						.groupBy(tasks.id),
-				],
-			);
+					database
+						.select({
+							taskId: tasks.id,
+							createdAt: tasks.createdAt,
+							parentTaskId: tasks.parentTaskId,
+							parentExternalId: parentTasks.externalId,
+						})
+						.from(tasks)
+						.innerJoin(taskTypes, eq(taskTypes.id, tasks.typeId))
+						.leftJoin(parentTasks, eq(parentTasks.id, tasks.parentTaskId))
+						.where(
+							and(
+								eq(tasks.teamId, teamId),
+								eq(taskTypes.isBug, true),
+								gte(tasks.createdAt, periodStart),
+								lt(tasks.createdAt, periodEnd),
+							),
+						),
+				]);
 
 			const taskIds = [
 				...new Set(completionEvents.map((event) => event.taskId)),
@@ -156,6 +178,14 @@ export function createDrizzleMetricsQueryPort(
 					statusChangedAt: row.statusChangedAt,
 					blockedAt: row.blockedAt,
 				})),
+				bugEvents: bugRows.map(
+					(row): BugEvent => ({
+						taskId: row.taskId,
+						createdAt: row.createdAt,
+						parentTaskId: row.parentTaskId ?? null,
+						parentExternalId: row.parentExternalId ?? null,
+					}),
+				),
 			};
 		},
 	};
