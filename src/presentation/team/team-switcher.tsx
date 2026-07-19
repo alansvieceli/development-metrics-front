@@ -2,7 +2,7 @@
 
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { ActionState } from "@/application/shared/action-state";
 import type { Team } from "@/domain/team/entities/team";
 
@@ -21,12 +21,30 @@ export function TeamSwitcher({
 	const [pending, setPending] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const otherTeams = teams.filter((team) => team.id !== currentTeam.id);
+	const containerRef = useRef<HTMLDivElement>(null);
+
+	function close() {
+		setOpen(false);
+		setError(null);
+	}
+
+	useEffect(() => {
+		if (!open) return;
+		function handleClickOutside(event: MouseEvent) {
+			if (!containerRef.current?.contains(event.target as Node)) {
+				setOpen(false);
+				setError(null);
+			}
+		}
+		document.addEventListener("mousedown", handleClickOutside);
+		return () => document.removeEventListener("mousedown", handleClickOutside);
+	}, [open]);
 
 	return (
-		<div className="relative">
+		<div className="relative" ref={containerRef}>
 			<button
 				type="button"
-				onClick={() => setOpen((value) => !value)}
+				onClick={() => (open ? close() : setOpen(true))}
 				className="flex items-center gap-1 rounded-lg border border-white/20 px-3 py-1 text-(--header-fg)"
 			>
 				{currentTeam.name}
@@ -60,14 +78,14 @@ export function TeamSwitcher({
 					{otherTeams.length > 0 ? <hr className="border-(--border)" /> : null}
 					<Link
 						href={`/teams/${currentTeam.id}`}
-						onClick={() => setOpen(false)}
+						onClick={close}
 						className="rounded-lg px-2 py-1 hover:bg-white/10"
 					>
 						Gerenciar time atual
 					</Link>
 					<Link
 						href="/teams"
-						onClick={() => setOpen(false)}
+						onClick={close}
 						className="rounded-lg px-2 py-1 hover:bg-white/10"
 					>
 						+ Criar novo time
