@@ -1,6 +1,6 @@
 "use client";
 
-import { Trash2 } from "lucide-react";
+import { Check, Trash2 } from "lucide-react";
 import { useActionState } from "react";
 import {
 	type ActionState,
@@ -57,8 +57,11 @@ function TaskTypeRow({
 						className="flex-1 rounded-lg border border-(--border) px-2 py-1"
 						required
 					/>
-					<SubmitButton className="rounded-lg border border-(--border) px-3 py-1.5 disabled:opacity-60">
-						Salvar
+					<SubmitButton
+						aria-label="Salvar tipo"
+						className="rounded-lg border border-(--border) p-1.5 disabled:opacity-60"
+					>
+						<Check size={14} aria-hidden="true" />
 					</SubmitButton>
 				</form>
 				<form action={deleteAction}>

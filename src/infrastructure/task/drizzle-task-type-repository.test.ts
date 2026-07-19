@@ -53,6 +53,7 @@ describe("drizzleTaskTypeRepository", () => {
 		try {
 			const all = await drizzleTaskTypeRepository.listAll();
 			expect(all.map((t) => t.id)).toContain(created.id);
+			expect(all.map((t) => t.id)).toEqual(all.map((t) => t.id).toSorted());
 		} finally {
 			await deleteTaskType(created.id);
 		}

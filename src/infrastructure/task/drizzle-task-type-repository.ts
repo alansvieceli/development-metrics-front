@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import type { TaskTypeRepository } from "@/application/task/ports/task-type-repository";
 import type { TaskType } from "@/domain/task/entities/task-type";
 import { db } from "@/infrastructure/db/client";
@@ -27,7 +27,7 @@ export const drizzleTaskTypeRepository: TaskTypeRepository = {
 		await db.delete(taskTypes).where(eq(taskTypes.id, typeId));
 	},
 	async listAll() {
-		return db.select().from(taskTypes);
+		return db.select().from(taskTypes).orderBy(asc(taskTypes.id));
 	},
 	async findById(typeId) {
 		const [taskType] = await db

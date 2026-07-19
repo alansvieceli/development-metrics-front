@@ -33,7 +33,7 @@ test("lista os tipos padrão e permite criar e editar um tipo", async ({
 
 	const epicoNameInput = epicoRow.locator('input[name="name"]');
 	await epicoNameInput.fill("Épico Grande");
-	await epicoRow.getByRole("button", { name: "Salvar" }).click();
+	await epicoRow.getByRole("button", { name: "Salvar tipo" }).click();
 	await expect(epicoNameInput).toHaveValue("Épico Grande");
 });
 
