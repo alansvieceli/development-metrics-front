@@ -30,6 +30,8 @@ function periodMetrics(overrides: Partial<PeriodMetrics>): PeriodMetrics {
 		predictability: null,
 		predictabilityCounts: null,
 		unplannedCount: null,
+		bugsOpened: 0,
+		bugsRanking: [],
 		...overrides,
 	};
 }

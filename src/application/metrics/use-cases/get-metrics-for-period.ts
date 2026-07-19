@@ -1,3 +1,8 @@
+import {
+	type BugRankingEntry,
+	calculateBugsOpened,
+	calculateBugsRanking,
+} from "@/application/metrics/formulas/bug-metrics";
 import type { CurrentWipMetrics } from "@/application/metrics/formulas/current-wip-metrics";
 import type { DurationStats } from "@/application/metrics/formulas/duration-metrics";
 import {
@@ -35,6 +40,8 @@ export type PeriodMetrics = {
 	predictability: number | null;
 	predictabilityCounts: PredictabilityCounts | null;
 	unplannedCount: number | null;
+	bugsOpened: number;
+	bugsRanking: BugRankingEntry[];
 };
 
 export type HistoricalPeriodMetrics = Omit<PeriodMetrics, "wip">;
@@ -95,6 +102,12 @@ export function getMetricsForRange(
 		predictabilityCounts: calculatePredictabilityCounts(dueDateTasks),
 		unplannedCount: calculateUnplannedCount(
 			completedTasks,
+			periodStart,
+			periodEnd,
+		),
+		bugsOpened: calculateBugsOpened(snapshot.bugEvents, periodStart, periodEnd),
+		bugsRanking: calculateBugsRanking(
+			snapshot.bugEvents,
 			periodStart,
 			periodEnd,
 		),

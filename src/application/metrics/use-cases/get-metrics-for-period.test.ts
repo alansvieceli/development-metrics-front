@@ -73,6 +73,8 @@ describe("getMetricsForRange", () => {
 		expect(metrics.predictability).toBeNull();
 		expect(metrics.reworkCount).toBeNull();
 		expect(metrics.unplannedCount).toBeNull();
+		expect(metrics.bugsOpened).toBe(0);
+		expect(metrics.bugsRanking).toEqual([]);
 	});
 
 	it("card retroativo sem chegar em DONE conta no WIP mas nao em throughput/lead/cycle", () => {
@@ -106,5 +108,38 @@ describe("getMetricsForRange", () => {
 		expect(metrics.throughput).toBe(0);
 		expect(metrics.leadTime).toBeNull();
 		expect(metrics.cycleTime).toBeNull();
+	});
+
+	it("calcula bugsOpened e bugsRanking a partir dos bugEvents do snapshot", () => {
+		const snapshot: MetricsSnapshot = {
+			completionEvents: [],
+			statusChanges: [],
+			blockedPeriods: [],
+			dueDateTasks: [],
+			currentWipTasks: [],
+			bugEvents: [
+				{
+					taskId: "bug-1",
+					createdAt: new Date("2026-07-02T00:00:00Z"),
+					parentTaskId: "parent-1",
+					parentExternalId: "TASK-PAI",
+				},
+				{
+					taskId: "bug-2",
+					createdAt: new Date("2026-07-03T00:00:00Z"),
+					parentTaskId: "parent-1",
+					parentExternalId: "TASK-PAI",
+				},
+			],
+		};
+		const metrics = getMetricsForRange(
+			snapshot,
+			new Date("2026-07-01T00:00:00Z"),
+			new Date("2026-07-08T00:00:00Z"),
+		);
+		expect(metrics.bugsOpened).toBe(2);
+		expect(metrics.bugsRanking).toEqual([
+			{ taskId: "parent-1", externalId: "TASK-PAI", bugCount: 2 },
+		]);
 	});
 });

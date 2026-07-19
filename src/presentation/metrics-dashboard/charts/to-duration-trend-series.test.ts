@@ -20,6 +20,8 @@ function historicalEntry(
 		predictability: null,
 		predictabilityCounts: null,
 		unplannedCount: null,
+		bugsOpened: 0,
+		bugsRanking: [],
 		...overrides,
 	};
 }
