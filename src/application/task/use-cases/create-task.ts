@@ -12,7 +12,7 @@ export type CreateTaskInput = {
 	assigneeId: string | null;
 	teamId: string;
 	status: TaskStatus;
-	dueDate: string | null;
+	dueDate: string;
 };
 
 export async function createTask(

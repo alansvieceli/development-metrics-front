@@ -12,7 +12,7 @@ export type CreateHistoricalTaskInput = {
 	typeId: string;
 	assigneeId: string | null;
 	teamId: string;
-	dueDate: string | null;
+	dueDate: string;
 	steps: { status: TaskStatus; date: string }[];
 };
 

@@ -8,7 +8,7 @@ export type CreateTaskData = {
 	assigneeId: string | null;
 	teamId: string;
 	status: TaskStatus;
-	dueDate: string | null;
+	dueDate: string;
 };
 
 export type UpdateTaskData = {
@@ -16,7 +16,7 @@ export type UpdateTaskData = {
 	description: string;
 	typeId: string;
 	assigneeId: string | null;
-	dueDate: string | null;
+	dueDate: string;
 };
 
 export type TaskRepository = TaskUsageQuery & {
