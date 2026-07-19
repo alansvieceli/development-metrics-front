@@ -1,9 +1,10 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import type { PeriodType } from "@/application/metrics/period";
 import { Modal } from "@/presentation/shared/modal";
+import { buildMetricsUrl } from "./build-metrics-url";
 import { shiftReferenceDate } from "./shift-reference-date";
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
@@ -19,24 +20,6 @@ function toDateParam(date: Date): string {
 	return date.toISOString().slice(0, 10);
 }
 
-function buildMetricsUrl(periodType: PeriodType, referenceDate: Date): string {
-	const params = new URLSearchParams({
-		period:
-			periodType === "MONTH"
-				? "month"
-				: periodType === "FORTNIGHT"
-					? "fortnight"
-					: "week",
-		date: toDateParam(referenceDate),
-	});
-	return `/metrics?${params.toString()}`;
-}
-
-function buildSprintUrl(start: string, end: string): string {
-	const params = new URLSearchParams({ period: "sprint", start, end });
-	return `/metrics?${params.toString()}`;
-}
-
 export function PeriodFilter({
 	periodType,
 	referenceDate,
@@ -44,10 +27,22 @@ export function PeriodFilter({
 	sprintEnd,
 }: PeriodFilterProps) {
 	const router = useRouter();
+	const pathname = usePathname();
+	const searchParams = useSearchParams();
 	const [sprintModalOpen, setSprintModalOpen] = useState(false);
 
 	function goTo(nextPeriodType: PeriodType, nextReferenceDate: Date) {
-		router.push(buildMetricsUrl(nextPeriodType, nextReferenceDate));
+		router.push(
+			buildMetricsUrl(pathname, new URLSearchParams(searchParams.toString()), {
+				period:
+					nextPeriodType === "MONTH"
+						? "month"
+						: nextPeriodType === "FORTNIGHT"
+							? "fortnight"
+							: "week",
+				date: toDateParam(nextReferenceDate),
+			}),
+		);
 	}
 
 	function submitSprint(formData: FormData) {
@@ -55,7 +50,13 @@ export function PeriodFilter({
 		const end = String(formData.get("end") ?? "");
 		if (!start || !end) return;
 		setSprintModalOpen(false);
-		router.push(buildSprintUrl(start, end));
+		router.push(
+			buildMetricsUrl(pathname, new URLSearchParams(searchParams.toString()), {
+				period: "sprint",
+				start,
+				end,
+			}),
+		);
 	}
 
 	return (

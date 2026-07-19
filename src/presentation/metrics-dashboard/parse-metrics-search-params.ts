@@ -6,6 +6,7 @@ export type MetricsSearchParams = {
 	date?: string;
 	start?: string;
 	end?: string;
+	developer?: string;
 };
 
 export type MetricsFilter =
