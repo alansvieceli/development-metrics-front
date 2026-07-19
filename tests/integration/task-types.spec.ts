@@ -54,3 +54,12 @@ test("não permite excluir um tipo em uso por uma task", async ({ page }) => {
 		historiaRow.getByRole("button", { name: "Excluir tipo" }),
 	).toBeDisabled();
 });
+
+test("não permite excluir o tipo Bug mesmo sem uso", async ({ page }) => {
+	const bugRow = page
+		.locator("li")
+		.filter({ has: page.locator('input[value="Bug"]') });
+	await expect(
+		bugRow.getByRole("button", { name: "Excluir tipo" }),
+	).toBeDisabled();
+});

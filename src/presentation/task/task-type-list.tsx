@@ -67,11 +67,13 @@ function TaskTypeRow({
 				<form action={deleteAction}>
 					<SubmitButton
 						aria-label="Excluir tipo"
-						disabled={taskType.inUse}
+						disabled={taskType.inUse || taskType.isBug}
 						title={
-							taskType.inUse
-								? "Não é possível excluir: há tasks vinculadas a este tipo"
-								: undefined
+							taskType.isBug
+								? "O tipo Bug não pode ser excluído"
+								: taskType.inUse
+									? "Não é possível excluir: há tasks vinculadas a este tipo"
+									: undefined
 						}
 						confirmMessage={`Excluir o tipo ${taskType.name}?`}
 						className="rounded-lg border border-(--border) p-1.5 disabled:opacity-40"
