@@ -47,7 +47,9 @@ function validateInput(input: unknown): asserts input is UpdateTaskInput {
 	validateUuid(value.typeId, "Tipo de task inválido");
 	if (value.assigneeId !== null)
 		validateUuid(value.assigneeId, "Responsável inválido");
-	if (value.dueDate !== null && !parseDateOnly(value.dueDate))
+	if (typeof value.dueDate !== "string" || !value.dueDate)
+		throw new ApplicationError("Data prevista é obrigatória");
+	if (!parseDateOnly(value.dueDate))
 		throw new ApplicationError("Data prevista inválida");
 }
 
@@ -62,7 +64,7 @@ export type CreateHistoricalTaskActionInput = {
 	description: string;
 	typeId: string;
 	assigneeId: string | null;
-	dueDate: string | null;
+	dueDate: string;
 	steps: { status: TaskStatus; date: string }[];
 };
 
@@ -92,7 +94,9 @@ export async function createHistoricalTaskAction(
 		validateUuid(input.typeId, "Tipo de task inválido");
 		if (input.assigneeId !== null)
 			validateUuid(input.assigneeId, "Responsável inválido");
-		if (input.dueDate !== null && !parseDateOnly(input.dueDate))
+		if (typeof input.dueDate !== "string" || !input.dueDate)
+			throw new ApplicationError("Data prevista é obrigatória");
+		if (!parseDateOnly(input.dueDate))
 			throw new ApplicationError("Data prevista inválida");
 		validateSteps(input.steps);
 		const teamId = await getCurrentTeamId();
