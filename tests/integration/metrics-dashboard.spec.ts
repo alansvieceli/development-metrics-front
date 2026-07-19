@@ -9,64 +9,70 @@ test.beforeEach(async ({ page }) => {
 	await page.getByRole("button", { name: "Time A" }).click();
 });
 
-test("mostra os 10 cards de métricas sem dados quando o time não tem tasks", async ({
+test("mostra os 3 blocos com zeros/sem dados quando o time não tem tasks", async ({
 	page,
 }) => {
 	await page.getByRole("link", { name: "Métricas" }).click();
 	await expect(page).toHaveURL("/metrics");
 
-	await expect(page.getByRole("heading", { name: "Lead time" })).toBeVisible();
-	await expect(page.getByRole("heading", { name: "Cycle time" })).toBeVisible();
 	await expect(
-		page.getByRole("heading", { name: "Tempo bloqueado" }),
+		page.getByRole("heading", { name: "Situação atual" }),
 	).toBeVisible();
 	await expect(
-		page.getByRole("heading", { name: "Tempo aguardando code review" }),
+		page.getByRole("heading", { name: "Resultado da semana" }),
 	).toBeVisible();
 	await expect(
-		page.getByRole("heading", { name: "Tempo em testes" }),
-	).toBeVisible();
-	await expect(
-		page.getByRole("heading", { name: "Tempo aguardando publicação" }),
-	).toBeVisible();
-	await expect(
-		page.getByRole("heading", { name: "Taxa de retrabalho" }),
-	).toBeVisible();
-	await expect(page.getByRole("heading", { name: "Throughput" })).toBeVisible();
-	await expect(page.getByRole("heading", { name: "WIP" })).toBeVisible();
-	await expect(
-		page.getByRole("heading", { name: "Previsibilidade" }),
+		page.getByRole("heading", { name: "Tempo do fluxo" }),
 	).toBeVisible();
 
-	const leadTimeCard = page.getByTestId("metric-card-leadTime");
-	await expect(leadTimeCard.getByText("sem dados")).toBeVisible();
-
-	const wipCard = page.getByTestId("metric-card-wip");
-	await expect(wipCard.getByText("0")).toBeVisible();
+	await expect(page.getByTestId("metric-tile-wip").getByText("0")).toBeVisible();
+	await expect(
+		page.getByTestId("metric-tile-leadTime").getByText("sem dados"),
+	).toBeVisible();
+	await expect(
+		page.getByTestId("metric-tile-delivered").getByText("sem dados"),
+	).toBeVisible();
 });
 
-test("WIP reflete tasks fora de todo e concluído", async ({ page }) => {
+test("Situação atual reflete WIP, bloqueados e coluna atual das tasks", async ({
+	page,
+}) => {
 	await page.getByRole("button", { name: "Task" }).click();
 	await page.getByLabel("Id externo").fill("TASK-1");
 	await page.getByLabel("Descrição").fill("Corrigir bug de login");
 	await page
 		.getByLabel("Coluna inicial")
 		.selectOption({ label: "Desenvolvimento" });
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
 	await page.getByRole("button", { name: "Salvar" }).click();
 
-	await page.getByRole("button", { name: "Task" }).click();
+	await page.getByRole("button", { name: "Task", exact: true }).click();
 	await page.getByLabel("Id externo").fill("TASK-2");
 	await page.getByLabel("Descrição").fill("Escrever testes de login");
 	await page.getByLabel("Coluna inicial").selectOption({ label: "Testes" });
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
 	await page.getByRole("button", { name: "Salvar" }).click();
+
+	await page
+		.getByTitle("História")
+		.filter({ hasText: "TASK-1" })
+		.getByRole("button", { name: "Editar task" })
+		.click();
+	await page.getByRole("checkbox", { name: "⛔ Bloqueado" }).click();
+	await page.getByRole("dialog").getByRole("button", { name: "Fechar" }).click();
 
 	await page.getByRole("link", { name: "Métricas" }).click();
 
-	const wipCard = page.getByTestId("metric-card-wip");
-	await expect(wipCard.getByText("2")).toBeVisible();
+	await expect(page.getByTestId("metric-tile-wip").getByText("2")).toBeVisible();
+	await expect(
+		page.getByTestId("metric-tile-blocked").getByText("1"),
+	).toBeVisible();
+	await expect(
+		page.getByTestId("metric-tile-inTesting").getByText("1"),
+	).toBeVisible();
 });
 
-test("card retroativo concluído hoje entra no throughput da semana", async ({
+test("card retroativo concluído hoje entra em Entregues e Retrabalho", async ({
 	page,
 }) => {
 	const today = new Date().toISOString().slice(0, 10);
@@ -78,13 +84,39 @@ test("card retroativo concluído hoje entra no throughput da semana", async ({
 	await page.getByRole("button", { name: "+ Adicionar etapa" }).click();
 	await page
 		.getByLabel("Status da etapa 2")
-		.selectOption({ label: "Concluído" });
+		.selectOption({ label: "Desenvolvimento" });
 	await page.getByLabel("Data da etapa 2").fill(today);
+	await page.getByRole("button", { name: "+ Adicionar etapa" }).click();
+	await page
+		.getByLabel("Status da etapa 3")
+		.selectOption({ label: "Revisão" });
+	await page.getByLabel("Data da etapa 3").fill(today);
+	await page.getByRole("button", { name: "+ Adicionar etapa" }).click();
+	// Volta pra Desenvolvimento: essa é a transição que conta como retrabalho.
+	await page
+		.getByLabel("Status da etapa 4")
+		.selectOption({ label: "Desenvolvimento" });
+	await page.getByLabel("Data da etapa 4").fill(today);
+	await page.getByRole("button", { name: "+ Adicionar etapa" }).click();
+	await page
+		.getByLabel("Status da etapa 5")
+		.selectOption({ label: "Revisão" });
+	await page.getByLabel("Data da etapa 5").fill(today);
+	await page.getByRole("button", { name: "+ Adicionar etapa" }).click();
+	await page
+		.getByLabel("Status da etapa 6")
+		.selectOption({ label: "Concluído" });
+	await page.getByLabel("Data da etapa 6").fill(today);
+	await page.getByLabel("Data prevista de entrega").fill(today);
 	await page.getByRole("button", { name: "Salvar" }).click();
 
 	await page.getByRole("link", { name: "Métricas" }).click();
-	const throughputCard = page.getByTestId("metric-card-throughput");
-	await expect(throughputCard.locator("p.font-mono")).toHaveText("1");
+	await expect(
+		page.getByTestId("metric-tile-delivered").getByText("1/1"),
+	).toBeVisible();
+	await expect(
+		page.getByTestId("metric-tile-reworkCount").getByText("1 cards"),
+	).toBeVisible();
 });
 
 test("mostra o rótulo do período no cabeçalho e atualiza ao trocar de mês", async ({
