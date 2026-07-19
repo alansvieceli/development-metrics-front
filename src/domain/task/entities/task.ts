@@ -19,7 +19,7 @@ export type Task = {
 	teamId: string;
 	status: TaskStatus;
 	blocked: boolean;
-	dueDate: string | null;
+	dueDate: string;
 	createdAt: Date;
 	updatedAt: Date;
 };

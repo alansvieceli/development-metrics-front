@@ -20,7 +20,7 @@ async function setup() {
 		assigneeId: null,
 		teamId: "team-1",
 		status: "TODO",
-		dueDate: null,
+		dueDate: "2026-07-01",
 	});
 	return { repository, typeRepository, teamAccess, task, type, otherType };
 }
@@ -59,7 +59,7 @@ describe("updateTask", () => {
 			assigneeId: null,
 			teamId: "team-1",
 			status: "TODO",
-			dueDate: null,
+			dueDate: "2026-07-01",
 		});
 		await expect(
 			updateTask(repository, typeRepository, teamAccess, "team-1", other.id, {
@@ -67,7 +67,7 @@ describe("updateTask", () => {
 				description: other.description,
 				typeId: type.id,
 				assigneeId: null,
-				dueDate: null,
+				dueDate: "2026-07-01",
 			}),
 		).rejects.toThrow(
 			'Já existe uma task com o id externo "TASK-1" neste time',
@@ -94,6 +94,7 @@ describe("updateTask", () => {
 			{ dueDate: "2026-02-31" },
 			"Data prevista inválida",
 		],
+		["data vazia", "team-1", { dueDate: "" }, "Data prevista é obrigatória"],
 	] as const)("rejeita %s", async (_name, teamId, change, message) => {
 		const { repository, typeRepository, teamAccess, task, type } =
 			await setup();
@@ -103,7 +104,7 @@ describe("updateTask", () => {
 				description: task.description,
 				typeId: type.id,
 				assigneeId: null,
-				dueDate: null,
+				dueDate: "2026-07-01",
 				...change,
 			}),
 		).rejects.toThrow(message);

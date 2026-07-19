@@ -9,7 +9,7 @@ export type UpdateTaskInput = {
 	description: string;
 	typeId: string;
 	assigneeId: string | null;
-	dueDate: string | null;
+	dueDate: string;
 };
 
 export async function updateTask(
@@ -41,7 +41,10 @@ export async function updateTask(
 	) {
 		throw new ApplicationError("Membro não pertence ao time");
 	}
-	if (input.dueDate !== null && !parseDateOnly(input.dueDate)) {
+	if (!input.dueDate) {
+		throw new ApplicationError("Data prevista é obrigatória");
+	}
+	if (!parseDateOnly(input.dueDate)) {
 		throw new ApplicationError("Data prevista inválida");
 	}
 	const existing = await repository.findByExternalId(task.teamId, externalId);

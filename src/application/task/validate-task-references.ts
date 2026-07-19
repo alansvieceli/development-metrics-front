@@ -12,7 +12,7 @@ export async function validateTaskReferences(
 		teamId: string;
 		typeId: string;
 		assigneeId: string | null;
-		dueDate: string | null;
+		dueDate: string;
 		externalId: string;
 	},
 ) {
@@ -28,7 +28,10 @@ export async function validateTaskReferences(
 	) {
 		throw new ApplicationError("Membro não pertence ao time");
 	}
-	if (input.dueDate !== null && !parseDateOnly(input.dueDate)) {
+	if (!input.dueDate) {
+		throw new ApplicationError("Data prevista é obrigatória");
+	}
+	if (!parseDateOnly(input.dueDate)) {
 		throw new ApplicationError("Data prevista inválida");
 	}
 	const existing = await repository.findByExternalId(

@@ -10,7 +10,7 @@ const baseInput = {
 	assigneeId: null,
 	teamId: "team-1",
 	status: "TODO" as const,
-	dueDate: null,
+	dueDate: "2026-07-01",
 };
 
 async function setup() {
@@ -104,6 +104,7 @@ describe("createTask", () => {
 			"Membro não pertence ao time",
 		],
 		["data inexistente", { dueDate: "2026-02-31" }, "Data prevista inválida"],
+		["data vazia", { dueDate: "" }, "Data prevista é obrigatória"],
 	] as const)("rejeita %s", async (_name, change, message) => {
 		const { repository, typeRepository, teamAccess, input } = await setup();
 		await expect(
