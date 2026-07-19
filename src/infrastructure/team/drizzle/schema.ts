@@ -1,5 +1,12 @@
 import { sql } from "drizzle-orm";
-import { check, integer, pgTable, text, uuid } from "drizzle-orm/pg-core";
+import {
+	check,
+	index,
+	integer,
+	pgTable,
+	text,
+	uuid,
+} from "drizzle-orm/pg-core";
 
 export const teams = pgTable(
 	"teams",
@@ -18,10 +25,14 @@ export const teams = pgTable(
 	],
 );
 
-export const members = pgTable("members", {
-	id: uuid("id").defaultRandom().primaryKey(),
-	name: text("name").notNull(),
-	teamId: uuid("team_id")
-		.notNull()
-		.references(() => teams.id, { onDelete: "cascade" }),
-});
+export const members = pgTable(
+	"members",
+	{
+		id: uuid("id").defaultRandom().primaryKey(),
+		name: text("name").notNull(),
+		teamId: uuid("team_id")
+			.notNull()
+			.references(() => teams.id, { onDelete: "cascade" }),
+	},
+	(table) => [index("members_team_id_idx").on(table.teamId)],
+);

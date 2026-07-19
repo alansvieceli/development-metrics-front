@@ -139,3 +139,13 @@ Após clonar o repositório, ativar os hooks de commit:
 ```sh
 git config core.hooksPath .githooks
 ```
+
+## Graphify
+
+O repositório versiona `graphify-out/graph.json`, usado nas consultas do grafo,
+e `graphify-out/GRAPH_REPORT.md`, sua visão auditável. Os demais artefatos são
+locais e regeneráveis. Após alterar o projeto, atualize os dois arquivos com:
+
+```sh
+graphify update .
+```
