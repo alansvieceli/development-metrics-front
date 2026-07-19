@@ -241,4 +241,13 @@ describe("drizzleTaskRepository", () => {
 			),
 		).toBe(false);
 	});
+
+	it("lista ids de tipos usados sem duplicatas", async () => {
+		await drizzleTaskRepository.createWithInitialHistory(baseData());
+		await drizzleTaskRepository.createWithInitialHistory(
+			baseData({ externalId: "TASK-2" }),
+		);
+
+		expect(await drizzleTaskRepository.listUsedTypeIds()).toEqual([typeId]);
+	});
 });

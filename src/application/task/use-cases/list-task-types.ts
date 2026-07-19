@@ -8,11 +8,13 @@ export async function listTaskTypes(
 	taskTypeRepository: TaskTypeRepository,
 	taskRepository: TaskRepository,
 ): Promise<TaskTypeWithUsage[]> {
-	const taskTypes = await taskTypeRepository.listAll();
-	return Promise.all(
-		taskTypes.map(async (taskType) => ({
-			...taskType,
-			inUse: (await taskRepository.countByType(taskType.id)) > 0,
-		})),
-	);
+	const [taskTypes, usedTypeIds] = await Promise.all([
+		taskTypeRepository.listAll(),
+		taskRepository.listUsedTypeIds(),
+	]);
+	const used = new Set(usedTypeIds);
+	return taskTypes.map((taskType) => ({
+		...taskType,
+		inUse: used.has(taskType.id),
+	}));
 }

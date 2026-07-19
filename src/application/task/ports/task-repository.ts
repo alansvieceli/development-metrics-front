@@ -29,4 +29,5 @@ export type TaskRepository = TaskUsageQuery & {
 	findByExternalId(teamId: string, externalId: string): Promise<Task | null>;
 	listByTeam(teamId: string): Promise<Task[]>;
 	countByType(typeId: string): Promise<number>;
+	listUsedTypeIds(): Promise<string[]>;
 };

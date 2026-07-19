@@ -11,6 +11,7 @@ import type { TaskStatusChange } from "@/domain/task/entities/task-status-change
 export type FakeTaskRepository = TaskRepository & {
 	statusChanges: TaskStatusChange[];
 	blockedPeriods: TaskBlockedPeriod[];
+	listUsedTypeIdsCalls: number;
 	seed(data: CreateTaskData): Promise<Task>;
 };
 
@@ -36,6 +37,7 @@ export function createFakeTaskRepository(): FakeTaskRepository {
 	return {
 		statusChanges,
 		blockedPeriods,
+		listUsedTypeIdsCalls: 0,
 		seed,
 		async createWithInitialHistory(data) {
 			const task = await seed(data);
@@ -113,6 +115,10 @@ export function createFakeTaskRepository(): FakeTaskRepository {
 		},
 		async countByType(typeId) {
 			return tasks.filter((task) => task.typeId === typeId).length;
+		},
+		async listUsedTypeIds() {
+			this.listUsedTypeIdsCalls++;
+			return [...new Set(tasks.map((task) => task.typeId))];
 		},
 		async hasTasksForTeam(teamId) {
 			return tasks.some((task) => task.teamId === teamId);
