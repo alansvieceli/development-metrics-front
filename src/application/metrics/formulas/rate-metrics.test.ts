@@ -15,6 +15,8 @@ function completedTask(
 ): CompletedTaskMetrics {
 	return {
 		taskId: "task-1",
+		externalId: "TASK-1",
+		description: "Task de teste",
 		createdAt: new Date("2026-07-01T00:00:00Z"),
 		completedAt: new Date("2026-07-02T00:00:00Z"),
 		dueDate: "2026-07-01",
@@ -165,15 +167,25 @@ describe("calculatePredictability", () => {
 		const tasks: DueDateTaskMetrics[] = [
 			{
 				taskId: "task-1",
+				externalId: "TASK-1",
+				description: "Task 1",
 				dueDate: "2026-07-10",
 				firstCompletedAt: new Date("2026-07-10T23:59:00Z"),
 			},
 			{
 				taskId: "task-2",
+				externalId: "TASK-2",
+				description: "Task 2",
 				dueDate: "2026-07-10",
 				firstCompletedAt: new Date("2026-07-11T00:00:01Z"),
 			},
-			{ taskId: "task-3", dueDate: "2026-07-10", firstCompletedAt: null },
+			{
+				taskId: "task-3",
+				externalId: "TASK-3",
+				description: "Task 3",
+				dueDate: "2026-07-10",
+				firstCompletedAt: null,
+			},
 		];
 		expect(calculatePredictability(tasks)).toBeCloseTo(33.333, 2);
 	});

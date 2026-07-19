@@ -241,6 +241,82 @@ describe("drizzleMetricsQueryPort", () => {
 		}
 	});
 
+	it("filtra todas as métricas pelo responsável sem alterar a consulta agregada", async () => {
+		const memberA = "22222222-2222-2222-2222-222222222222";
+		const memberB = "33333333-3333-3333-3333-333333333333";
+		const taskA = await insertTask({
+			externalId: "TASK-A",
+			description: "Entrega da Ana",
+			assigneeId: memberA,
+			status: "DONE",
+			dueDate: "2026-07-10",
+		});
+		const taskB = await insertTask({
+			externalId: "TASK-B",
+			description: "Entrega do Bruno",
+			assigneeId: memberB,
+			status: "DONE",
+			dueDate: "2026-07-10",
+		});
+		await db.insert(taskStatusChanges).values([
+			{
+				taskId: taskA.id,
+				fromStatus: "IN_DEVELOPMENT",
+				toStatus: "DONE",
+				changedAt: new Date("2026-07-10T12:00:00Z"),
+			},
+			{
+				taskId: taskB.id,
+				fromStatus: "IN_DEVELOPMENT",
+				toStatus: "DONE",
+				changedAt: new Date("2026-07-10T13:00:00Z"),
+			},
+		]);
+		const [bugType] = await db
+			.insert(taskTypes)
+			.values({ name: "Bug individual", color: "#dc2626", isBug: true })
+			.returning();
+		try {
+			await insertTask({
+				externalId: "BUG-A",
+				description: "Bug associado à entrega A",
+				typeId: bugType.id,
+				parentTaskId: taskA.id,
+				createdAt: new Date("2026-07-11T00:00:00Z"),
+			});
+
+			const start = new Date("2026-07-01T00:00:00Z");
+			const end = new Date("2026-08-01T00:00:00Z");
+			const individual = await drizzleMetricsQueryPort.loadSnapshot(
+				TEAM_ID,
+				start,
+				end,
+				memberA,
+			);
+			const aggregate = await drizzleMetricsQueryPort.loadSnapshot(
+				TEAM_ID,
+				start,
+				end,
+			);
+
+			expect(
+				individual.completionEvents.map((item) => item.externalId),
+			).toEqual(["TASK-A"]);
+			expect(individual.dueDateTasks.map((item) => item.externalId)).toEqual([
+				"TASK-A",
+			]);
+			expect(individual.bugEvents[0]).toMatchObject({
+				parentTaskId: taskA.id,
+				parentExternalId: "TASK-A",
+				parentDescription: "Entrega da Ana",
+			});
+			expect(aggregate.completionEvents).toHaveLength(2);
+		} finally {
+			await resetTasksTable();
+			await db.delete(taskTypes).where(eq(taskTypes.id, bugType.id));
+		}
+	});
+
 	it("carrega o snapshot em no máximo seis queries", async () => {
 		const task = await insertTask({ status: "DONE", dueDate: "2026-07-10" });
 		await db.insert(taskStatusChanges).values({

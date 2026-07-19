@@ -17,12 +17,16 @@ describe("getMetricsDashboard", () => {
 			completionEvents: [
 				{
 					taskId: "task-1",
+					externalId: "TASK-1",
+					description: "Task de teste",
 					createdAt: new Date("2026-07-01T00:00:00Z"),
 					completedAt: new Date("2026-07-14T00:00:00Z"),
 					dueDate: "2026-07-15",
 				},
 				{
 					taskId: "task-1",
+					externalId: "TASK-1",
+					description: "Task de teste",
 					createdAt: new Date("2026-07-01T00:00:00Z"),
 					completedAt: new Date("2026-07-16T00:00:00Z"),
 					dueDate: "2026-07-15",
@@ -46,6 +50,8 @@ describe("getMetricsDashboard", () => {
 			dueDateTasks: [
 				{
 					taskId: "task-1",
+					externalId: "TASK-1",
+					description: "Task de teste",
 					dueDate: "2026-07-15",
 					firstCompletedAt: new Date("2026-07-16T00:00:00Z"),
 				},
@@ -122,6 +128,8 @@ describe("getMetricsDashboard", () => {
 			completionEvents: [
 				{
 					taskId: "task-1",
+					externalId: "TASK-1",
+					description: "Task de teste",
 					createdAt: new Date("2026-07-01T00:00:00Z"),
 					completedAt: new Date("2026-07-10T00:00:00Z"),
 					dueDate: "2026-07-15",

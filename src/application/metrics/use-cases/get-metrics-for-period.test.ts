@@ -8,6 +8,8 @@ describe("getMetricsForRange", () => {
 			completionEvents: [
 				{
 					taskId: "task-1",
+					externalId: "TASK-1",
+					description: "Task de teste",
 					createdAt: new Date("2026-07-01T00:00:00Z"),
 					completedAt: new Date("2026-07-03T00:00:00Z"),
 					dueDate: "2026-07-03",
@@ -25,6 +27,8 @@ describe("getMetricsForRange", () => {
 			dueDateTasks: [
 				{
 					taskId: "task-1",
+					externalId: "TASK-1",
+					description: "Task de teste",
 					dueDate: "2026-07-03",
 					firstCompletedAt: new Date("2026-07-03T00:00:00Z"),
 				},
@@ -123,12 +127,14 @@ describe("getMetricsForRange", () => {
 					createdAt: new Date("2026-07-02T00:00:00Z"),
 					parentTaskId: "parent-1",
 					parentExternalId: "TASK-PAI",
+					parentDescription: "Task de origem",
 				},
 				{
 					taskId: "bug-2",
 					createdAt: new Date("2026-07-03T00:00:00Z"),
 					parentTaskId: "parent-1",
 					parentExternalId: "TASK-PAI",
+					parentDescription: "Task de origem",
 				},
 			],
 		};

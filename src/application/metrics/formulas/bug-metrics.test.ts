@@ -8,6 +8,7 @@ function bugEvent(overrides: Partial<BugEvent> = {}): BugEvent {
 		createdAt: new Date("2026-07-14T00:00:00Z"),
 		parentTaskId: "parent-1",
 		parentExternalId: "TASK-PAI",
+		parentDescription: "Task de origem",
 		...overrides,
 	};
 }

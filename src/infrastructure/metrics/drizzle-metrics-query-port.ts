@@ -36,12 +36,20 @@ export function createDrizzleMetricsQueryPort(
 	database: typeof db = db,
 ): MetricsQueryPort {
 	return {
-		async loadSnapshot(teamId, periodStart, periodEnd) {
+		async loadSnapshot(teamId, periodStart, periodEnd, assigneeId) {
+			const taskAssigneeCondition = assigneeId
+				? eq(tasks.assigneeId, assigneeId)
+				: undefined;
+			const parentAssigneeCondition = assigneeId
+				? eq(parentTasks.assigneeId, assigneeId)
+				: undefined;
 			const [completionEvents, dueDateRows, currentWipRows, bugRows] =
 				await Promise.all([
 					database
 						.select({
 							taskId: taskStatusChanges.taskId,
+							externalId: tasks.externalId,
+							description: tasks.description,
 							createdAt: tasks.createdAt,
 							completedAt: taskStatusChanges.changedAt,
 							dueDate: tasks.dueDate,
@@ -51,6 +59,7 @@ export function createDrizzleMetricsQueryPort(
 						.where(
 							and(
 								eq(tasks.teamId, teamId),
+								taskAssigneeCondition,
 								eq(taskStatusChanges.toStatus, "DONE"),
 								gte(taskStatusChanges.changedAt, periodStart),
 								lt(taskStatusChanges.changedAt, periodEnd),
@@ -60,6 +69,8 @@ export function createDrizzleMetricsQueryPort(
 					database
 						.select({
 							taskId: tasks.id,
+							externalId: tasks.externalId,
+							description: tasks.description,
 							dueDate: tasks.dueDate,
 							firstCompletedAt: min(taskStatusChanges.changedAt),
 						})
@@ -74,12 +85,18 @@ export function createDrizzleMetricsQueryPort(
 						.where(
 							and(
 								eq(tasks.teamId, teamId),
+								taskAssigneeCondition,
 								isNotNull(tasks.dueDate),
 								gte(tasks.dueDate, toDateOnly(periodStart)),
 								lt(tasks.dueDate, toDateOnly(periodEnd)),
 							),
 						)
-						.groupBy(tasks.id, tasks.dueDate),
+						.groupBy(
+							tasks.id,
+							tasks.externalId,
+							tasks.description,
+							tasks.dueDate,
+						),
 					database
 						.select({
 							status: tasks.status,
@@ -110,6 +127,7 @@ export function createDrizzleMetricsQueryPort(
 						.where(
 							and(
 								eq(tasks.teamId, teamId),
+								taskAssigneeCondition,
 								notInArray(tasks.status, ["TODO", "DONE"]),
 							),
 						)
@@ -120,6 +138,7 @@ export function createDrizzleMetricsQueryPort(
 							createdAt: tasks.createdAt,
 							parentTaskId: tasks.parentTaskId,
 							parentExternalId: parentTasks.externalId,
+							parentDescription: parentTasks.description,
 						})
 						.from(tasks)
 						.innerJoin(taskTypes, eq(taskTypes.id, tasks.typeId))
@@ -127,6 +146,7 @@ export function createDrizzleMetricsQueryPort(
 						.where(
 							and(
 								eq(tasks.teamId, teamId),
+								parentAssigneeCondition,
 								eq(taskTypes.isBug, true),
 								gte(tasks.createdAt, periodStart),
 								lt(tasks.createdAt, periodEnd),
@@ -169,6 +189,8 @@ export function createDrizzleMetricsQueryPort(
 				dueDateTasks: dueDateRows.map(
 					(row): DueDateTaskMetrics => ({
 						taskId: row.taskId,
+						externalId: row.externalId,
+						description: row.description,
 						dueDate: row.dueDate as string,
 						firstCompletedAt: row.firstCompletedAt,
 					}),
@@ -184,6 +206,7 @@ export function createDrizzleMetricsQueryPort(
 						createdAt: row.createdAt,
 						parentTaskId: row.parentTaskId ?? null,
 						parentExternalId: row.parentExternalId ?? null,
+						parentDescription: row.parentDescription ?? null,
 					}),
 				),
 			};

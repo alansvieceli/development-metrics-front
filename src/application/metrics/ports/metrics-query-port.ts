@@ -1,7 +1,12 @@
 import type { TaskStatus } from "@/domain/task/entities/task";
 
-export type CompletedTaskMetrics = {
+export type MetricTaskEvidence = {
 	taskId: string;
+	externalId: string;
+	description: string;
+};
+
+export type CompletedTaskMetrics = MetricTaskEvidence & {
 	createdAt: Date;
 	completedAt: Date;
 	dueDate: string;
@@ -16,14 +21,12 @@ export type CompletedTaskMetrics = {
 	}[];
 };
 
-export type DueDateTaskMetrics = {
-	taskId: string;
+export type DueDateTaskMetrics = MetricTaskEvidence & {
 	dueDate: string;
 	firstCompletedAt: Date | null;
 };
 
-type CompletionEvent = {
-	taskId: string;
+type CompletionEvent = MetricTaskEvidence & {
 	createdAt: Date;
 	completedAt: Date;
 	dueDate: string;
@@ -53,6 +56,7 @@ export type BugEvent = {
 	createdAt: Date;
 	parentTaskId: string | null;
 	parentExternalId: string | null;
+	parentDescription: string | null;
 };
 
 export type MetricsSnapshot = {
@@ -69,5 +73,6 @@ export type MetricsQueryPort = {
 		teamId: string,
 		periodStart: Date,
 		periodEnd: Date,
+		assigneeId?: string,
 	): Promise<MetricsSnapshot>;
 };
