@@ -72,16 +72,16 @@ export function KanbanBoard({
 				</div>
 			</div>
 			<BoardSummary tasksByStatus={tasksByStatus} members={members} />
-			<div className="flex flex-1 gap-4 overflow-x-auto">
+			<div className="flex flex-1 gap-2 overflow-x-auto md:gap-4">
 				{STATUS_ORDER.map((status, index) => (
 					<div
 						key={status}
 						data-testid={`column-${status}`}
-						className={`flex min-w-64 flex-1 flex-col gap-3 p-2 ${
+						className={`flex min-w-0 flex-1 flex-col gap-3 p-2 ${
 							index > 0 ? "border-l border-(--border)" : ""
 						}`}
 					>
-						<h2 className="text-sm font-semibold opacity-70">
+						<h2 className="text-sm font-semibold text-balance opacity-70">
 							{STATUS_LABELS[status]} ({tasksByStatus[status].length})
 						</h2>
 						{tasksByStatus[status].map((task) => (
