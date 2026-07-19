@@ -34,6 +34,16 @@ describe("formatPeriodLabel", () => {
 			),
 		).toBe("Julho de 2026");
 	});
+
+	it("formata a quinzena com ordinal e intervalo", () => {
+		expect(
+			formatPeriodLabel(
+				"FORTNIGHT",
+				new Date("2026-07-16T00:00:00Z"),
+				new Date("2026-08-01T00:00:00Z"),
+			),
+		).toBe("2ª quinzena · 16/07 – 31/07");
+	});
 });
 
 describe("formatPeriodShortLabel", () => {
@@ -47,5 +57,11 @@ describe("formatPeriodShortLabel", () => {
 		expect(
 			formatPeriodShortLabel("MONTH", new Date("2026-07-01T00:00:00Z")),
 		).toBe("Jul/26");
+	});
+
+	it("distingue as quinzenas no eixo dos gráficos", () => {
+		expect(
+			formatPeriodShortLabel("FORTNIGHT", new Date("2026-07-16T00:00:00Z")),
+		).toBe("2ª Jul/26");
 	});
 });

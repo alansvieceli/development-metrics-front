@@ -110,7 +110,7 @@ export const METRIC_DEFINITIONS: MetricDefinition[] = [
 		key: "throughputTrend",
 		label: "Throughput por período",
 		description:
-			"Cards entregues em cada um dos últimos 8 períodos (semanas ou meses).",
+			"Cards entregues em cada um dos últimos 8 períodos (semanas, quinzenas ou meses).",
 	},
 	{
 		key: "plannedDeliveredTrend",

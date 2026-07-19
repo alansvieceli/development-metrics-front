@@ -22,7 +22,9 @@ export function ChartsSection({
 	const windowLabel =
 		periodType === "WEEK"
 			? `últimas ${history.length} semanas`
-			: `últimos ${history.length} meses`;
+			: periodType === "FORTNIGHT"
+				? `últimas ${history.length} quinzenas`
+				: `últimos ${history.length} meses`;
 
 	return (
 		<section className="flex flex-col gap-5 rounded-2xl border border-(--border) bg-(--surface) p-5 shadow-[inset_0_3px_0_var(--accent)] sm:p-6">

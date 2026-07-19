@@ -15,7 +15,12 @@ function toDateParam(date: Date): string {
 
 function buildMetricsUrl(periodType: PeriodType, referenceDate: Date): string {
 	const params = new URLSearchParams({
-		period: periodType === "MONTH" ? "month" : "week",
+		period:
+			periodType === "MONTH"
+				? "month"
+				: periodType === "FORTNIGHT"
+					? "fortnight"
+					: "week",
 		date: toDateParam(referenceDate),
 	});
 	return `/metrics?${params.toString()}`;
@@ -40,6 +45,16 @@ export function PeriodFilter({ periodType, referenceDate }: PeriodFilterProps) {
 					}`}
 				>
 					Semana
+				</button>
+				<button
+					type="button"
+					onClick={() => goTo("FORTNIGHT", referenceDate)}
+					aria-pressed={periodType === "FORTNIGHT"}
+					className={`px-4 text-sm ${
+						periodType === "FORTNIGHT" ? "bg-(--accent) text-(--accent-fg)" : ""
+					}`}
+				>
+					Quinzena
 				</button>
 				<button
 					type="button"

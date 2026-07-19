@@ -44,6 +44,10 @@ export function formatPeriodLabel(
 		);
 		return `${month} de ${periodStart.getUTCFullYear()}`;
 	}
+	if (periodType === "FORTNIGHT") {
+		const lastDay = new Date(periodEnd.getTime() - MS_PER_DAY);
+		return `${periodStart.getUTCDate() === 1 ? "1ª" : "2ª"} quinzena · ${formatDayMonth(periodStart)} – ${formatDayMonth(lastDay)}`;
+	}
 	const week = getIsoWeekNumber(periodStart);
 	const lastDay = new Date(periodEnd.getTime() - MS_PER_DAY);
 	return `Semana ${week} · ${formatDayMonth(periodStart)} – ${formatDayMonth(lastDay)}`;
@@ -60,5 +64,8 @@ export function formatPeriodShortLabel(
 		.toLocaleDateString("pt-BR", { month: "short", timeZone: "UTC" })
 		.replace(".", "");
 	const yearShort = String(periodStart.getUTCFullYear()).slice(-2);
-	return `${capitalize(monthAbbrev)}/${yearShort}`;
+	const monthLabel = `${capitalize(monthAbbrev)}/${yearShort}`;
+	return periodType === "FORTNIGHT"
+		? `${periodStart.getUTCDate() === 1 ? "1ª" : "2ª"} ${monthLabel}`
+		: monthLabel;
 }

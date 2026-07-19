@@ -17,6 +17,12 @@ describe("parseMetricsFilter", () => {
 		);
 	});
 
+	it("interpreta period=fortnight", () => {
+		expect(parseMetricsFilter({ period: "fortnight" }).periodType).toBe(
+			"FORTNIGHT",
+		);
+	});
+
 	it("interpreta a data informada na URL", () => {
 		const result = parseMetricsFilter({ date: "2026-06-01" });
 		expect(result.referenceDate).toEqual(new Date("2026-06-01T00:00:00Z"));

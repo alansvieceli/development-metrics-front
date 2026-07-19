@@ -10,7 +10,11 @@ export function parseMetricsFilter(
 	now: Date = new Date(),
 ): MetricsFilter {
 	const periodType: PeriodType =
-		searchParams.period === "month" ? "MONTH" : "WEEK";
+		searchParams.period === "month"
+			? "MONTH"
+			: searchParams.period === "fortnight"
+				? "FORTNIGHT"
+				: "WEEK";
 	return {
 		periodType,
 		referenceDate: parseDateOnly(searchParams.date) ?? now,

@@ -1,4 +1,4 @@
-export type PeriodType = "WEEK" | "MONTH";
+export type PeriodType = "WEEK" | "FORTNIGHT" | "MONTH";
 
 export type PeriodRange = {
 	start: Date;
@@ -9,9 +9,9 @@ export function getPeriodRange(
 	periodType: PeriodType,
 	referenceDate: Date,
 ): PeriodRange {
-	return periodType === "WEEK"
-		? getWeekRange(referenceDate)
-		: getMonthRange(referenceDate);
+	if (periodType === "WEEK") return getWeekRange(referenceDate);
+	if (periodType === "FORTNIGHT") return getFortnightRange(referenceDate);
+	return getMonthRange(referenceDate);
 }
 
 export function getPreviousPeriods(
@@ -59,4 +59,20 @@ function getMonthRange(referenceDate: Date): PeriodRange {
 		),
 	);
 	return { start, end };
+}
+
+function getFortnightRange(referenceDate: Date): PeriodRange {
+	const year = referenceDate.getUTCFullYear();
+	const month = referenceDate.getUTCMonth();
+	const isFirstFortnight = referenceDate.getUTCDate() <= 15;
+	return {
+		start: new Date(Date.UTC(year, month, isFirstFortnight ? 1 : 16)),
+		end: new Date(
+			Date.UTC(
+				year,
+				isFirstFortnight ? month : month + 1,
+				isFirstFortnight ? 16 : 1,
+			),
+		),
+	};
 }

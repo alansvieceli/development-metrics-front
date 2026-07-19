@@ -4,7 +4,8 @@ Frontend do projeto Development Metrics.
 
 ## Funcionalidades
 
-- Cadastro de equipes e de seus colaboradores, com seleção do time atual.
+- Cadastro de equipes e de seus colaboradores, com seleção do time atual e
+  limites configuráveis de WIP e de tarefas concluídas exibidas no quadro.
 - Quadro Kanban para cadastrar, editar, excluir e mover tarefas entre `TODO`,
   `IN_DEVELOPMENT`, `CODE_REVIEW`, `TESTING`, `AWAITING_PUBLICATION` e `DONE`;
   o quadro mostra a contagem de cards por coluna e um resumo por responsável e
@@ -21,16 +22,17 @@ Frontend do projeto Development Metrics.
   nasce com `createdAt` da primeira etapa e status da última.
 - Toda mudança de status gera histórico. Bloqueios são registrados como períodos
   com início e fim, que alimentam o cálculo das métricas.
-- Dashboard com 15 indicadores do time atual, filtro semanal ou mensal e quatro
-  gráficos baseados no período atual e nos últimos 8 períodos.
+- Dashboard com 15 indicadores do time atual, filtros semanal, quinzenal ou
+  mensal e quatro gráficos baseados no período atual e nos últimos 8 períodos.
 
 ## Regras das métricas
 
 ### Período e apresentação
 
 - A semana começa na segunda-feira às `00:00 UTC` e termina no início da
-  segunda-feira seguinte. O mês começa no primeiro dia às `00:00 UTC` e termina
-  no início do mês seguinte. O fim do intervalo é exclusivo.
+  segunda-feira seguinte. As quinzenas são fixas: dias 1 a 15 e do dia 16 ao
+  fim do mês. O mês começa no primeiro dia às `00:00 UTC` e termina no início do
+  mês seguinte. O fim do intervalo é exclusivo.
 - Uma tarefa é considerada concluída no período quando possui ao menos uma
   transição para `DONE` dentro dele. Se houver mais de uma, a conclusão usada nos
   cálculos é a última transição para `DONE` no período, mas a tarefa conta uma
@@ -51,7 +53,7 @@ Frontend do projeto Development Metrics.
 | **Tempo em Testes** | Mesma regra do tempo aguardando code review, aplicada à coluna `TESTING`. O card mostra a média. |
 | **Tempo Aguardando Publicação** | Mesma regra do tempo aguardando code review, aplicada à coluna `AWAITING_PUBLICATION`. O card mostra a média. |
 | **Taxa de retrabalho** | Percentual das tarefas concluídas no período que tiveram ao menos uma transição para `IN_DEVELOPMENT` vinda de um status diferente de `TODO` ou `IN_DEVELOPMENT` (`CODE_REVIEW`, `TESTING`, `AWAITING_PUBLICATION` ou `DONE`): `tarefas com retrabalho / tarefas concluídas × 100`. Cada tarefa conta no máximo uma vez. |
-| **Throughput** | Quantidade de tarefas distintas concluídas no período selecionado. Uma tarefa com múltiplas entradas em `DONE` no mesmo período conta uma vez. No filtro semanal, representa as entregas da semana; no mensal, as entregas do mês. |
+| **Throughput** | Quantidade de tarefas distintas concluídas no período selecionado. Uma tarefa com múltiplas entradas em `DONE` no mesmo período conta uma vez. Representa as entregas da semana, quinzena ou mês, conforme o filtro. |
 | **WIP** | Fotografia atual da quantidade de tarefas do time em qualquer status diferente de `TODO` e `DONE` (`IN_DEVELOPMENT`, `CODE_REVIEW`, `TESTING` ou `AWAITING_PUBLICATION`). Não é média histórica e não é limitado pelo período selecionado. |
 | **Previsibilidade** | Considera tarefas cuja `dueDate` está no período selecionado. Calcula `tarefas concluídas pela primeira vez até 23:59:59.999 UTC da dueDate / tarefas com dueDate no período × 100`. Tarefas atrasadas ou não concluídas contam como não atendidas. Portanto, a implementação atual mede cumprimento da data prevista, não um snapshot separado de itens planejados. |
 

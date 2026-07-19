@@ -171,6 +171,18 @@ test("o filtro de período atualiza a URL ao trocar semana/mês e navegar", asyn
 	);
 });
 
+test("seleciona a visão quinzenal entre semana e mês", async ({ page }) => {
+	await page.getByRole("link", { name: "Métricas" }).click();
+	const buttons = page
+		.locator("button")
+		.filter({ hasText: /Semana|Quinzena|Mês/ });
+	await expect(buttons).toHaveText(["Semana", "Quinzena", "Mês"]);
+
+	await page.getByRole("button", { name: "Quinzena" }).click();
+	await expect(page).toHaveURL(/period=fortnight/);
+	await expect(page.getByText(/^[12]ª quinzena ·/)).toBeVisible();
+});
+
 test("grafico de throughput mostra o card entregue e o titulo explica o calculo", async ({
 	page,
 }) => {
@@ -201,7 +213,7 @@ test("grafico de throughput mostra o card entregue e o titulo explica o calculo"
 	await expect(throughputTitle).toBeVisible();
 	await expect(throughputTitle).toHaveAttribute(
 		"title",
-		"Cards entregues em cada um dos últimos 8 períodos (semanas ou meses).",
+		"Cards entregues em cada um dos últimos 8 períodos (semanas, quinzenas ou meses).",
 	);
 	await expect(
 		page.getByTestId("metric-chart-throughputTrend").locator("svg"),

@@ -20,6 +20,18 @@ describe("getPeriodRange", () => {
 		expect(range.start).toEqual(new Date("2026-07-01T00:00:00Z"));
 		expect(range.end).toEqual(new Date("2026-08-01T00:00:00Z"));
 	});
+
+	it("calcula a primeira quinzena do mês", () => {
+		const range = getPeriodRange("FORTNIGHT", new Date("2026-07-15T12:00:00Z"));
+		expect(range.start).toEqual(new Date("2026-07-01T00:00:00Z"));
+		expect(range.end).toEqual(new Date("2026-07-16T00:00:00Z"));
+	});
+
+	it("calcula a segunda quinzena até o fim do mês", () => {
+		const range = getPeriodRange("FORTNIGHT", new Date("2026-07-16T12:00:00Z"));
+		expect(range.start).toEqual(new Date("2026-07-16T00:00:00Z"));
+		expect(range.end).toEqual(new Date("2026-08-01T00:00:00Z"));
+	});
 });
 
 describe("getPreviousPeriods", () => {
@@ -34,5 +46,18 @@ describe("getPreviousPeriods", () => {
 		expect(ranges[1].start).toEqual(new Date("2026-07-06T00:00:00Z"));
 		expect(ranges[2].start).toEqual(new Date("2026-07-13T00:00:00Z"));
 		expect(ranges[2].end).toEqual(new Date("2026-07-20T00:00:00Z"));
+	});
+
+	it("retorna quinzenas consecutivas atravessando o mês", () => {
+		const ranges = getPreviousPeriods(
+			"FORTNIGHT",
+			new Date("2026-07-20T12:00:00Z"),
+			3,
+		);
+		expect(ranges.map(({ start }) => start)).toEqual([
+			new Date("2026-06-16T00:00:00Z"),
+			new Date("2026-07-01T00:00:00Z"),
+			new Date("2026-07-16T00:00:00Z"),
+		]);
 	});
 });
