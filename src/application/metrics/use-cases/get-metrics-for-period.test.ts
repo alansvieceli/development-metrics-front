@@ -67,4 +67,36 @@ describe("getMetricsForRange", () => {
 		expect(metrics.throughput).toBe(0);
 		expect(metrics.predictability).toBeNull();
 	});
+
+	it("card retroativo sem chegar em DONE conta no WIP mas nao em throughput/lead/cycle", () => {
+		const snapshot: MetricsSnapshot = {
+			completionEvents: [],
+			statusChanges: [
+				{
+					taskId: "task-hist",
+					fromStatus: null,
+					toStatus: "TODO",
+					changedAt: new Date("2026-07-01T00:00:00Z"),
+				},
+				{
+					taskId: "task-hist",
+					fromStatus: "TODO",
+					toStatus: "TESTING",
+					changedAt: new Date("2026-07-05T00:00:00Z"),
+				},
+			],
+			blockedPeriods: [],
+			dueDateTasks: [],
+			wip: 1,
+		};
+		const metrics = getMetricsForRange(
+			snapshot,
+			new Date("2026-07-01T00:00:00Z"),
+			new Date("2026-07-08T00:00:00Z"),
+		);
+
+		expect(metrics.throughput).toBe(0);
+		expect(metrics.leadTime).toBeNull();
+		expect(metrics.cycleTime).toBeNull();
+	});
 });
