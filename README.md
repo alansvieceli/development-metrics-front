@@ -6,7 +6,9 @@ Frontend do projeto Development Metrics.
 
 - Cadastro de equipes e de seus colaboradores, com seleção do time atual.
 - Quadro Kanban para cadastrar, editar, excluir e mover tarefas entre `TODO`,
-  `IN_DEVELOPMENT`, `CODE_REVIEW`, `TESTING`, `AWAITING_PUBLICATION` e `DONE`.
+  `IN_DEVELOPMENT`, `CODE_REVIEW`, `TESTING`, `AWAITING_PUBLICATION` e `DONE`;
+  o quadro mostra a contagem de cards por coluna e um resumo por responsável e
+  de tarefas bloqueadas.
 - Cada tarefa pertence a um time e pode ter tipo, responsável e data prevista de
   entrega (`dueDate`). O identificador externo da tarefa é único dentro do time.
 - O card de tarefa destaca o prazo (`dueDate`) em amarelo quando está a até 2

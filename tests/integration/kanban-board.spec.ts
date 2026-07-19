@@ -111,3 +111,74 @@ test("restaura o status quando a movimentação é rejeitada", async ({
 	await expect(select).toHaveValue("TODO");
 	await expect(select).toBeEnabled();
 });
+
+test("a contagem da coluna reflete o número de cards", async ({ page }) => {
+	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByLabel("Id externo").fill("TASK-COUNT-1");
+	await page.getByLabel("Descrição").fill("Primeira task");
+	await page.getByRole("button", { name: "Salvar" }).click();
+
+	await expect(
+		page.getByRole("heading", { name: "A Fazer (1)" }),
+	).toBeVisible();
+
+	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByLabel("Id externo").fill("TASK-COUNT-2");
+	await page.getByLabel("Descrição").fill("Segunda task");
+	await page.getByRole("button", { name: "Salvar" }).click();
+
+	await expect(
+		page.getByRole("heading", { name: "A Fazer (2)" }),
+	).toBeVisible();
+	await expect(
+		page.getByRole("heading", { name: "Em Desenvolvimento (0)" }),
+	).toBeVisible();
+});
+
+test("o chip de responsável mostra a contagem de cards ativos", async ({
+	page,
+}) => {
+	await expect(page).toHaveURL("/board");
+	await page.getByRole("button", { name: "Time A", exact: true }).click();
+	await page.getByRole("link", { name: "Gerenciar time atual" }).click();
+	await page.getByPlaceholder("Nome do novo membro").fill("Ana");
+	await page.getByRole("button", { name: "Adicionar membro" }).click();
+	await page
+		.getByRole("dialog", { name: "Gerenciar time" })
+		.getByRole("button", { name: "Fechar" })
+		.click();
+
+	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByLabel("Id externo").fill("TASK-ANA-1");
+	await page.getByLabel("Descrição").fill("Task da Ana");
+	await page.getByLabel("Responsável").selectOption({ label: "Ana" });
+	await page.getByRole("button", { name: "Salvar" }).click();
+
+	await expect(page.getByText("Ana: 1")).toBeVisible();
+});
+
+test("o chip de bloqueados aparece e some conforme o card é bloqueado", async ({
+	page,
+}) => {
+	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByLabel("Id externo").fill("TASK-BLOCK-1");
+	await page.getByLabel("Descrição").fill("Task a bloquear");
+	await page.getByLabel("Tipo").selectOption({ label: "Bug" });
+	await page.getByRole("button", { name: "Salvar" }).click();
+
+	await expect(page.getByText("bloqueados")).toHaveCount(0);
+
+	await page
+		.getByTitle("Bug")
+		.filter({ hasText: "TASK-BLOCK-1" })
+		.getByRole("button", { name: "Editar task" })
+		.click();
+	const checkbox = page.getByRole("checkbox", { name: "⛔ Bloqueado" });
+	await checkbox.click();
+
+	await expect(page.getByText("⛔ 1 bloqueados")).toBeVisible();
+	await expect(checkbox).toBeChecked();
+
+	await checkbox.click();
+	await expect(page.getByText("⛔ 1 bloqueados")).toHaveCount(0);
+});

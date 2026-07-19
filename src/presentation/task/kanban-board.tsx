@@ -5,6 +5,7 @@ import type { UpdateTaskInput } from "@/application/task/use-cases/update-task";
 import type { TaskStatus } from "@/domain/task/entities/task";
 import type { TaskType } from "@/domain/task/entities/task-type";
 import type { Member } from "@/domain/team/entities/member";
+import { BoardSummary } from "@/presentation/task/board-summary";
 import { TaskCard } from "@/presentation/task/task-card";
 import { TaskFormModal } from "@/presentation/task/task-form-modal";
 import {
@@ -57,6 +58,7 @@ export function KanbanBoard({
 					createTaskAction={createTaskAction}
 				/>
 			</div>
+			<BoardSummary tasksByStatus={tasksByStatus} members={members} />
 			<div className="flex flex-1 gap-4 overflow-x-auto">
 				{STATUS_ORDER.map((status, index) => (
 					<div
@@ -67,7 +69,7 @@ export function KanbanBoard({
 						}`}
 					>
 						<h2 className="text-sm font-semibold opacity-70">
-							{STATUS_LABELS[status]}
+							{STATUS_LABELS[status]} ({tasksByStatus[status].length})
 						</h2>
 						{tasksByStatus[status].map((task) => (
 							<TaskCard
