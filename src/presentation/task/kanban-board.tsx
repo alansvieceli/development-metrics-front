@@ -56,7 +56,10 @@ export function KanbanBoard({
 	return (
 		<div className="flex flex-1 flex-col gap-4 p-6">
 			<div className="flex items-center justify-between">
-				<h1 className="text-xl font-semibold">Quadro</h1>
+				<div className="flex flex-col gap-2">
+					<h1 className="text-xl font-semibold">Quadro</h1>
+					<BoardSummary tasksByStatus={tasksByStatus} members={members} />
+				</div>
 				<div className="flex items-center gap-2">
 					<HistoricalTaskFormModal
 						taskTypes={taskTypes}
@@ -72,7 +75,6 @@ export function KanbanBoard({
 				</div>
 			</div>
 			<hr className="border-(--border)" />
-			<BoardSummary tasksByStatus={tasksByStatus} members={members} />
 			<div className="flex flex-1 gap-2 overflow-x-auto md:gap-4">
 				{STATUS_ORDER.map((status, index) => (
 					<div
