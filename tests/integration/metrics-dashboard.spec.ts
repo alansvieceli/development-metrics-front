@@ -219,3 +219,47 @@ test("grafico de throughput mostra o card entregue e o titulo explica o calculo"
 		page.getByTestId("metric-chart-throughputTrend").locator("svg"),
 	).toBeVisible();
 });
+
+test("mostra bugs abertos e o ranking de tasks com mais bugs", async ({
+	page,
+}) => {
+	await page.getByRole("button", { name: "Task" }).click();
+	await page.getByLabel("Id externo").fill("TASK-ORIGEM");
+	await page.getByLabel("Descrição").fill("História que gera bugs");
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
+	await page.getByRole("button", { name: "Salvar" }).click();
+
+	await page.getByRole("button", { name: "Task", exact: true }).click();
+	await page.getByLabel("Id externo").fill("TASK-BUG-1");
+	await page.getByLabel("Descrição").fill("Bug 1");
+	await page.getByLabel("Tipo").selectOption({ label: "Bug" });
+	await page
+		.getByLabel("Task de origem (opcional)")
+		.selectOption({ label: "TASK-ORIGEM — História que gera bugs" });
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
+	await page.getByRole("button", { name: "Salvar" }).click();
+
+	await page.getByRole("button", { name: "Task", exact: true }).click();
+	await page.getByLabel("Id externo").fill("TASK-BUG-2");
+	await page.getByLabel("Descrição").fill("Bug 2");
+	await page.getByLabel("Tipo").selectOption({ label: "Bug" });
+	await page
+		.getByLabel("Task de origem (opcional)")
+		.selectOption({ label: "TASK-ORIGEM — História que gera bugs" });
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
+	await page.getByRole("button", { name: "Salvar" }).click();
+
+	await page.getByRole("link", { name: "Métricas" }).click();
+
+	await expect(
+		page.getByRole("heading", { name: "Bugs abertos por período" }),
+	).toBeVisible();
+	await expect(
+		page.getByTestId("metric-chart-bugsOpenedTrend").locator("svg"),
+	).toBeVisible();
+	await expect(
+		page
+			.getByTestId("metric-chart-bugsRanking")
+			.getByText("#TASK-ORIGEM — 2 bugs"),
+	).toBeVisible();
+});
