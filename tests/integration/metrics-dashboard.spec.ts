@@ -72,8 +72,8 @@ test("Situação atual reflete WIP, bloqueados e coluna atual das tasks", async 
 	await page.getByRole("button", { name: "Salvar" }).click();
 
 	await page
-		.getByTitle("História")
-		.filter({ hasText: "TASK-1" })
+		.getByText("TASK-1", { exact: true })
+		.locator("..")
 		.getByRole("button", { name: "Editar task" })
 		.click();
 	await page.getByRole("checkbox", { name: "⛔ Bloqueado" }).click();
@@ -216,7 +216,7 @@ test("grafico de throughput mostra o card entregue e o titulo explica o calculo"
 		"Cards entregues em cada um dos últimos 8 períodos (semanas, quinzenas ou meses).",
 	);
 	await expect(
-		page.getByTestId("metric-chart-throughputTrend").locator("svg"),
+		page.getByTestId("metric-chart-throughputTrend").getByRole("application"),
 	).toBeVisible();
 });
 
@@ -255,7 +255,7 @@ test("mostra bugs abertos e o ranking de tasks com mais bugs", async ({
 		page.getByRole("heading", { name: "Bugs abertos por período" }),
 	).toBeVisible();
 	await expect(
-		page.getByTestId("metric-chart-bugsOpenedTrend").locator("svg"),
+		page.getByTestId("metric-chart-bugsOpenedTrend").getByRole("application"),
 	).toBeVisible();
 	await expect(
 		page
