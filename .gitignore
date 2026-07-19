@@ -29,6 +29,7 @@ npm-debug.log*
 
 # superpowers brainstorming companion
 .superpowers/
+.worktrees/
 
 # typescript
 *.tsbuildinfo
