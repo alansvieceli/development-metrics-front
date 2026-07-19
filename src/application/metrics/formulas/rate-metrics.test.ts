@@ -58,6 +58,51 @@ describe("calculateReworkRate", () => {
 		];
 		expect(calculateReworkRate(tasks)).toBe(100);
 	});
+
+	it("conta retrabalho a partir de TESTING -> IN_DEVELOPMENT", () => {
+		const tasks = [
+			completedTask({
+				statusChanges: [
+					{
+						fromStatus: "TESTING",
+						toStatus: "IN_DEVELOPMENT",
+						changedAt: new Date("2026-07-01T01:00:00Z"),
+					},
+				],
+			}),
+		];
+		expect(calculateReworkRate(tasks)).toBe(100);
+	});
+
+	it("conta retrabalho a partir de AWAITING_PUBLICATION -> IN_DEVELOPMENT", () => {
+		const tasks = [
+			completedTask({
+				statusChanges: [
+					{
+						fromStatus: "AWAITING_PUBLICATION",
+						toStatus: "IN_DEVELOPMENT",
+						changedAt: new Date("2026-07-01T01:00:00Z"),
+					},
+				],
+			}),
+		];
+		expect(calculateReworkRate(tasks)).toBe(100);
+	});
+
+	it("nao conta volta para CODE_REVIEW como retrabalho", () => {
+		const tasks = [
+			completedTask({
+				statusChanges: [
+					{
+						fromStatus: "TESTING",
+						toStatus: "CODE_REVIEW",
+						changedAt: new Date("2026-07-01T01:00:00Z"),
+					},
+				],
+			}),
+		];
+		expect(calculateReworkRate(tasks)).toBe(0);
+	});
 });
 
 describe("calculatePredictability", () => {

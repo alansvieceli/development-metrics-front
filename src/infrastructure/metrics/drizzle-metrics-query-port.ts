@@ -8,6 +8,7 @@ import {
 	isNotNull,
 	lt,
 	min,
+	ne,
 } from "drizzle-orm";
 import type {
 	DueDateTaskMetrics,
@@ -77,7 +78,8 @@ export function createDrizzleMetricsQueryPort(
 					.where(
 						and(
 							eq(tasks.teamId, teamId),
-							inArray(tasks.status, ["IN_DEVELOPMENT", "CODE_REVIEW"]),
+							ne(tasks.status, "TODO"),
+							ne(tasks.status, "DONE"),
 						),
 					),
 			]);

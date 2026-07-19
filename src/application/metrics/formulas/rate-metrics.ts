@@ -12,8 +12,10 @@ export function calculateReworkRate(
 	const reworkCount = tasks.filter((task) =>
 		task.statusChanges.some(
 			(change) =>
-				(change.fromStatus === "CODE_REVIEW" || change.fromStatus === "DONE") &&
-				change.toStatus === "IN_DEVELOPMENT",
+				change.toStatus === "IN_DEVELOPMENT" &&
+				change.fromStatus !== null &&
+				change.fromStatus !== "TODO" &&
+				change.fromStatus !== "IN_DEVELOPMENT",
 		),
 	).length;
 	return (reworkCount / tasks.length) * 100;
