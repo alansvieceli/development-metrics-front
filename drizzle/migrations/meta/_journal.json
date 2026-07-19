@@ -43,6 +43,13 @@
 			"when": 1784432618367,
 			"tag": "0005_task-status-testing-publication",
 			"breakpoints": true
+		},
+		{
+			"idx": 6,
+			"version": "7",
+			"when": 1784469021303,
+			"tag": "0006_task-due-date-required",
+			"breakpoints": true
 		}
 	]
 }

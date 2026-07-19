@@ -47,7 +47,7 @@ describe("drizzleMetricsQueryPort", () => {
 				assigneeId: null,
 				teamId: TEAM_ID,
 				status: "TODO",
-				dueDate: null,
+				dueDate: "2026-07-01",
 				...overrides,
 			})
 			.returning();

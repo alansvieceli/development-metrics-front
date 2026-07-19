@@ -32,7 +32,7 @@ export const tasks = pgTable(
 		teamId: uuid("team_id").notNull(),
 		status: text("status").notNull(),
 		blocked: boolean("blocked").notNull().default(false),
-		dueDate: date("due_date"),
+		dueDate: date("due_date").notNull(),
 		createdAt: timestamp("created_at").notNull().defaultNow(),
 		updatedAt: timestamp("updated_at")
 			.notNull()

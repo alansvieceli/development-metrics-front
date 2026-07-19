@@ -26,7 +26,7 @@ describe("drizzleTaskHistoryRepository", () => {
 				assigneeId: null,
 				teamId: "11111111-1111-1111-1111-111111111111",
 				status: "IN_DEVELOPMENT",
-				dueDate: null,
+				dueDate: "2026-07-01",
 			})
 			.returning();
 		const initial = new Date("2026-07-17T10:00:00Z");

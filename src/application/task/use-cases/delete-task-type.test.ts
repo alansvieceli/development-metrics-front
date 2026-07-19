@@ -23,7 +23,7 @@ describe("deleteTaskType", () => {
 			assigneeId: null,
 			teamId: "team-1",
 			status: "TODO",
-			dueDate: null,
+			dueDate: "2026-07-01",
 		});
 		await expect(
 			deleteTaskType(taskTypeRepository, taskRepository, taskType.id),

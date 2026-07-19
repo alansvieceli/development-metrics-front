@@ -12,7 +12,7 @@ describe("deleteTask", () => {
 			assigneeId: null,
 			teamId: "team-1",
 			status: "TODO",
-			dueDate: null,
+			dueDate: "2026-07-01",
 		});
 		await deleteTask(repository, "team-1", task.id);
 		expect(await repository.findById(task.id)).toBeNull();
@@ -27,7 +27,7 @@ describe("deleteTask", () => {
 			assigneeId: null,
 			teamId: "team-1",
 			status: "TODO",
-			dueDate: null,
+			dueDate: "2026-07-01",
 		});
 
 		await expect(deleteTask(repository, "team-2", task.id)).rejects.toThrow(

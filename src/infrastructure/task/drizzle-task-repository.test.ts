@@ -44,7 +44,7 @@ describe("drizzleTaskRepository", () => {
 			assigneeId: null,
 			teamId: "11111111-1111-1111-1111-111111111111",
 			status: "TODO" as const,
-			dueDate: null,
+			dueDate: "2026-07-01",
 			...overrides,
 		};
 	}

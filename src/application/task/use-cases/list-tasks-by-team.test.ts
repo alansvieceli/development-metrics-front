@@ -8,7 +8,7 @@ const baseData = {
 	typeId: "type-1",
 	assigneeId: null,
 	teamId: "team-1",
-	dueDate: null,
+	dueDate: "2026-07-01",
 };
 
 describe("listTasksByTeam", () => {
