@@ -1,4 +1,6 @@
 import type { TaskWithStatusSince } from "@/application/task/use-cases/list-tasks-by-team";
+import type { UpdateTaskInput } from "@/application/task/use-cases/update-task";
+import type { TaskStatus } from "@/domain/task/entities/task";
 import type { TaskType } from "@/domain/task/entities/task-type";
 import type { Member } from "@/domain/team/entities/member";
 import { TaskFormModal } from "@/presentation/task/task-form-modal";
@@ -10,6 +12,10 @@ type TaskCardProps = {
 	assignee: Member | undefined;
 	taskTypes: TaskType[];
 	members: Member[];
+	updateTaskAction: (taskId: string, input: UpdateTaskInput) => Promise<void>;
+	deleteTaskAction: (taskId: string) => Promise<void>;
+	moveTaskAction: (taskId: string, status: TaskStatus) => Promise<void>;
+	toggleBlockedAction: (taskId: string, blocked: boolean) => Promise<void>;
 };
 
 function formatElapsed(since: Date): string {
@@ -28,6 +34,10 @@ export function TaskCard({
 	assignee,
 	taskTypes,
 	members,
+	updateTaskAction,
+	deleteTaskAction,
+	moveTaskAction,
+	toggleBlockedAction,
 }: TaskCardProps) {
 	return (
 		<div
@@ -42,6 +52,9 @@ export function TaskCard({
 					task={task}
 					taskTypes={taskTypes}
 					members={members}
+					updateTaskAction={updateTaskAction}
+					deleteTaskAction={deleteTaskAction}
+					toggleBlockedAction={toggleBlockedAction}
 				/>
 			</div>
 			<p className="text-sm">{task.description}</p>
@@ -54,7 +67,11 @@ export function TaskCard({
 			{task.blocked ? (
 				<p className="text-xs font-semibold text-red-600">⛔ Bloqueado</p>
 			) : null}
-			<TaskMoveSelect taskId={task.id} currentStatus={task.status} />
+			<TaskMoveSelect
+				taskId={task.id}
+				currentStatus={task.status}
+				moveTaskAction={moveTaskAction}
+			/>
 		</div>
 	);
 }

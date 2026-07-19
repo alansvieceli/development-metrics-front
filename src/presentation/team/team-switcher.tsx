@@ -3,15 +3,19 @@
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { selectTeamAction } from "@/app/actions";
 import type { Team } from "@/domain/team/entities/team";
 
 type TeamSwitcherProps = {
 	currentTeam: Team;
 	teams: Team[];
+	selectTeamAction: (teamId: string) => Promise<void>;
 };
 
-export function TeamSwitcher({ currentTeam, teams }: TeamSwitcherProps) {
+export function TeamSwitcher({
+	currentTeam,
+	teams,
+	selectTeamAction,
+}: TeamSwitcherProps) {
 	const [open, setOpen] = useState(false);
 	const otherTeams = teams.filter((team) => team.id !== currentTeam.id);
 

@@ -1,4 +1,11 @@
 import { redirect } from "next/navigation";
+import {
+	createTaskAction,
+	deleteTaskAction,
+	moveTaskAction,
+	toggleBlockedAction,
+	updateTaskAction,
+} from "@/app/board/actions";
 import { createTaskUseCases } from "@/composition/task";
 import { createTeamUseCases } from "@/composition/team";
 import { KanbanBoard } from "@/presentation/task/kanban-board";
@@ -22,6 +29,11 @@ export default async function BoardPage() {
 			tasksByStatus={tasksByStatus}
 			taskTypes={taskTypes}
 			members={members}
+			createTaskAction={createTaskAction}
+			updateTaskAction={updateTaskAction}
+			deleteTaskAction={deleteTaskAction}
+			moveTaskAction={moveTaskAction}
+			toggleBlockedAction={toggleBlockedAction}
 		/>
 	);
 }

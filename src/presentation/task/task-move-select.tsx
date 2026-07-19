@@ -1,6 +1,5 @@
 "use client";
 
-import { moveTaskAction } from "@/app/board/actions";
 import type { TaskStatus } from "@/domain/task/entities/task";
 import {
 	STATUS_LABELS,
@@ -10,9 +9,14 @@ import {
 type TaskMoveSelectProps = {
 	taskId: string;
 	currentStatus: TaskStatus;
+	moveTaskAction: (taskId: string, status: TaskStatus) => Promise<void>;
 };
 
-export function TaskMoveSelect({ taskId, currentStatus }: TaskMoveSelectProps) {
+export function TaskMoveSelect({
+	taskId,
+	currentStatus,
+	moveTaskAction,
+}: TaskMoveSelectProps) {
 	return (
 		<select
 			aria-label="Mover para"

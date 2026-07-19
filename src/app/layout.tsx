@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { selectTeamAction } from "@/app/actions";
 import { createTeamUseCases } from "@/composition/team";
 import { RootShell } from "@/presentation/shared/root-shell";
 import { TeamSwitcher } from "@/presentation/team/team-switcher";
@@ -49,7 +50,11 @@ export default async function RootLayout({
 						>
 							Tipos de task
 						</Link>
-						<TeamSwitcher currentTeam={currentTeam} teams={teams} />
+						<TeamSwitcher
+							currentTeam={currentTeam}
+							teams={teams}
+							selectTeamAction={selectTeamAction}
+						/>
 					</div>
 				) : null}
 			</header>

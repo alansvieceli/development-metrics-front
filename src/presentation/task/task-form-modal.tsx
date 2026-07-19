@@ -2,12 +2,8 @@
 
 import { Pencil, Plus, X } from "lucide-react";
 import { useState } from "react";
-import {
-	createTaskAction,
-	deleteTaskAction,
-	toggleBlockedAction,
-	updateTaskAction,
-} from "@/app/board/actions";
+import type { CreateTaskInput } from "@/application/task/use-cases/create-task";
+import type { UpdateTaskInput } from "@/application/task/use-cases/update-task";
 import type { Task, TaskStatus } from "@/domain/task/entities/task";
 import type { TaskType } from "@/domain/task/entities/task-type";
 import type { Member } from "@/domain/team/entities/member";
@@ -21,12 +17,21 @@ type TaskFormModalProps =
 			mode: "create";
 			taskTypes: TaskType[];
 			members: Member[];
+			createTaskAction: (
+				input: Omit<CreateTaskInput, "teamId">,
+			) => Promise<void>;
 	  }
 	| {
 			mode: "edit";
 			task: Task;
 			taskTypes: TaskType[];
 			members: Member[];
+			updateTaskAction: (
+				taskId: string,
+				input: UpdateTaskInput,
+			) => Promise<void>;
+			deleteTaskAction: (taskId: string) => Promise<void>;
+			toggleBlockedAction: (taskId: string, blocked: boolean) => Promise<void>;
 	  };
 
 export function TaskFormModal(props: TaskFormModalProps) {
@@ -47,7 +52,7 @@ export function TaskFormModal(props: TaskFormModalProps) {
 		try {
 			if (props.mode === "create") {
 				const status = String(formData.get("status") ?? "TODO") as TaskStatus;
-				await createTaskAction({
+				await props.createTaskAction({
 					externalId,
 					description,
 					typeId,
@@ -56,7 +61,7 @@ export function TaskFormModal(props: TaskFormModalProps) {
 					status,
 				});
 			} else {
-				await updateTaskAction(props.task.id, {
+				await props.updateTaskAction(props.task.id, {
 					externalId,
 					description,
 					typeId,
@@ -85,7 +90,7 @@ export function TaskFormModal(props: TaskFormModalProps) {
 			return;
 		}
 		setPending(true);
-		await deleteTaskAction(props.task.id);
+		await props.deleteTaskAction(props.task.id);
 		setOpen(false);
 	}
 
@@ -94,7 +99,7 @@ export function TaskFormModal(props: TaskFormModalProps) {
 			return;
 		}
 		setPending(true);
-		await toggleBlockedAction(props.task.id, !props.task.blocked);
+		await props.toggleBlockedAction(props.task.id, !props.task.blocked);
 		setPending(false);
 	}
 
