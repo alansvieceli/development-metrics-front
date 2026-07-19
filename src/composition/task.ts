@@ -53,6 +53,7 @@ export function createTaskUseCases() {
 			listTasksByTeam(
 				drizzleTaskRepository,
 				drizzleTaskHistoryRepository,
+				drizzleTaskTypeRepository,
 				teamId,
 			),
 		createTaskType: (name: string, color: string) =>
