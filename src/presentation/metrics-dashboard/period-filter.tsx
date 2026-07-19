@@ -54,6 +54,13 @@ export function PeriodFilter({ periodType, referenceDate }: PeriodFilterProps) {
 			</div>
 			<button
 				type="button"
+				onClick={() => goTo(periodType, new Date())}
+				className="flex h-9 items-center rounded-lg border border-(--border) px-3 text-sm"
+			>
+				Período atual
+			</button>
+			<button
+				type="button"
 				aria-label="Período anterior"
 				onClick={() =>
 					goTo(periodType, shiftReferenceDate(periodType, referenceDate, -1))
