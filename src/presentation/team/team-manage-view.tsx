@@ -106,7 +106,6 @@ export function TeamManageView({
 
 	return (
 		<div className="flex flex-col gap-6">
-			<h1 className="text-xl font-semibold">Gerenciar time</h1>
 			<form action={renameAction} className="flex flex-col gap-2">
 				<label htmlFor="team-name" className="text-sm opacity-70">
 					Nome do time

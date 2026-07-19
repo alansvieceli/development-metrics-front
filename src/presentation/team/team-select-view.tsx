@@ -44,7 +44,6 @@ export function TeamSelectView({
 
 	return (
 		<div className="flex flex-col gap-6">
-			<h1 className="text-xl font-semibold">Selecionar time</h1>
 			{teams.length === 0 ? (
 				<p className="text-sm opacity-70">
 					Nenhum time cadastrado ainda. Crie o primeiro time abaixo.

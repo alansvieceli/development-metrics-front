@@ -28,6 +28,7 @@ export default async function ManageTeamPage({
 
 	return (
 		<main className="mx-auto flex max-w-md flex-col gap-6 p-6">
+			<h1 className="text-xl font-semibold">Gerenciar time</h1>
 			<TeamManageView
 				team={team}
 				members={members}

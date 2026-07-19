@@ -9,6 +9,7 @@ export default async function TeamsPage() {
 
 	return (
 		<main className="mx-auto flex max-w-md flex-col gap-6 p-6">
+			<h1 className="text-xl font-semibold">Selecionar time</h1>
 			<TeamSelectView
 				teams={teams}
 				createTeamAction={createTeamAction}
