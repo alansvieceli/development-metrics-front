@@ -4,6 +4,7 @@ export type CompletedTaskMetrics = {
 	taskId: string;
 	createdAt: Date;
 	completedAt: Date;
+	dueDate: string;
 	statusChanges: {
 		fromStatus: TaskStatus | null;
 		toStatus: TaskStatus;
@@ -25,6 +26,7 @@ type CompletionEvent = {
 	taskId: string;
 	createdAt: Date;
 	completedAt: Date;
+	dueDate: string;
 };
 
 type SnapshotStatusChange = {
@@ -40,12 +42,20 @@ type SnapshotBlockedPeriod = {
 	unblockedAt: Date | null;
 };
 
+export type WipBreakdown = {
+	total: number;
+	blocked: number;
+	inReview: number;
+	inTesting: number;
+	inPublication: number;
+};
+
 export type MetricsSnapshot = {
 	completionEvents: CompletionEvent[];
 	statusChanges: SnapshotStatusChange[];
 	blockedPeriods: SnapshotBlockedPeriod[];
 	dueDateTasks: DueDateTaskMetrics[];
-	wip: number;
+	wip: WipBreakdown;
 };
 
 export type MetricsQueryPort = {
