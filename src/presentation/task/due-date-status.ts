@@ -6,11 +6,11 @@ const WARNING_THRESHOLD_DAYS = 2;
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 export function getDueDateStatus(
-	dueDate: string | null,
+	dueDate: string,
 	status: TaskStatus,
 	today: Date,
 ): DueDateStatus {
-	if (!dueDate || status === "DONE") {
+	if (status === "DONE") {
 		return "none";
 	}
 	const due = new Date(`${dueDate}T00:00:00Z`);

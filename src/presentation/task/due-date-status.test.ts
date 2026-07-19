@@ -4,10 +4,6 @@ import { getDueDateStatus } from "./due-date-status";
 const today = new Date("2026-07-19T12:00:00Z");
 
 describe("getDueDateStatus", () => {
-	it("retorna none quando não há prazo", () => {
-		expect(getDueDateStatus(null, "TODO", today)).toBe("none");
-	});
-
 	it("retorna ok quando o prazo é distante (mais de 2 dias)", () => {
 		expect(getDueDateStatus("2026-07-25", "TODO", today)).toBe("ok");
 	});

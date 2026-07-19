@@ -83,15 +83,13 @@ export function TaskCard({
 			<p className="text-xs opacity-50">
 				{formatElapsed(task.statusChangedAt)}
 			</p>
-			{task.dueDate ? (
-				<p
-					className={`text-xs font-semibold ${dueDateClassName(
-						getDueDateStatus(task.dueDate, task.status, new Date()),
-					)}`}
-				>
-					Prazo: {formatDueDate(task.dueDate)}
-				</p>
-			) : null}
+			<p
+				className={`text-xs font-semibold ${dueDateClassName(
+					getDueDateStatus(task.dueDate, task.status, new Date()),
+				)}`}
+			>
+				Prazo: {formatDueDate(task.dueDate)}
+			</p>
 			{task.blocked ? (
 				<p className="text-xs font-semibold text-(--critical)">⛔ Bloqueado</p>
 			) : null}
