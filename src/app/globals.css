@@ -54,6 +54,11 @@ a {
 	text-decoration: none;
 }
 
+option {
+	background-color: var(--surface);
+	color: var(--foreground);
+}
+
 .brand-cursor {
 	animation: blink 1.1s step-end infinite;
 }
