@@ -14,6 +14,9 @@ Frontend do projeto Development Metrics.
 - O card de tarefa destaca o prazo (`dueDate`) em amarelo quando está a até 2
   dias do vencimento e em vermelho quando já venceu, exceto para tarefas
   concluídas.
+- Cadastro retroativo de card: monta uma sequência de etapas (status + data)
+  para reconstruir o histórico de um card já existente fora do app; a task
+  nasce com `createdAt` da primeira etapa e status da última.
 - Toda mudança de status gera histórico. Bloqueios são registrados como períodos
   com início e fim, que alimentam o cálculo das métricas.
 - Dashboard com dez métricas do time atual, filtro semanal ou mensal e séries

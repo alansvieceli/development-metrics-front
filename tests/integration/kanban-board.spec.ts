@@ -182,3 +182,23 @@ test("o chip de bloqueados aparece e some conforme o card é bloqueado", async (
 	await checkbox.click();
 	await expect(page.getByText("⛔ 1 bloqueados")).toHaveCount(0);
 });
+
+test("cadastro retroativo cria o card já na coluna da última etapa", async ({
+	page,
+}) => {
+	await page.getByRole("button", { name: "Card retroativo" }).click();
+	await page.getByLabel("Id externo").fill("TASK-HIST-1");
+	await page.getByLabel("Descrição").fill("Migração legada");
+	await page.getByLabel("Status da etapa 1").selectOption({ label: "A Fazer" });
+	await page.getByLabel("Data da etapa 1").fill("2026-07-01");
+	await page.getByRole("button", { name: "+ Adicionar etapa" }).click();
+	await page
+		.getByLabel("Status da etapa 2")
+		.selectOption({ label: "Code Review" });
+	await page.getByLabel("Data da etapa 2").fill("2026-07-05");
+	await page.getByRole("button", { name: "Salvar" }).click();
+
+	await expect(
+		page.getByTestId("column-CODE_REVIEW").getByText("TASK-HIST-1"),
+	).toBeVisible();
+});

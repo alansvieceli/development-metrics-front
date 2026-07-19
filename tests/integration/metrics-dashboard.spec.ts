@@ -66,6 +66,27 @@ test("WIP reflete tasks fora de todo e concluído", async ({ page }) => {
 	await expect(wipCard.getByText("2")).toBeVisible();
 });
 
+test("card retroativo concluído hoje entra no throughput da semana", async ({
+	page,
+}) => {
+	const today = new Date().toISOString().slice(0, 10);
+	await page.getByRole("button", { name: "Card retroativo" }).click();
+	await page.getByLabel("Id externo").fill("TASK-HIST-1");
+	await page.getByLabel("Descrição").fill("Migração legada");
+	await page.getByLabel("Status da etapa 1").selectOption({ label: "A Fazer" });
+	await page.getByLabel("Data da etapa 1").fill(today);
+	await page.getByRole("button", { name: "+ Adicionar etapa" }).click();
+	await page
+		.getByLabel("Status da etapa 2")
+		.selectOption({ label: "Concluído" });
+	await page.getByLabel("Data da etapa 2").fill(today);
+	await page.getByRole("button", { name: "Salvar" }).click();
+
+	await page.getByRole("link", { name: "Métricas" }).click();
+	const throughputCard = page.getByTestId("metric-card-throughput");
+	await expect(throughputCard.locator("p.font-mono")).toHaveText("1");
+});
+
 test("o filtro de período atualiza a URL ao trocar semana/mês e navegar", async ({
 	page,
 }) => {
