@@ -1,5 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { formatPeriodLabel, formatPeriodShortLabel } from "./format-period-label";
+import {
+	formatPeriodLabel,
+	formatPeriodShortLabel,
+} from "./format-period-label";
 
 describe("formatPeriodLabel", () => {
 	it("formata uma semana comum com o número ISO e o intervalo de datas", () => {

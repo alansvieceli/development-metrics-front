@@ -48,7 +48,11 @@ export function MetricsDashboard({
 			<CurrentStatusSection wip={current.wip} />
 			<WeekResultSection current={current} />
 			<FlowTimeSection current={current} />
-			<ChartsSection periodType={periodType} current={current} history={history} />
+			<ChartsSection
+				periodType={periodType}
+				current={current}
+				history={history}
+			/>
 		</div>
 	);
 }

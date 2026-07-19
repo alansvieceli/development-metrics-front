@@ -29,7 +29,11 @@ const SEGMENTS = [
 		name: "Code review",
 		fill: "var(--chart-secondary)",
 	},
-	{ dataKey: "testing" as const, name: "Testes", fill: "var(--chart-tertiary)" },
+	{
+		dataKey: "testing" as const,
+		name: "Testes",
+		fill: "var(--chart-tertiary)",
+	},
 	{
 		dataKey: "blocked" as const,
 		name: "Bloqueado",
@@ -69,7 +73,9 @@ export function FlowCompositionChart({ current }: FlowCompositionChartProps) {
 							}}
 							itemStyle={{ color: "var(--foreground)" }}
 							formatter={(value) =>
-								typeof value === "number" ? formatDuration(value) : String(value)
+								typeof value === "number"
+									? formatDuration(value)
+									: String(value)
 							}
 						/>
 						<Legend wrapperStyle={{ fontSize: 11 }} iconSize={8} />

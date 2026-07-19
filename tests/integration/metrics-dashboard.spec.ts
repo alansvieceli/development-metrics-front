@@ -186,7 +186,9 @@ test("grafico de throughput mostra o card entregue e o titulo explica o calculo"
 		.selectOption({ label: "Desenvolvimento" });
 	await page.getByLabel("Data da etapa 2").fill(today);
 	await page.getByRole("button", { name: "+ Adicionar etapa" }).click();
-	await page.getByLabel("Status da etapa 3").selectOption({ label: "Concluído" });
+	await page
+		.getByLabel("Status da etapa 3")
+		.selectOption({ label: "Concluído" });
 	await page.getByLabel("Data da etapa 3").fill(today);
 	await page.getByLabel("Data prevista de entrega").fill(today);
 	await page.getByRole("button", { name: "Salvar" }).click();
