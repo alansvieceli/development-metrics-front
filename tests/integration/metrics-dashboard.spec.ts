@@ -9,7 +9,7 @@ test.beforeEach(async ({ page }) => {
 	await page.getByRole("button", { name: "Time A" }).click();
 });
 
-test("mostra os 8 cards de métricas sem dados quando o time não tem tasks", async ({
+test("mostra os 10 cards de métricas sem dados quando o time não tem tasks", async ({
 	page,
 }) => {
 	await page.getByRole("link", { name: "Métricas" }).click();
@@ -22,6 +22,12 @@ test("mostra os 8 cards de métricas sem dados quando o time não tem tasks", as
 	).toBeVisible();
 	await expect(
 		page.getByRole("heading", { name: "Tempo aguardando code review" }),
+	).toBeVisible();
+	await expect(
+		page.getByRole("heading", { name: "Tempo em testes" }),
+	).toBeVisible();
+	await expect(
+		page.getByRole("heading", { name: "Tempo aguardando publicação" }),
 	).toBeVisible();
 	await expect(
 		page.getByRole("heading", { name: "Taxa de retrabalho" }),
@@ -39,9 +45,7 @@ test("mostra os 8 cards de métricas sem dados quando o time não tem tasks", as
 	await expect(wipCard.getByText("0")).toBeVisible();
 });
 
-test("WIP reflete tasks em desenvolvimento ou code review", async ({
-	page,
-}) => {
+test("WIP reflete tasks fora de todo e concluído", async ({ page }) => {
 	await page.getByRole("button", { name: "Nova task" }).click();
 	await page.getByLabel("Id externo").fill("TASK-1");
 	await page.getByLabel("Descrição").fill("Corrigir bug de login");
@@ -50,10 +54,16 @@ test("WIP reflete tasks em desenvolvimento ou code review", async ({
 		.selectOption({ label: "Em Desenvolvimento" });
 	await page.getByRole("button", { name: "Salvar" }).click();
 
+	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByLabel("Id externo").fill("TASK-2");
+	await page.getByLabel("Descrição").fill("Escrever testes de login");
+	await page.getByLabel("Coluna inicial").selectOption({ label: "Testes" });
+	await page.getByRole("button", { name: "Salvar" }).click();
+
 	await page.getByRole("link", { name: "Métricas" }).click();
 
 	const wipCard = page.getByTestId("metric-card-wip");
-	await expect(wipCard.getByText("1")).toBeVisible();
+	await expect(wipCard.getByText("2")).toBeVisible();
 });
 
 test("o filtro de período atualiza a URL ao trocar semana/mês e navegar", async ({
