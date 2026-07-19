@@ -1,3 +1,4 @@
+import type { ActionState } from "@/application/shared/action-state";
 import type { TaskWithStatusSince } from "@/application/task/use-cases/list-tasks-by-team";
 import type { UpdateTaskInput } from "@/application/task/use-cases/update-task";
 import type { TaskStatus } from "@/domain/task/entities/task";
@@ -12,10 +13,16 @@ type TaskCardProps = {
 	assignee: Member | undefined;
 	taskTypes: TaskType[];
 	members: Member[];
-	updateTaskAction: (taskId: string, input: UpdateTaskInput) => Promise<void>;
-	deleteTaskAction: (taskId: string) => Promise<void>;
-	moveTaskAction: (taskId: string, status: TaskStatus) => Promise<void>;
-	toggleBlockedAction: (taskId: string, blocked: boolean) => Promise<void>;
+	updateTaskAction: (
+		taskId: string,
+		input: UpdateTaskInput,
+	) => Promise<ActionState>;
+	deleteTaskAction: (taskId: string) => Promise<ActionState>;
+	moveTaskAction: (taskId: string, status: TaskStatus) => Promise<ActionState>;
+	toggleBlockedAction: (
+		taskId: string,
+		blocked: boolean,
+	) => Promise<ActionState>;
 };
 
 function formatElapsed(since: Date): string {

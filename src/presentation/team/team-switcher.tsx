@@ -3,12 +3,13 @@
 import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import type { ActionState } from "@/application/shared/action-state";
 import type { Team } from "@/domain/team/entities/team";
 
 type TeamSwitcherProps = {
 	currentTeam: Team;
 	teams: Team[];
-	selectTeamAction: (teamId: string) => Promise<void>;
+	selectTeamAction: (teamId: string) => Promise<ActionState>;
 };
 
 export function TeamSwitcher({
@@ -17,6 +18,8 @@ export function TeamSwitcher({
 	selectTeamAction,
 }: TeamSwitcherProps) {
 	const [open, setOpen] = useState(false);
+	const [pending, setPending] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 	const otherTeams = teams.filter((team) => team.id !== currentTeam.id);
 
 	return (
@@ -35,15 +38,25 @@ export function TeamSwitcher({
 						<button
 							key={team.id}
 							type="button"
-							onClick={() => {
-								setOpen(false);
-								selectTeamAction(team.id);
+							disabled={pending}
+							onClick={async () => {
+								setPending(true);
+								setError(null);
+								try {
+									const result = await selectTeamAction(team.id);
+									if (result.error) setError(result.error);
+								} catch {
+									setError("Não foi possível concluir a operação");
+								} finally {
+									setPending(false);
+								}
 							}}
 							className="rounded-lg px-2 py-1 text-left hover:bg-black/5"
 						>
 							{team.name}
 						</button>
 					))}
+					{error ? <p role="alert">{error}</p> : null}
 					{otherTeams.length > 0 ? <hr className="border-(--border)" /> : null}
 					<Link
 						href={`/teams/${currentTeam.id}`}

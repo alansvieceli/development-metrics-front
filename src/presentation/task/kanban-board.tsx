@@ -1,3 +1,4 @@
+import type { ActionState } from "@/application/shared/action-state";
 import type { CreateTaskInput } from "@/application/task/use-cases/create-task";
 import type { TasksByStatus } from "@/application/task/use-cases/list-tasks-by-team";
 import type { UpdateTaskInput } from "@/application/task/use-cases/update-task";
@@ -15,11 +16,19 @@ type KanbanBoardProps = {
 	tasksByStatus: TasksByStatus;
 	taskTypes: TaskType[];
 	members: Member[];
-	createTaskAction: (input: Omit<CreateTaskInput, "teamId">) => Promise<void>;
-	updateTaskAction: (taskId: string, input: UpdateTaskInput) => Promise<void>;
-	deleteTaskAction: (taskId: string) => Promise<void>;
-	moveTaskAction: (taskId: string, status: TaskStatus) => Promise<void>;
-	toggleBlockedAction: (taskId: string, blocked: boolean) => Promise<void>;
+	createTaskAction: (
+		input: Omit<CreateTaskInput, "teamId">,
+	) => Promise<ActionState>;
+	updateTaskAction: (
+		taskId: string,
+		input: UpdateTaskInput,
+	) => Promise<ActionState>;
+	deleteTaskAction: (taskId: string) => Promise<ActionState>;
+	moveTaskAction: (taskId: string, status: TaskStatus) => Promise<ActionState>;
+	toggleBlockedAction: (
+		taskId: string,
+		blocked: boolean,
+	) => Promise<ActionState>;
 };
 
 export function KanbanBoard({

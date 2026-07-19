@@ -70,3 +70,41 @@ test("abre o gerenciamento em dialog e fecha pelo botão", async ({ page }) => {
 	await expect(dialog).toBeHidden();
 	await expect(page).toHaveURL("/board");
 });
+
+test("mostra erros ao remover vínculos usados por task", async ({ page }) => {
+	await page.goto("/teams");
+	await page.getByPlaceholder("Nome do time").fill("Time A");
+	await page.getByRole("button", { name: "Criar time" }).click();
+	await page.getByRole("button", { name: "Time A" }).click();
+	await page.getByRole("button", { name: "Time A", exact: true }).click();
+	await page.getByRole("link", { name: "Gerenciar time atual" }).click();
+	await page.getByPlaceholder("Nome do novo membro").fill("Ana");
+	await page.getByRole("button", { name: "Adicionar membro" }).click();
+
+	await page.goto("/board");
+	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByLabel("Id externo").fill("TASK-1");
+	await page.getByLabel("Descrição").fill("Task da Ana");
+	await page.getByLabel("Responsável").selectOption({ label: "Ana" });
+	await page.getByRole("button", { name: "Salvar" }).click();
+	await page.getByRole("button", { name: "Time A", exact: true }).click();
+	await page.getByRole("link", { name: "Gerenciar time atual" }).click();
+
+	page.once("dialog", (dialog) => dialog.accept());
+	const removeMember = page.getByRole("button", { name: "Remover membro" });
+	await removeMember.click();
+	await expect(
+		page
+			.getByRole("alert")
+			.filter({ hasText: "Membro é responsável por tasks" }),
+	).toHaveText("Membro é responsável por tasks");
+	await expect(removeMember).toBeEnabled();
+
+	page.once("dialog", (dialog) => dialog.accept());
+	const deleteTeam = page.getByRole("button", { name: "Excluir time" });
+	await deleteTeam.click();
+	await expect(
+		page.getByRole("alert").filter({ hasText: "Time possui tasks" }),
+	).toHaveText("Time possui tasks");
+	await expect(deleteTeam).toBeEnabled();
+});

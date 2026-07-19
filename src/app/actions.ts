@@ -2,11 +2,23 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import type { ActionState } from "@/application/shared/action-state";
+import { ApplicationError } from "@/application/shared/application-error";
 import { createTeamUseCases } from "@/composition/team";
 
-export async function selectTeamAction(teamId: string) {
-	const useCases = createTeamUseCases();
-	await useCases.selectTeam(teamId);
-	revalidatePath("/");
+function toActionState(error: unknown): ActionState {
+	if (error instanceof ApplicationError) return { error: error.message };
+	console.error(error);
+	return { error: "Não foi possível concluir a operação" };
+}
+
+export async function selectTeamAction(teamId: string): Promise<ActionState> {
+	try {
+		const useCases = createTeamUseCases();
+		await useCases.selectTeam(teamId);
+		revalidatePath("/");
+	} catch (error) {
+		return toActionState(error);
+	}
 	redirect("/");
 }

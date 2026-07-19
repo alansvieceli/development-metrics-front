@@ -2,6 +2,7 @@
 
 import { Pencil, Plus } from "lucide-react";
 import { useState } from "react";
+import type { ActionState } from "@/application/shared/action-state";
 import type { CreateTaskInput } from "@/application/task/use-cases/create-task";
 import type { UpdateTaskInput } from "@/application/task/use-cases/update-task";
 import type { Task, TaskStatus } from "@/domain/task/entities/task";
@@ -20,7 +21,7 @@ type TaskFormModalProps =
 			members: Member[];
 			createTaskAction: (
 				input: Omit<CreateTaskInput, "teamId">,
-			) => Promise<void>;
+			) => Promise<ActionState>;
 	  }
 	| {
 			mode: "edit";
@@ -30,14 +31,18 @@ type TaskFormModalProps =
 			updateTaskAction: (
 				taskId: string,
 				input: UpdateTaskInput,
-			) => Promise<void>;
-			deleteTaskAction: (taskId: string) => Promise<void>;
-			toggleBlockedAction: (taskId: string, blocked: boolean) => Promise<void>;
+			) => Promise<ActionState>;
+			deleteTaskAction: (taskId: string) => Promise<ActionState>;
+			toggleBlockedAction: (
+				taskId: string,
+				blocked: boolean,
+			) => Promise<ActionState>;
 	  };
 
 export function TaskFormModal(props: TaskFormModalProps) {
 	const [open, setOpen] = useState(false);
 	const [pending, setPending] = useState(false);
+	const [error, setError] = useState<string | null>(null);
 	const isEdit = props.mode === "edit";
 
 	async function handleSubmit(formData: FormData) {
@@ -50,10 +55,12 @@ export function TaskFormModal(props: TaskFormModalProps) {
 		const dueDate = dueDateValue === "" ? null : dueDateValue;
 
 		setPending(true);
+		setError(null);
 		try {
+			let result: ActionState;
 			if (props.mode === "create") {
 				const status = String(formData.get("status") ?? "TODO") as TaskStatus;
-				await props.createTaskAction({
+				result = await props.createTaskAction({
 					externalId,
 					description,
 					typeId,
@@ -62,7 +69,7 @@ export function TaskFormModal(props: TaskFormModalProps) {
 					status,
 				});
 			} else {
-				await props.updateTaskAction(props.task.id, {
+				result = await props.updateTaskAction(props.task.id, {
 					externalId,
 					description,
 					typeId,
@@ -70,11 +77,13 @@ export function TaskFormModal(props: TaskFormModalProps) {
 					dueDate,
 				});
 			}
+			if (result.error) {
+				setError(result.error);
+				return;
+			}
 			setOpen(false);
-		} catch (error) {
-			window.alert(
-				error instanceof Error ? error.message : "Erro ao salvar a task",
-			);
+		} catch {
+			setError("Não foi possível concluir a operação");
 		} finally {
 			setPending(false);
 		}
@@ -91,8 +100,19 @@ export function TaskFormModal(props: TaskFormModalProps) {
 			return;
 		}
 		setPending(true);
-		await props.deleteTaskAction(props.task.id);
-		setOpen(false);
+		setError(null);
+		try {
+			const result = await props.deleteTaskAction(props.task.id);
+			if (result.error) {
+				setError(result.error);
+				return;
+			}
+			setOpen(false);
+		} catch {
+			setError("Não foi possível concluir a operação");
+		} finally {
+			setPending(false);
+		}
 	}
 
 	async function handleToggleBlocked() {
@@ -100,8 +120,18 @@ export function TaskFormModal(props: TaskFormModalProps) {
 			return;
 		}
 		setPending(true);
-		await props.toggleBlockedAction(props.task.id, !props.task.blocked);
-		setPending(false);
+		setError(null);
+		try {
+			const result = await props.toggleBlockedAction(
+				props.task.id,
+				!props.task.blocked,
+			);
+			if (result.error) setError(result.error);
+		} catch {
+			setError("Não foi possível concluir a operação");
+		} finally {
+			setPending(false);
+		}
 	}
 
 	return (
@@ -238,6 +268,7 @@ export function TaskFormModal(props: TaskFormModalProps) {
 								⛔ Bloqueado
 							</label>
 						) : null}
+						{error ? <p role="alert">{error}</p> : null}
 						<button
 							type="submit"
 							disabled={pending}

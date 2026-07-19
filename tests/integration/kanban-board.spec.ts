@@ -83,3 +83,31 @@ test("fecha o modal de task ao clicar no backdrop", async ({ page }) => {
 	await page.mouse.click(5, 5);
 	await expect(dialog).toBeHidden();
 });
+
+test("restaura o status quando a movimentação é rejeitada", async ({
+	page,
+}) => {
+	await page.getByRole("button", { name: "Nova task" }).click();
+	await page.getByLabel("Id externo").fill("TASK-INVALID-MOVE");
+	await page.getByLabel("Descrição").fill("Testar status inválido");
+	await page.getByRole("button", { name: "Salvar" }).click();
+	const select = page
+		.getByTestId("column-TODO")
+		.getByRole("combobox", { name: "Mover para" });
+
+	await select.evaluate((element) => {
+		const selectElement = element as HTMLSelectElement;
+		const option = document.createElement("option");
+		option.value = "INVALID";
+		option.textContent = "Inválido";
+		selectElement.append(option);
+		selectElement.value = "INVALID";
+		selectElement.dispatchEvent(new Event("change", { bubbles: true }));
+	});
+
+	await expect(
+		page.getByRole("alert").filter({ hasText: "Status inválido" }),
+	).toHaveText("Status inválido");
+	await expect(select).toHaveValue("TODO");
+	await expect(select).toBeEnabled();
+});

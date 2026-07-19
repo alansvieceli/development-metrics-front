@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import type { ActionState } from "@/application/shared/action-state";
 import { ApplicationError } from "@/application/shared/application-error";
 import { isUuid, parseDateOnly } from "@/application/shared/validation";
 import type { CreateTaskInput } from "@/application/task/use-cases/create-task";
@@ -10,6 +11,22 @@ import { createTeamUseCases } from "@/composition/team";
 import { isTaskStatus, type TaskStatus } from "@/domain/task/entities/task";
 
 export type CreateTaskActionInput = Omit<CreateTaskInput, "teamId">;
+
+function toActionState(error: unknown): ActionState {
+	if (error instanceof ApplicationError) return { error: error.message };
+	console.error(error);
+	return { error: "Não foi possível concluir a operação" };
+}
+
+async function runTaskAction(operation: () => Promise<void>) {
+	try {
+		await operation();
+		revalidatePath("/board");
+		return { error: null };
+	} catch (error) {
+		return toActionState(error);
+	}
+}
 
 function validateUuid(
 	value: unknown,
@@ -41,47 +58,47 @@ async function getCurrentTeamId() {
 }
 
 export async function createTaskAction(input: CreateTaskActionInput) {
-	validateInput(input);
-	if (!isTaskStatus(input.status))
-		throw new ApplicationError("Status inválido");
-	const teamId = await getCurrentTeamId();
-	const useCases = createTaskUseCases();
-	await useCases.createTask({ ...input, teamId });
-	revalidatePath("/board");
+	return runTaskAction(async () => {
+		validateInput(input);
+		if (!isTaskStatus(input.status))
+			throw new ApplicationError("Status inválido");
+		const teamId = await getCurrentTeamId();
+		await createTaskUseCases().createTask({ ...input, teamId });
+	});
 }
 
 export async function updateTaskAction(taskId: string, input: UpdateTaskInput) {
-	validateUuid(taskId, "Task inválida");
-	validateInput(input);
-	const teamId = await getCurrentTeamId();
-	const useCases = createTaskUseCases();
-	await useCases.updateTask(teamId, taskId, input);
-	revalidatePath("/board");
+	return runTaskAction(async () => {
+		validateUuid(taskId, "Task inválida");
+		validateInput(input);
+		const teamId = await getCurrentTeamId();
+		await createTaskUseCases().updateTask(teamId, taskId, input);
+	});
 }
 
 export async function deleteTaskAction(taskId: string) {
-	validateUuid(taskId, "Task inválida");
-	const teamId = await getCurrentTeamId();
-	const useCases = createTaskUseCases();
-	await useCases.deleteTask(teamId, taskId);
-	revalidatePath("/board");
+	return runTaskAction(async () => {
+		validateUuid(taskId, "Task inválida");
+		const teamId = await getCurrentTeamId();
+		await createTaskUseCases().deleteTask(teamId, taskId);
+	});
 }
 
 export async function moveTaskAction(taskId: string, status: TaskStatus) {
-	validateUuid(taskId, "Task inválida");
-	if (!isTaskStatus(status)) throw new ApplicationError("Status inválido");
-	const teamId = await getCurrentTeamId();
-	const useCases = createTaskUseCases();
-	await useCases.moveTask(teamId, taskId, status);
-	revalidatePath("/board");
+	return runTaskAction(async () => {
+		validateUuid(taskId, "Task inválida");
+		if (!isTaskStatus(status)) throw new ApplicationError("Status inválido");
+		const teamId = await getCurrentTeamId();
+		await createTaskUseCases().moveTask(teamId, taskId, status);
+	});
 }
 
 export async function toggleBlockedAction(taskId: string, blocked: boolean) {
-	validateUuid(taskId, "Task inválida");
-	if (typeof blocked !== "boolean")
-		throw new ApplicationError("Bloqueio inválido");
-	const teamId = await getCurrentTeamId();
-	const useCases = createTaskUseCases();
-	await useCases.toggleBlocked(teamId, taskId, blocked);
-	revalidatePath("/board");
+	return runTaskAction(async () => {
+		validateUuid(taskId, "Task inválida");
+		if (typeof blocked !== "boolean")
+			throw new ApplicationError("Bloqueio inválido");
+		const teamId = await getCurrentTeamId();
+		await createTaskUseCases().toggleBlocked(teamId, taskId, blocked);
+	});
 }
