@@ -59,5 +59,6 @@ export async function updateTask(
 		typeId: input.typeId,
 		assigneeId: input.assigneeId,
 		dueDate: input.dueDate,
+		parentTaskId: null,
 	});
 }

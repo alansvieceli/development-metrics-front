@@ -18,6 +18,7 @@ describe("listTaskTypes", () => {
 			teamId: "team-1",
 			status: "TODO",
 			dueDate: "2026-07-01",
+			parentTaskId: null,
 		});
 		await taskRepository.seed({
 			externalId: "TASK-2",
@@ -27,6 +28,7 @@ describe("listTaskTypes", () => {
 			teamId: "team-1",
 			status: "TODO",
 			dueDate: "2026-07-01",
+			parentTaskId: null,
 		});
 
 		const result = await listTaskTypes(taskTypeRepository, taskRepository);

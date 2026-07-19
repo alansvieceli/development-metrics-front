@@ -9,6 +9,7 @@ const baseData = {
 	assigneeId: null,
 	teamId: "team-1",
 	dueDate: "2026-07-01",
+	parentTaskId: null,
 };
 
 describe("listTasksByTeam", () => {

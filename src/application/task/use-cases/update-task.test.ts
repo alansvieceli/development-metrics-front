@@ -21,6 +21,7 @@ async function setup() {
 		teamId: "team-1",
 		status: "TODO",
 		dueDate: "2026-07-01",
+		parentTaskId: null,
 	});
 	return { repository, typeRepository, teamAccess, task, type, otherType };
 }
@@ -60,6 +61,7 @@ describe("updateTask", () => {
 			teamId: "team-1",
 			status: "TODO",
 			dueDate: "2026-07-01",
+			parentTaskId: null,
 		});
 		await expect(
 			updateTask(repository, typeRepository, teamAccess, "team-1", other.id, {

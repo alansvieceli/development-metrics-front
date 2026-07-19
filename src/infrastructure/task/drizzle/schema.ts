@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import {
+	type AnyPgColumn,
 	boolean,
 	check,
 	date,
@@ -15,6 +16,7 @@ export const taskTypes = pgTable("task_types", {
 	id: uuid("id").defaultRandom().primaryKey(),
 	name: text("name").notNull(),
 	color: text("color").notNull(),
+	isBug: boolean("is_bug").notNull().default(false),
 });
 
 export const tasks = pgTable(
@@ -33,6 +35,10 @@ export const tasks = pgTable(
 		status: text("status").notNull(),
 		blocked: boolean("blocked").notNull().default(false),
 		dueDate: date("due_date").notNull(),
+		parentTaskId: uuid("parent_task_id").references(
+			(): AnyPgColumn => tasks.id,
+			{ onDelete: "set null" },
+		),
 		createdAt: timestamp("created_at").notNull().defaultNow(),
 		updatedAt: timestamp("updated_at")
 			.notNull()
@@ -52,6 +58,7 @@ export const tasks = pgTable(
 		index("tasks_assignee_id_idx").on(table.assigneeId),
 		index("tasks_team_id_status_idx").on(table.teamId, table.status),
 		index("tasks_team_id_due_date_idx").on(table.teamId, table.dueDate),
+		index("tasks_parent_task_id_idx").on(table.parentTaskId),
 	],
 );
 

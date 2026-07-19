@@ -10,6 +10,7 @@ const baseInput = {
 	assigneeId: null,
 	teamId: "team-1",
 	dueDate: "2026-07-01",
+	parentTaskId: null,
 };
 
 async function setup() {

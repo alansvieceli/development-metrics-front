@@ -68,6 +68,7 @@ export async function createHistoricalTask(
 			teamId: input.teamId,
 			status: steps[steps.length - 1].status,
 			dueDate: input.dueDate,
+			parentTaskId: null,
 		},
 		steps,
 	);

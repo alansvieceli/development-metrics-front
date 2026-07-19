@@ -44,5 +44,6 @@ export async function createTask(
 		teamId: input.teamId,
 		status: input.status,
 		dueDate: input.dueDate,
+		parentTaskId: null,
 	});
 }

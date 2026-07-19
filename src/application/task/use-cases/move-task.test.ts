@@ -10,6 +10,7 @@ const baseData = {
 	teamId: "team-1",
 	status: "TODO" as const,
 	dueDate: "2026-07-01",
+	parentTaskId: null,
 };
 
 describe("moveTask", () => {

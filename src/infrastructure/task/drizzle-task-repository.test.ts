@@ -45,6 +45,7 @@ describe("drizzleTaskRepository", () => {
 			teamId: "11111111-1111-1111-1111-111111111111",
 			status: "TODO" as const,
 			dueDate: "2026-07-01",
+			parentTaskId: null,
 			...overrides,
 		};
 	}
@@ -258,6 +259,7 @@ describe("drizzleTaskRepository", () => {
 			typeId,
 			assigneeId: null,
 			dueDate: "2026-08-01",
+			parentTaskId: null,
 		});
 		expect(updated.description).toBe("Nova descrição");
 		expect(await drizzleTaskRepository.countByType(typeId)).toBe(1);

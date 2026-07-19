@@ -20,6 +20,7 @@ export type Task = {
 	status: TaskStatus;
 	blocked: boolean;
 	dueDate: string;
+	parentTaskId: string | null;
 	createdAt: Date;
 	updatedAt: Date;
 };

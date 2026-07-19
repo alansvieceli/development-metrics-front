@@ -13,6 +13,7 @@ describe("deleteTask", () => {
 			teamId: "team-1",
 			status: "TODO",
 			dueDate: "2026-07-01",
+			parentTaskId: null,
 		});
 		await deleteTask(repository, "team-1", task.id);
 		expect(await repository.findById(task.id)).toBeNull();
@@ -28,6 +29,7 @@ describe("deleteTask", () => {
 			teamId: "team-1",
 			status: "TODO",
 			dueDate: "2026-07-01",
+			parentTaskId: null,
 		});
 
 		await expect(deleteTask(repository, "team-2", task.id)).rejects.toThrow(

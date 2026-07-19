@@ -1,13 +1,31 @@
 import type { TaskTypeRepository } from "@/application/task/ports/task-type-repository";
 import type { TaskType } from "@/domain/task/entities/task-type";
 
-export function createFakeTaskTypeRepository(): TaskTypeRepository {
+export type FakeTaskTypeRepository = TaskTypeRepository & {
+	seedType(data: {
+		name: string;
+		color: string;
+		isBug: boolean;
+	}): Promise<TaskType>;
+};
+
+export function createFakeTaskTypeRepository(): FakeTaskTypeRepository {
 	let taskTypes: TaskType[] = [];
 	let nextId = 1;
 
 	return {
 		async create(name, color) {
-			const taskType: TaskType = { id: `task-type-${nextId++}`, name, color };
+			const taskType: TaskType = {
+				id: `task-type-${nextId++}`,
+				name,
+				color,
+				isBug: false,
+			};
+			taskTypes.push(taskType);
+			return taskType;
+		},
+		async seedType(data) {
+			const taskType: TaskType = { id: `task-type-${nextId++}`, ...data };
 			taskTypes.push(taskType);
 			return taskType;
 		},
