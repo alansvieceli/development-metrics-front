@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isUuid } from "./validation";
+import { isUuid, parseDateOnly } from "./validation";
 
 describe("isUuid", () => {
 	it("aceita UUID canônico", () => {
@@ -10,4 +10,16 @@ describe("isUuid", () => {
 		"rejeita %s",
 		(value) => expect(isUuid(value)).toBe(false),
 	);
+});
+
+describe("parseDateOnly", () => {
+	it.each([
+		["2026-02-28", true],
+		["2026-02-29", false],
+		["2028-02-29", true],
+		["2026-02-31", false],
+		["2026-13-01", false],
+	])("valida %s", (value, valid) => {
+		expect(Boolean(parseDateOnly(value))).toBe(valid);
+	});
 });

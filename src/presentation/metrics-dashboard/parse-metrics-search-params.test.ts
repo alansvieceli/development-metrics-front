@@ -29,6 +29,13 @@ describe("parseMetricsFilter", () => {
 		).toEqual(now);
 	});
 
+	it("ignora data inexistente e usa a data atual", () => {
+		const now = new Date("2026-07-15T12:00:00Z");
+		expect(
+			parseMetricsFilter({ date: "2026-02-31" }, now).referenceDate,
+		).toEqual(now);
+	});
+
 	it("ignora period desconhecido e usa semana", () => {
 		expect(parseMetricsFilter({ period: "year" }).periodType).toBe("WEEK");
 	});
