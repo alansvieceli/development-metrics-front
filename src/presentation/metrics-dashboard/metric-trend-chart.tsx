@@ -88,9 +88,23 @@ export function MetricTrendChart({
 				{variant === "bar" ? (
 					<BarChart data={data}>
 						<CartesianGrid stroke="var(--border)" vertical={false} />
-						<XAxis dataKey="label" tick={{ fontSize: 11 }} />
-						<YAxis width={32} tick={{ fontSize: 11 }} />
+						<XAxis
+							dataKey="label"
+							tick={{ fontSize: 11, fill: "var(--foreground-muted)" }}
+						/>
+						<YAxis
+							width={32}
+							tick={{ fontSize: 11, fill: "var(--foreground-muted)" }}
+						/>
 						<Tooltip
+							contentStyle={{
+								background: "var(--surface)",
+								border: "1px solid var(--border)",
+								borderRadius: 6,
+								fontSize: 12,
+							}}
+							itemStyle={{ color: "var(--foreground)" }}
+							labelStyle={{ color: "var(--foreground-muted)" }}
 							formatter={(value) =>
 								typeof value === "number"
 									? formatValue(format, value)
@@ -100,16 +114,30 @@ export function MetricTrendChart({
 						<Bar
 							dataKey="primary"
 							name="Throughput"
-							fill="var(--accent)"
+							fill="var(--chart-primary)"
 							radius={[4, 4, 0, 0]}
 						/>
 					</BarChart>
 				) : (
 					<LineChart data={data}>
 						<CartesianGrid stroke="var(--border)" vertical={false} />
-						<XAxis dataKey="label" tick={{ fontSize: 11 }} />
-						<YAxis width={32} tick={{ fontSize: 11 }} />
+						<XAxis
+							dataKey="label"
+							tick={{ fontSize: 11, fill: "var(--foreground-muted)" }}
+						/>
+						<YAxis
+							width={32}
+							tick={{ fontSize: 11, fill: "var(--foreground-muted)" }}
+						/>
 						<Tooltip
+							contentStyle={{
+								background: "var(--surface)",
+								border: "1px solid var(--border)",
+								borderRadius: 6,
+								fontSize: 12,
+							}}
+							itemStyle={{ color: "var(--foreground)" }}
+							labelStyle={{ color: "var(--foreground-muted)" }}
 							formatter={(value) =>
 								typeof value === "number"
 									? formatValue(format, value)
@@ -121,7 +149,7 @@ export function MetricTrendChart({
 							type="monotone"
 							dataKey="primary"
 							name={variant === "dual-line" ? "Média" : "Valor"}
-							stroke="var(--accent)"
+							stroke="var(--chart-primary)"
 							strokeWidth={2}
 							dot={{ r: 4 }}
 							connectNulls

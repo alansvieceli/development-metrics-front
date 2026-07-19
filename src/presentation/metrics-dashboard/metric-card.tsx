@@ -83,7 +83,7 @@ function CurrentValue({
 			return <p className="text-sm opacity-60">sem dados</p>;
 		}
 		return (
-			<p className="flex gap-4 text-lg font-semibold">
+			<p className="flex gap-4 font-mono text-lg font-semibold">
 				<span>Média: {formatDuration(stats.averageMs)}</span>
 				<span>Mediana: {formatDuration(stats.medianMs)}</span>
 			</p>
@@ -94,7 +94,11 @@ function CurrentValue({
 		if (percent === null) {
 			return <p className="text-sm opacity-60">sem dados</p>;
 		}
-		return <p className="text-lg font-semibold">{formatPercent(percent)}</p>;
+		return (
+			<p className="font-mono text-lg font-semibold">
+				{formatPercent(percent)}
+			</p>
+		);
 	}
-	return <p className="text-lg font-semibold">{value as number}</p>;
+	return <p className="font-mono text-lg font-semibold">{value as number}</p>;
 }
