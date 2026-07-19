@@ -40,6 +40,17 @@ export const drizzleTeamRepository: TeamRepository = {
 		}
 		return team as Team;
 	},
+	async setCompletedTaskLimit(teamId, completedTaskLimit) {
+		const [team] = await db
+			.update(teams)
+			.set({ completedTaskLimit })
+			.where(eq(teams.id, teamId))
+			.returning();
+		if (!team) {
+			throw new Error("Time não encontrado");
+		}
+		return team as Team;
+	},
 	async rename(teamId, name) {
 		const [team] = await db
 			.update(teams)

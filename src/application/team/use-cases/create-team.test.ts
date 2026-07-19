@@ -8,6 +8,7 @@ describe("createTeam", () => {
 		const team = await createTeam(repository, "Time A");
 		expect(team.name).toBe("Time A");
 		expect(team.wipLimit).toBe(6);
+		expect(team.completedTaskLimit).toBe(10);
 		expect(await repository.listAll()).toEqual([team]);
 	});
 

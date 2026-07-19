@@ -22,6 +22,7 @@ describe("getCurrentTeam", () => {
 			id: "550e8400-e29b-41d4-a716-446655440000",
 			name: "Time A",
 			wipLimit: 6,
+			completedTaskLimit: 10,
 		};
 		vi.spyOn(repository, "findById").mockResolvedValue(team);
 		const store = createFakeCurrentTeamStore(team.id);

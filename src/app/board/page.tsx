@@ -28,6 +28,7 @@ export default async function BoardPage() {
 	return (
 		<KanbanBoard
 			tasksByStatus={tasksByStatus}
+			completedTaskLimit={currentTeam.completedTaskLimit}
 			taskTypes={taskTypes}
 			members={members}
 			createTaskAction={createTaskAction}

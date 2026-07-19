@@ -7,8 +7,15 @@ export const teams = pgTable(
 		id: uuid("id").defaultRandom().primaryKey(),
 		name: text("name").notNull(),
 		wipLimit: integer("wip_limit").notNull().default(6),
+		completedTaskLimit: integer("completed_task_limit").notNull().default(10),
 	},
-	(table) => [check("teams_wip_limit_check", sql`${table.wipLimit} > 0`)],
+	(table) => [
+		check("teams_wip_limit_check", sql`${table.wipLimit} > 0`),
+		check(
+			"teams_completed_task_limit_check",
+			sql`${table.completedTaskLimit} > 0`,
+		),
+	],
 );
 
 export const members = pgTable("members", {

@@ -17,6 +17,7 @@ import {
 
 type KanbanBoardProps = {
 	tasksByStatus: TasksByStatus;
+	completedTaskLimit: number;
 	taskTypes: TaskType[];
 	members: Member[];
 	createTaskAction: (
@@ -39,6 +40,7 @@ type KanbanBoardProps = {
 
 export function KanbanBoard({
 	tasksByStatus,
+	completedTaskLimit,
 	taskTypes,
 	members,
 	createTaskAction,
@@ -52,6 +54,15 @@ export function KanbanBoard({
 		taskTypes.map((taskType) => [taskType.id, taskType]),
 	);
 	const membersById = new Map(members.map((member) => [member.id, member]));
+	const visibleTasksByStatus = {
+		...tasksByStatus,
+		DONE: [...tasksByStatus.DONE]
+			.sort(
+				(left, right) =>
+					right.statusChangedAt.getTime() - left.statusChangedAt.getTime(),
+			)
+			.slice(0, completedTaskLimit),
+	};
 
 	return (
 		<div className="flex flex-1 flex-col gap-4 p-6">
@@ -87,7 +98,7 @@ export function KanbanBoard({
 						<h2 className="text-sm font-semibold text-balance opacity-70">
 							{STATUS_LABELS[status]} ({tasksByStatus[status].length})
 						</h2>
-						{tasksByStatus[status].map((task) => (
+						{visibleTasksByStatus[status].map((task) => (
 							<TaskCard
 								key={task.id}
 								task={task}

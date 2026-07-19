@@ -16,6 +16,7 @@ describe("selectTeam", () => {
 			id: TEAM_ID,
 			name: "Time A",
 			wipLimit: 6,
+			completedTaskLimit: 10,
 		});
 		const store = createStore();
 

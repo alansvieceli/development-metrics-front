@@ -57,6 +57,13 @@
 			"when": 1784481341414,
 			"tag": "0007_silent_midnight",
 			"breakpoints": true
+		},
+		{
+			"idx": 8,
+			"version": "7",
+			"when": 1784482290135,
+			"tag": "0008_late_hardball",
+			"breakpoints": true
 		}
 	]
 }

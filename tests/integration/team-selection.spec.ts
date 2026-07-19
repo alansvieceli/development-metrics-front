@@ -71,6 +71,33 @@ test("abre o gerenciamento em dialog e fecha pelo botão", async ({ page }) => {
 	await expect(page).toHaveURL("/board");
 });
 
+test("configura quantas tarefas concluídas aparecem no quadro", async ({
+	page,
+}) => {
+	await page.goto("/teams");
+	await page.getByPlaceholder("Nome do time").fill("Time A");
+	await page.getByRole("button", { name: "Criar time" }).click();
+	await page.getByRole("button", { name: "Time A" }).click();
+	await page.getByRole("button", { name: "Time A", exact: true }).click();
+	await page.getByRole("link", { name: "Gerenciar time atual" }).click();
+
+	const dialog = page.getByRole("dialog", { name: "Gerenciar time" });
+	await dialog.getByLabel("Tarefas concluídas exibidas").fill("3");
+	await dialog
+		.getByRole("button", { name: "Salvar limite de tarefas concluídas" })
+		.click();
+
+	await expect(dialog.getByLabel("Tarefas concluídas exibidas")).toHaveValue(
+		"3",
+	);
+	await expect(
+		dialog.getByRole("button", { name: "Salvar nome do time" }),
+	).toBeVisible();
+	await expect(
+		dialog.getByRole("button", { name: "Salvar limite de WIP" }),
+	).toBeVisible();
+});
+
 test("mostra erros ao remover vínculos usados por task", async ({ page }) => {
 	await page.goto("/teams");
 	await page.getByPlaceholder("Nome do time").fill("Time A");

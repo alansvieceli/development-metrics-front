@@ -1,7 +1,10 @@
 import type { TeamRepository } from "@/application/team/ports/team-repository";
 import type { Member } from "@/domain/team/entities/member";
 import type { Team } from "@/domain/team/entities/team";
-import { DEFAULT_WIP_LIMIT } from "@/domain/team/entities/team";
+import {
+	DEFAULT_COMPLETED_TASK_LIMIT,
+	DEFAULT_WIP_LIMIT,
+} from "@/domain/team/entities/team";
 
 export function createFakeTeamRepository(): TeamRepository {
 	let teams: Team[] = [];
@@ -18,7 +21,12 @@ export function createFakeTeamRepository(): TeamRepository {
 			);
 		},
 		async create(name, wipLimit = DEFAULT_WIP_LIMIT) {
-			const team: Team = { id: `team-${nextId++}`, name, wipLimit };
+			const team: Team = {
+				id: `team-${nextId++}`,
+				name,
+				wipLimit,
+				completedTaskLimit: DEFAULT_COMPLETED_TASK_LIMIT,
+			};
 			teams.push(team);
 			return team;
 		},
@@ -36,6 +44,14 @@ export function createFakeTeamRepository(): TeamRepository {
 				throw new Error("Time não encontrado");
 			}
 			team.wipLimit = wipLimit;
+			return team;
+		},
+		async setCompletedTaskLimit(teamId, completedTaskLimit) {
+			const team = teams.find((item) => item.id === teamId);
+			if (!team) {
+				throw new Error("Time não encontrado");
+			}
+			team.completedTaskLimit = completedTaskLimit;
 			return team;
 		},
 		async delete(teamId) {

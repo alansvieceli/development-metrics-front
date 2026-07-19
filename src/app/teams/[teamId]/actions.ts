@@ -61,6 +61,27 @@ export async function setWipLimitAction(
 	redirect(path);
 }
 
+export async function setCompletedTaskLimitAction(
+	teamId: string,
+	_previousState: ActionState,
+	formData: FormData,
+): Promise<ActionState> {
+	const path = `/teams/${teamId}`;
+	try {
+		validateUuid(teamId, "Time inválido");
+		const useCases = createTeamUseCases();
+		await useCases.setCompletedTaskLimit(
+			teamId,
+			Number(formData.get("completedTaskLimit")),
+		);
+		revalidatePath(path);
+		revalidatePath("/board");
+	} catch (error) {
+		return toActionState(error);
+	}
+	redirect(path);
+}
+
 export async function deleteTeamAction(teamId: string): Promise<ActionState> {
 	try {
 		validateUuid(teamId, "Time inválido");

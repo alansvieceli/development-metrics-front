@@ -1,0 +1,2 @@
+ALTER TABLE "teams" ADD COLUMN "completed_task_limit" integer DEFAULT 10 NOT NULL;--> statement-breakpoint
+ALTER TABLE "teams" ADD CONSTRAINT "teams_completed_task_limit_check" CHECK ("teams"."completed_task_limit" > 0);

@@ -1,6 +1,6 @@
 "use client";
 
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { Check, Plus, Trash2 } from "lucide-react";
 import { useActionState } from "react";
 import {
 	type ActionState,
@@ -19,6 +19,10 @@ type TeamManageViewProps = {
 		formData: FormData,
 	) => Promise<ActionState>;
 	setWipLimitAction: (
+		previousState: ActionState,
+		formData: FormData,
+	) => Promise<ActionState>;
+	setCompletedTaskLimitAction: (
 		previousState: ActionState,
 		formData: FormData,
 	) => Promise<ActionState>;
@@ -71,7 +75,7 @@ function MemberRow({
 						aria-label="Renomear membro"
 						className="rounded-lg border border-(--border) p-1.5 disabled:opacity-60"
 					>
-						<Pencil size={14} aria-hidden="true" />
+						<Check size={14} aria-hidden="true" />
 					</SubmitButton>
 				</form>
 				<form action={removeAction}>
@@ -95,6 +99,7 @@ export function TeamManageView({
 	members,
 	renameTeamAction,
 	setWipLimitAction,
+	setCompletedTaskLimitAction,
 	addMemberAction,
 	renameMemberAction,
 	removeMemberAction,
@@ -112,6 +117,10 @@ export function TeamManageView({
 		setWipLimitAction,
 		INITIAL_ACTION_STATE,
 	);
+	const [completedTaskLimitState, completedTaskLimitAction] = useActionState(
+		setCompletedTaskLimitAction,
+		INITIAL_ACTION_STATE,
+	);
 
 	return (
 		<div className="flex flex-col gap-6">
@@ -119,37 +128,77 @@ export function TeamManageView({
 				<label htmlFor="team-name" className="text-sm opacity-70">
 					Nome do time
 				</label>
-				<input
-					id="team-name"
-					name="name"
-					defaultValue={team.name}
-					className="rounded-lg border border-(--border) px-3 py-2"
-					required
-				/>
+				<div className="flex gap-2">
+					<input
+						id="team-name"
+						name="name"
+						defaultValue={team.name}
+						className="min-w-0 flex-1 rounded-lg border border-(--border) px-3 py-2"
+						required
+					/>
+					<SubmitButton
+						aria-label="Salvar nome do time"
+						className="rounded-lg border border-(--border) p-2.5 disabled:opacity-60"
+					>
+						<Check size={16} aria-hidden="true" />
+					</SubmitButton>
+				</div>
 				{renameState.error ? <p role="alert">{renameState.error}</p> : null}
-				<SubmitButton className="self-start rounded-lg border border-(--border) px-4 py-2 disabled:opacity-60">
-					Salvar nome
-				</SubmitButton>
 			</form>
 
 			<form action={wipLimitAction} className="flex flex-col gap-2">
 				<label htmlFor="team-wip-limit" className="text-sm opacity-70">
 					Limite de WIP
 				</label>
-				<input
-					id="team-wip-limit"
-					name="wipLimit"
-					type="number"
-					min="1"
-					step="1"
-					defaultValue={team.wipLimit}
-					className="rounded-lg border border-(--border) px-3 py-2"
-					required
-				/>
+				<div className="flex gap-2">
+					<input
+						id="team-wip-limit"
+						name="wipLimit"
+						type="number"
+						min="1"
+						step="1"
+						defaultValue={team.wipLimit}
+						className="min-w-0 flex-1 rounded-lg border border-(--border) px-3 py-2"
+						required
+					/>
+					<SubmitButton
+						aria-label="Salvar limite de WIP"
+						className="rounded-lg border border-(--border) p-2.5 disabled:opacity-60"
+					>
+						<Check size={16} aria-hidden="true" />
+					</SubmitButton>
+				</div>
 				{wipLimitState.error ? <p role="alert">{wipLimitState.error}</p> : null}
-				<SubmitButton className="self-start rounded-lg border border-(--border) px-4 py-2 disabled:opacity-60">
-					Salvar limite
-				</SubmitButton>
+			</form>
+
+			<form action={completedTaskLimitAction} className="flex flex-col gap-2">
+				<label
+					htmlFor="team-completed-task-limit"
+					className="text-sm opacity-70"
+				>
+					Tarefas concluídas exibidas
+				</label>
+				<div className="flex gap-2">
+					<input
+						id="team-completed-task-limit"
+						name="completedTaskLimit"
+						type="number"
+						min="1"
+						step="1"
+						defaultValue={team.completedTaskLimit}
+						className="min-w-0 flex-1 rounded-lg border border-(--border) px-3 py-2"
+						required
+					/>
+					<SubmitButton
+						aria-label="Salvar limite de tarefas concluídas"
+						className="rounded-lg border border-(--border) p-2.5 disabled:opacity-60"
+					>
+						<Check size={16} aria-hidden="true" />
+					</SubmitButton>
+				</div>
+				{completedTaskLimitState.error ? (
+					<p role="alert">{completedTaskLimitState.error}</p>
+				) : null}
 			</form>
 
 			<div className="flex flex-col gap-2">

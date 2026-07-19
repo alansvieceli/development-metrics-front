@@ -17,6 +17,18 @@ describe("drizzleTeamRepository", () => {
 		const found = await drizzleTeamRepository.findById(created.id);
 		expect(found).toEqual(created);
 		expect(found?.wipLimit).toBe(6);
+		expect(found?.completedTaskLimit).toBe(10);
+	});
+
+	it("atualiza o limite de tarefas concluídas exibidas", async () => {
+		const created = await drizzleTeamRepository.create("Time A");
+
+		const updated = await drizzleTeamRepository.setCompletedTaskLimit(
+			created.id,
+			3,
+		);
+
+		expect(updated.completedTaskLimit).toBe(3);
 	});
 
 	it("cria e atualiza um limite de WIP específico", async () => {

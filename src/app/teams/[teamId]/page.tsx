@@ -8,6 +8,7 @@ import {
 	removeMemberAction,
 	renameMemberAction,
 	renameTeamAction,
+	setCompletedTaskLimitAction,
 	setWipLimitAction,
 } from "./actions";
 
@@ -35,6 +36,10 @@ export default async function ManageTeamPage({
 				members={members}
 				renameTeamAction={renameTeamAction.bind(null, teamId)}
 				setWipLimitAction={setWipLimitAction.bind(null, teamId)}
+				setCompletedTaskLimitAction={setCompletedTaskLimitAction.bind(
+					null,
+					teamId,
+				)}
 				addMemberAction={addMemberAction.bind(null, teamId)}
 				renameMemberAction={renameMemberAction.bind(null, teamId)}
 				removeMemberAction={removeMemberAction.bind(null, teamId)}
