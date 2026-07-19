@@ -34,6 +34,22 @@ test("mostra os 3 blocos com zeros/sem dados quando o time não tem tasks", asyn
 	await expect(
 		page.getByTestId("metric-tile-delivered").getByText("sem dados"),
 	).toBeVisible();
+
+	await expect(
+		page.getByRole("heading", { name: "Throughput por período" }),
+	).toBeVisible();
+	await expect(
+		page.getByRole("heading", { name: "Planejado x entregue" }),
+	).toBeVisible();
+	await expect(
+		page.getByRole("heading", { name: "Lead time x Cycle time" }),
+	).toBeVisible();
+	await expect(
+		page.getByRole("heading", { name: "Composição do fluxo" }),
+	).toBeVisible();
+	await expect(
+		page.getByTestId("metric-chart-flowComposition").getByText("sem dados"),
+	).toBeVisible();
 });
 
 test("Situação atual reflete WIP, bloqueados e coluna atual das tasks", async ({
@@ -153,4 +169,39 @@ test("o filtro de período atualiza a URL ao trocar semana/mês e navegar", asyn
 	expect(urlAfterPrev.searchParams.get("date")).not.toBe(
 		urlAfterMonth.searchParams.get("date"),
 	);
+});
+
+test("grafico de throughput mostra o card entregue e o titulo explica o calculo", async ({
+	page,
+}) => {
+	const today = new Date().toISOString().slice(0, 10);
+	await page.getByRole("button", { name: "Retroativo" }).click();
+	await page.getByLabel("Id externo").fill("TASK-HIST-2");
+	await page.getByLabel("Descrição").fill("Ajuste de layout");
+	await page.getByLabel("Status da etapa 1").selectOption({ label: "Backlog" });
+	await page.getByLabel("Data da etapa 1").fill(today);
+	await page.getByRole("button", { name: "+ Adicionar etapa" }).click();
+	await page
+		.getByLabel("Status da etapa 2")
+		.selectOption({ label: "Desenvolvimento" });
+	await page.getByLabel("Data da etapa 2").fill(today);
+	await page.getByRole("button", { name: "+ Adicionar etapa" }).click();
+	await page.getByLabel("Status da etapa 3").selectOption({ label: "Concluído" });
+	await page.getByLabel("Data da etapa 3").fill(today);
+	await page.getByLabel("Data prevista de entrega").fill(today);
+	await page.getByRole("button", { name: "Salvar" }).click();
+
+	await page.getByRole("link", { name: "Métricas" }).click();
+
+	const throughputTitle = page.getByRole("heading", {
+		name: "Throughput por período",
+	});
+	await expect(throughputTitle).toBeVisible();
+	await expect(throughputTitle).toHaveAttribute(
+		"title",
+		"Cards entregues em cada um dos últimos 8 períodos (semanas ou meses).",
+	);
+	await expect(
+		page.getByTestId("metric-chart-throughputTrend").locator("svg"),
+	).toBeVisible();
 });
