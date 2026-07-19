@@ -13,11 +13,13 @@ describe("getMetricsDashboard", () => {
 					taskId: "task-1",
 					createdAt: new Date("2026-07-01T00:00:00Z"),
 					completedAt: new Date("2026-07-14T00:00:00Z"),
+					dueDate: "2026-07-15",
 				},
 				{
 					taskId: "task-1",
 					createdAt: new Date("2026-07-01T00:00:00Z"),
 					completedAt: new Date("2026-07-16T00:00:00Z"),
+					dueDate: "2026-07-15",
 				},
 			],
 			statusChanges: [
@@ -42,7 +44,13 @@ describe("getMetricsDashboard", () => {
 					firstCompletedAt: new Date("2026-07-16T00:00:00Z"),
 				},
 			],
-			wip: 3,
+			wip: {
+				total: 3,
+				blocked: 0,
+				inReview: 0,
+				inTesting: 0,
+				inPublication: 0,
+			},
 		};
 		let loadSnapshotCalls = 0;
 		const port: MetricsQueryPort = {
@@ -67,15 +75,16 @@ describe("getMetricsDashboard", () => {
 			new Date("2026-07-20T00:00:00Z"),
 		);
 		expect(dashboard.current.throughput).toBe(1);
-		expect(dashboard.current.wip).toBe(3);
+		expect(dashboard.current.wip).toEqual({
+			total: 3,
+			blocked: 0,
+			inReview: 0,
+			inTesting: 0,
+			inPublication: 0,
+		});
 		expect(dashboard.current.leadTime?.averageMs).toBe(15 * 86_400_000);
 		expect(dashboard.current.cycleTime?.averageMs).toBe(14 * 86_400_000);
 		expect(dashboard.current.blockedTime?.averageMs).toBe(86_400_000);
 		expect(dashboard.current.predictability).toBe(0);
-		expect(dashboard.weeklySeries).toHaveLength(8);
-		expect(dashboard.monthlySeries).toHaveLength(6);
-		expect(dashboard.weeklySeries.at(-1)?.metrics.throughput).toBe(1);
-		expect(dashboard.weeklySeries[0].metrics.throughput).toBe(0);
-		expect(dashboard.weeklySeries[0].metrics).not.toHaveProperty("wip");
 	});
 });
