@@ -2,9 +2,9 @@ import { describe, expect, it } from "vitest";
 import type { CompletedTaskMetrics } from "@/application/metrics/ports/metrics-query-port";
 import {
 	calculateBlockedTime,
-	calculateCodeReviewTime,
 	calculateCycleTime,
 	calculateLeadTime,
+	calculateTimeInStatus,
 	computeDurationStats,
 } from "./duration-metrics";
 
@@ -132,7 +132,7 @@ describe("calculateBlockedTime", () => {
 	});
 });
 
-describe("calculateCodeReviewTime", () => {
+describe("calculateTimeInStatus", () => {
 	it("soma múltiplas passagens por CODE_REVIEW (retrabalho)", () => {
 		const tasks = [
 			task({
@@ -160,13 +160,39 @@ describe("calculateCodeReviewTime", () => {
 				],
 			}),
 		];
-		expect(calculateCodeReviewTime(tasks)?.averageMs).toBe(3 * 60 * 60 * 1000);
+		expect(calculateTimeInStatus(tasks, "CODE_REVIEW")?.averageMs).toBe(
+			3 * 60 * 60 * 1000,
+		);
 	});
 
-	it("retorna zero para task que nunca passou por CODE_REVIEW", () => {
-		expect(calculateCodeReviewTime([task({ statusChanges: [] })])).toEqual({
+	it("retorna zero para task que nunca passou pelo status informado", () => {
+		expect(
+			calculateTimeInStatus([task({ statusChanges: [] })], "CODE_REVIEW"),
+		).toEqual({
 			averageMs: 0,
 			medianMs: 0,
 		});
+	});
+
+	it("calcula tempo em qualquer status informado", () => {
+		const tasks = [
+			task({
+				statusChanges: [
+					{
+						fromStatus: "CODE_REVIEW",
+						toStatus: "TESTING",
+						changedAt: new Date("2026-07-01T00:00:00Z"),
+					},
+					{
+						fromStatus: "TESTING",
+						toStatus: "AWAITING_PUBLICATION",
+						changedAt: new Date("2026-07-01T02:00:00Z"),
+					},
+				],
+			}),
+		];
+		expect(calculateTimeInStatus(tasks, "TESTING")?.averageMs).toBe(
+			2 * 60 * 60 * 1000,
+		);
 	});
 });

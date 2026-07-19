@@ -1,9 +1,9 @@
 import type { DurationStats } from "@/application/metrics/formulas/duration-metrics";
 import {
 	calculateBlockedTime,
-	calculateCodeReviewTime,
 	calculateCycleTime,
 	calculateLeadTime,
+	calculateTimeInStatus,
 } from "@/application/metrics/formulas/duration-metrics";
 import {
 	calculatePredictability,
@@ -21,6 +21,8 @@ export type PeriodMetrics = {
 	cycleTime: DurationStats | null;
 	blockedTime: DurationStats | null;
 	codeReviewTime: DurationStats | null;
+	testingTime: DurationStats | null;
+	awaitingPublicationTime: DurationStats | null;
 	reworkRate: number | null;
 	throughput: number;
 	wip: number;
@@ -72,7 +74,12 @@ export function getMetricsForRange(
 		leadTime: calculateLeadTime(completedTasks),
 		cycleTime: calculateCycleTime(completedTasks),
 		blockedTime: calculateBlockedTime(completedTasks, now),
-		codeReviewTime: calculateCodeReviewTime(completedTasks),
+		codeReviewTime: calculateTimeInStatus(completedTasks, "CODE_REVIEW"),
+		testingTime: calculateTimeInStatus(completedTasks, "TESTING"),
+		awaitingPublicationTime: calculateTimeInStatus(
+			completedTasks,
+			"AWAITING_PUBLICATION",
+		),
 		reworkRate: calculateReworkRate(completedTasks),
 		throughput: completedTasks.length,
 		predictability: calculatePredictability(dueDateTasks),

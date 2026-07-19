@@ -61,6 +61,8 @@ describe("getMetricsForRange", () => {
 		expect(metrics.cycleTime).toBeNull();
 		expect(metrics.blockedTime).toBeNull();
 		expect(metrics.codeReviewTime).toBeNull();
+		expect(metrics.testingTime).toBeNull();
+		expect(metrics.awaitingPublicationTime).toBeNull();
 		expect(metrics.reworkRate).toBeNull();
 		expect(metrics.throughput).toBe(0);
 		expect(metrics.predictability).toBeNull();

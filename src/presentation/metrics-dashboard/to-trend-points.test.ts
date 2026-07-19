@@ -18,6 +18,8 @@ function entry(
 			cycleTime: null,
 			blockedTime: null,
 			codeReviewTime: null,
+			testingTime: null,
+			awaitingPublicationTime: null,
 			reworkRate: null,
 			throughput: 0,
 			predictability: null,

@@ -3,6 +3,8 @@ export type MetricKey =
 	| "cycleTime"
 	| "blockedTime"
 	| "codeReviewTime"
+	| "testingTime"
+	| "awaitingPublicationTime"
 	| "reworkRate"
 	| "throughput"
 	| "wip"
@@ -27,6 +29,12 @@ export const METRIC_DEFINITIONS: MetricDefinition[] = [
 	{
 		key: "codeReviewTime",
 		label: "Tempo aguardando code review",
+		shape: "duration-dual",
+	},
+	{ key: "testingTime", label: "Tempo em testes", shape: "duration-dual" },
+	{
+		key: "awaitingPublicationTime",
+		label: "Tempo aguardando publicação",
 		shape: "duration-dual",
 	},
 	{ key: "reworkRate", label: "Taxa de retrabalho", shape: "percent-single" },

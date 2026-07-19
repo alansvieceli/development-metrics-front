@@ -11,7 +11,7 @@ Frontend do projeto Development Metrics.
   entrega (`dueDate`). O identificador externo da tarefa é único dentro do time.
 - Toda mudança de status gera histórico. Bloqueios são registrados como períodos
   com início e fim, que alimentam o cálculo das métricas.
-- Dashboard com oito métricas do time atual, filtro semanal ou mensal e séries
+- Dashboard com dez métricas do time atual, filtro semanal ou mensal e séries
   históricas das últimas 8 semanas e dos últimos 6 meses.
 
 ## Regras das métricas
@@ -37,9 +37,11 @@ Frontend do projeto Development Metrics.
 | **Cycle time** | Para cada tarefa concluída no período: `última entrada em DONE no período - primeira entrada em IN_DEVELOPMENT de todo o histórico`. Tarefas que nunca entraram em desenvolvimento não participam desta métrica. O card mostra média e mediana. |
 | **Tempo bloqueado** | Para cada tarefa concluída no período, soma todos os seus períodos de bloqueio. Um bloqueio ainda aberto é contado até o momento do cálculo. O histórico não é recortado pelo início do período selecionado; tarefas sem bloqueio contribuem com zero. O card mostra média e mediana. |
 | **Tempo aguardando code review** | Para cada tarefa concluída no período, soma cada intervalo entre a entrada em `CODE_REVIEW` e a mudança de status seguinte. Uma entrada sem mudança posterior ainda não contribui; tarefas que nunca passaram por review contribuem com zero. O histórico não é recortado pelo início do período. O card mostra média e mediana. |
-| **Taxa de retrabalho** | Percentual das tarefas concluídas no período que tiveram ao menos uma volta de `CODE_REVIEW` ou `DONE` para `IN_DEVELOPMENT`: `tarefas com retrabalho / tarefas concluídas × 100`. Cada tarefa conta no máximo uma vez. |
+| **Tempo em Testes** | Mesma regra do tempo aguardando code review, aplicada à coluna `TESTING`. O card mostra média e mediana. |
+| **Tempo Aguardando Publicação** | Mesma regra do tempo aguardando code review, aplicada à coluna `AWAITING_PUBLICATION`. O card mostra média e mediana. |
+| **Taxa de retrabalho** | Percentual das tarefas concluídas no período que tiveram ao menos uma transição para `IN_DEVELOPMENT` vinda de um status diferente de `TODO` ou `IN_DEVELOPMENT` (`CODE_REVIEW`, `TESTING`, `AWAITING_PUBLICATION` ou `DONE`): `tarefas com retrabalho / tarefas concluídas × 100`. Cada tarefa conta no máximo uma vez. |
 | **Throughput** | Quantidade de tarefas distintas concluídas no período selecionado. Uma tarefa com múltiplas entradas em `DONE` no mesmo período conta uma vez. No filtro semanal, representa as entregas da semana; no mensal, as entregas do mês. |
-| **WIP** | Fotografia atual da quantidade de tarefas do time em `IN_DEVELOPMENT` ou `CODE_REVIEW`. Não é média histórica e não é limitado pelo período selecionado. |
+| **WIP** | Fotografia atual da quantidade de tarefas do time em qualquer status diferente de `TODO` e `DONE` (`IN_DEVELOPMENT`, `CODE_REVIEW`, `TESTING` ou `AWAITING_PUBLICATION`). Não é média histórica e não é limitado pelo período selecionado. |
 | **Previsibilidade** | Considera tarefas cuja `dueDate` está no período selecionado. Calcula `tarefas concluídas pela primeira vez até 23:59:59.999 UTC da dueDate / tarefas com dueDate no período × 100`. Tarefas atrasadas ou não concluídas contam como não atendidas. Portanto, a implementação atual mede cumprimento da data prevista, não um snapshot separado de itens planejados. |
 
 ### Manutenção destas regras

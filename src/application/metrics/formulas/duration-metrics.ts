@@ -1,4 +1,5 @@
 import type { CompletedTaskMetrics } from "@/application/metrics/ports/metrics-query-port";
+import type { TaskStatus } from "@/domain/task/entities/task";
 
 export type DurationStats = { averageMs: number; medianMs: number };
 
@@ -65,8 +66,9 @@ export function calculateBlockedTime(
 	return computeDurationStats(durations);
 }
 
-export function calculateCodeReviewTime(
+export function calculateTimeInStatus(
 	tasks: CompletedTaskMetrics[],
+	status: TaskStatus,
 ): DurationStats | null {
 	const durations = tasks.map((task) => {
 		const sorted = [...task.statusChanges].sort(
@@ -75,7 +77,7 @@ export function calculateCodeReviewTime(
 		let total = 0;
 		for (let i = 0; i < sorted.length; i++) {
 			const next = sorted[i + 1];
-			if (sorted[i].toStatus === "CODE_REVIEW" && next) {
+			if (sorted[i].toStatus === status && next) {
 				total += next.changedAt.getTime() - sorted[i].changedAt.getTime();
 			}
 		}
