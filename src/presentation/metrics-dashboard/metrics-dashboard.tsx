@@ -1,5 +1,9 @@
 import type { PeriodType } from "@/application/metrics/period";
-import type { PeriodMetrics } from "@/application/metrics/use-cases/get-metrics-for-period";
+import type {
+	HistoricalPeriodMetrics,
+	PeriodMetrics,
+} from "@/application/metrics/use-cases/get-metrics-for-period";
+import { ChartsSection } from "./charts/charts-section";
 import { CurrentStatusSection } from "./current-status-section";
 import { FlowTimeSection } from "./flow-time-section";
 import { formatPeriodLabel } from "./format-period-label";
@@ -11,12 +15,14 @@ type MetricsDashboardProps = {
 	periodType: PeriodType;
 	referenceDate: Date;
 	current: PeriodMetrics;
+	history: HistoricalPeriodMetrics[];
 };
 
 export function MetricsDashboard({
 	periodType,
 	referenceDate,
 	current,
+	history,
 }: MetricsDashboardProps) {
 	return (
 		<div className="flex flex-1 flex-col gap-6 p-6">
@@ -42,6 +48,7 @@ export function MetricsDashboard({
 			<CurrentStatusSection wip={current.wip} />
 			<WeekResultSection current={current} />
 			<FlowTimeSection current={current} />
+			<ChartsSection periodType={periodType} current={current} history={history} />
 		</div>
 	);
 }

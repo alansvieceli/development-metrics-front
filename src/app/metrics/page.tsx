@@ -20,7 +20,7 @@ export default async function MetricsPage({
 		parseMetricsFilter(resolvedSearchParams);
 
 	const metricsUseCases = createMetricsUseCases();
-	const { current } = await metricsUseCases.getMetricsDashboard(
+	const { current, history } = await metricsUseCases.getMetricsDashboard(
 		currentTeam.id,
 		periodType,
 		referenceDate,
@@ -31,6 +31,7 @@ export default async function MetricsPage({
 			periodType={periodType}
 			referenceDate={referenceDate}
 			current={current}
+			history={history}
 		/>
 	);
 }
