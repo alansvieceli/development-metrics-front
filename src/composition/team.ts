@@ -7,6 +7,7 @@ import { listTeams } from "@/application/team/use-cases/list-teams";
 import { removeMember } from "@/application/team/use-cases/remove-member";
 import { renameMember } from "@/application/team/use-cases/rename-member";
 import { renameTeam } from "@/application/team/use-cases/rename-team";
+import { selectTeam } from "@/application/team/use-cases/select-team";
 import { cookieCurrentTeamStore } from "@/infrastructure/team/cookie-current-team-store";
 import { drizzleTeamRepository } from "@/infrastructure/team/drizzle-team-repository";
 
@@ -26,6 +27,7 @@ export function createTeamUseCases() {
 			removeMember(drizzleTeamRepository, memberId),
 		getCurrentTeam: () =>
 			getCurrentTeam(cookieCurrentTeamStore, drizzleTeamRepository),
-		selectTeam: (teamId: string) => cookieCurrentTeamStore.set(teamId),
+		selectTeam: (teamId: string) =>
+			selectTeam(cookieCurrentTeamStore, drizzleTeamRepository, teamId),
 	};
 }

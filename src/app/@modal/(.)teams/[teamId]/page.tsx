@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { isUuid } from "@/application/shared/validation";
 import { createTeamUseCases } from "@/composition/team";
 import { Modal } from "@/presentation/shared/modal";
 import { TeamManageView } from "@/presentation/team/team-manage-view";
@@ -16,6 +17,9 @@ export default async function ManageTeamModal({
 	params: Promise<{ teamId: string }>;
 }) {
 	const { teamId } = await params;
+	if (!isUuid(teamId)) {
+		notFound();
+	}
 	const useCases = createTeamUseCases();
 	const result = await useCases.getTeam(teamId);
 	if (!result) {

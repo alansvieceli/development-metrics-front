@@ -1,4 +1,4 @@
-import { db } from "@/infrastructure/db/client";
+import { db } from "../../db/client";
 import { taskTypes } from "./schema";
 
 const DEFAULT_TASK_TYPES = [

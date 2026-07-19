@@ -13,6 +13,18 @@ test("sem time selecionado, acessar / redireciona para /teams", async ({
 	await expect(page.getByText("Nenhum time cadastrado ainda.")).toBeVisible();
 });
 
+test("cookie e rota malformados não produzem 500", async ({
+	page,
+	context,
+}) => {
+	await context.addCookies([
+		{ name: "current-team-id", value: "abc", url: "http://localhost:3100" },
+	]);
+	await page.goto("/board");
+	await expect(page).toHaveURL(/\/teams$/);
+	expect((await page.goto("/teams/abc"))?.status()).toBe(404);
+});
+
 test("criar e selecionar um time redireciona para /board e mostra o time no header", async ({
 	page,
 }) => {
