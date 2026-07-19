@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { formatPeriodLabel } from "./format-period-label";
+import { formatPeriodLabel, formatPeriodShortLabel } from "./format-period-label";
 
 describe("formatPeriodLabel", () => {
 	it("formata uma semana comum com o número ISO e o intervalo de datas", () => {
@@ -30,5 +30,19 @@ describe("formatPeriodLabel", () => {
 				new Date("2026-08-01T00:00:00Z"),
 			),
 		).toBe("Julho de 2026");
+	});
+});
+
+describe("formatPeriodShortLabel", () => {
+	it("formata semana como dia/mês do início do período", () => {
+		expect(
+			formatPeriodShortLabel("WEEK", new Date("2026-07-13T00:00:00Z")),
+		).toBe("13/07");
+	});
+
+	it("formata mês como abreviação capitalizada + ano curto", () => {
+		expect(
+			formatPeriodShortLabel("MONTH", new Date("2026-07-01T00:00:00Z")),
+		).toBe("Jul/26");
 	});
 });

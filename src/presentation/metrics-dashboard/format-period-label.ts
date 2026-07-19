@@ -48,3 +48,17 @@ export function formatPeriodLabel(
 	const lastDay = new Date(periodEnd.getTime() - MS_PER_DAY);
 	return `Semana ${week} · ${formatDayMonth(periodStart)} – ${formatDayMonth(lastDay)}`;
 }
+
+export function formatPeriodShortLabel(
+	periodType: PeriodType,
+	periodStart: Date,
+): string {
+	if (periodType === "WEEK") {
+		return formatDayMonth(periodStart);
+	}
+	const monthAbbrev = periodStart
+		.toLocaleDateString("pt-BR", { month: "short", timeZone: "UTC" })
+		.replace(".", "");
+	const yearShort = String(periodStart.getUTCFullYear()).slice(-2);
+	return `${capitalize(monthAbbrev)}/${yearShort}`;
+}
