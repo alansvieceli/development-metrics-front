@@ -2,6 +2,8 @@ export const TASK_STATUSES = [
 	"TODO",
 	"IN_DEVELOPMENT",
 	"CODE_REVIEW",
+	"TESTING",
+	"AWAITING_PUBLICATION",
 	"DONE",
 ] as const;
 export type TaskStatus = (typeof TASK_STATUSES)[number];

@@ -94,4 +94,26 @@ describe("listTasksByTeam", () => {
 
 		expect(result.TODO[0].statusChangedAt).toEqual(task.createdAt);
 	});
+
+	it("agrupa tasks nas colunas de testes e aguardando publicacao", async () => {
+		const repository = createFakeTaskRepository();
+		const historyRepository = createFakeTaskHistoryRepository();
+		repository.seed({ ...baseData, externalId: "TASK-4", status: "TESTING" });
+		repository.seed({
+			...baseData,
+			externalId: "TASK-5",
+			status: "AWAITING_PUBLICATION",
+		});
+
+		const result = await listTasksByTeam(
+			repository,
+			historyRepository,
+			"team-1",
+		);
+
+		expect(result.TESTING.map((t) => t.externalId)).toEqual(["TASK-4"]);
+		expect(result.AWAITING_PUBLICATION.map((t) => t.externalId)).toEqual([
+			"TASK-5",
+		]);
+	});
 });

@@ -18,6 +18,8 @@ export async function listTasksByTeam(
 		TODO: [],
 		IN_DEVELOPMENT: [],
 		CODE_REVIEW: [],
+		TESTING: [],
+		AWAITING_PUBLICATION: [],
 		DONE: [],
 	};
 	for (const task of tasks) {
