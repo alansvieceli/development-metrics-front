@@ -3,7 +3,10 @@ import type {
 	MetricsQueryPort,
 	MetricsSnapshot,
 } from "@/application/metrics/ports/metrics-query-port";
-import { getMetricsDashboard } from "./get-metrics-dashboard";
+import {
+	getMetricsDashboard,
+	getMetricsDashboardForRange,
+} from "./get-metrics-dashboard";
 
 describe("getMetricsDashboard", () => {
 	afterEach(() => vi.useRealTimers());
@@ -111,5 +114,47 @@ describe("getMetricsDashboard", () => {
 		expect(dashboard.current.cycleTime?.averageMs).toBe(14 * 86_400_000);
 		expect(dashboard.current.blockedTime?.averageMs).toBe(86_400_000);
 		expect(dashboard.current.predictability).toBe(0);
+	});
+
+	it("calcula o dashboard de um range arbitrário sem histórico", async () => {
+		vi.setSystemTime(new Date("2026-07-19T12:00:00Z"));
+		const snapshot: MetricsSnapshot = {
+			completionEvents: [
+				{
+					taskId: "task-1",
+					createdAt: new Date("2026-07-01T00:00:00Z"),
+					completedAt: new Date("2026-07-10T00:00:00Z"),
+					dueDate: "2026-07-15",
+				},
+			],
+			statusChanges: [],
+			blockedPeriods: [],
+			dueDateTasks: [],
+			currentWipTasks: [],
+			bugEvents: [],
+		};
+		let capturedRange: { start: Date; end: Date } | null = null;
+		const port: MetricsQueryPort = {
+			async loadSnapshot(_teamId, periodStart, periodEnd) {
+				capturedRange = { start: periodStart, end: periodEnd };
+				return snapshot;
+			},
+		};
+
+		const start = new Date("2026-07-06T00:00:00Z");
+		const end = new Date("2026-07-18T00:00:00Z");
+		const dashboard = await getMetricsDashboardForRange(
+			port,
+			"team-1",
+			start,
+			end,
+			8,
+		);
+
+		expect(capturedRange).toEqual({ start, end });
+		expect(dashboard.history).toEqual([]);
+		expect(dashboard.current.periodStart).toEqual(start);
+		expect(dashboard.current.periodEnd).toEqual(end);
+		expect(dashboard.current.throughput).toBe(1);
 	});
 });

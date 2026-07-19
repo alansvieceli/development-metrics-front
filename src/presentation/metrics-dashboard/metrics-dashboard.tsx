@@ -7,13 +7,13 @@ import type {
 import { ChartsSection } from "./charts/charts-section";
 import { CurrentStatusSection } from "./current-status-section";
 import { FlowTimeSection } from "./flow-time-section";
-import { formatPeriodLabel } from "./format-period-label";
+import { formatPeriodLabel, formatSprintLabel } from "./format-period-label";
 import { MetricInfoButton } from "./metric-info-button";
 import { PeriodFilter } from "./period-filter";
 import { WeekResultSection } from "./week-result-section";
 
 type MetricsDashboardProps = {
-	periodType: PeriodType;
+	periodType: PeriodType | "SPRINT";
 	referenceDate: Date;
 	current: PeriodMetrics;
 	history: HistoricalPeriodMetrics[];
@@ -40,17 +40,26 @@ export function MetricsDashboard({
 								className="text-(--accent)"
 								aria-hidden="true"
 							/>
-							{formatPeriodLabel(
-								periodType,
-								current.periodStart,
-								current.periodEnd,
-							)}
+							{periodType === "SPRINT"
+								? formatSprintLabel(current.periodStart, current.periodEnd)
+								: formatPeriodLabel(
+										periodType,
+										current.periodStart,
+										current.periodEnd,
+									)}
 						</span>
 					</div>
 				</div>
 				<div className="flex flex-wrap items-center gap-2 self-start rounded-xl border border-(--border) bg-(--surface) p-2 lg:self-auto">
 					<MetricInfoButton />
-					<PeriodFilter periodType={periodType} referenceDate={referenceDate} />
+					<PeriodFilter
+						periodType={periodType}
+						referenceDate={referenceDate}
+						sprintStart={
+							periodType === "SPRINT" ? current.periodStart : undefined
+						}
+						sprintEnd={periodType === "SPRINT" ? current.periodEnd : undefined}
+					/>
 				</div>
 			</header>
 			<div className="grid items-stretch gap-6 xl:grid-cols-2">
@@ -58,11 +67,13 @@ export function MetricsDashboard({
 				<CurrentStatusSection wip={current.wip} />
 			</div>
 			<FlowTimeSection current={current} />
-			<ChartsSection
-				periodType={periodType}
-				current={current}
-				history={history}
-			/>
+			{periodType !== "SPRINT" ? (
+				<ChartsSection
+					periodType={periodType}
+					current={current}
+					history={history}
+				/>
+			) : null}
 		</div>
 	);
 }

@@ -1,12 +1,18 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import type { PeriodType } from "@/application/metrics/period";
+import { Modal } from "@/presentation/shared/modal";
 import { shiftReferenceDate } from "./shift-reference-date";
 
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
 type PeriodFilterProps = {
-	periodType: PeriodType;
+	periodType: PeriodType | "SPRINT";
 	referenceDate: Date;
+	sprintStart?: Date;
+	sprintEnd?: Date;
 };
 
 function toDateParam(date: Date): string {
@@ -26,11 +32,30 @@ function buildMetricsUrl(periodType: PeriodType, referenceDate: Date): string {
 	return `/metrics?${params.toString()}`;
 }
 
-export function PeriodFilter({ periodType, referenceDate }: PeriodFilterProps) {
+function buildSprintUrl(start: string, end: string): string {
+	const params = new URLSearchParams({ period: "sprint", start, end });
+	return `/metrics?${params.toString()}`;
+}
+
+export function PeriodFilter({
+	periodType,
+	referenceDate,
+	sprintStart,
+	sprintEnd,
+}: PeriodFilterProps) {
 	const router = useRouter();
+	const [sprintModalOpen, setSprintModalOpen] = useState(false);
 
 	function goTo(nextPeriodType: PeriodType, nextReferenceDate: Date) {
 		router.push(buildMetricsUrl(nextPeriodType, nextReferenceDate));
+	}
+
+	function submitSprint(formData: FormData) {
+		const start = String(formData.get("start") ?? "");
+		const end = String(formData.get("end") ?? "");
+		if (!start || !end) return;
+		setSprintModalOpen(false);
+		router.push(buildSprintUrl(start, end));
 	}
 
 	return (
@@ -75,31 +100,97 @@ export function PeriodFilter({ periodType, referenceDate }: PeriodFilterProps) {
 			</div>
 			<button
 				type="button"
-				onClick={() => goTo(periodType, new Date())}
-				className="flex h-9 cursor-pointer items-center rounded-lg border border-(--border) px-3 text-sm transition-colors hover:bg-white/10"
+				onClick={() => setSprintModalOpen(true)}
+				aria-pressed={periodType === "SPRINT"}
+				className={`flex h-9 cursor-pointer items-center rounded-lg border border-(--border) px-3 text-sm transition-colors ${
+					periodType === "SPRINT"
+						? "bg-(--accent) text-(--accent-fg)"
+						: "hover:bg-white/10"
+				}`}
 			>
-				Período atual
+				Sprint
 			</button>
-			<button
-				type="button"
-				aria-label="Período anterior"
-				onClick={() =>
-					goTo(periodType, shiftReferenceDate(periodType, referenceDate, -1))
-				}
-				className="flex h-9 w-10 cursor-pointer items-center justify-center rounded-lg border border-(--border) transition-colors hover:bg-white/10"
-			>
-				‹
-			</button>
-			<button
-				type="button"
-				aria-label="Próximo período"
-				onClick={() =>
-					goTo(periodType, shiftReferenceDate(periodType, referenceDate, 1))
-				}
-				className="flex h-9 w-10 cursor-pointer items-center justify-center rounded-lg border border-(--border) transition-colors hover:bg-white/10"
-			>
-				›
-			</button>
+			{periodType === "SPRINT" ? null : (
+				<>
+					<button
+						type="button"
+						onClick={() => goTo(periodType, new Date())}
+						className="flex h-9 cursor-pointer items-center rounded-lg border border-(--border) px-3 text-sm transition-colors hover:bg-white/10"
+					>
+						Período atual
+					</button>
+					<button
+						type="button"
+						aria-label="Período anterior"
+						onClick={() =>
+							goTo(
+								periodType,
+								shiftReferenceDate(periodType, referenceDate, -1),
+							)
+						}
+						className="flex h-9 w-10 cursor-pointer items-center justify-center rounded-lg border border-(--border) transition-colors hover:bg-white/10"
+					>
+						‹
+					</button>
+					<button
+						type="button"
+						aria-label="Próximo período"
+						onClick={() =>
+							goTo(periodType, shiftReferenceDate(periodType, referenceDate, 1))
+						}
+						className="flex h-9 w-10 cursor-pointer items-center justify-center rounded-lg border border-(--border) transition-colors hover:bg-white/10"
+					>
+						›
+					</button>
+				</>
+			)}
+			{sprintModalOpen ? (
+				<Modal
+					label="Selecionar sprint"
+					onClose={() => setSprintModalOpen(false)}
+				>
+					<form action={submitSprint} className="flex flex-col gap-4">
+						<div className="flex flex-col gap-2">
+							<label htmlFor="sprint-start" className="text-sm opacity-70">
+								Início
+							</label>
+							<input
+								id="sprint-start"
+								type="date"
+								name="start"
+								defaultValue={
+									sprintStart ? toDateParam(sprintStart) : undefined
+								}
+								className="rounded-lg border border-(--border) px-3 py-2"
+								required
+							/>
+						</div>
+						<div className="flex flex-col gap-2">
+							<label htmlFor="sprint-end" className="text-sm opacity-70">
+								Fim
+							</label>
+							<input
+								id="sprint-end"
+								type="date"
+								name="end"
+								defaultValue={
+									sprintEnd
+										? toDateParam(new Date(sprintEnd.getTime() - MS_PER_DAY))
+										: undefined
+								}
+								className="rounded-lg border border-(--border) px-3 py-2"
+								required
+							/>
+						</div>
+						<button
+							type="submit"
+							className="cursor-pointer rounded-lg bg-(--accent) px-4 py-2 text-(--accent-fg)"
+						>
+							Aplicar
+						</button>
+					</form>
+				</Modal>
+			) : null}
 		</div>
 	);
 }

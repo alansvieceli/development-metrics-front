@@ -41,3 +41,23 @@ export async function getMetricsDashboard(
 		history,
 	};
 }
+
+export async function getMetricsDashboardForRange(
+	port: MetricsQueryPort,
+	teamId: string,
+	start: Date,
+	end: Date,
+	wipLimit: number,
+): Promise<MetricsDashboardResult> {
+	const snapshot = await port.loadSnapshot(teamId, start, end);
+	const now = new Date();
+	const current = getMetricsForRange(snapshot, start, end, now);
+
+	return {
+		current: {
+			...current,
+			wip: calculateCurrentWipMetrics(snapshot.currentWipTasks, wipLimit, now),
+		},
+		history: [],
+	};
+}

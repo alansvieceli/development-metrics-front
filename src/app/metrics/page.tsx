@@ -2,12 +2,15 @@ import { redirect } from "next/navigation";
 import { createMetricsUseCases } from "@/composition/metrics";
 import { createTeamUseCases } from "@/composition/team";
 import { MetricsDashboard } from "@/presentation/metrics-dashboard/metrics-dashboard";
-import { parseMetricsFilter } from "@/presentation/metrics-dashboard/parse-metrics-search-params";
+import {
+	type MetricsSearchParams,
+	parseMetricsFilter,
+} from "@/presentation/metrics-dashboard/parse-metrics-search-params";
 
 export default async function MetricsPage({
 	searchParams,
 }: {
-	searchParams: Promise<{ period?: string; date?: string }>;
+	searchParams: Promise<MetricsSearchParams>;
 }) {
 	const teamUseCases = createTeamUseCases();
 	const currentTeam = await teamUseCases.getCurrentTeam();
@@ -16,21 +19,28 @@ export default async function MetricsPage({
 	}
 
 	const resolvedSearchParams = await searchParams;
-	const { periodType, referenceDate } =
-		parseMetricsFilter(resolvedSearchParams);
+	const filter = parseMetricsFilter(resolvedSearchParams);
 
 	const metricsUseCases = createMetricsUseCases();
-	const { current, history } = await metricsUseCases.getMetricsDashboard(
-		currentTeam.id,
-		periodType,
-		referenceDate,
-		currentTeam.wipLimit,
-	);
+	const { current, history } =
+		filter.periodType === "SPRINT"
+			? await metricsUseCases.getMetricsDashboardForRange(
+					currentTeam.id,
+					filter.start,
+					filter.end,
+					currentTeam.wipLimit,
+				)
+			: await metricsUseCases.getMetricsDashboard(
+					currentTeam.id,
+					filter.periodType,
+					filter.referenceDate,
+					currentTeam.wipLimit,
+				);
 
 	return (
 		<MetricsDashboard
-			periodType={periodType}
-			referenceDate={referenceDate}
+			periodType={filter.periodType}
+			referenceDate={filter.referenceDate}
 			current={current}
 			history={history}
 		/>

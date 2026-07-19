@@ -53,6 +53,11 @@ export function formatPeriodLabel(
 	return `Semana ${week} · ${formatDayMonth(periodStart)} – ${formatDayMonth(lastDay)}`;
 }
 
+export function formatSprintLabel(periodStart: Date, periodEnd: Date): string {
+	const lastDay = new Date(periodEnd.getTime() - MS_PER_DAY);
+	return `Sprint · ${formatDayMonth(periodStart)} – ${formatDayMonth(lastDay)}`;
+}
+
 export function formatPeriodShortLabel(
 	periodType: PeriodType,
 	periodStart: Date,
