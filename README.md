@@ -93,14 +93,17 @@ Ver [techdocs/guidelines.md](./techdocs/guidelines.md) e [techdocs/architecture.
 
 ## Como rodar
 
-Pré-requisito: Node.js 20 e um banco Postgres local (ver `devops/docker-compose.yml`).
+Pré-requisito: Docker com o plugin Compose.
 
 ```sh
-npm install
 docker compose -f devops/docker-compose.yml up -d
 ```
 
-Criar um arquivo `.env` na raiz com:
+O comando cria o banco, aplica as migrações e sobe a aplicação em
+http://localhost:3000. Os dados do Postgres são persistidos em `data/postgres`.
+
+Para rodar a aplicação diretamente com Node.js 20, instale as dependências e
+crie um arquivo `.env` na raiz com:
 
 ```
 DATABASE_URL=postgresql://postgres:postgres@localhost:5432/development_metrics
@@ -112,11 +115,10 @@ Os testes recusam bancos cujo nome não termine em `_test`.
 Aplicar as migrações e subir o servidor:
 
 ```sh
+npm install
 npm run db:migrate
 npm run dev
 ```
-
-Acesse http://localhost:3000.
 
 ## Scripts
 

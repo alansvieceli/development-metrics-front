@@ -1,4 +1,17 @@
 services:
+  app:
+    build:
+      context: ..
+      dockerfile: devops/Dockerfile
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/development_metrics
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
   postgres:
     image: postgres:16
     restart: unless-stopped
@@ -9,9 +22,11 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d development_metrics"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ../data/postgres:/var/lib/postgresql/data
       - ./initdb:/docker-entrypoint-initdb.d:ro
-
-volumes:
-  postgres_data:
