@@ -85,23 +85,23 @@ describe("getMetricsDashboard", () => {
 
 		expect(loadSnapshotCalls).toBe(1);
 		expect(capturedRange).toEqual({
-			start: new Date("2026-05-25T00:00:00Z"),
-			end: new Date("2026-07-20T00:00:00Z"),
+			start: new Date("2026-05-21T00:00:00Z"),
+			end: new Date("2026-07-16T00:00:00Z"),
 		});
 		expect(dashboard.history).toHaveLength(8);
 		expect(dashboard.history.at(-1)?.periodStart).toEqual(
-			new Date("2026-07-13T00:00:00Z"),
+			new Date("2026-07-09T00:00:00Z"),
 		);
 		expect(dashboard.history.at(-1)?.throughput).toBe(1);
 		expect(dashboard.history[0]?.periodStart).toEqual(
-			new Date("2026-05-25T00:00:00Z"),
+			new Date("2026-05-21T00:00:00Z"),
 		);
 		expect(dashboard.history[0]?.throughput).toBe(0);
 		expect(dashboard.current.periodStart).toEqual(
-			new Date("2026-07-13T00:00:00Z"),
+			new Date("2026-07-09T00:00:00Z"),
 		);
 		expect(dashboard.current.periodEnd).toEqual(
-			new Date("2026-07-20T00:00:00Z"),
+			new Date("2026-07-16T00:00:00Z"),
 		);
 		expect(dashboard.current.throughput).toBe(1);
 		expect(dashboard.current.wip).toEqual({
@@ -116,8 +116,8 @@ describe("getMetricsDashboard", () => {
 			inPublication: 0,
 			oldestPublicationAgeMs: null,
 		});
-		expect(dashboard.current.leadTime?.averageMs).toBe(15 * 86_400_000);
-		expect(dashboard.current.cycleTime?.averageMs).toBe(14 * 86_400_000);
+		expect(dashboard.current.leadTime?.averageMs).toBe(13 * 86_400_000);
+		expect(dashboard.current.cycleTime?.averageMs).toBe(12 * 86_400_000);
 		expect(dashboard.current.blockedTime?.averageMs).toBe(86_400_000);
 		expect(dashboard.current.predictability).toBe(0);
 	});

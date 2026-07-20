@@ -5,63 +5,47 @@ import {
 } from "./format-period-label";
 
 describe("formatPeriodLabel", () => {
-	it("formata uma semana comum com o número ISO e o intervalo de datas", () => {
+	it("formata semana com o rótulo e o intervalo de datas", () => {
 		expect(
 			formatPeriodLabel(
 				"WEEK",
 				new Date("2026-07-13T00:00:00Z"),
 				new Date("2026-07-20T00:00:00Z"),
 			),
-		).toBe("Semana 29 · 13/07 – 19/07");
+		).toBe("Semana · 13/07 – 19/07");
 	});
 
-	it("atribui a semana que começa em dezembro à semana 1 do ano seguinte", () => {
-		expect(
-			formatPeriodLabel(
-				"WEEK",
-				new Date("2025-12-29T00:00:00Z"),
-				new Date("2026-01-05T00:00:00Z"),
-			),
-		).toBe("Semana 1 · 29/12 – 04/01");
-	});
-
-	it("formata o mês por extenso e capitalizado", () => {
+	it("formata mês com o rótulo e o intervalo de datas", () => {
 		expect(
 			formatPeriodLabel(
 				"MONTH",
-				new Date("2026-07-01T00:00:00Z"),
-				new Date("2026-08-01T00:00:00Z"),
+				new Date("2026-06-16T00:00:00Z"),
+				new Date("2026-07-16T00:00:00Z"),
 			),
-		).toBe("Julho de 2026");
+		).toBe("Mês · 16/06 – 15/07");
 	});
 
-	it("formata a quinzena com ordinal e intervalo", () => {
+	it("formata 15 dias com o rótulo e o intervalo de datas", () => {
 		expect(
 			formatPeriodLabel(
 				"FORTNIGHT",
+				new Date("2026-07-01T00:00:00Z"),
 				new Date("2026-07-16T00:00:00Z"),
-				new Date("2026-08-01T00:00:00Z"),
 			),
-		).toBe("2ª quinzena · 16/07 – 31/07");
+		).toBe("15 dias · 01/07 – 15/07");
 	});
 });
 
 describe("formatPeriodShortLabel", () => {
-	it("formata semana como dia/mês do início do período", () => {
+	it("formata como dia/mês do início do período, independente do tipo", () => {
 		expect(
 			formatPeriodShortLabel("WEEK", new Date("2026-07-13T00:00:00Z")),
 		).toBe("13/07");
-	});
-
-	it("formata mês como abreviação capitalizada + ano curto", () => {
 		expect(
-			formatPeriodShortLabel("MONTH", new Date("2026-07-01T00:00:00Z")),
-		).toBe("Jul/26");
-	});
-
-	it("distingue as quinzenas no eixo dos gráficos", () => {
+			formatPeriodShortLabel("MONTH", new Date("2026-06-16T00:00:00Z")),
+		).toBe("16/06");
 		expect(
 			formatPeriodShortLabel("FORTNIGHT", new Date("2026-07-16T00:00:00Z")),
-		).toBe("2ª Jul/26");
+		).toBe("16/07");
 	});
 });

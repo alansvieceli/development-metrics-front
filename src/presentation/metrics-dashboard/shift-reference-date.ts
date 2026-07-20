@@ -1,4 +1,10 @@
-import { getPeriodRange, type PeriodType } from "@/application/metrics/period";
+import type { PeriodType } from "@/application/metrics/period";
+
+const WINDOW_DAYS: Record<PeriodType, number> = {
+	WEEK: 7,
+	FORTNIGHT: 15,
+	MONTH: 30,
+};
 
 export function shiftReferenceDate(
 	periodType: PeriodType,
@@ -6,17 +12,8 @@ export function shiftReferenceDate(
 	direction: -1 | 1,
 ): Date {
 	const shifted = new Date(referenceDate);
-	if (periodType === "WEEK") {
-		shifted.setUTCDate(shifted.getUTCDate() + 7 * direction);
-		return shifted;
-	}
-	if (periodType === "FORTNIGHT") {
-		const range = getPeriodRange(periodType, referenceDate);
-		if (direction === 1) return range.end;
-		const previous = new Date(range.start);
-		previous.setUTCDate(previous.getUTCDate() - 1);
-		return previous;
-	}
-	shifted.setUTCMonth(shifted.getUTCMonth() + direction);
+	shifted.setUTCDate(
+		shifted.getUTCDate() + WINDOW_DAYS[periodType] * direction,
+	);
 	return shifted;
 }

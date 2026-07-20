@@ -31,48 +31,27 @@ export function getPreviousPeriods(
 	return ranges;
 }
 
-function getWeekRange(referenceDate: Date): PeriodRange {
-	const start = new Date(
-		Date.UTC(
-			referenceDate.getUTCFullYear(),
-			referenceDate.getUTCMonth(),
-			referenceDate.getUTCDate(),
-		),
-	);
-	const dayOfWeek = start.getUTCDay();
-	const diffToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
-	start.setUTCDate(start.getUTCDate() + diffToMonday);
-	const end = new Date(start);
-	end.setUTCDate(end.getUTCDate() + 7);
-	return { start, end };
-}
-
-function getMonthRange(referenceDate: Date): PeriodRange {
-	const start = new Date(
-		Date.UTC(referenceDate.getUTCFullYear(), referenceDate.getUTCMonth(), 1),
-	);
+function getRollingRange(referenceDate: Date, days: number): PeriodRange {
 	const end = new Date(
 		Date.UTC(
 			referenceDate.getUTCFullYear(),
-			referenceDate.getUTCMonth() + 1,
-			1,
+			referenceDate.getUTCMonth(),
+			referenceDate.getUTCDate() + 1,
 		),
 	);
+	const start = new Date(end);
+	start.setUTCDate(start.getUTCDate() - days);
 	return { start, end };
 }
 
+function getWeekRange(referenceDate: Date): PeriodRange {
+	return getRollingRange(referenceDate, 7);
+}
+
 function getFortnightRange(referenceDate: Date): PeriodRange {
-	const year = referenceDate.getUTCFullYear();
-	const month = referenceDate.getUTCMonth();
-	const isFirstFortnight = referenceDate.getUTCDate() <= 15;
-	return {
-		start: new Date(Date.UTC(year, month, isFirstFortnight ? 1 : 16)),
-		end: new Date(
-			Date.UTC(
-				year,
-				isFirstFortnight ? month : month + 1,
-				isFirstFortnight ? 16 : 1,
-			),
-		),
-	};
+	return getRollingRange(referenceDate, 15);
+}
+
+function getMonthRange(referenceDate: Date): PeriodRange {
+	return getRollingRange(referenceDate, 30);
 }

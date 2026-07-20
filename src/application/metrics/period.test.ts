@@ -2,35 +2,22 @@ import { describe, expect, it } from "vitest";
 import { getPeriodRange, getPreviousPeriods } from "./period";
 
 describe("getPeriodRange", () => {
-	it("calcula a semana ISO (segunda a domingo) contendo a data de referência", () => {
-		// 2026-07-15 é uma quarta-feira
+	it("calcula os últimos 7 dias terminando na data de referência", () => {
 		const range = getPeriodRange("WEEK", new Date("2026-07-15T12:00:00Z"));
-		expect(range.start).toEqual(new Date("2026-07-13T00:00:00Z"));
-		expect(range.end).toEqual(new Date("2026-07-20T00:00:00Z"));
+		expect(range.start).toEqual(new Date("2026-07-09T00:00:00Z"));
+		expect(range.end).toEqual(new Date("2026-07-16T00:00:00Z"));
 	});
 
-	it("calcula a semana quando a data de referência é domingo", () => {
-		const range = getPeriodRange("WEEK", new Date("2026-07-19T12:00:00Z"));
-		expect(range.start).toEqual(new Date("2026-07-13T00:00:00Z"));
-		expect(range.end).toEqual(new Date("2026-07-20T00:00:00Z"));
-	});
-
-	it("calcula o mês de calendário contendo a data de referência", () => {
-		const range = getPeriodRange("MONTH", new Date("2026-07-15T12:00:00Z"));
-		expect(range.start).toEqual(new Date("2026-07-01T00:00:00Z"));
-		expect(range.end).toEqual(new Date("2026-08-01T00:00:00Z"));
-	});
-
-	it("calcula a primeira quinzena do mês", () => {
+	it("calcula os últimos 15 dias terminando na data de referência", () => {
 		const range = getPeriodRange("FORTNIGHT", new Date("2026-07-15T12:00:00Z"));
 		expect(range.start).toEqual(new Date("2026-07-01T00:00:00Z"));
 		expect(range.end).toEqual(new Date("2026-07-16T00:00:00Z"));
 	});
 
-	it("calcula a segunda quinzena até o fim do mês", () => {
-		const range = getPeriodRange("FORTNIGHT", new Date("2026-07-16T12:00:00Z"));
-		expect(range.start).toEqual(new Date("2026-07-16T00:00:00Z"));
-		expect(range.end).toEqual(new Date("2026-08-01T00:00:00Z"));
+	it("calcula os últimos 30 dias terminando na data de referência", () => {
+		const range = getPeriodRange("MONTH", new Date("2026-07-15T12:00:00Z"));
+		expect(range.start).toEqual(new Date("2026-06-16T00:00:00Z"));
+		expect(range.end).toEqual(new Date("2026-07-16T00:00:00Z"));
 	});
 });
 
@@ -42,22 +29,22 @@ describe("getPreviousPeriods", () => {
 			3,
 		);
 		expect(ranges).toHaveLength(3);
-		expect(ranges[0].start).toEqual(new Date("2026-06-29T00:00:00Z"));
-		expect(ranges[1].start).toEqual(new Date("2026-07-06T00:00:00Z"));
-		expect(ranges[2].start).toEqual(new Date("2026-07-13T00:00:00Z"));
-		expect(ranges[2].end).toEqual(new Date("2026-07-20T00:00:00Z"));
+		expect(ranges[0].start).toEqual(new Date("2026-06-25T00:00:00Z"));
+		expect(ranges[1].start).toEqual(new Date("2026-07-02T00:00:00Z"));
+		expect(ranges[2].start).toEqual(new Date("2026-07-09T00:00:00Z"));
+		expect(ranges[2].end).toEqual(new Date("2026-07-16T00:00:00Z"));
 	});
 
-	it("retorna quinzenas consecutivas atravessando o mês", () => {
+	it("retorna janelas de 15 dias consecutivas", () => {
 		const ranges = getPreviousPeriods(
 			"FORTNIGHT",
 			new Date("2026-07-20T12:00:00Z"),
 			3,
 		);
 		expect(ranges.map(({ start }) => start)).toEqual([
-			new Date("2026-06-16T00:00:00Z"),
-			new Date("2026-07-01T00:00:00Z"),
-			new Date("2026-07-16T00:00:00Z"),
+			new Date("2026-06-06T00:00:00Z"),
+			new Date("2026-06-21T00:00:00Z"),
+			new Date("2026-07-06T00:00:00Z"),
 		]);
 	});
 });
