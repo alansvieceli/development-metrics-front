@@ -7,7 +7,7 @@ describe("deleteTaskType", () => {
 	it("remove um tipo que não está em uso", async () => {
 		const taskTypeRepository = createFakeTaskTypeRepository();
 		const taskRepository = createFakeTaskRepository();
-		const taskType = await taskTypeRepository.create("Épico", "#2563eb");
+		const taskType = await taskTypeRepository.create("Épico", "#2563eb", false);
 		await deleteTaskType(taskTypeRepository, taskRepository, taskType.id);
 		expect(await taskTypeRepository.findById(taskType.id)).toBeNull();
 	});
@@ -15,7 +15,7 @@ describe("deleteTaskType", () => {
 	it("rejeita excluir um tipo em uso por uma task", async () => {
 		const taskTypeRepository = createFakeTaskTypeRepository();
 		const taskRepository = createFakeTaskRepository();
-		const taskType = await taskTypeRepository.create("Bug", "#dc2626");
+		const taskType = await taskTypeRepository.create("Bug", "#dc2626", false);
 		await taskRepository.seed({
 			externalId: "TASK-1",
 			description: "Corrigir bug",

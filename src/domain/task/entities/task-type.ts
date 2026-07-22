@@ -4,3 +4,7 @@ export type TaskType = {
 	color: string;
 	isBug: boolean;
 };
+
+export function isBugTypeName(name: string): boolean {
+	return name.trim().toLowerCase() === "bug";
+}

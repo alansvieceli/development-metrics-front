@@ -17,7 +17,7 @@ const baseInput = {
 async function setup() {
 	const repository = createFakeTaskRepository();
 	const typeRepository = createFakeTaskTypeRepository();
-	const type = await typeRepository.create("Bug", "#dc2626");
+	const type = await typeRepository.create("Bug", "#dc2626", true);
 	const teamAccess = {
 		teamExists: async (teamId: string) => ["team-1", "team-2"].includes(teamId),
 		memberBelongsToTeam: async (memberId: string, teamId: string) =>

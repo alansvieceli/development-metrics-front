@@ -8,7 +8,8 @@ describe("drizzleTaskHistoryRepository", () => {
 	let typeId: string;
 
 	beforeEach(async () => {
-		typeId = (await drizzleTaskTypeRepository.create("Bug", "#dc2626")).id;
+		typeId = (await drizzleTaskTypeRepository.create("Bug", "#dc2626", true))
+			.id;
 	});
 
 	afterEach(async () => {

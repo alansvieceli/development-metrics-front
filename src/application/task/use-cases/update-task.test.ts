@@ -6,8 +6,8 @@ import { updateTask } from "./update-task";
 async function setup() {
 	const repository = createFakeTaskRepository();
 	const typeRepository = createFakeTaskTypeRepository();
-	const type = await typeRepository.create("Bug", "#dc2626");
-	const otherType = await typeRepository.create("Tarefa", "#64748b");
+	const type = await typeRepository.create("Bug", "#dc2626", true);
+	const otherType = await typeRepository.create("Tarefa", "#64748b", false);
 	const teamAccess = {
 		teamExists: async () => true,
 		memberBelongsToTeam: async (memberId: string, teamId: string) =>

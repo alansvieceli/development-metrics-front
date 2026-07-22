@@ -31,7 +31,11 @@ describe("drizzleMetricsQueryPort", () => {
 	let typeId: string;
 
 	beforeEach(async () => {
-		const taskType = await drizzleTaskTypeRepository.create("Bug", "#dc2626");
+		const taskType = await drizzleTaskTypeRepository.create(
+			"Tarefa",
+			"#64748b",
+			false,
+		);
 		typeId = taskType.id;
 	});
 

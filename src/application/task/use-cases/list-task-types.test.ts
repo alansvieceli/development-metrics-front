@@ -7,9 +7,13 @@ describe("listTaskTypes", () => {
 	it("marca o uso dos tipos com uma consulta independente do volume", async () => {
 		const taskTypeRepository = createFakeTaskTypeRepository();
 		const taskRepository = createFakeTaskRepository();
-		const bug = await taskTypeRepository.create("Bug", "#dc2626");
-		await taskTypeRepository.create("História", "#2563eb");
-		const melhoria = await taskTypeRepository.create("Melhoria", "#16a34a");
+		const bug = await taskTypeRepository.create("Bug", "#dc2626", true);
+		await taskTypeRepository.create("História", "#2563eb", false);
+		const melhoria = await taskTypeRepository.create(
+			"Melhoria",
+			"#16a34a",
+			false,
+		);
 		await taskRepository.seed({
 			externalId: "TASK-1",
 			description: "Corrigir bug",

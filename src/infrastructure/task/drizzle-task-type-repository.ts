@@ -5,17 +5,17 @@ import { db } from "@/infrastructure/db/client";
 import { taskTypes } from "./drizzle/schema";
 
 export const drizzleTaskTypeRepository: TaskTypeRepository = {
-	async create(name, color) {
+	async create(name, color, isBug) {
 		const [taskType] = await db
 			.insert(taskTypes)
-			.values({ name, color })
+			.values({ name, color, isBug })
 			.returning();
 		return taskType as TaskType;
 	},
-	async update(typeId, name, color) {
+	async update(typeId, name, color, isBug) {
 		const [taskType] = await db
 			.update(taskTypes)
-			.set({ name, color })
+			.set({ name, color, isBug })
 			.where(eq(taskTypes.id, typeId))
 			.returning();
 		if (!taskType) {

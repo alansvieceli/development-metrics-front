@@ -14,12 +14,12 @@ export function createFakeTaskTypeRepository(): FakeTaskTypeRepository {
 	let nextId = 1;
 
 	return {
-		async create(name, color) {
+		async create(name, color, isBug) {
 			const taskType: TaskType = {
 				id: `task-type-${nextId++}`,
 				name,
 				color,
-				isBug: false,
+				isBug,
 			};
 			taskTypes.push(taskType);
 			return taskType;
@@ -29,13 +29,14 @@ export function createFakeTaskTypeRepository(): FakeTaskTypeRepository {
 			taskTypes.push(taskType);
 			return taskType;
 		},
-		async update(typeId, name, color) {
+		async update(typeId, name, color, isBug) {
 			const taskType = taskTypes.find((t) => t.id === typeId);
 			if (!taskType) {
 				throw new Error("Tipo de task não encontrado");
 			}
 			taskType.name = name;
 			taskType.color = color;
+			taskType.isBug = isBug;
 			return taskType;
 		},
 		async delete(typeId) {

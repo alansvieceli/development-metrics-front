@@ -17,7 +17,11 @@ describe("drizzleTaskRepository", () => {
 	let typeId: string;
 
 	beforeEach(async () => {
-		const taskType = await drizzleTaskTypeRepository.create("Bug", "#dc2626");
+		const taskType = await drizzleTaskTypeRepository.create(
+			"Bug",
+			"#dc2626",
+			true,
+		);
 		typeId = taskType.id;
 	});
 

@@ -16,7 +16,11 @@ describe("drizzleTaskTypeRepository", () => {
 	});
 
 	it("cria e busca um tipo por id", async () => {
-		const created = await drizzleTaskTypeRepository.create("Épico", "#2563eb");
+		const created = await drizzleTaskTypeRepository.create(
+			"Épico",
+			"#2563eb",
+			false,
+		);
 		try {
 			const found = await drizzleTaskTypeRepository.findById(created.id);
 			expect(found).toEqual(created);
@@ -33,23 +37,33 @@ describe("drizzleTaskTypeRepository", () => {
 		).toBeNull();
 	});
 
-	it("atualiza nome e cor", async () => {
-		const created = await drizzleTaskTypeRepository.create("Épico", "#2563eb");
+	it("atualiza nome, cor e isBug", async () => {
+		const created = await drizzleTaskTypeRepository.create(
+			"Épico",
+			"#2563eb",
+			false,
+		);
 		try {
 			const updated = await drizzleTaskTypeRepository.update(
 				created.id,
-				"Épico Grande",
+				"Bug",
 				"#64748b",
+				true,
 			);
-			expect(updated.name).toBe("Épico Grande");
+			expect(updated.name).toBe("Bug");
 			expect(updated.color).toBe("#64748b");
+			expect(updated.isBug).toBe(true);
 		} finally {
 			await deleteTaskType(created.id);
 		}
 	});
 
 	it("lista os tipos incluindo os criados no teste", async () => {
-		const created = await drizzleTaskTypeRepository.create("Épico", "#2563eb");
+		const created = await drizzleTaskTypeRepository.create(
+			"Épico",
+			"#2563eb",
+			false,
+		);
 		try {
 			const all = await drizzleTaskTypeRepository.listAll();
 			expect(all.map((t) => t.id)).toContain(created.id);
@@ -60,7 +74,11 @@ describe("drizzleTaskTypeRepository", () => {
 	});
 
 	it("exclui um tipo", async () => {
-		const created = await drizzleTaskTypeRepository.create("Épico", "#2563eb");
+		const created = await drizzleTaskTypeRepository.create(
+			"Épico",
+			"#2563eb",
+			false,
+		);
 		await drizzleTaskTypeRepository.delete(created.id);
 		expect(await drizzleTaskTypeRepository.findById(created.id)).toBeNull();
 	});

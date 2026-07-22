@@ -8,6 +8,13 @@ describe("createTaskType", () => {
 		const taskType = await createTaskType(repository, "Épico", "#2563eb");
 		expect(taskType.name).toBe("Épico");
 		expect(taskType.color).toBe("#2563eb");
+		expect(taskType.isBug).toBe(false);
+	});
+
+	it("marca isBug automaticamente quando o nome é Bug", async () => {
+		const repository = createFakeTaskTypeRepository();
+		const taskType = await createTaskType(repository, " bug ", "#dc2626");
+		expect(taskType.isBug).toBe(true);
 	});
 
 	it("rejeita nome vazio", async () => {
