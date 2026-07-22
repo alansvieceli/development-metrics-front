@@ -1,6 +1,7 @@
 "use client";
 
 import { Plus, X } from "lucide-react";
+import type { FormEvent } from "react";
 import { useState } from "react";
 import type { CreateHistoricalTaskActionInput } from "@/app/board/actions";
 import type { ActionState } from "@/application/shared/action-state";
@@ -39,7 +40,9 @@ export function HistoricalTaskFormModal({
 		);
 	}
 
-	async function handleSubmit(formData: FormData) {
+	async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+		event.preventDefault();
+		const formData = new FormData(event.currentTarget);
 		const externalId = String(formData.get("externalId") ?? "");
 		const description = String(formData.get("description") ?? "");
 		const typeId = String(formData.get("typeId") ?? "");
@@ -83,7 +86,7 @@ export function HistoricalTaskFormModal({
 			</button>
 			{open ? (
 				<Modal label="Card retroativo" onClose={() => setOpen(false)}>
-					<form action={handleSubmit} className="flex flex-col gap-4">
+					<form onSubmit={handleSubmit} className="flex flex-col gap-4">
 						<div className="flex flex-col gap-2">
 							<label htmlFor="hist-externalId" className="text-sm opacity-70">
 								Id externo
