@@ -3,6 +3,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import type { PeriodType } from "@/application/metrics/period";
+import type { MetricsPeriodPreference } from "@/application/metrics/ports/metrics-period-preference-store";
 import { Modal } from "@/presentation/shared/modal";
 import { buildMetricsUrl } from "./build-metrics-url";
 import { shiftReferenceDate } from "./shift-reference-date";
@@ -10,6 +11,11 @@ import { shiftReferenceDate } from "./shift-reference-date";
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 type PeriodFilterProps = {
+	teamId: string;
+	saveMetricsPeriodPreferenceAction: (
+		teamId: string,
+		preference: MetricsPeriodPreference,
+	) => Promise<void>;
 	periodType: PeriodType | "CUSTOM";
 	referenceDate: Date;
 	customStart?: Date;
@@ -21,6 +27,8 @@ function toDateParam(date: Date): string {
 }
 
 export function PeriodFilter({
+	teamId,
+	saveMetricsPeriodPreferenceAction,
 	periodType,
 	referenceDate,
 	customStart,
@@ -32,14 +40,16 @@ export function PeriodFilter({
 	const [customModalOpen, setCustomModalOpen] = useState(false);
 
 	function goTo(nextPeriodType: PeriodType, nextReferenceDate: Date) {
+		const periodParam =
+			nextPeriodType === "MONTH"
+				? "month"
+				: nextPeriodType === "FORTNIGHT"
+					? "fortnight"
+					: "week";
+		void saveMetricsPeriodPreferenceAction(teamId, { period: periodParam });
 		router.push(
 			buildMetricsUrl(pathname, new URLSearchParams(searchParams.toString()), {
-				period:
-					nextPeriodType === "MONTH"
-						? "month"
-						: nextPeriodType === "FORTNIGHT"
-							? "fortnight"
-							: "week",
+				period: periodParam,
 				date: toDateParam(nextReferenceDate),
 			}),
 		);
@@ -50,6 +60,11 @@ export function PeriodFilter({
 		const end = String(formData.get("end") ?? "");
 		if (!start || !end) return;
 		setCustomModalOpen(false);
+		void saveMetricsPeriodPreferenceAction(teamId, {
+			period: "custom",
+			start,
+			end,
+		});
 		router.push(
 			buildMetricsUrl(pathname, new URLSearchParams(searchParams.toString()), {
 				period: "custom",
@@ -157,9 +172,7 @@ export function PeriodFilter({
 								id="custom-start"
 								type="date"
 								name="start"
-								defaultValue={
-									customStart ? toDateParam(customStart) : undefined
-								}
+								defaultValue={toDateParam(customStart ?? new Date())}
 								className="rounded-lg border border-(--border) px-3 py-2"
 								required
 							/>
@@ -172,11 +185,11 @@ export function PeriodFilter({
 								id="custom-end"
 								type="date"
 								name="end"
-								defaultValue={
+								defaultValue={toDateParam(
 									customEnd
-										? toDateParam(new Date(customEnd.getTime() - MS_PER_DAY))
-										: undefined
-								}
+										? new Date(customEnd.getTime() - MS_PER_DAY)
+										: new Date(),
+								)}
 								className="rounded-lg border border-(--border) px-3 py-2"
 								required
 							/>
