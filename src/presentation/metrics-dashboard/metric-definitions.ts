@@ -18,6 +18,7 @@ export type MetricKey =
 	| "plannedDeliveredTrend"
 	| "leadCycleTimeTrend"
 	| "flowComposition"
+	| "cycleTimeOutliers"
 	| "bugsOpenedTrend"
 	| "bugsAssociated"
 	| "bugsRanking";
@@ -131,7 +132,13 @@ export const METRIC_DEFINITIONS: MetricDefinition[] = [
 		key: "flowComposition",
 		label: "Composição do fluxo",
 		description:
-			"Média do tempo do card em cada etapa (desenvolvimento, code review, testes, bloqueado, aguardando publicação) no período atual. Desenvolvimento é o tempo restante do cycle time depois de somar as outras etapas.",
+			"Média do tempo do card em cada etapa (desenvolvimento, code review, testes, bloqueado, aguardando publicação) em cada um dos últimos 8 períodos. Desenvolvimento é o tempo restante do cycle time depois de somar as outras etapas.",
+	},
+	{
+		key: "cycleTimeOutliers",
+		label: "Cards mais lentos",
+		description:
+			"As até 5 tasks concluídas no período atual com maior cycle time, do início do desenvolvimento até a entrega.",
 	},
 	{
 		key: "bugsOpenedTrend",

@@ -10,6 +10,7 @@ function historicalEntry(
 		periodEnd: new Date("2026-07-20T00:00:00Z"),
 		leadTime: null,
 		cycleTime: null,
+		cycleTimeOutliers: [],
 		blockedTime: null,
 		codeReviewTime: null,
 		testingTime: null,

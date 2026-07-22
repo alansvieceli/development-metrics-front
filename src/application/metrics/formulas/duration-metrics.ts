@@ -27,20 +27,28 @@ export function calculateLeadTime(
 	);
 }
 
+function firstOccurrence(
+	statusChanges: CompletedTaskMetrics["statusChanges"],
+	status: TaskStatus,
+): Date | null {
+	return statusChanges
+		.filter((change) => change.toStatus === status)
+		.reduce<Date | null>(
+			(earliest, change) =>
+				!earliest || change.changedAt < earliest ? change.changedAt : earliest,
+			null,
+		);
+}
+
 export function calculateCycleTime(
 	tasks: CompletedTaskMetrics[],
 ): DurationStats | null {
 	const durations = tasks
 		.map((task) => {
-			const firstInDevelopment = task.statusChanges
-				.filter((change) => change.toStatus === "IN_DEVELOPMENT")
-				.reduce<Date | null>(
-					(earliest, change) =>
-						!earliest || change.changedAt < earliest
-							? change.changedAt
-							: earliest,
-					null,
-				);
+			const firstInDevelopment = firstOccurrence(
+				task.statusChanges,
+				"IN_DEVELOPMENT",
+			);
 			if (!firstInDevelopment) {
 				return null;
 			}
@@ -48,6 +56,37 @@ export function calculateCycleTime(
 		})
 		.filter((ms): ms is number => ms !== null);
 	return computeDurationStats(durations);
+}
+
+export type CycleTimeOutlier = {
+	taskId: string;
+	externalId: string;
+	cycleTimeMs: number;
+};
+
+const CYCLE_TIME_OUTLIERS_LIMIT = 5;
+
+export function calculateCycleTimeOutliers(
+	tasks: CompletedTaskMetrics[],
+): CycleTimeOutlier[] {
+	return tasks
+		.map((task): CycleTimeOutlier | null => {
+			const firstInDevelopment = firstOccurrence(
+				task.statusChanges,
+				"IN_DEVELOPMENT",
+			);
+			if (!firstInDevelopment) {
+				return null;
+			}
+			return {
+				taskId: task.taskId,
+				externalId: task.externalId,
+				cycleTimeMs: task.completedAt.getTime() - firstInDevelopment.getTime(),
+			};
+		})
+		.filter((entry): entry is CycleTimeOutlier => entry !== null)
+		.sort((a, b) => b.cycleTimeMs - a.cycleTimeMs)
+		.slice(0, CYCLE_TIME_OUTLIERS_LIMIT);
 }
 
 export function calculateBlockedTime(

@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 import type { PeriodMetrics } from "@/application/metrics/use-cases/get-metrics-for-period";
-import { toFlowCompositionData } from "./to-flow-composition-data";
+import {
+	toFlowCompositionData,
+	toFlowCompositionTrend,
+} from "./to-flow-composition-data";
 
 function periodMetrics(overrides: Partial<PeriodMetrics>): PeriodMetrics {
 	return {
@@ -8,6 +11,7 @@ function periodMetrics(overrides: Partial<PeriodMetrics>): PeriodMetrics {
 		periodEnd: new Date("2026-07-20T00:00:00Z"),
 		leadTime: null,
 		cycleTime: null,
+		cycleTimeOutliers: [],
 		blockedTime: null,
 		codeReviewTime: null,
 		testingTime: null,
@@ -80,5 +84,45 @@ describe("toFlowCompositionData", () => {
 			blocked: 0,
 			awaitingPublication: 0,
 		});
+	});
+});
+
+describe("toFlowCompositionTrend", () => {
+	it("retorna null quando nenhum período do histórico tem cycle time", () => {
+		const history = [
+			periodMetrics({ periodStart: new Date("2026-07-13T00:00:00Z") }),
+			periodMetrics({ periodStart: new Date("2026-07-20T00:00:00Z") }),
+		];
+		expect(toFlowCompositionTrend(history, "WEEK")).toBeNull();
+	});
+
+	it("preenche com zero os períodos sem cycle time e mantém os com dado", () => {
+		const history = [
+			periodMetrics({ periodStart: new Date("2026-07-13T00:00:00Z") }),
+			periodMetrics({
+				periodStart: new Date("2026-07-20T00:00:00Z"),
+				cycleTime: { averageMs: 1000, medianMs: 1000 },
+				codeReviewTime: { averageMs: 200, medianMs: 200 },
+			}),
+		];
+
+		expect(toFlowCompositionTrend(history, "WEEK")).toEqual([
+			{
+				label: "13/07",
+				development: 0,
+				codeReview: 0,
+				testing: 0,
+				blocked: 0,
+				awaitingPublication: 0,
+			},
+			{
+				label: "20/07",
+				development: 800,
+				codeReview: 200,
+				testing: 0,
+				blocked: 0,
+				awaitingPublication: 0,
+			},
+		]);
 	});
 });

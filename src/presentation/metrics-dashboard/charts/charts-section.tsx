@@ -5,6 +5,7 @@ import type {
 } from "@/application/metrics/use-cases/get-metrics-for-period";
 import { BugsOpenedChart } from "./bugs-opened-chart";
 import { BugsRankingList } from "./bugs-ranking-list";
+import { CycleTimeOutliersList } from "./cycle-time-outliers-list";
 import { FlowCompositionChart } from "./flow-composition-chart";
 import { LeadCycleTimeChart } from "./lead-cycle-time-chart";
 import { PlannedDeliveredChart } from "./planned-delivered-chart";
@@ -45,7 +46,8 @@ export function ChartsSection({
 				<ThroughputChart history={history} periodType={periodType} />
 				<PlannedDeliveredChart history={history} periodType={periodType} />
 				<LeadCycleTimeChart history={history} periodType={periodType} />
-				<FlowCompositionChart current={current} />
+				<CycleTimeOutliersList outliers={current.cycleTimeOutliers} />
+				<FlowCompositionChart history={history} periodType={periodType} />
 				<BugsOpenedChart history={history} periodType={periodType} />
 				<BugsRankingList ranking={current.bugsRanking} />
 			</div>

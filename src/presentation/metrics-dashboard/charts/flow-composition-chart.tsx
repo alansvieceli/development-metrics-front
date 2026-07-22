@@ -3,19 +3,22 @@
 import {
 	Bar,
 	BarChart,
+	CartesianGrid,
 	Legend,
 	ResponsiveContainer,
 	Tooltip,
 	XAxis,
 	YAxis,
 } from "recharts";
-import type { PeriodMetrics } from "@/application/metrics/use-cases/get-metrics-for-period";
+import type { PeriodType } from "@/application/metrics/period";
+import type { HistoricalPeriodMetrics } from "@/application/metrics/use-cases/get-metrics-for-period";
 import { formatDuration } from "../format-metric-value";
 import { ChartCard } from "./chart-card";
-import { toFlowCompositionData } from "./to-flow-composition-data";
+import { toFlowCompositionTrend } from "./to-flow-composition-data";
 
 type FlowCompositionChartProps = {
-	current: PeriodMetrics;
+	history: HistoricalPeriodMetrics[];
+	periodType: PeriodType;
 };
 
 const SEGMENTS = [
@@ -46,56 +49,54 @@ const SEGMENTS = [
 	},
 ];
 
-export function FlowCompositionChart({ current }: FlowCompositionChartProps) {
-	const data = toFlowCompositionData(current);
-	const cycleTime = current.cycleTime;
+export function FlowCompositionChart({
+	history,
+	periodType,
+}: FlowCompositionChartProps) {
+	const data = toFlowCompositionTrend(history, periodType);
 
 	return (
 		<ChartCard metricKey="flowComposition">
-			{data && cycleTime ? (
-				<>
-					<p className="font-mono text-lg font-semibold">
-						Cycle time: {formatDuration(cycleTime.averageMs)}
-					</p>
-					<ResponsiveContainer width="100%" height={110}>
-						<BarChart
-							layout="vertical"
-							data={[{ name: "Cycle time", ...data }]}
-							margin={{ left: 0, right: 16 }}
-						>
-							<XAxis
-								type="number"
-								tickFormatter={(value: number) => formatDuration(value)}
-								tick={{ fontSize: 11, fill: "var(--foreground-muted)" }}
+			{data ? (
+				<ResponsiveContainer width="100%" height={220}>
+					<BarChart data={data}>
+						<CartesianGrid stroke="var(--border)" vertical={false} />
+						<XAxis
+							dataKey="label"
+							tick={{ fontSize: 11, fill: "var(--foreground-muted)" }}
+						/>
+						<YAxis
+							width={44}
+							tick={{ fontSize: 11, fill: "var(--foreground-muted)" }}
+							tickFormatter={(value: number) => formatDuration(value)}
+						/>
+						<Tooltip
+							contentStyle={{
+								background: "var(--surface)",
+								border: "1px solid var(--border)",
+								borderRadius: 6,
+								fontSize: 12,
+							}}
+							itemStyle={{ color: "var(--foreground)" }}
+							labelStyle={{ color: "var(--foreground-muted)" }}
+							formatter={(value) =>
+								typeof value === "number"
+									? formatDuration(value)
+									: String(value)
+							}
+						/>
+						<Legend wrapperStyle={{ fontSize: 11 }} iconSize={8} />
+						{SEGMENTS.map((segment) => (
+							<Bar
+								key={segment.dataKey}
+								dataKey={segment.dataKey}
+								name={segment.name}
+								stackId="flow"
+								fill={segment.fill}
 							/>
-							<YAxis type="category" dataKey="name" hide />
-							<Tooltip
-								contentStyle={{
-									background: "var(--surface)",
-									border: "1px solid var(--border)",
-									borderRadius: 6,
-									fontSize: 12,
-								}}
-								itemStyle={{ color: "var(--foreground)" }}
-								formatter={(value) =>
-									typeof value === "number"
-										? formatDuration(value)
-										: String(value)
-								}
-							/>
-							<Legend wrapperStyle={{ fontSize: 11 }} iconSize={8} />
-							{SEGMENTS.map((segment) => (
-								<Bar
-									key={segment.dataKey}
-									dataKey={segment.dataKey}
-									name={segment.name}
-									stackId="flow"
-									fill={segment.fill}
-								/>
-							))}
-						</BarChart>
-					</ResponsiveContainer>
-				</>
+						))}
+					</BarChart>
+				</ResponsiveContainer>
 			) : (
 				<p className="text-sm opacity-70">sem dados</p>
 			)}

@@ -3,6 +3,7 @@ import type { CompletedTaskMetrics } from "@/application/metrics/ports/metrics-q
 import {
 	calculateBlockedTime,
 	calculateCycleTime,
+	calculateCycleTimeOutliers,
 	calculateLeadTime,
 	calculateTimeInStatus,
 	computeDurationStats,
@@ -92,6 +93,72 @@ describe("calculateCycleTime", () => {
 			}),
 		];
 		expect(calculateCycleTime(tasks)?.averageMs).toBe(9 * 24 * 60 * 60 * 1000);
+	});
+});
+
+describe("calculateCycleTimeOutliers", () => {
+	it("ignora tasks que nunca entraram em IN_DEVELOPMENT", () => {
+		expect(calculateCycleTimeOutliers([task({ statusChanges: [] })])).toEqual(
+			[],
+		);
+	});
+
+	it("ordena as tasks pelo maior cycle time e limita a 5", () => {
+		const inDevelopmentAt = (date: string) => [
+			{
+				fromStatus: "TODO" as const,
+				toStatus: "IN_DEVELOPMENT" as const,
+				changedAt: new Date(date),
+			},
+		];
+		const tasks = [
+			task({
+				taskId: "t1",
+				externalId: "T-1",
+				completedAt: new Date("2026-07-10T00:00:00Z"),
+				statusChanges: inDevelopmentAt("2026-07-09T00:00:00Z"),
+			}),
+			task({
+				taskId: "t2",
+				externalId: "T-2",
+				completedAt: new Date("2026-07-20T00:00:00Z"),
+				statusChanges: inDevelopmentAt("2026-07-01T00:00:00Z"),
+			}),
+			task({
+				taskId: "t3",
+				externalId: "T-3",
+				completedAt: new Date("2026-07-12T00:00:00Z"),
+				statusChanges: inDevelopmentAt("2026-07-11T00:00:00Z"),
+			}),
+			task({
+				taskId: "t4",
+				externalId: "T-4",
+				completedAt: new Date("2026-07-14T00:00:00Z"),
+				statusChanges: inDevelopmentAt("2026-07-13T00:00:00Z"),
+			}),
+			task({
+				taskId: "t5",
+				externalId: "T-5",
+				completedAt: new Date("2026-07-16T00:00:00Z"),
+				statusChanges: inDevelopmentAt("2026-07-15T00:00:00Z"),
+			}),
+			task({
+				taskId: "t6",
+				externalId: "T-6",
+				completedAt: new Date("2026-07-18T00:00:00Z"),
+				statusChanges: inDevelopmentAt("2026-07-17T00:00:00Z"),
+			}),
+		];
+
+		const outliers = calculateCycleTimeOutliers(tasks);
+
+		expect(outliers).toHaveLength(5);
+		expect(outliers[0]).toEqual({
+			taskId: "t2",
+			externalId: "T-2",
+			cycleTimeMs: 19 * 24 * 60 * 60 * 1000,
+		});
+		expect(outliers.map((entry) => entry.taskId)).not.toContain("t6");
 	});
 });
 

@@ -4,10 +4,14 @@ import {
 	calculateBugsRanking,
 } from "@/application/metrics/formulas/bug-metrics";
 import type { CurrentWipMetrics } from "@/application/metrics/formulas/current-wip-metrics";
-import type { DurationStats } from "@/application/metrics/formulas/duration-metrics";
+import type {
+	CycleTimeOutlier,
+	DurationStats,
+} from "@/application/metrics/formulas/duration-metrics";
 import {
 	calculateBlockedTime,
 	calculateCycleTime,
+	calculateCycleTimeOutliers,
 	calculateLeadTime,
 	calculateTimeInStatus,
 } from "@/application/metrics/formulas/duration-metrics";
@@ -29,6 +33,7 @@ export type PeriodMetrics = {
 	periodEnd: Date;
 	leadTime: DurationStats | null;
 	cycleTime: DurationStats | null;
+	cycleTimeOutliers: CycleTimeOutlier[];
 	blockedTime: DurationStats | null;
 	codeReviewTime: DurationStats | null;
 	testingTime: DurationStats | null;
@@ -100,6 +105,7 @@ export function getMetricsForRange(
 		periodEnd,
 		leadTime: calculateLeadTime(completedTasks),
 		cycleTime: calculateCycleTime(completedTasks),
+		cycleTimeOutliers: calculateCycleTimeOutliers(completedTasks),
 		blockedTime: calculateBlockedTime(completedTasks, now),
 		codeReviewTime: calculateTimeInStatus(completedTasks, "CODE_REVIEW"),
 		testingTime: calculateTimeInStatus(completedTasks, "TESTING"),
