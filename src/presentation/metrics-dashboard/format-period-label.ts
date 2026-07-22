@@ -25,9 +25,9 @@ export function formatPeriodLabel(
 	return `${PERIOD_LABEL[periodType]} · ${formatDayMonth(periodStart)} – ${formatDayMonth(lastDay)}`;
 }
 
-export function formatSprintLabel(periodStart: Date, periodEnd: Date): string {
+export function formatCustomLabel(periodStart: Date, periodEnd: Date): string {
 	const lastDay = new Date(periodEnd.getTime() - MS_PER_DAY);
-	return `Sprint · ${formatDayMonth(periodStart)} – ${formatDayMonth(lastDay)}`;
+	return `Personalizado · ${formatDayMonth(periodStart)} – ${formatDayMonth(lastDay)}`;
 }
 
 export function formatPeriodShortLabel(

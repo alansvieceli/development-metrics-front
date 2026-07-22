@@ -57,11 +57,11 @@ export default async function DeveloperMetricsPage({
 
 	const filter = parseMetricsFilter(resolvedSearchParams);
 	const range =
-		filter.periodType === "SPRINT"
+		filter.periodType === "CUSTOM"
 			? { start: filter.start, end: filter.end }
 			: getPeriodRange(filter.periodType, filter.referenceDate);
 	const previousStart =
-		filter.periodType === "SPRINT"
+		filter.periodType === "CUSTOM"
 			? new Date(
 					range.start.getTime() - (range.end.getTime() - range.start.getTime()),
 				)

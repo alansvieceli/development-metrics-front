@@ -10,10 +10,10 @@ import { shiftReferenceDate } from "./shift-reference-date";
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
 type PeriodFilterProps = {
-	periodType: PeriodType | "SPRINT";
+	periodType: PeriodType | "CUSTOM";
 	referenceDate: Date;
-	sprintStart?: Date;
-	sprintEnd?: Date;
+	customStart?: Date;
+	customEnd?: Date;
 };
 
 function toDateParam(date: Date): string {
@@ -23,13 +23,13 @@ function toDateParam(date: Date): string {
 export function PeriodFilter({
 	periodType,
 	referenceDate,
-	sprintStart,
-	sprintEnd,
+	customStart,
+	customEnd,
 }: PeriodFilterProps) {
 	const router = useRouter();
 	const pathname = usePathname();
 	const searchParams = useSearchParams();
-	const [sprintModalOpen, setSprintModalOpen] = useState(false);
+	const [customModalOpen, setCustomModalOpen] = useState(false);
 
 	function goTo(nextPeriodType: PeriodType, nextReferenceDate: Date) {
 		router.push(
@@ -45,14 +45,14 @@ export function PeriodFilter({
 		);
 	}
 
-	function submitSprint(formData: FormData) {
+	function submitCustom(formData: FormData) {
 		const start = String(formData.get("start") ?? "");
 		const end = String(formData.get("end") ?? "");
 		if (!start || !end) return;
-		setSprintModalOpen(false);
+		setCustomModalOpen(false);
 		router.push(
 			buildMetricsUrl(pathname, new URLSearchParams(searchParams.toString()), {
-				period: "sprint",
+				period: "custom",
 				start,
 				end,
 			}),
@@ -101,17 +101,17 @@ export function PeriodFilter({
 			</div>
 			<button
 				type="button"
-				onClick={() => setSprintModalOpen(true)}
-				aria-pressed={periodType === "SPRINT"}
+				onClick={() => setCustomModalOpen(true)}
+				aria-pressed={periodType === "CUSTOM"}
 				className={`flex h-9 cursor-pointer items-center rounded-lg border border-(--border) px-3 text-sm transition-colors ${
-					periodType === "SPRINT"
+					periodType === "CUSTOM"
 						? "bg-(--accent) text-(--accent-fg)"
 						: "hover:bg-white/10"
 				}`}
 			>
-				Sprint
+				Personalizado
 			</button>
-			{periodType === "SPRINT" ? null : (
+			{periodType === "CUSTOM" ? null : (
 				<>
 					<button
 						type="button"
@@ -145,38 +145,38 @@ export function PeriodFilter({
 					</button>
 				</>
 			)}
-			{sprintModalOpen ? (
+			{customModalOpen ? (
 				<Modal
-					label="Selecionar sprint"
-					onClose={() => setSprintModalOpen(false)}
+					label="Selecionar período"
+					onClose={() => setCustomModalOpen(false)}
 				>
-					<form action={submitSprint} className="flex flex-col gap-4">
+					<form action={submitCustom} className="flex flex-col gap-4">
 						<div className="flex flex-col gap-2">
-							<label htmlFor="sprint-start" className="text-sm opacity-70">
+							<label htmlFor="custom-start" className="text-sm opacity-70">
 								Início
 							</label>
 							<input
-								id="sprint-start"
+								id="custom-start"
 								type="date"
 								name="start"
 								defaultValue={
-									sprintStart ? toDateParam(sprintStart) : undefined
+									customStart ? toDateParam(customStart) : undefined
 								}
 								className="rounded-lg border border-(--border) px-3 py-2"
 								required
 							/>
 						</div>
 						<div className="flex flex-col gap-2">
-							<label htmlFor="sprint-end" className="text-sm opacity-70">
+							<label htmlFor="custom-end" className="text-sm opacity-70">
 								Fim
 							</label>
 							<input
-								id="sprint-end"
+								id="custom-end"
 								type="date"
 								name="end"
 								defaultValue={
-									sprintEnd
-										? toDateParam(new Date(sprintEnd.getTime() - MS_PER_DAY))
+									customEnd
+										? toDateParam(new Date(customEnd.getTime() - MS_PER_DAY))
 										: undefined
 								}
 								className="rounded-lg border border-(--border) px-3 py-2"

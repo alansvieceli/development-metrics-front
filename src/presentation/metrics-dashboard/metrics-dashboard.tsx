@@ -8,13 +8,13 @@ import type {
 import { ChartsSection } from "./charts/charts-section";
 import { CurrentStatusSection } from "./current-status-section";
 import { FlowTimeSection } from "./flow-time-section";
-import { formatPeriodLabel, formatSprintLabel } from "./format-period-label";
+import { formatCustomLabel, formatPeriodLabel } from "./format-period-label";
 import { MetricInfoButton } from "./metric-info-button";
 import { PeriodFilter } from "./period-filter";
 import { WeekResultSection } from "./week-result-section";
 
 type MetricsDashboardProps = {
-	periodType: PeriodType | "SPRINT";
+	periodType: PeriodType | "CUSTOM";
 	referenceDate: Date;
 	current: PeriodMetrics;
 	history: HistoricalPeriodMetrics[];
@@ -41,8 +41,8 @@ export function MetricsDashboard({
 								className="text-(--accent)"
 								aria-hidden="true"
 							/>
-							{periodType === "SPRINT"
-								? formatSprintLabel(current.periodStart, current.periodEnd)
+							{periodType === "CUSTOM"
+								? formatCustomLabel(current.periodStart, current.periodEnd)
 								: formatPeriodLabel(
 										periodType,
 										current.periodStart,
@@ -62,10 +62,10 @@ export function MetricsDashboard({
 					<PeriodFilter
 						periodType={periodType}
 						referenceDate={referenceDate}
-						sprintStart={
-							periodType === "SPRINT" ? current.periodStart : undefined
+						customStart={
+							periodType === "CUSTOM" ? current.periodStart : undefined
 						}
-						sprintEnd={periodType === "SPRINT" ? current.periodEnd : undefined}
+						customEnd={periodType === "CUSTOM" ? current.periodEnd : undefined}
 					/>
 				</div>
 			</header>
@@ -74,7 +74,7 @@ export function MetricsDashboard({
 				<CurrentStatusSection wip={current.wip} />
 			</div>
 			<FlowTimeSection current={current} />
-			{periodType !== "SPRINT" ? (
+			{periodType !== "CUSTOM" ? (
 				<ChartsSection
 					periodType={periodType}
 					current={current}

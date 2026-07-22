@@ -46,42 +46,42 @@ describe("parseMetricsFilter", () => {
 		expect(parseMetricsFilter({ period: "year" }).periodType).toBe("WEEK");
 	});
 
-	it("interpreta period=sprint com start e end válidos", () => {
+	it("interpreta period=custom com start e end válidos", () => {
 		const result = parseMetricsFilter({
-			period: "sprint",
+			period: "custom",
 			start: "2026-07-06",
 			end: "2026-07-17",
 		});
 		expect(result).toEqual({
-			periodType: "SPRINT",
+			periodType: "CUSTOM",
 			referenceDate: new Date("2026-07-06T00:00:00Z"),
 			start: new Date("2026-07-06T00:00:00Z"),
 			end: new Date("2026-07-18T00:00:00Z"),
 		});
 	});
 
-	it("aceita sprint de um único dia (start igual a end)", () => {
+	it("aceita período customizado de um único dia (start igual a end)", () => {
 		const result = parseMetricsFilter({
-			period: "sprint",
+			period: "custom",
 			start: "2026-07-06",
 			end: "2026-07-06",
 		});
-		expect(result.periodType).toBe("SPRINT");
+		expect(result.periodType).toBe("CUSTOM");
 	});
 
-	it("ignora sprint com start depois do end e usa semana", () => {
+	it("ignora período customizado com start depois do end e usa semana", () => {
 		const now = new Date("2026-07-15T12:00:00Z");
 		const result = parseMetricsFilter(
-			{ period: "sprint", start: "2026-07-17", end: "2026-07-06" },
+			{ period: "custom", start: "2026-07-17", end: "2026-07-06" },
 			now,
 		);
 		expect(result).toEqual({ periodType: "WEEK", referenceDate: now });
 	});
 
-	it("ignora sprint sem end e usa semana", () => {
+	it("ignora período customizado sem end e usa semana", () => {
 		const now = new Date("2026-07-15T12:00:00Z");
 		const result = parseMetricsFilter(
-			{ period: "sprint", start: "2026-07-06" },
+			{ period: "custom", start: "2026-07-06" },
 			now,
 		);
 		expect(result).toEqual({ periodType: "WEEK", referenceDate: now });

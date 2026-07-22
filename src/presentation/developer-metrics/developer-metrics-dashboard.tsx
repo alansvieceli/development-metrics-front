@@ -10,15 +10,15 @@ import {
 	formatPercent,
 } from "@/presentation/metrics-dashboard/format-metric-value";
 import {
+	formatCustomLabel,
 	formatPeriodLabel,
-	formatSprintLabel,
 } from "@/presentation/metrics-dashboard/format-period-label";
 import { PeriodFilter } from "@/presentation/metrics-dashboard/period-filter";
 import { StatTile } from "@/presentation/metrics-dashboard/stat-tile";
 import { DeveloperSelector } from "./developer-selector";
 
 type DeveloperMetricsDashboardProps = {
-	periodType: PeriodType | "SPRINT";
+	periodType: PeriodType | "CUSTOM";
 	referenceDate: Date;
 	members: Member[];
 	selectedMember: Member;
@@ -59,8 +59,8 @@ export function DeveloperMetricsDashboard({
 	evidence,
 }: DeveloperMetricsDashboardProps) {
 	const periodLabel =
-		periodType === "SPRINT"
-			? formatSprintLabel(current.periodStart, current.periodEnd)
+		periodType === "CUSTOM"
+			? formatCustomLabel(current.periodStart, current.periodEnd)
 			: formatPeriodLabel(periodType, current.periodStart, current.periodEnd);
 
 	return (
@@ -92,10 +92,10 @@ export function DeveloperMetricsDashboard({
 					<PeriodFilter
 						periodType={periodType}
 						referenceDate={referenceDate}
-						sprintStart={
-							periodType === "SPRINT" ? current.periodStart : undefined
+						customStart={
+							periodType === "CUSTOM" ? current.periodStart : undefined
 						}
-						sprintEnd={periodType === "SPRINT" ? current.periodEnd : undefined}
+						customEnd={periodType === "CUSTOM" ? current.periodEnd : undefined}
 					/>
 				</div>
 			</header>

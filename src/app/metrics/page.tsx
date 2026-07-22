@@ -23,7 +23,7 @@ export default async function MetricsPage({
 
 	const metricsUseCases = createMetricsUseCases();
 	const { current, history } =
-		filter.periodType === "SPRINT"
+		filter.periodType === "CUSTOM"
 			? await metricsUseCases.getMetricsDashboardForRange(
 					currentTeam.id,
 					filter.start,
