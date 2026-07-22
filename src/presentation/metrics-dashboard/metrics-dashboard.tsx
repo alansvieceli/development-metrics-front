@@ -1,6 +1,7 @@
 import { CalendarDays } from "lucide-react";
 import Link from "next/link";
 import type { PeriodType } from "@/application/metrics/period";
+import type { MetricsPeriodPreference } from "@/application/metrics/ports/metrics-period-preference-store";
 import type {
 	HistoricalPeriodMetrics,
 	PeriodMetrics,
@@ -14,6 +15,11 @@ import { PeriodFilter } from "./period-filter";
 import { WeekResultSection } from "./week-result-section";
 
 type MetricsDashboardProps = {
+	teamId: string;
+	saveMetricsPeriodPreferenceAction: (
+		teamId: string,
+		preference: MetricsPeriodPreference,
+	) => Promise<void>;
 	periodType: PeriodType | "CUSTOM";
 	referenceDate: Date;
 	current: PeriodMetrics;
@@ -21,6 +27,8 @@ type MetricsDashboardProps = {
 };
 
 export function MetricsDashboard({
+	teamId,
+	saveMetricsPeriodPreferenceAction,
 	periodType,
 	referenceDate,
 	current,
@@ -54,6 +62,10 @@ export function MetricsDashboard({
 					</Link>
 					<MetricInfoButton />
 					<PeriodFilter
+						teamId={teamId}
+						saveMetricsPeriodPreferenceAction={
+							saveMetricsPeriodPreferenceAction
+						}
 						periodType={periodType}
 						referenceDate={referenceDate}
 						customStart={

@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import { saveMetricsPeriodPreferenceAction } from "@/app/actions";
 import { createMetricsUseCases } from "@/composition/metrics";
 import { createTeamUseCases } from "@/composition/team";
 import { MetricsDashboard } from "@/presentation/metrics-dashboard/metrics-dashboard";
@@ -18,10 +19,17 @@ export default async function MetricsPage({
 		redirect("/teams");
 	}
 
-	const resolvedSearchParams = await searchParams;
-	const filter = parseMetricsFilter(resolvedSearchParams);
-
 	const metricsUseCases = createMetricsUseCases();
+	const preference = await metricsUseCases.getMetricsPeriodPreference(
+		currentTeam.id,
+	);
+	const resolvedSearchParams = await searchParams;
+	const filter = parseMetricsFilter(
+		resolvedSearchParams,
+		undefined,
+		preference,
+	);
+
 	const { current, history } =
 		filter.periodType === "CUSTOM"
 			? await metricsUseCases.getMetricsDashboardForRange(
@@ -39,6 +47,8 @@ export default async function MetricsPage({
 
 	return (
 		<MetricsDashboard
+			teamId={currentTeam.id}
+			saveMetricsPeriodPreferenceAction={saveMetricsPeriodPreferenceAction}
 			periodType={filter.periodType}
 			referenceDate={filter.referenceDate}
 			current={current}
