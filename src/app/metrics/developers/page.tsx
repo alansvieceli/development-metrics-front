@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { saveMetricsPeriodPreferenceAction } from "@/app/actions";
 import {
 	getPeriodRange,
 	getPreviousPeriods,
@@ -55,7 +56,15 @@ export default async function DeveloperMetricsPage({
 		redirect(`/metrics/developers?${params.toString()}`);
 	}
 
-	const filter = parseMetricsFilter(resolvedSearchParams);
+	const metricsUseCases = createMetricsUseCases();
+	const preference = await metricsUseCases.getMetricsPeriodPreference(
+		currentTeam.id,
+	);
+	const filter = parseMetricsFilter(
+		resolvedSearchParams,
+		undefined,
+		preference,
+	);
 	const range =
 		filter.periodType === "CUSTOM"
 			? { start: filter.start, end: filter.end }
@@ -66,7 +75,7 @@ export default async function DeveloperMetricsPage({
 					range.start.getTime() - (range.end.getTime() - range.start.getTime()),
 				)
 			: getPreviousPeriods(filter.periodType, filter.referenceDate, 2)[0].start;
-	const metrics = await createMetricsUseCases().getDeveloperMetrics(
+	const metrics = await metricsUseCases.getDeveloperMetrics(
 		currentTeam.id,
 		selectedMember.id,
 		previousStart,
@@ -76,6 +85,8 @@ export default async function DeveloperMetricsPage({
 
 	return (
 		<DeveloperMetricsDashboard
+			teamId={currentTeam.id}
+			saveMetricsPeriodPreferenceAction={saveMetricsPeriodPreferenceAction}
 			periodType={filter.periodType}
 			referenceDate={filter.referenceDate}
 			members={members}

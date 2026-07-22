@@ -2,6 +2,7 @@ import { CalendarDays } from "lucide-react";
 import type { ReactNode } from "react";
 import type { DurationStats } from "@/application/metrics/formulas/duration-metrics";
 import type { PeriodType } from "@/application/metrics/period";
+import type { MetricsPeriodPreference } from "@/application/metrics/ports/metrics-period-preference-store";
 import type { DeveloperMetricEvidence } from "@/application/metrics/use-cases/get-developer-metrics";
 import type { HistoricalPeriodMetrics } from "@/application/metrics/use-cases/get-metrics-for-period";
 import type { Member } from "@/domain/team/entities/member";
@@ -16,6 +17,11 @@ import { StatTile } from "@/presentation/metrics-dashboard/stat-tile";
 import { DeveloperSelector } from "./developer-selector";
 
 type DeveloperMetricsDashboardProps = {
+	teamId: string;
+	saveMetricsPeriodPreferenceAction: (
+		teamId: string,
+		preference: MetricsPeriodPreference,
+	) => Promise<void>;
 	periodType: PeriodType | "CUSTOM";
 	referenceDate: Date;
 	members: Member[];
@@ -48,6 +54,8 @@ function MetricSection({
 }
 
 export function DeveloperMetricsDashboard({
+	teamId,
+	saveMetricsPeriodPreferenceAction,
 	periodType,
 	referenceDate,
 	members,
@@ -89,6 +97,10 @@ export function DeveloperMetricsDashboard({
 					/>
 					<MetricInfoButton />
 					<PeriodFilter
+						teamId={teamId}
+						saveMetricsPeriodPreferenceAction={
+							saveMetricsPeriodPreferenceAction
+						}
 						periodType={periodType}
 						referenceDate={referenceDate}
 						customStart={
