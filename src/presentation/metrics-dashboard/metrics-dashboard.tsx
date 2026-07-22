@@ -8,7 +8,7 @@ import type {
 import { ChartsSection } from "./charts/charts-section";
 import { CurrentStatusSection } from "./current-status-section";
 import { FlowTimeSection } from "./flow-time-section";
-import { formatCustomLabel, formatPeriodLabel } from "./format-period-label";
+import { formatPeriodRangeLabel } from "./format-period-label";
 import { MetricInfoButton } from "./metric-info-button";
 import { PeriodFilter } from "./period-filter";
 import { WeekResultSection } from "./week-result-section";
@@ -41,13 +41,7 @@ export function MetricsDashboard({
 								className="text-(--accent)"
 								aria-hidden="true"
 							/>
-							{periodType === "CUSTOM"
-								? formatCustomLabel(current.periodStart, current.periodEnd)
-								: formatPeriodLabel(
-										periodType,
-										current.periodStart,
-										current.periodEnd,
-									)}
+							{formatPeriodRangeLabel(current.periodStart, current.periodEnd)}
 						</span>
 					</div>
 				</div>

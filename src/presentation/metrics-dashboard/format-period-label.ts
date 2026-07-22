@@ -2,12 +2,6 @@ import type { PeriodType } from "@/application/metrics/period";
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 
-const PERIOD_LABEL: Record<PeriodType, string> = {
-	WEEK: "Semana",
-	FORTNIGHT: "15 dias",
-	MONTH: "Mês",
-};
-
 function formatDayMonth(date: Date): string {
 	return date.toLocaleDateString("pt-BR", {
 		day: "2-digit",
@@ -16,18 +10,12 @@ function formatDayMonth(date: Date): string {
 	});
 }
 
-export function formatPeriodLabel(
-	periodType: PeriodType,
+export function formatPeriodRangeLabel(
 	periodStart: Date,
 	periodEnd: Date,
 ): string {
 	const lastDay = new Date(periodEnd.getTime() - MS_PER_DAY);
-	return `${PERIOD_LABEL[periodType]} · ${formatDayMonth(periodStart)} – ${formatDayMonth(lastDay)}`;
-}
-
-export function formatCustomLabel(periodStart: Date, periodEnd: Date): string {
-	const lastDay = new Date(periodEnd.getTime() - MS_PER_DAY);
-	return `Personalizado · ${formatDayMonth(periodStart)} – ${formatDayMonth(lastDay)}`;
+	return `${formatDayMonth(periodStart)} – ${formatDayMonth(lastDay)}`;
 }
 
 export function formatPeriodShortLabel(

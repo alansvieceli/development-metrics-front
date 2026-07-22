@@ -9,10 +9,8 @@ import {
 	formatDuration,
 	formatPercent,
 } from "@/presentation/metrics-dashboard/format-metric-value";
-import {
-	formatCustomLabel,
-	formatPeriodLabel,
-} from "@/presentation/metrics-dashboard/format-period-label";
+import { formatPeriodRangeLabel } from "@/presentation/metrics-dashboard/format-period-label";
+import { MetricInfoButton } from "@/presentation/metrics-dashboard/metric-info-button";
 import { PeriodFilter } from "@/presentation/metrics-dashboard/period-filter";
 import { StatTile } from "@/presentation/metrics-dashboard/stat-tile";
 import { DeveloperSelector } from "./developer-selector";
@@ -58,10 +56,10 @@ export function DeveloperMetricsDashboard({
 	previous,
 	evidence,
 }: DeveloperMetricsDashboardProps) {
-	const periodLabel =
-		periodType === "CUSTOM"
-			? formatCustomLabel(current.periodStart, current.periodEnd)
-			: formatPeriodLabel(periodType, current.periodStart, current.periodEnd);
+	const periodLabel = formatPeriodRangeLabel(
+		current.periodStart,
+		current.periodEnd,
+	);
 
 	return (
 		<div className="flex flex-1 flex-col gap-8 px-4 py-6 sm:px-6 lg:px-8">
@@ -89,6 +87,7 @@ export function DeveloperMetricsDashboard({
 						members={members}
 						selectedMemberId={selectedMember.id}
 					/>
+					<MetricInfoButton />
 					<PeriodFilter
 						periodType={periodType}
 						referenceDate={referenceDate}

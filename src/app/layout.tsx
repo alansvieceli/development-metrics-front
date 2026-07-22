@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { selectTeamAction } from "@/app/actions";
 import { createTeamUseCases } from "@/composition/team";
+import { Footer } from "@/presentation/shared/footer";
 import { HeaderNav } from "@/presentation/shared/header-nav";
 import { RootShell } from "@/presentation/shared/root-shell";
 import { TeamSwitcher } from "@/presentation/team/team-switcher";
@@ -42,6 +43,7 @@ export default async function RootLayout({
 			</header>
 			{children}
 			{modal}
+			<Footer />
 		</RootShell>
 	);
 }

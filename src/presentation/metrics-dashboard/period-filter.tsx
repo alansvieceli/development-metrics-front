@@ -111,40 +111,38 @@ export function PeriodFilter({
 			>
 				Personalizado
 			</button>
-			{periodType === "CUSTOM" ? null : (
-				<>
-					<button
-						type="button"
-						onClick={() => goTo(periodType, new Date())}
-						className="flex h-9 cursor-pointer items-center rounded-lg border border-(--border) px-3 text-sm transition-colors hover:bg-white/10"
-					>
-						Período atual
-					</button>
-					<button
-						type="button"
-						aria-label="Período anterior"
-						onClick={() =>
-							goTo(
-								periodType,
-								shiftReferenceDate(periodType, referenceDate, -1),
-							)
-						}
-						className="flex h-9 w-10 cursor-pointer items-center justify-center rounded-lg border border-(--border) transition-colors hover:bg-white/10"
-					>
-						‹
-					</button>
-					<button
-						type="button"
-						aria-label="Próximo período"
-						onClick={() =>
-							goTo(periodType, shiftReferenceDate(periodType, referenceDate, 1))
-						}
-						className="flex h-9 w-10 cursor-pointer items-center justify-center rounded-lg border border-(--border) transition-colors hover:bg-white/10"
-					>
-						›
-					</button>
-				</>
-			)}
+			<button
+				type="button"
+				disabled={periodType === "CUSTOM"}
+				onClick={() => periodType !== "CUSTOM" && goTo(periodType, new Date())}
+				className="flex h-9 cursor-pointer items-center rounded-lg border border-(--border) px-3 text-sm transition-colors hover:bg-white/10 disabled:pointer-events-none disabled:opacity-40"
+			>
+				Período atual
+			</button>
+			<button
+				type="button"
+				aria-label="Período anterior"
+				disabled={periodType === "CUSTOM"}
+				onClick={() =>
+					periodType !== "CUSTOM" &&
+					goTo(periodType, shiftReferenceDate(periodType, referenceDate, -1))
+				}
+				className="flex h-9 w-10 cursor-pointer items-center justify-center rounded-lg border border-(--border) transition-colors hover:bg-white/10 disabled:pointer-events-none disabled:opacity-40"
+			>
+				‹
+			</button>
+			<button
+				type="button"
+				aria-label="Próximo período"
+				disabled={periodType === "CUSTOM"}
+				onClick={() =>
+					periodType !== "CUSTOM" &&
+					goTo(periodType, shiftReferenceDate(periodType, referenceDate, 1))
+				}
+				className="flex h-9 w-10 cursor-pointer items-center justify-center rounded-lg border border-(--border) transition-colors hover:bg-white/10 disabled:pointer-events-none disabled:opacity-40"
+			>
+				›
+			</button>
 			{customModalOpen ? (
 				<Modal
 					label="Selecionar período"

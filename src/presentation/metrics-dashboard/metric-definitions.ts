@@ -27,6 +27,7 @@ export type MetricDefinition = {
 	key: MetricKey;
 	label: string;
 	description: string;
+	howToRead?: string;
 };
 
 export const METRIC_DEFINITIONS: MetricDefinition[] = [
@@ -54,7 +55,7 @@ export const METRIC_DEFINITIONS: MetricDefinition[] = [
 	{
 		key: "inPublication",
 		label: "Publicação",
-		description: "Cards atualmente na coluna Aguardando Publicação.",
+		description: "Cards atualmente na coluna Publicação.",
 	},
 	{
 		key: "delivered",
@@ -115,36 +116,48 @@ export const METRIC_DEFINITIONS: MetricDefinition[] = [
 		label: "Throughput por período",
 		description:
 			"Cards entregues em cada um dos últimos 8 períodos (semanas, quinzenas ou meses).",
+		howToRead:
+			"Cada barra é um período; a altura é a quantidade de cards entregues nele.",
 	},
 	{
 		key: "plannedDeliveredTrend",
 		label: "Planejado x entregue",
 		description:
 			"Cards com prazo (planejado) e cards entregues até o prazo (entregue) em cada um dos últimos 8 períodos.",
+		howToRead:
+			"Duas barras por período: uma para o total planejado (prazo no período) e outra para o total entregue até o prazo.",
 	},
 	{
 		key: "leadCycleTimeTrend",
 		label: "Lead time x Cycle time",
 		description:
 			"Mediana do lead time e do cycle time em cada um dos últimos 8 períodos.",
+		howToRead:
+			"Duas linhas, uma por métrica. Um período sem card concluído fica sem ponto e quebra a linha, em vez de interpolar por cima da ausência de dado.",
 	},
 	{
 		key: "flowComposition",
 		label: "Composição do fluxo",
 		description:
 			"Média do tempo do card em cada etapa (desenvolvimento, code review, testes, bloqueado, aguardando publicação) em cada um dos últimos 8 períodos. Desenvolvimento é o tempo restante do cycle time depois de somar as outras etapas.",
+		howToRead:
+			"Uma barra empilhada por período; cada cor é uma etapa do fluxo e o eixo mostra a duração acumulada.",
 	},
 	{
 		key: "cycleTimeOutliers",
 		label: "Cards mais lentos",
 		description:
 			"As até 5 tasks concluídas no período atual com maior cycle time, do início do desenvolvimento até a entrega.",
+		howToRead:
+			"Lista ordenada da mais lenta para a mais rápida, só do período atual selecionado (não é uma série histórica).",
 	},
 	{
 		key: "bugsOpenedTrend",
 		label: "Bugs abertos por período",
 		description:
 			"Bugs abertos (tasks do tipo Bug) em cada um dos últimos 8 períodos (semanas, quinzenas ou meses).",
+		howToRead:
+			"Cada barra é um período; a altura é a quantidade de bugs abertos nele, concluídos ou não.",
 	},
 	{
 		key: "bugsAssociated",
@@ -157,5 +170,7 @@ export const METRIC_DEFINITIONS: MetricDefinition[] = [
 		label: "Ranking de bugs",
 		description:
 			"As até 5 tasks que mais geraram bugs no período atual, via o vínculo de task de origem.",
+		howToRead:
+			"Lista das tasks de origem com mais bugs vinculados, da maior para a menor contagem. Só aparece quando o bug foi criado com o vínculo de task de origem preenchido.",
 	},
 ];
