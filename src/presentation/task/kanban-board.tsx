@@ -3,7 +3,7 @@ import type { ActionState } from "@/application/shared/action-state";
 import type { CreateTaskInput } from "@/application/task/use-cases/create-task";
 import type { TasksByStatus } from "@/application/task/use-cases/list-tasks-by-team";
 import type { UpdateTaskInput } from "@/application/task/use-cases/update-task";
-import type { TaskStatus } from "@/domain/task/entities/task";
+import type { Task, TaskStatus } from "@/domain/task/entities/task";
 import type { TaskType } from "@/domain/task/entities/task-type";
 import type { Member } from "@/domain/team/entities/member";
 import { BoardSummary } from "@/presentation/task/board-summary";
@@ -62,8 +62,19 @@ export function KanbanBoard({
 			description: task.description,
 		}))
 		.sort((a, b) => a.externalId.localeCompare(b.externalId));
+	function byCreationOrder(left: Task, right: Task): number {
+		const diff = left.createdAt.getTime() - right.createdAt.getTime();
+		return diff !== 0 ? diff : left.id.localeCompare(right.id);
+	}
+
 	const visibleTasksByStatus = {
-		...tasksByStatus,
+		TODO: [...tasksByStatus.TODO].sort(byCreationOrder),
+		IN_DEVELOPMENT: [...tasksByStatus.IN_DEVELOPMENT].sort(byCreationOrder),
+		CODE_REVIEW: [...tasksByStatus.CODE_REVIEW].sort(byCreationOrder),
+		TESTING: [...tasksByStatus.TESTING].sort(byCreationOrder),
+		AWAITING_PUBLICATION: [...tasksByStatus.AWAITING_PUBLICATION].sort(
+			byCreationOrder,
+		),
 		DONE: [...tasksByStatus.DONE]
 			.sort(
 				(left, right) =>
