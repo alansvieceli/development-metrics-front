@@ -1,12 +1,24 @@
+import type { PeriodType } from "@/application/metrics/period";
 import type { PeriodMetrics } from "@/application/metrics/use-cases/get-metrics-for-period";
 import { formatPercent } from "./format-metric-value";
 import { StatTile } from "./stat-tile";
 
 type WeekResultSectionProps = {
+	periodType: PeriodType | "CUSTOM";
 	current: PeriodMetrics;
 };
 
-export function WeekResultSection({ current }: WeekResultSectionProps) {
+const RESULT_TITLE: Record<PeriodType | "CUSTOM", string> = {
+	WEEK: "Resultado da semana",
+	FORTNIGHT: "Resultado da quinzena",
+	MONTH: "Resultado do mês",
+	CUSTOM: "Resultado do período",
+};
+
+export function WeekResultSection({
+	periodType,
+	current,
+}: WeekResultSectionProps) {
 	const counts = current.predictabilityCounts;
 	const pending = counts
 		? Math.max(0, counts.planned - counts.delivered)
@@ -26,7 +38,7 @@ export function WeekResultSection({ current }: WeekResultSectionProps) {
 				<p className="mb-1 font-mono text-xs font-semibold tracking-[0.16em] text-(--accent) uppercase">
 					Desempenho
 				</p>
-				<h2 className="text-lg font-semibold">Resultado da semana</h2>
+				<h2 className="text-lg font-semibold">{RESULT_TITLE[periodType]}</h2>
 			</div>
 			<div className="grid flex-1 grid-cols-2 gap-3">
 				<StatTile
