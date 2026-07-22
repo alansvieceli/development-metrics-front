@@ -86,4 +86,40 @@ describe("parseMetricsFilter", () => {
 		);
 		expect(result).toEqual({ periodType: "WEEK", referenceDate: now });
 	});
+
+	it("usa a preferência salva quando a URL não especifica period", () => {
+		const now = new Date("2026-07-15T12:00:00Z");
+		const result = parseMetricsFilter({}, now, { period: "month" });
+		expect(result).toEqual({ periodType: "MONTH", referenceDate: now });
+	});
+
+	it("usa start/end da preferência salva quando period é custom", () => {
+		const result = parseMetricsFilter({}, new Date("2026-07-15T12:00:00Z"), {
+			period: "custom",
+			start: "2026-07-06",
+			end: "2026-07-17",
+		});
+		expect(result).toEqual({
+			periodType: "CUSTOM",
+			referenceDate: new Date("2026-07-06T00:00:00Z"),
+			start: new Date("2026-07-06T00:00:00Z"),
+			end: new Date("2026-07-18T00:00:00Z"),
+		});
+	});
+
+	it("ignora a preferência salva quando a URL já especifica period", () => {
+		const now = new Date("2026-07-15T12:00:00Z");
+		const result = parseMetricsFilter({ period: "week" }, now, {
+			period: "month",
+		});
+		expect(result).toEqual({ periodType: "WEEK", referenceDate: now });
+	});
+
+	it("ignora preferência ausente e usa semana", () => {
+		const now = new Date("2026-07-15T12:00:00Z");
+		expect(parseMetricsFilter({}, now, null)).toEqual({
+			periodType: "WEEK",
+			referenceDate: now,
+		});
+	});
 });

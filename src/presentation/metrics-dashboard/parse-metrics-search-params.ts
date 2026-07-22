@@ -1,4 +1,5 @@
 import type { PeriodType } from "@/application/metrics/period";
+import type { MetricsPeriodPreference } from "@/application/metrics/ports/metrics-period-preference-store";
 import { parseDateOnly } from "@/application/shared/validation";
 
 export type MetricsSearchParams = {
@@ -16,10 +17,14 @@ export type MetricsFilter =
 export function parseMetricsFilter(
 	searchParams: MetricsSearchParams,
 	now: Date = new Date(),
+	preference?: MetricsPeriodPreference | null,
 ): MetricsFilter {
-	if (searchParams.period === "custom") {
-		const start = parseDateOnly(searchParams.start);
-		const endInput = parseDateOnly(searchParams.end);
+	const effective: MetricsSearchParams =
+		searchParams.period === undefined && preference ? preference : searchParams;
+
+	if (effective.period === "custom") {
+		const start = parseDateOnly(effective.start);
+		const endInput = parseDateOnly(effective.end);
 		if (start && endInput && start <= endInput) {
 			const end = new Date(endInput);
 			end.setUTCDate(end.getUTCDate() + 1);
@@ -27,13 +32,13 @@ export function parseMetricsFilter(
 		}
 	}
 	const periodType: PeriodType =
-		searchParams.period === "month"
+		effective.period === "month"
 			? "MONTH"
-			: searchParams.period === "fortnight"
+			: effective.period === "fortnight"
 				? "FORTNIGHT"
 				: "WEEK";
 	return {
 		periodType,
-		referenceDate: parseDateOnly(searchParams.date) ?? now,
+		referenceDate: parseDateOnly(effective.date) ?? now,
 	};
 }
