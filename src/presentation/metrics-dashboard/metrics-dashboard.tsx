@@ -70,8 +70,8 @@ export function MetricsDashboard({
 				</div>
 			</header>
 			<div className="grid items-stretch gap-6 xl:grid-cols-2">
-				<WeekResultSection periodType={periodType} current={current} />
 				<CurrentStatusSection wip={current.wip} />
+				<WeekResultSection periodType={periodType} current={current} />
 			</div>
 			<FlowTimeSection current={current} />
 			{periodType !== "CUSTOM" ? (
