@@ -1,6 +1,7 @@
 "use client";
 
 import { Pencil, Plus } from "lucide-react";
+import type { FormEvent } from "react";
 import { useState } from "react";
 import type { ActionState } from "@/application/shared/action-state";
 import type { CreateTaskInput } from "@/application/task/use-cases/create-task";
@@ -53,7 +54,9 @@ export function TaskFormModal(props: TaskFormModalProps) {
 	const [error, setError] = useState<string | null>(null);
 	const isEdit = props.mode === "edit";
 
-	async function handleSubmit(formData: FormData) {
+	async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+		event.preventDefault();
+		const formData = new FormData(event.currentTarget);
 		const externalId = String(formData.get("externalId") ?? "");
 		const description = String(formData.get("description") ?? "");
 		const typeId = String(formData.get("typeId") ?? "");
@@ -171,7 +174,7 @@ export function TaskFormModal(props: TaskFormModalProps) {
 					label={isEdit ? "Editar task" : "Nova task"}
 					onClose={() => setOpen(false)}
 				>
-					<form action={handleSubmit} className="flex flex-col gap-4">
+					<form onSubmit={handleSubmit} className="flex flex-col gap-4">
 						<div className="flex flex-col gap-2">
 							<label htmlFor="externalId" className="text-sm opacity-70">
 								Id externo
