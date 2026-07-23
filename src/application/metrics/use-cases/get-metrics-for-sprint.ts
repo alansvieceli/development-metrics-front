@@ -21,9 +21,8 @@ export async function getMetricsForSprint(
 	}
 
 	if (sprint.status === "CLOSED") {
-		const metrics = await sprintMetricsSnapshotRepository.findBySprint(
-			sprintId,
-		);
+		const metrics =
+			await sprintMetricsSnapshotRepository.findBySprint(sprintId);
 		if (!metrics) {
 			throw new ApplicationError("Sprint sem snapshot de métricas");
 		}
