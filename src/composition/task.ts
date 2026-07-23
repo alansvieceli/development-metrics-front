@@ -1,11 +1,11 @@
 import type { CreateHistoricalTaskInput } from "@/application/task/use-cases/create-historical-task";
 import { createHistoricalTask } from "@/application/task/use-cases/create-historical-task";
+import { createTag } from "@/application/task/use-cases/create-tag";
 import type { CreateTaskInput } from "@/application/task/use-cases/create-task";
 import { createTask } from "@/application/task/use-cases/create-task";
-import { createTag } from "@/application/task/use-cases/create-tag";
 import { createTaskType } from "@/application/task/use-cases/create-task-type";
-import { deleteTask } from "@/application/task/use-cases/delete-task";
 import { deleteTag } from "@/application/task/use-cases/delete-tag";
+import { deleteTask } from "@/application/task/use-cases/delete-task";
 import { deleteTaskType } from "@/application/task/use-cases/delete-task-type";
 import { listTags } from "@/application/task/use-cases/list-tags";
 import { listTaskTypes } from "@/application/task/use-cases/list-task-types";
@@ -31,6 +31,7 @@ export function createTaskUseCases() {
 				drizzleTaskTypeRepository,
 				drizzleTeamRepository,
 				input,
+				drizzleTagRepository,
 			),
 		createHistoricalTask: (input: CreateHistoricalTaskInput) =>
 			createHistoricalTask(
@@ -47,6 +48,7 @@ export function createTaskUseCases() {
 				teamId,
 				taskId,
 				input,
+				drizzleTagRepository,
 			),
 		deleteTask: (teamId: string, taskId: string) =>
 			deleteTask(drizzleTaskRepository, teamId, taskId),
@@ -59,6 +61,7 @@ export function createTaskUseCases() {
 				drizzleTaskRepository,
 				drizzleTaskHistoryRepository,
 				drizzleTaskTypeRepository,
+				drizzleTagRepository,
 				teamId,
 			),
 		createTaskType: (name: string, color: string) =>

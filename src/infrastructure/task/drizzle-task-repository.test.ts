@@ -4,8 +4,8 @@ import { db } from "@/infrastructure/db/client";
 import {
 	taskBlockedPeriods,
 	taskStatusChanges,
-	taskTags,
 	tasks,
+	taskTags,
 } from "./drizzle/schema";
 import { drizzleTagRepository } from "./drizzle-tag-repository";
 import { drizzleTaskRepository } from "./drizzle-task-repository";
@@ -347,9 +347,9 @@ describe("drizzleTaskRepository", () => {
 			baseData({ tagIds: [tag.id] }),
 		);
 		try {
-			expect(
-				await drizzleTaskRepository.listTagIdsForTasks([task.id]),
-			).toEqual({ [task.id]: [tag.id] });
+			expect(await drizzleTaskRepository.listTagIdsForTasks([task.id])).toEqual(
+				{ [task.id]: [tag.id] },
+			);
 		} finally {
 			await resetTasksTable();
 			await drizzleTagRepository.delete(tag.id);
@@ -372,9 +372,9 @@ describe("drizzleTaskRepository", () => {
 				parentTaskId: task.parentTaskId,
 				tagIds: [tagB.id],
 			});
-			expect(
-				await drizzleTaskRepository.listTagIdsForTasks([task.id]),
-			).toEqual({ [task.id]: [tagB.id] });
+			expect(await drizzleTaskRepository.listTagIdsForTasks([task.id])).toEqual(
+				{ [task.id]: [tagB.id] },
+			);
 		} finally {
 			await resetTasksTable();
 			await drizzleTagRepository.delete(tagA.id);
@@ -396,9 +396,9 @@ describe("drizzleTaskRepository", () => {
 				dueDate: task.dueDate,
 				parentTaskId: task.parentTaskId,
 			});
-			expect(
-				await drizzleTaskRepository.listTagIdsForTasks([task.id]),
-			).toEqual({ [task.id]: [tag.id] });
+			expect(await drizzleTaskRepository.listTagIdsForTasks([task.id])).toEqual(
+				{ [task.id]: [tag.id] },
+			);
 		} finally {
 			await resetTasksTable();
 			await drizzleTagRepository.delete(tag.id);

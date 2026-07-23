@@ -7,8 +7,8 @@ import { db } from "@/infrastructure/db/client";
 import {
 	taskBlockedPeriods,
 	taskStatusChanges,
-	taskTags,
 	tasks,
+	taskTags,
 	taskTypes,
 } from "@/infrastructure/task/drizzle/schema";
 import { drizzleTagRepository } from "@/infrastructure/task/drizzle-tag-repository";
@@ -356,8 +356,14 @@ describe("drizzleMetricsQueryPort", () => {
 	it("filtra tasks concluídas por qualquer uma das tarjas selecionadas (OR)", async () => {
 		const tagA = await drizzleTagRepository.create("Tarja A", "#2563eb");
 		const tagB = await drizzleTagRepository.create("Tarja B", "#dc2626");
-		const taskWithA = await insertTask({ externalId: "TASK-A", status: "DONE" });
-		const taskWithB = await insertTask({ externalId: "TASK-B", status: "DONE" });
+		const taskWithA = await insertTask({
+			externalId: "TASK-A",
+			status: "DONE",
+		});
+		const taskWithB = await insertTask({
+			externalId: "TASK-B",
+			status: "DONE",
+		});
 		const taskWithoutTag = await insertTask({
 			externalId: "TASK-C",
 			status: "DONE",

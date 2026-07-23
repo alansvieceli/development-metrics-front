@@ -10,8 +10,8 @@ import { db } from "@/infrastructure/db/client";
 import {
 	taskBlockedPeriods,
 	taskStatusChanges,
-	taskTags,
 	tasks,
+	taskTags,
 } from "./drizzle/schema";
 
 function toTask(row: typeof tasks.$inferSelect): Task {

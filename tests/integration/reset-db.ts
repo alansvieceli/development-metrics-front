@@ -8,7 +8,7 @@ export async function resetDatabase() {
 		import("../../src/infrastructure/task/drizzle/seed-task-types"),
 	]);
 	await db.execute(
-		sql`TRUNCATE TABLE task_blocked_periods, task_status_changes, tasks, task_types, members, teams RESTART IDENTITY CASCADE`,
+		sql`TRUNCATE TABLE task_blocked_periods, task_status_changes, tasks, task_types, tags, members, teams RESTART IDENTITY CASCADE`,
 	);
 	await seedDefaultTaskTypes();
 }

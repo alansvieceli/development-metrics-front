@@ -6,10 +6,12 @@ import { useState } from "react";
 import type { ActionState } from "@/application/shared/action-state";
 import type { CreateTaskInput } from "@/application/task/use-cases/create-task";
 import type { UpdateTaskInput } from "@/application/task/use-cases/update-task";
+import type { Tag } from "@/domain/task/entities/tag";
 import type { Task, TaskStatus } from "@/domain/task/entities/task";
 import type { TaskType } from "@/domain/task/entities/task-type";
 import type { Member } from "@/domain/team/entities/member";
 import { Modal } from "@/presentation/shared/modal";
+import { TagCombobox } from "@/presentation/shared/tag-combobox";
 import {
 	STATUS_LABELS,
 	STATUS_ORDER,
@@ -27,6 +29,7 @@ type TaskFormModalProps =
 			taskTypes: TaskType[];
 			members: Member[];
 			teamTasks: TeamTaskOption[];
+			tags: Tag[];
 			createTaskAction: (
 				input: Omit<CreateTaskInput, "teamId">,
 			) => Promise<ActionState>;
@@ -37,6 +40,8 @@ type TaskFormModalProps =
 			taskTypes: TaskType[];
 			members: Member[];
 			teamTasks: TeamTaskOption[];
+			tags: Tag[];
+			initialTagIds: string[];
 			updateTaskAction: (
 				taskId: string,
 				input: UpdateTaskInput,
@@ -53,6 +58,9 @@ export function TaskFormModal(props: TaskFormModalProps) {
 	const [pending, setPending] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const isEdit = props.mode === "edit";
+	const [tagIds, setTagIds] = useState<string[]>(
+		props.mode === "edit" ? props.initialTagIds : [],
+	);
 
 	async function handleSubmit(event: FormEvent<HTMLFormElement>) {
 		event.preventDefault();
@@ -80,6 +88,7 @@ export function TaskFormModal(props: TaskFormModalProps) {
 					dueDate,
 					status,
 					parentTaskId,
+					tagIds,
 				});
 			} else {
 				result = await props.updateTaskAction(props.task.id, {
@@ -89,6 +98,7 @@ export function TaskFormModal(props: TaskFormModalProps) {
 					assigneeId,
 					dueDate,
 					parentTaskId,
+					tagIds,
 				});
 			}
 			if (result.error) {
@@ -295,6 +305,14 @@ export function TaskFormModal(props: TaskFormModalProps) {
 									))}
 							</select>
 						</div>
+						<TagCombobox
+							id="task-tags"
+							label="Tarjas"
+							catalog={props.tags}
+							selectedIds={tagIds}
+							max={3}
+							onChange={setTagIds}
+						/>
 						{isEdit ? (
 							<label className="flex items-center gap-2 text-sm">
 								<input

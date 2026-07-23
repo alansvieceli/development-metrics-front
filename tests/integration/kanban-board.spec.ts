@@ -274,3 +274,70 @@ test("mostra os badges de bugs e vínculos originados de uma task", async ({
 	const bugCard = page.getByTitle("Bug").filter({ hasText: "TASK-FILHO-BUG" });
 	await expect(bugCard.getByText("Origem: #TASK-PAI")).toBeVisible();
 });
+
+test("associa até 3 tarjas a um card pelo formulário", async ({ page }) => {
+	await expect(page).toHaveURL("/board");
+	await page.goto("/tags");
+	for (const name of ["Cliente Acme", "Urgente", "Débito técnico", "Extra"]) {
+		await page.getByPlaceholder("Nome da tarja").fill(name);
+		await page.getByRole("button", { name: "Adicionar tarja" }).click();
+		await expect(
+			page
+				.locator("li")
+				.filter({ has: page.locator(`input[value="${name}"]`) }),
+		).toBeVisible();
+	}
+
+	await page.goto("/board");
+	await page.getByRole("button", { name: "Task" }).click();
+	await page.getByLabel("Id externo").fill("TASK-TAG-1");
+	await page.getByLabel("Descrição").fill("Task com tarjas");
+	await page.getByLabel("Tarjas").fill("Cliente");
+	await page.getByRole("option", { name: "Cliente Acme" }).click();
+	await page.getByLabel("Tarjas").fill("Urgente");
+	await page.getByRole("option", { name: "Urgente" }).click();
+	await page.getByLabel("Tarjas").fill("Débito");
+	await page.getByRole("option", { name: "Débito técnico" }).click();
+	await expect(
+		page.getByPlaceholder("Máximo de 3 tarjas atingido"),
+	).toBeVisible();
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
+	await page.getByRole("button", { name: "Salvar" }).click();
+
+	const card = page.getByText("TASK-TAG-1", { exact: true }).locator("../..");
+	await expect(card.getByText("Cliente Acme")).toBeVisible();
+	await expect(card.getByText("Urgente")).toBeVisible();
+	await expect(card.getByText("Débito técnico")).toBeVisible();
+	await expect(card.getByText("Extra")).toHaveCount(0);
+});
+
+test("remove uma tarja do card editando a task", async ({ page }) => {
+	await expect(page).toHaveURL("/board");
+	await page.goto("/tags");
+	await page.getByPlaceholder("Nome da tarja").fill("Cliente Acme");
+	await page.getByRole("button", { name: "Adicionar tarja" }).click();
+
+	await page.goto("/board");
+	await page.getByRole("button", { name: "Task" }).click();
+	await page.getByLabel("Id externo").fill("TASK-TAG-2");
+	await page.getByLabel("Descrição").fill("Task a remover tarja");
+	await page.getByLabel("Tarjas").fill("Cliente");
+	await page.getByRole("option", { name: "Cliente Acme" }).click();
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
+	await page.getByRole("button", { name: "Salvar" }).click();
+
+	const card = page.getByText("TASK-TAG-2", { exact: true }).locator("../..");
+	await expect(card.getByText("Cliente Acme")).toBeVisible();
+
+	await card.getByRole("button", { name: "Editar task" }).click();
+	await page
+		.getByRole("dialog", { name: "Editar task" })
+		.getByRole("button", { name: "Remover tarja Cliente Acme" })
+		.click();
+	await page
+		.getByRole("dialog", { name: "Editar task" })
+		.getByRole("button", { name: "Salvar" })
+		.click();
+
+	await expect(card.getByText("Cliente Acme")).toHaveCount(0);
+});

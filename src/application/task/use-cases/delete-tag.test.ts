@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { deleteTag } from "./delete-tag";
 import { createFakeTagRepository } from "./test-helpers/create-fake-tag-repository";
 import { createFakeTaskRepository } from "./test-helpers/create-fake-task-repository";
-import { deleteTag } from "./delete-tag";
 
 describe("deleteTag", () => {
 	it("remove uma tarja que não está em uso", async () => {

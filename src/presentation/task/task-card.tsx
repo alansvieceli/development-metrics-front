@@ -1,6 +1,7 @@
 import type { ActionState } from "@/application/shared/action-state";
 import type { TaskWithStatusSince } from "@/application/task/use-cases/list-tasks-by-team";
 import type { UpdateTaskInput } from "@/application/task/use-cases/update-task";
+import type { Tag } from "@/domain/task/entities/tag";
 import type { TaskStatus } from "@/domain/task/entities/task";
 import type { TaskType } from "@/domain/task/entities/task-type";
 import type { Member } from "@/domain/team/entities/member";
@@ -14,6 +15,7 @@ type TaskCardProps = {
 	taskType: TaskType | undefined;
 	assignee: Member | undefined;
 	taskTypes: TaskType[];
+	tags: Tag[];
 	members: Member[];
 	teamTasks: TeamTaskOption[];
 	updateTaskAction: (
@@ -54,6 +56,7 @@ export function TaskCard({
 	taskType,
 	assignee,
 	taskTypes,
+	tags,
 	members,
 	teamTasks,
 	updateTaskAction,
@@ -75,6 +78,8 @@ export function TaskCard({
 					taskTypes={taskTypes}
 					members={members}
 					teamTasks={teamTasks}
+					tags={tags}
+					initialTagIds={task.tags.map((tag) => tag.id)}
 					updateTaskAction={updateTaskAction}
 					deleteTaskAction={deleteTaskAction}
 					toggleBlockedAction={toggleBlockedAction}
@@ -96,6 +101,19 @@ export function TaskCard({
 			</p>
 			{task.blocked ? (
 				<p className="text-xs font-semibold text-(--critical)">⛔ Bloqueado</p>
+			) : null}
+			{task.tags.length > 0 ? (
+				<div className="flex flex-wrap gap-1">
+					{task.tags.map((tag) => (
+						<span
+							key={tag.id}
+							className="rounded-full px-2 py-0.5 text-xs text-white"
+							style={{ background: tag.color }}
+						>
+							{tag.name}
+						</span>
+					))}
+				</div>
 			) : null}
 			{task.parentTask ? (
 				<p className="text-xs opacity-50">

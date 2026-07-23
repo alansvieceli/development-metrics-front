@@ -57,7 +57,13 @@ export async function getMetricsDashboardForRange(
 	wipLimit: number,
 	tagIds: string[] = [],
 ): Promise<MetricsDashboardResult> {
-	const snapshot = await port.loadSnapshot(teamId, start, end, undefined, tagIds);
+	const snapshot = await port.loadSnapshot(
+		teamId,
+		start,
+		end,
+		undefined,
+		tagIds,
+	);
 	const now = new Date();
 	const current = getMetricsForRange(snapshot, start, end, now);
 

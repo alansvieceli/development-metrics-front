@@ -53,6 +53,14 @@ function validateInput(input: unknown): asserts input is UpdateTaskInput {
 		throw new ApplicationError("Data prevista inválida");
 	if (value.parentTaskId !== null)
 		validateUuid(value.parentTaskId, "Task de origem inválida");
+	if (value.tagIds !== undefined) {
+		if (
+			!Array.isArray(value.tagIds) ||
+			value.tagIds.some((tagId) => !isUuid(tagId))
+		) {
+			throw new ApplicationError("Tarjas inválidas");
+		}
+	}
 }
 
 async function getCurrentTeamId() {

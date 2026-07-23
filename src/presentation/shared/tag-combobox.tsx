@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import type { Tag } from "@/domain/task/entities/tag";
 
 type TagComboboxProps = {
@@ -13,6 +14,8 @@ type TagComboboxProps = {
 	hideLabel?: boolean;
 };
 
+type DropdownPosition = { top: number; left: number; width: number };
+
 export function TagCombobox({
 	id,
 	label,
@@ -22,8 +25,9 @@ export function TagCombobox({
 	onChange,
 	hideLabel = false,
 }: TagComboboxProps) {
+	const inputRef = useRef<HTMLInputElement>(null);
 	const [query, setQuery] = useState("");
-	const [open, setOpen] = useState(false);
+	const [position, setPosition] = useState<DropdownPosition | null>(null);
 
 	const selected = selectedIds
 		.map((tagId) => catalog.find((tag) => tag.id === tagId))
@@ -35,11 +39,18 @@ export function TagCombobox({
 			tag.name.toLowerCase().includes(query.toLowerCase()),
 	);
 	const listboxId = `${id}-listbox`;
+	const open = position !== null;
+
+	function openDropdown() {
+		const rect = inputRef.current?.getBoundingClientRect();
+		if (!rect) return;
+		setPosition({ top: rect.bottom, left: rect.left, width: rect.width });
+	}
 
 	function add(tagId: string) {
 		onChange([...selectedIds, tagId]);
 		setQuery("");
-		setOpen(false);
+		setPosition(null);
 	}
 
 	function remove(tagId: string) {
@@ -47,7 +58,7 @@ export function TagCombobox({
 	}
 
 	return (
-		<div className="relative flex flex-col gap-2">
+		<div className="flex flex-col gap-2">
 			<label
 				htmlFor={id}
 				className={hideLabel ? "sr-only" : "text-sm opacity-70"}
@@ -77,6 +88,7 @@ export function TagCombobox({
 			) : null}
 			<input
 				id={id}
+				ref={inputRef}
 				role="combobox"
 				aria-expanded={open}
 				aria-controls={listboxId}
@@ -88,45 +100,53 @@ export function TagCombobox({
 				}
 				onChange={(event) => {
 					setQuery(event.target.value);
-					setOpen(true);
+					openDropdown();
 				}}
-				onFocus={() => setOpen(true)}
-				onBlur={() => setOpen(false)}
+				onFocus={openDropdown}
+				onBlur={() => setPosition(null)}
 				className="rounded-lg border border-(--border) bg-(--background) px-3 py-2 text-sm disabled:opacity-60"
 			/>
-			{open && !atMax ? (
-				<div
-					id={listboxId}
-					role="listbox"
-					aria-label={label}
-					className="absolute top-full z-10 mt-1 max-h-52 w-full overflow-y-auto rounded-lg border border-(--border) bg-(--surface) shadow-lg"
-				>
-					{matches.length === 0 ? (
-						<div className="px-3 py-2 text-sm opacity-60">
-							Nenhuma tarja encontrada
-						</div>
-					) : (
-						matches.map((tag) => (
-							<button
-								key={tag.id}
-								type="button"
-								role="option"
-								aria-selected={false}
-								onMouseDown={(event) => event.preventDefault()}
-								onClick={() => add(tag.id)}
-								className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-white/10"
-							>
-								<span
-									aria-hidden="true"
-									className="h-2.5 w-2.5 shrink-0 rounded-full"
-									style={{ background: tag.color }}
-								/>
-								{tag.name}
-							</button>
-						))
-					)}
-				</div>
-			) : null}
+			{open && !atMax && position
+				? createPortal(
+						<div
+							id={listboxId}
+							role="listbox"
+							style={{
+								position: "fixed",
+								top: position.top,
+								left: position.left,
+								width: position.width,
+							}}
+							className="z-50 mt-1 max-h-52 overflow-y-auto rounded-lg border border-(--border) bg-(--surface) shadow-lg"
+						>
+							{matches.length === 0 ? (
+								<div className="px-3 py-2 text-sm opacity-60">
+									Nenhuma tarja encontrada
+								</div>
+							) : (
+								matches.map((tag) => (
+									<button
+										key={tag.id}
+										type="button"
+										role="option"
+										aria-selected={false}
+										onMouseDown={(event) => event.preventDefault()}
+										onClick={() => add(tag.id)}
+										className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-white/10"
+									>
+										<span
+											aria-hidden="true"
+											className="h-2.5 w-2.5 shrink-0 rounded-full"
+											style={{ background: tag.color }}
+										/>
+										{tag.name}
+									</button>
+								))
+							)}
+						</div>,
+						inputRef.current?.closest("dialog") ?? document.body,
+					)
+				: null}
 		</div>
 	);
 }

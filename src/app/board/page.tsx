@@ -24,12 +24,14 @@ export default async function BoardPage() {
 	const taskUseCases = createTaskUseCases();
 	const tasksByStatus = await taskUseCases.listTasksByTeam(currentTeam.id);
 	const taskTypes = await taskUseCases.listTaskTypes();
+	const tags = await taskUseCases.listTags();
 
 	return (
 		<KanbanBoard
 			tasksByStatus={tasksByStatus}
 			completedTaskLimit={currentTeam.completedTaskLimit}
 			taskTypes={taskTypes}
+			tags={tags}
 			members={members}
 			createTaskAction={createTaskAction}
 			createHistoricalTaskAction={createHistoricalTaskAction}

@@ -19,8 +19,8 @@ describe("createTag", () => {
 
 	it("rejeita cor fora do formato hexadecimal", async () => {
 		const repository = createFakeTagRepository();
-		await expect(
-			createTag(repository, "Cliente Acme", "azul"),
-		).rejects.toThrow("Cor deve ser um hexadecimal válido, ex: #2563eb");
+		await expect(createTag(repository, "Cliente Acme", "azul")).rejects.toThrow(
+			"Cor deve ser um hexadecimal válido, ex: #2563eb",
+		);
 	});
 });

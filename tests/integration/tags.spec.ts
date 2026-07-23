@@ -45,5 +45,7 @@ test("não permite excluir uma tarja em uso por uma task", async ({ page }) => {
 	const row = page
 		.locator("li")
 		.filter({ has: page.locator('input[value="Cliente Acme"]') });
-	await expect(row.getByRole("button", { name: "Excluir tarja" })).toBeDisabled();
+	await expect(
+		row.getByRole("button", { name: "Excluir tarja" }),
+	).toBeDisabled();
 });

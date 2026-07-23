@@ -3,6 +3,7 @@ import type { ActionState } from "@/application/shared/action-state";
 import type { CreateTaskInput } from "@/application/task/use-cases/create-task";
 import type { TasksByStatus } from "@/application/task/use-cases/list-tasks-by-team";
 import type { UpdateTaskInput } from "@/application/task/use-cases/update-task";
+import type { Tag } from "@/domain/task/entities/tag";
 import type { Task, TaskStatus } from "@/domain/task/entities/task";
 import type { TaskType } from "@/domain/task/entities/task-type";
 import type { Member } from "@/domain/team/entities/member";
@@ -19,6 +20,7 @@ type KanbanBoardProps = {
 	tasksByStatus: TasksByStatus;
 	completedTaskLimit: number;
 	taskTypes: TaskType[];
+	tags: Tag[];
 	members: Member[];
 	createTaskAction: (
 		input: Omit<CreateTaskInput, "teamId">,
@@ -42,6 +44,7 @@ export function KanbanBoard({
 	tasksByStatus,
 	completedTaskLimit,
 	taskTypes,
+	tags,
 	members,
 	createTaskAction,
 	createHistoricalTaskAction,
@@ -101,6 +104,7 @@ export function KanbanBoard({
 						taskTypes={taskTypes}
 						members={members}
 						teamTasks={teamTasks}
+						tags={tags}
 						createTaskAction={createTaskAction}
 					/>
 				</div>
@@ -127,6 +131,7 @@ export function KanbanBoard({
 									task.assigneeId ? membersById.get(task.assigneeId) : undefined
 								}
 								taskTypes={taskTypes}
+								tags={tags}
 								members={members}
 								teamTasks={teamTasks}
 								updateTaskAction={updateTaskAction}

@@ -23,8 +23,8 @@ import { db } from "@/infrastructure/db/client";
 import {
 	taskBlockedPeriods,
 	taskStatusChanges,
-	taskTags,
 	tasks,
+	taskTags,
 	taskTypes,
 } from "@/infrastructure/task/drizzle/schema";
 

@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
+import { listTags } from "./list-tags";
 import { createFakeTagRepository } from "./test-helpers/create-fake-tag-repository";
 import { createFakeTaskRepository } from "./test-helpers/create-fake-task-repository";
-import { listTags } from "./list-tags";
 
 describe("listTags", () => {
 	it("marca o uso das tarjas com uma consulta independente do volume", async () => {

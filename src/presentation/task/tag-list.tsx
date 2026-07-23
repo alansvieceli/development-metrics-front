@@ -88,7 +88,9 @@ function TagRow({
 
 export function TagList(props: TagListProps) {
 	if (props.tags.length === 0) {
-		return <p className="text-sm opacity-70">Nenhuma tarja cadastrada ainda.</p>;
+		return (
+			<p className="text-sm opacity-70">Nenhuma tarja cadastrada ainda.</p>
+		);
 	}
 
 	return (
