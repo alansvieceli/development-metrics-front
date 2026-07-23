@@ -1,7 +1,9 @@
 import { ApplicationError } from "@/application/shared/application-error";
+import type { SprintAccess } from "@/application/sprint/contracts/sprint-access";
 import type { TagRepository } from "@/application/task/ports/tag-repository";
 import type { TaskRepository } from "@/application/task/ports/task-repository";
 import type { TaskTypeRepository } from "@/application/task/ports/task-type-repository";
+import { validateSprintId } from "@/application/task/validate-sprint-id";
 import { validateTagIds } from "@/application/task/validate-tag-ids";
 import { validateTaskReferences } from "@/application/task/validate-task-references";
 import type { TeamAccess } from "@/application/team/contracts/team-access";
@@ -16,6 +18,7 @@ export type CreateTaskInput = {
 	status: TaskStatus;
 	dueDate: string;
 	parentTaskId: string | null;
+	sprintId?: string | null;
 	tagIds?: string[];
 };
 
@@ -25,6 +28,7 @@ export async function createTask(
 	teamAccess: TeamAccess,
 	input: CreateTaskInput,
 	tagRepository?: TagRepository,
+	sprintAccess?: SprintAccess,
 ) {
 	const externalId = input.externalId.trim();
 	const description = input.description.trim();
@@ -45,6 +49,9 @@ export async function createTask(
 	if (tagRepository && input.tagIds) {
 		await validateTagIds(tagRepository, input.tagIds);
 	}
+	if (sprintAccess && input.sprintId) {
+		await validateSprintId(sprintAccess, input.sprintId, input.teamId);
+	}
 	return repository.createWithInitialHistory({
 		externalId,
 		description,
@@ -54,6 +61,7 @@ export async function createTask(
 		status: input.status,
 		dueDate: input.dueDate,
 		parentTaskId: input.parentTaskId,
+		sprintId: input.sprintId ?? null,
 		tagIds: input.tagIds,
 	});
 }
