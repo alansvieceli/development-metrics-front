@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 const NAV_LINKS = [
 	{ href: "/board", label: "Quadro" },
 	{ href: "/metrics", label: "Métricas" },
+	{ href: "/sprints", label: "Sprints" },
 	{ href: "/task-types", label: "Tipos de task" },
 	{ href: "/tags", label: "Tarjas" },
 ] as const;
