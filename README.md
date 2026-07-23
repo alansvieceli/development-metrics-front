@@ -31,6 +31,13 @@ Frontend do projeto Development Metrics.
 - Cadastro retroativo de card: monta uma sequência de etapas (status + data)
   para reconstruir o histórico de um card já existente fora do app; a task
   nasce com `createdAt` da primeira etapa e status da última.
+- Importar card do Businessmap: busca um card pelo id, reconstrói seu
+  histórico de colunas (mapeado para os status internos via correspondência
+  fuzzy bidirecional) e resolve responsável, tipo e bloqueio automaticamente
+  quando encontra correspondência. O usuário confirma o preview antes de
+  criar a task; qualquer etapa não mapeável ou deadline ausente interrompe a
+  importação com erro. Requer `BUSINESSMAP_COMPANY_NAME` e
+  `BUSINESSMAP_API_KEY` configurados (ver "Como rodar").
 - Toda mudança de status gera histórico. Bloqueios são registrados como períodos
   com início e fim, que alimentam o cálculo das métricas.
 - Dashboard com 15 indicadores do time atual, filtros semanal, quinzenal ou
@@ -115,6 +122,18 @@ TEST_DATABASE_URL=postgresql://postgres:postgres@localhost:5432/development_metr
 ```
 
 Os testes recusam bancos cujo nome não termine em `_test`.
+
+Para a importação de card do Businessmap, adicione também (ver
+`.env.example`):
+
+```
+BUSINESSMAP_COMPANY_NAME=
+BUSINESSMAP_API_KEY=
+```
+
+`BUSINESSMAP_COMPANY_NAME` é o subdomínio da empresa em
+`https://{empresa}.kanbanize.com`; `BUSINESSMAP_API_KEY` é o token de API
+gerado em "My account" > "API" no Businessmap.
 
 Aplicar as migrações e subir o servidor:
 
