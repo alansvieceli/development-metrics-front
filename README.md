@@ -16,6 +16,10 @@ Frontend do projeto Development Metrics.
 - Cadastro dos tipos de task disponíveis para classificação dos cards. O tipo
   `Bug` não pode ser excluído, mesmo sem uso, pois é a referência usada para
   contar bugs vinculados a outras tasks.
+- Cadastro de tarjas (catálogo global de nome + cor) para marcar até 3 por
+  card. O dashboard de métricas do time filtra por até 2 tarjas simultâneas
+  (uma task aparece se tiver qualquer uma das selecionadas). Uma tarja em uso
+  não pode ser excluída.
 - Uma task pode registrar uma task de origem opcional, do mesmo time. O card
   da task de origem mostra badges separados de bugs (🐛) e de outros vínculos
   (🔗) recebidos; o card do vínculo mostra a task de origem.
