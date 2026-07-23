@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createFakeSprintRepository } from "./test-helpers/create-fake-sprint-repository";
 import { startSprint } from "./start-sprint";
+import { createFakeSprintRepository } from "./test-helpers/create-fake-sprint-repository";
 
 describe("startSprint", () => {
 	it("inicia a sprint planejada de startDate mais próxima", async () => {

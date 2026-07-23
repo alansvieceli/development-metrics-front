@@ -31,7 +31,8 @@ export function createSprintUseCases() {
 			listSprintsByPi(drizzleSprintRepository, piId),
 		listSprintsByTeam: (teamId: string) =>
 			listSprintsByTeam(drizzleSprintRepository, teamId),
-		startSprint: (teamId: string) => startSprint(drizzleSprintRepository, teamId),
+		startSprint: (teamId: string) =>
+			startSprint(drizzleSprintRepository, teamId),
 		finishSprint: (sprintId: string, teamId: string) =>
 			finishSprint(
 				drizzleSprintRepository,

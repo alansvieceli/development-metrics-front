@@ -64,9 +64,7 @@ export const sprintTaskSnapshots = pgTable(
 		statusAtFreeze: text("status_at_freeze").notNull(),
 		carriedOver: boolean("carried_over").notNull().default(false),
 	},
-	(table) => [
-		index("sprint_task_snapshots_sprint_id_idx").on(table.sprintId),
-	],
+	(table) => [index("sprint_task_snapshots_sprint_id_idx").on(table.sprintId)],
 );
 
 export const sprintMetricsSnapshots = pgTable("sprint_metrics_snapshots", {

@@ -1,10 +1,10 @@
 import { describe, expect, it } from "vitest";
 import type { MetricsQueryPort } from "@/application/metrics/ports/metrics-query-port";
 import { createFakeTaskRepository } from "@/application/task/use-cases/test-helpers/create-fake-task-repository";
+import { finishSprint } from "./finish-sprint";
 import { createFakeSprintMetricsSnapshotRepository } from "./test-helpers/create-fake-sprint-metrics-snapshot-repository";
 import { createFakeSprintRepository } from "./test-helpers/create-fake-sprint-repository";
 import { createFakeSprintTaskSnapshotRepository } from "./test-helpers/create-fake-sprint-task-snapshot-repository";
-import { finishSprint } from "./finish-sprint";
 
 const emptyMetricsQueryPort: MetricsQueryPort = {
 	async loadSnapshot() {
@@ -104,8 +104,9 @@ describe("finishSprint", () => {
 			"team-1",
 		);
 		expect(closed.status).toBe("CLOSED");
-		expect(await sprintMetricsSnapshotRepository.findBySprint(sprint.id)).not
-			.toBeNull();
+		expect(
+			await sprintMetricsSnapshotRepository.findBySprint(sprint.id),
+		).not.toBeNull();
 	});
 
 	it("transborda tasks não concluídas para a próxima sprint planejada", async () => {
@@ -159,9 +160,7 @@ describe("finishSprint", () => {
 		expect((await taskRepository.findById(pending.id))?.sprintId).toBe(
 			nextSprint.id,
 		);
-		expect((await taskRepository.findById(done.id))?.sprintId).toBe(
-			sprint.id,
-		);
+		expect((await taskRepository.findById(done.id))?.sprintId).toBe(sprint.id);
 
 		const snapshots = await sprintTaskSnapshotRepository.listBySprint(
 			sprint.id,

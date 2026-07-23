@@ -1,7 +1,10 @@
 import { ApplicationError } from "@/application/shared/application-error";
 import type { SprintRepository } from "@/application/sprint/ports/sprint-repository";
 
-export async function startSprint(repository: SprintRepository, teamId: string) {
+export async function startSprint(
+	repository: SprintRepository,
+	teamId: string,
+) {
 	const teamSprints = await repository.listByTeam(teamId);
 	if (teamSprints.some((sprint) => sprint.status === "ACTIVE")) {
 		throw new ApplicationError("Já existe uma sprint ativa para este time");

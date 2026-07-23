@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createFakeSprintTaskSnapshotRepository } from "./test-helpers/create-fake-sprint-task-snapshot-repository";
 import { getSprintHistory } from "./get-sprint-history";
+import { createFakeSprintTaskSnapshotRepository } from "./test-helpers/create-fake-sprint-task-snapshot-repository";
 
 describe("getSprintHistory", () => {
 	it("lista os snapshots de task da sprint informada", async () => {
