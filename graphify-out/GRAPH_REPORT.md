@@ -1,16 +1,16 @@
 # Graph Report - development-metrics-front  (2026-07-23)
 
 ## Corpus Check
-- 366 files · ~188,551 words
+- 390 files · ~204,100 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1573 nodes · 3247 edges · 187 communities (79 shown, 108 thin omitted)
+- 1637 nodes · 3431 edges · 187 communities (82 shown, 105 thin omitted)
 - Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.69)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f9761a47`
+- Built from commit: `7f166111`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -198,16 +198,16 @@
 - sprint.ts
 
 ## God Nodes (most connected - your core abstractions)
-1. `createTeamUseCases()` - 53 edges
-2. `createTaskUseCases()` - 39 edges
-3. `ApplicationError` - 32 edges
-4. `TaskRepository` - 29 edges
-5. `ActionState` - 25 edges
-6. `getMetricsForRange()` - 24 edges
-7. `isUuid()` - 24 edges
-8. `TeamRepository` - 24 edges
-9. `HistoricalPeriodMetrics` - 23 edges
-10. `TaskStatus` - 23 edges
+1. `createTeamUseCases()` - 55 edges
+2. `createTaskUseCases()` - 44 edges
+3. `ApplicationError` - 34 edges
+4. `TaskRepository` - 31 edges
+5. `ActionState` - 27 edges
+6. `isUuid()` - 26 edges
+7. `TeamRepository` - 26 edges
+8. `TaskStatus` - 25 edges
+9. `getMetricsForRange()` - 24 edges
+10. `HistoricalPeriodMetrics` - 23 edges
 
 ## Surprising Connections (you probably didn't know these)
 - `CI Pipeline` --implements--> `Gates de Qualidade`  [INFERRED]
@@ -231,39 +231,39 @@
 - **Quatro subprojetos do Development Metrics** — docs_superpowers_specs_2026_07_17_team_management_design_gestao_e_selecao_de_time, docs_superpowers_plans_2026_07_18_kanban_tasks_quadro_kanban_e_tasks, docs_superpowers_plans_2026_07_18_metrics_engine_motor_de_metricas, docs_superpowers_plans_2026_07_18_metrics_dashboard_dashboard_de_metricas [EXTRACTED 1.00]
 - **Pipeline do histórico de tasks para o dashboard** — docs_superpowers_plans_2026_07_18_kanban_tasks_task_history, docs_superpowers_plans_2026_07_18_metrics_engine_metrics_query_port, docs_superpowers_plans_2026_07_18_metrics_engine_period_metrics, docs_superpowers_plans_2026_07_18_metrics_dashboard_metrics_dashboard [INFERRED 0.95]
 
-## Communities (187 total, 108 thin omitted)
+## Communities (187 total, 105 thin omitted)
 
 ### Community 0 - "kanban-board.tsx"
-Cohesion: 0.16
-Nodes (21): CreateHistoricalTaskActionInput, CreateTaskInput, TasksByStatus, UpdateTaskInput, Tag, Task, TaskStatus, TaskType (+13 more)
+Cohesion: 0.12
+Nodes (30): CreateHistoricalTaskActionInput, CreateTaskInput, TasksByStatus, UpdateTaskInput, Task, TaskStatus, TaskType, Member (+22 more)
 
 ### Community 1 - "period.ts"
-Cohesion: 0.13
-Nodes (22): saveMetricsPeriodPreferenceAction(), DeveloperMetricsPage(), MetricsPage(), getFortnightRange(), getMonthRange(), getPeriodRange(), getPreviousPeriods(), getRollingRange() (+14 more)
+Cohesion: 0.10
+Nodes (29): saveMetricsPeriodPreferenceAction(), selectTeamAction(), toActionState(), DeveloperMetricsPage(), MetricsPage(), TeamsModal(), createTeamAction(), toActionState() (+21 more)
 
 ### Community 2 - "get-metrics-for-period.ts"
 Cohesion: 0.09
 Nodes (21): File Structure, Global Constraints, PIs e Sprints — Atribuição de card e visão por sprint no quadro Implementation Plan, Próximo plano (fora deste escopo), Task 10: Composition root — wiring de `sprintAccess` e `listSprintsByTeam`, Task 11: Validação de `sprintId` nas Server Actions do quadro, Task 12: Filtro puro de tasks por sprint, Task 13: Seletor de visão "Atual / Por sprint" (+13 more)
 
 ### Community 3 - "client.ts"
-Cohesion: 0.06
-Nodes (31): CreateProgramIncrementData, ProgramIncrementRepository, listProgramIncrementsByTeam(), createFakeProgramIncrementRepository(), TaskHistoryRepository, ProgramIncrement, client, db (+23 more)
+Cohesion: 0.13
+Nodes (16): client, db, createDrizzleMetricsQueryPort(), drizzleMetricsQueryPort, parentTasks, tags, taskBlockedPeriods, tasks (+8 more)
 
 ### Community 4 - "Design: Endurecimento do projeto"
 Cohesion: 0.06
 Nodes (35): 10. Erros e pending, 1. Banco exclusivo de testes, 2. CI antecipada, 3. Cookie e parâmetros UUID, 4. Datas reais, 5. Validação e escopo das mutações, 6. Task e histórico atômicos, 7. Exclusão segura de time e membro (+27 more)
 
 ### Community 5 - "createTeamUseCases"
-Cohesion: 0.05
-Nodes (59): selectTeamAction(), toActionState(), metadata, RootLayout(), TeamsModal(), ManageTeamModal(), HomePage(), createTeamAction() (+51 more)
+Cohesion: 0.10
+Nodes (25): TaskUsageQuery, setup(), createFakeExternalCardProvider(), CurrentTeamStore, TeamRepository, addMember(), createTeam(), deleteTeam() (+17 more)
 
 ### Community 6 - "actions.ts"
-Cohesion: 0.39
-Nodes (5): PeriodFilter(), PeriodFilterProps, toDateParam(), shiftReferenceDate(), WINDOW_DAYS
+Cohesion: 0.19
+Nodes (12): ageInMs(), calculateCurrentWipMetrics(), oldestAge(), NOW, CurrentWipTaskMetrics, MetricsQueryPort, getMetricsDashboard(), getMetricsDashboardForRange() (+4 more)
 
 ### Community 7 - "actions.ts"
 Cohesion: 0.13
-Nodes (18): ActionState, INITIAL_ACTION_STATE, TagWithUsage, TaskTypeWithUsage, SubmitButton(), SubmitButtonProps, ProgramIncrementFormProps, SprintFormProps (+10 more)
+Nodes (18): ActionState, INITIAL_ACTION_STATE, TagWithUsage, TaskTypeWithUsage, SubmitButton(), SubmitButtonProps, ProgramIncrementFormProps, ProgramIncrementListProps (+10 more)
 
 ### Community 8 - "compilerOptions"
 Cohesion: 0.06
@@ -282,8 +282,8 @@ Cohesion: 0.08
 Nodes (23): Contexto e objetivo, Definição de cada métrica nova ou alterada, Design: Redesenho da página de métricas (resumo em 3 blocos), Edge cases, Layout, Motor de métricas (`application/metrics`, `infrastructure/metrics`), Presentation (`presentation/metrics-dashboard`), Testes (+15 more)
 
 ### Community 12 - "flow-time-section.tsx"
-Cohesion: 0.10
-Nodes (25): DurationStats, MetricTaskEvidence, DeveloperMetricEvidence, DeveloperMetricsDashboard(), DeveloperMetricsDashboardProps, formatDurationOrEmpty(), formatPercentOrEmpty(), nullableCount() (+17 more)
+Cohesion: 0.08
+Nodes (36): CurrentWipMetrics, DurationStats, MetricTaskEvidence, DeveloperMetricEvidence, DeveloperMetricsDashboard(), DeveloperMetricsDashboardProps, formatDurationOrEmpty(), formatPercentOrEmpty() (+28 more)
 
 ### Community 13 - "biome.json"
 Cohesion: 0.08
@@ -306,20 +306,20 @@ Cohesion: 0.10
 Nodes (20): Gestão e Seleção de Time — Implementation Plan, Global Constraints, Self-Review, Task 10: Repositório Drizzle de Team, Task 11: Armazenamento do time atual em cookie, Task 12: Composition root de Team, Task 13: Tela `/teams` — seleção e criação de time, Task 14: Tela `/teams/[teamId]` — gerenciar time (+12 more)
 
 ### Community 18 - "sprint.ts"
-Cohesion: 0.33
-Nodes (6): BugRankingEntry, calculateBugsOpened(), calculateBugsRanking(), periodEnd, periodStart, BugEvent
+Cohesion: 0.28
+Nodes (8): CreateProgramIncrementData, ProgramIncrementRepository, createProgramIncrement(), createSprint(), listProgramIncrementsByTeam(), createFakeProgramIncrementRepository(), ProgramIncrement, drizzleProgramIncrementRepository
 
 ### Community 19 - "devDependencies"
-Cohesion: 0.11
-Nodes (19): @biomejs/biome, drizzle-kit, knip, devDependencies, @biomejs/biome, drizzle-kit, knip, @playwright/test (+11 more)
+Cohesion: 0.08
+Nodes (25): @biomejs/biome, drizzle-kit, knip, devDependencies, @biomejs/biome, drizzle-kit, knip, @playwright/test (+17 more)
 
 ### Community 21 - "task.ts"
 Cohesion: 0.06
-Nodes (65): createTagAction(), deleteTagAction(), getText(), runTagAction(), toActionState(), updateTagAction(), TagsPage(), createTaskTypeAction() (+57 more)
+Nodes (61): ApplicationError, matchesEitherWay(), normalizeForMatch(), parseDateOnly(), SprintAccess, finishSprint(), matchExternalStatus(), STATUS_ALIASES (+53 more)
 
 ### Community 22 - "create-task.ts"
-Cohesion: 0.32
-Nodes (5): Member, DeveloperSelector(), DeveloperSelectorProps, BoardSummary(), BoardSummaryProps
+Cohesion: 0.21
+Nodes (11): CreateSprintData, SprintRepository, emptyMetricsQueryPort, setup(), listSprintsByPi(), listSprintsByTeam(), startSprint(), createFakeSprintMetricsSnapshotRepository() (+3 more)
 
 ### Community 23 - "Guia do Projeto"
 Cohesion: 0.12
@@ -362,8 +362,8 @@ Cohesion: 0.18
 Nodes (7): TEST_DATABASE_URL, migrateDatabase(), getTestDatabaseUrl(), globalSetup(), resetDatabase(), TEST_DATABASE_URL, setup()
 
 ### Community 33 - "metrics-query-port.ts"
-Cohesion: 0.06
-Nodes (53): ageInMs(), calculateCurrentWipMetrics(), oldestAge(), NOW, calculateBlockedTime(), calculateCycleTime(), calculateCycleTimeOutliers(), calculateLeadTime() (+45 more)
+Cohesion: 0.11
+Nodes (34): calculateBugsOpened(), calculateBugsRanking(), periodEnd, periodStart, calculateBlockedTime(), calculateCycleTime(), calculateCycleTimeOutliers(), calculateLeadTime() (+26 more)
 
 ### Community 34 - "flow-composition-chart.tsx"
 Cohesion: 0.23
@@ -386,8 +386,8 @@ Cohesion: 0.18
 Nodes (10): Global Constraints, Task 1: Fundação de dados — `isBug`, `parentTaskId` e tipos, Task 2: Vínculo na criação de tasks, Task 3: Vínculo na edição de tasks, Task 4: Proteger o tipo Bug contra exclusão, Task 5: Contagem de filhos no board (`listTasksByTeam`), Task 6: Campo "Task de origem" no formulário, Task 7: Badges de bugs/vínculos e linha de origem no card (+2 more)
 
 ### Community 39 - "developer-metrics-dashboard.tsx"
-Cohesion: 0.22
-Nodes (11): CurrentWipMetrics, CycleTimeOutlier, CycleTimeOutliersList(), CycleTimeOutliersListProps, ageDetail(), CurrentStatusSection(), CurrentStatusSectionProps, wipLimitDetail() (+3 more)
+Cohesion: 0.13
+Nodes (10): ExternalCard, ExternalCardProvider, ExternalCardStep, FakeExternalCardProvider, BusinessmapCard, businessmapCardProvider, BusinessmapCardType, BusinessmapColumn (+2 more)
 
 ### Community 40 - "PIs e Sprints no quadro e nas métricas"
 Cohesion: 0.14
@@ -462,8 +462,8 @@ Cohesion: 0.25
 Nodes (7): Arquitetura, Contexto e objetivo, Design: Indicador de semana/mês no dashboard, Edge cases, Fonte de dados, Formato do rótulo, Testes
 
 ### Community 58 - "ChartCard"
-Cohesion: 0.13
-Nodes (31): createHistoricalTaskAction(), createTaskAction(), CreateTaskActionInput, deleteTaskAction(), finishSprintAction(), getCurrentTeamId(), moveTaskAction(), runTaskAction() (+23 more)
+Cohesion: 0.07
+Nodes (67): createHistoricalTaskAction(), createTaskAction(), CreateTaskActionInput, deleteTaskAction(), finishSprintAction(), getCurrentTeamId(), moveTaskAction(), runTaskAction() (+59 more)
 
 ### Community 59 - "Global Constraints"
 Cohesion: 0.33
@@ -485,65 +485,77 @@ Nodes (3): assert_invalid(), assert_valid(), commit-msg.test.sh script
 Cohesion: 0.50
 Nodes (3): name, private, version
 
+### Community 64 - "layout.tsx"
+Cohesion: 0.19
+Nodes (5): programIncrements, sprintMetricsSnapshots, sprints, drizzleSprintMetricsSnapshotRepository, drizzleSprintRepository
+
 ### Community 65 - "Design: Polimento do filtro de período, botão de info e rodapé"
 Cohesion: 0.25
 Nodes (7): 1. Badge de período sem prefixo, 2. Filtro de período sem reflow, 3. Botão de info: 2 abas + auditoria, 4. Rodapé, Contexto, Design: Polimento do filtro de período, botão de info e rodapé, Fora do escopo
+
+### Community 66 - "task-type.ts"
+Cohesion: 0.17
+Nodes (10): metadata, RootLayout(), Footer(), HeaderNav(), NAV_LINKS, ibmPlexSans, jetbrainsMono, RootShell() (+2 more)
 
 ### Community 67 - "Design: Persistência do filtro de período por time + correção de reset de formulário de task"
 Cohesion: 0.29
 Nodes (6): 1. Persistir período por time, 2. Modal "Personalizado" com hoje pré-selecionado, 3. Campos de task somem no erro — causa raiz e correção, Contexto, Design: Persistência do filtro de período por time + correção de reset de formulário de task, Fora do escopo
 
-### Community 69 - "charts-section.tsx"
+### Community 68 - "create-fake-task-history-repository.ts"
 Cohesion: 0.14
-Nodes (14): HistoricalPeriodMetrics, BugsOpenedChart(), BugsOpenedChartProps, BugsRankingList(), BugsRankingListProps, ChartCard(), ChartCardProps, ChartsSection() (+6 more)
+Nodes (13): ⚠️ Contrato real da API (confirmado via curl na execução da Task 1), Global Constraints, Importar card do Businessmap Implementation Plan, Self-Review, Task 1: Verificar o contrato real da API do Businessmap — ✅ concluída, Task 2: Util compartilhado de matching fuzzy bidirecional, Task 3: Tradutor de coluna do Businessmap para `TaskStatus`, Task 4: Port `ExternalCardProvider` + use-case `previewCardImport` (+5 more)
+
+### Community 69 - "charts-section.tsx"
+Cohesion: 0.48
+Nodes (6): confirmCardImportAction(), ConfirmCardImportInput, getCurrentTeamId(), previewCardImportAction(), PreviewCardImportResult, toActionState()
 
 ### Community 81 - "File Structure"
 Cohesion: 0.10
 Nodes (20): File Structure, Global Constraints, PIs e Sprints — Ciclo de vida da sprint (iniciar/finalizar, overflow, histórico) Implementation Plan, Próximo plano (fora deste escopo), Task 10: Composition root, Task 11: Server Actions `startSprintAction` e `finishSprintAction`, Task 12: Controle "Iniciar sprint / Finalizar sprint", Task 13: Visão histórica read-only de sprint fechada (+12 more)
 
 ### Community 181 - "metrics-dashboard.tsx"
-Cohesion: 0.20
-Nodes (12): PeriodRange, PeriodType, ThroughputChart(), ThroughputChartProps, BugsOpenedPoint, ThroughputPoint, toThroughputSeries(), formatDayMonth() (+4 more)
+Cohesion: 0.10
+Nodes (25): PeriodRange, PeriodType, HistoricalPeriodMetrics, BugsOpenedChart(), BugsOpenedChartProps, PlannedDeliveredChart(), PlannedDeliveredChartProps, ThroughputChart() (+17 more)
 
 ### Community 182 - "list-tasks-by-team.ts"
-Cohesion: 0.36
-Nodes (4): LeadCycleTimeChart(), LeadCycleTimeChartProps, DurationTrendPoint, toDurationTrendSeries()
+Cohesion: 0.14
+Nodes (13): BugRankingEntry, CycleTimeOutlier, BugsRankingList(), BugsRankingListProps, ChartCard(), ChartsSection(), ChartsSectionProps, CycleTimeOutliersList() (+5 more)
 
 ### Community 183 - "task-card.tsx"
-Cohesion: 0.22
-Nodes (11): TaskWithStatusSince, DueDateStatus, getDueDateStatus(), today, dueDateClassName(), formatDate(), formatDueDate(), formatElapsed() (+3 more)
+Cohesion: 0.40
+Nodes (4): Modal(), ModalProps, SIZE_CLASSES, RouteModal()
 
 ### Community 184 - "tag-filter.tsx"
-Cohesion: 0.29
-Nodes (7): parseStoredTagIds(), serializeTagIds(), TagFilter(), TagFilterProps, DropdownPosition, TagCombobox(), TagComboboxProps
+Cohesion: 0.23
+Nodes (10): Tag, parseStoredTagIds(), serializeTagIds(), TagFilter(), TagFilterProps, DropdownPosition, TagCombobox(), TagComboboxProps (+2 more)
 
 ### Community 185 - "task.ts"
-Cohesion: 0.36
-Nodes (5): CreateSprintTaskSnapshotData, SprintTaskSnapshotRepository, getSprintHistory(), SprintTaskSnapshot, sprintTaskSnapshots
+Cohesion: 0.24
+Nodes (6): CreateSprintTaskSnapshotData, SprintTaskSnapshotRepository, getSprintHistory(), SprintTaskSnapshot, sprintTaskSnapshots, drizzleSprintTaskSnapshotRepository
 
 ### Community 186 - "sprint.ts"
-Cohesion: 0.20
-Nodes (11): isSprintStatus(), Sprint, SPRINT_STATUSES, SprintStatus, defaultSprintId(), MetricsSprintFilter(), MetricsSprintFilterProps, SprintBoardFilter() (+3 more)
+Cohesion: 0.19
+Nodes (11): isSprintStatus(), Sprint, SPRINT_STATUSES, defaultSprintId(), MetricsSprintFilter(), MetricsSprintFilterProps, SprintBoardFilter(), SprintBoardFilterProps (+3 more)
 
 ## Knowledge Gaps
-- **699 isolated node(s):** `$schema`, `enabled`, `clientKind`, `useIgnoreFile`, `ignoreUnknown` (+694 more)
+- **720 isolated node(s):** `$schema`, `enabled`, `clientKind`, `useIgnoreFile`, `ignoreUnknown` (+715 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **108 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **105 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `createTeamUseCases()` connect `createTeamUseCases` to `period.ts`, `ChartCard`, `task.ts`?**
-  _High betweenness centrality (0.022) - this node is a cross-community bridge._
+- **Why does `createTeamUseCases()` connect `ChartCard` to `period.ts`, `task-type.ts`, `createTeamUseCases`, `charts-section.tsx`?**
+  _High betweenness centrality (0.027) - this node is a cross-community bridge._
 - **Why does `dependencies` connect `dependencies` to `package.json`?**
   _High betweenness centrality (0.020) - this node is a cross-community bridge._
-- **Why does `devDependencies` connect `devDependencies` to `layout.tsx`, `task-type.ts`, `create-fake-task-history-repository.ts`, `package.json`?**
-  _High betweenness centrality (0.013) - this node is a cross-community bridge._
+- **Why does `ApplicationError` connect `task.ts` to `period.ts`, `client.ts`, `charts-section.tsx`, `actions.ts`, `createTeamUseCases`, `sprint.ts`, `create-task.ts`, `ChartCard`?**
+  _High betweenness centrality (0.015) - this node is a cross-community bridge._
 - **What connects `$schema`, `enabled`, `clientKind` to the rest of the system?**
-  _724 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _745 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `kanban-board.tsx` be split into smaller, more focused modules?**
+  _Cohesion score 0.11962833914053426 - nodes in this community are weakly interconnected._
 - **Should `period.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.13445378151260504 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.09898989898989899 - nodes in this community are weakly interconnected._
 - **Should `get-metrics-for-period.ts` be split into smaller, more focused modules?**
   _Cohesion score 0.09090909090909091 - nodes in this community are weakly interconnected._
-- **Should `client.ts` be split into smaller, more focused modules?**
-  _Cohesion score 0.06450617283950617 - nodes in this community are weakly interconnected._
