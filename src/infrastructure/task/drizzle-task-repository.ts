@@ -1,4 +1,4 @@
-import { and, desc, eq, isNull, sql } from "drizzle-orm";
+import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
 import { ApplicationError } from "@/application/shared/application-error";
 import type {
 	CreateTaskData,
@@ -21,21 +21,28 @@ function toTask(row: typeof tasks.$inferSelect): Task {
 export const drizzleTaskRepository: TaskRepository = {
 	async createWithInitialHistory(data: CreateTaskData) {
 		return db.transaction(async (tx) => {
-			const [row] = await tx.insert(tasks).values(data).returning();
+			const { tagIds, ...taskData } = data;
+			const [row] = await tx.insert(tasks).values(taskData).returning();
 			await tx.insert(taskStatusChanges).values({
 				taskId: row.id,
 				fromStatus: null,
 				toStatus: data.status,
 			});
+			if (tagIds && tagIds.length > 0) {
+				await tx
+					.insert(taskTags)
+					.values(tagIds.map((tagId) => ({ taskId: row.id, tagId })));
+			}
 			return toTask(row);
 		});
 	},
 	async createWithExplicitHistory(data, history) {
 		return db.transaction(async (tx) => {
+			const { tagIds, ...taskData } = data;
 			const [row] = await tx
 				.insert(tasks)
 				.values({
-					...data,
+					...taskData,
 					status: history[0].status,
 					createdAt: history[0].changedAt,
 				})
@@ -49,6 +56,11 @@ export const drizzleTaskRepository: TaskRepository = {
 					changedAt: step.changedAt,
 				});
 				fromStatus = step.status;
+			}
+			if (tagIds && tagIds.length > 0) {
+				await tx
+					.insert(taskTags)
+					.values(tagIds.map((tagId) => ({ taskId: row.id, tagId })));
 			}
 			const [finalRow] = await tx
 				.update(tasks)
@@ -126,15 +138,26 @@ export const drizzleTaskRepository: TaskRepository = {
 		});
 	},
 	async update(taskId: string, data: UpdateTaskData) {
-		const [row] = await db
-			.update(tasks)
-			.set(data)
-			.where(eq(tasks.id, taskId))
-			.returning();
-		if (!row) {
-			throw new Error("Task não encontrada");
-		}
-		return toTask(row);
+		const { tagIds, ...taskData } = data;
+		return db.transaction(async (tx) => {
+			const [row] = await tx
+				.update(tasks)
+				.set(taskData)
+				.where(eq(tasks.id, taskId))
+				.returning();
+			if (!row) {
+				throw new Error("Task não encontrada");
+			}
+			if (tagIds) {
+				await tx.delete(taskTags).where(eq(taskTags.taskId, taskId));
+				if (tagIds.length > 0) {
+					await tx
+						.insert(taskTags)
+						.values(tagIds.map((tagId) => ({ taskId, tagId })));
+				}
+			}
+			return toTask(row);
+		});
 	},
 	async delete(taskId: string) {
 		await db.delete(tasks).where(eq(tasks.id, taskId));
@@ -193,5 +216,16 @@ export const drizzleTaskRepository: TaskRepository = {
 			.selectDistinct({ tagId: taskTags.tagId })
 			.from(taskTags);
 		return rows.map((row) => row.tagId);
+	},
+	async listTagIdsForTasks(taskIds: string[]) {
+		if (taskIds.length === 0) return {};
+		const rows = await db
+			.select({ taskId: taskTags.taskId, tagId: taskTags.tagId })
+			.from(taskTags)
+			.where(inArray(taskTags.taskId, taskIds));
+		const result: Record<string, string[]> = {};
+		for (const taskId of taskIds) result[taskId] = [];
+		for (const row of rows) result[row.taskId].push(row.tagId);
+		return result;
 	},
 };

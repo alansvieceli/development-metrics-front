@@ -340,4 +340,68 @@ describe("drizzleTaskRepository", () => {
 			await drizzleTagRepository.delete(tag.id);
 		}
 	});
+
+	it("grava as tarjas informadas ao criar a task", async () => {
+		const tag = await drizzleTagRepository.create("Cliente Acme", "#2563eb");
+		const task = await drizzleTaskRepository.createWithInitialHistory(
+			baseData({ tagIds: [tag.id] }),
+		);
+		try {
+			expect(
+				await drizzleTaskRepository.listTagIdsForTasks([task.id]),
+			).toEqual({ [task.id]: [tag.id] });
+		} finally {
+			await resetTasksTable();
+			await drizzleTagRepository.delete(tag.id);
+		}
+	});
+
+	it("substitui as tarjas ao atualizar a task", async () => {
+		const tagA = await drizzleTagRepository.create("A", "#2563eb");
+		const tagB = await drizzleTagRepository.create("B", "#dc2626");
+		const task = await drizzleTaskRepository.createWithInitialHistory(
+			baseData({ tagIds: [tagA.id] }),
+		);
+		try {
+			await drizzleTaskRepository.update(task.id, {
+				externalId: task.externalId,
+				description: task.description,
+				typeId: task.typeId,
+				assigneeId: task.assigneeId,
+				dueDate: task.dueDate,
+				parentTaskId: task.parentTaskId,
+				tagIds: [tagB.id],
+			});
+			expect(
+				await drizzleTaskRepository.listTagIdsForTasks([task.id]),
+			).toEqual({ [task.id]: [tagB.id] });
+		} finally {
+			await resetTasksTable();
+			await drizzleTagRepository.delete(tagA.id);
+			await drizzleTagRepository.delete(tagB.id);
+		}
+	});
+
+	it("mantém as tarjas quando a atualização não informa tagIds", async () => {
+		const tag = await drizzleTagRepository.create("Cliente Acme", "#2563eb");
+		const task = await drizzleTaskRepository.createWithInitialHistory(
+			baseData({ tagIds: [tag.id] }),
+		);
+		try {
+			await drizzleTaskRepository.update(task.id, {
+				externalId: task.externalId,
+				description: "Descrição atualizada",
+				typeId: task.typeId,
+				assigneeId: task.assigneeId,
+				dueDate: task.dueDate,
+				parentTaskId: task.parentTaskId,
+			});
+			expect(
+				await drizzleTaskRepository.listTagIdsForTasks([task.id]),
+			).toEqual({ [task.id]: [tag.id] });
+		} finally {
+			await resetTasksTable();
+			await drizzleTagRepository.delete(tag.id);
+		}
+	});
 });
