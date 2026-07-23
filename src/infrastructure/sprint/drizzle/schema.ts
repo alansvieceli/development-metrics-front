@@ -1,5 +1,14 @@
 import { sql } from "drizzle-orm";
-import { check, date, index, pgTable, text, uuid } from "drizzle-orm/pg-core";
+import {
+	boolean,
+	check,
+	date,
+	index,
+	jsonb,
+	pgTable,
+	text,
+	uuid,
+} from "drizzle-orm/pg-core";
 
 export const programIncrements = pgTable(
 	"program_increments",
@@ -37,3 +46,32 @@ export const sprints = pgTable(
 		index("sprints_team_id_status_idx").on(table.teamId, table.status),
 	],
 );
+
+export const sprintTaskSnapshots = pgTable(
+	"sprint_task_snapshots",
+	{
+		id: uuid("id").defaultRandom().primaryKey(),
+		sprintId: uuid("sprint_id")
+			.notNull()
+			.references(() => sprints.id, { onDelete: "cascade" }),
+		// taskId e typeId sem FK: referências ao contexto `task`, que não se
+		// acopla a `sprint` a nível de schema (mesmo padrão de tasks.team_id).
+		taskId: uuid("task_id").notNull(),
+		externalId: text("external_id").notNull(),
+		description: text("description").notNull(),
+		typeId: uuid("type_id").notNull(),
+		assigneeId: uuid("assignee_id"),
+		statusAtFreeze: text("status_at_freeze").notNull(),
+		carriedOver: boolean("carried_over").notNull().default(false),
+	},
+	(table) => [
+		index("sprint_task_snapshots_sprint_id_idx").on(table.sprintId),
+	],
+);
+
+export const sprintMetricsSnapshots = pgTable("sprint_metrics_snapshots", {
+	sprintId: uuid("sprint_id")
+		.primaryKey()
+		.references(() => sprints.id, { onDelete: "cascade" }),
+	metrics: jsonb("metrics").notNull(),
+});
