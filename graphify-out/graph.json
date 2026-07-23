@@ -1498,7 +1498,7 @@
       "label": "MetricsPage()",
       "file_type": "code",
       "source_file": "src/app/metrics/page.tsx",
-      "source_location": "L13",
+      "source_location": "L14",
       "_origin": "ast",
       "id": "src_app_metrics_page_metricspage",
       "community": 1,
@@ -1531,7 +1531,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_app_sprints_actions",
-      "community": 18,
+      "community": 58,
       "norm_label": "actions.ts"
     },
     {
@@ -1541,7 +1541,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_app_sprints_actions_toactionstate",
-      "community": 18,
+      "community": 58,
       "norm_label": "toactionstate()"
     },
     {
@@ -1551,7 +1551,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_app_sprints_actions_runsprintaction",
-      "community": 18,
+      "community": 58,
       "norm_label": "runsprintaction()"
     },
     {
@@ -1561,7 +1561,7 @@
       "source_location": "L26",
       "_origin": "ast",
       "id": "src_app_sprints_actions_gettext",
-      "community": 18,
+      "community": 58,
       "norm_label": "gettext()"
     },
     {
@@ -1571,7 +1571,7 @@
       "source_location": "L32",
       "_origin": "ast",
       "id": "src_app_sprints_actions_getcurrentteamid",
-      "community": 18,
+      "community": 58,
       "norm_label": "getcurrentteamid()"
     },
     {
@@ -1581,7 +1581,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_app_sprints_actions_createprogramincrementaction",
-      "community": 18,
+      "community": 58,
       "norm_label": "createprogramincrementaction()"
     },
     {
@@ -1591,7 +1591,7 @@
       "source_location": "L53",
       "_origin": "ast",
       "id": "src_app_sprints_actions_createsprintaction",
-      "community": 18,
+      "community": 58,
       "norm_label": "createsprintaction()"
     },
     {
@@ -1601,7 +1601,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_app_sprints_page",
-      "community": 18,
+      "community": 58,
       "norm_label": "page.tsx"
     },
     {
@@ -1611,7 +1611,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_app_sprints_page_sprintspage",
-      "community": 18,
+      "community": 58,
       "norm_label": "sprintspage()"
     },
     {
@@ -1981,7 +1981,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_metrics_formulas_bug_metrics_test",
-      "community": 33,
+      "community": 18,
       "norm_label": "bug-metrics.test.ts"
     },
     {
@@ -1991,7 +1991,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_application_metrics_formulas_bug_metrics_test_bugevent",
-      "community": 33,
+      "community": 18,
       "norm_label": "bugevent()"
     },
     {
@@ -2001,7 +2001,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_application_metrics_formulas_bug_metrics_test_periodstart",
-      "community": 33,
+      "community": 18,
       "norm_label": "periodstart"
     },
     {
@@ -2011,7 +2011,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_application_metrics_formulas_bug_metrics_test_periodend",
-      "community": 33,
+      "community": 18,
       "norm_label": "periodend"
     },
     {
@@ -2021,7 +2021,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_metrics_formulas_bug_metrics",
-      "community": 33,
+      "community": 18,
       "norm_label": "bug-metrics.ts"
     },
     {
@@ -2031,7 +2031,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_application_metrics_formulas_bug_metrics_bugrankingentry",
-      "community": 33,
+      "community": 18,
       "norm_label": "bugrankingentry"
     },
     {
@@ -2041,7 +2041,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_application_metrics_formulas_bug_metrics_calculatebugsopened",
-      "community": 33,
+      "community": 18,
       "norm_label": "calculatebugsopened()"
     },
     {
@@ -2051,7 +2051,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_application_metrics_formulas_bug_metrics_calculatebugsranking",
-      "community": 33,
+      "community": 18,
       "norm_label": "calculatebugsranking()"
     },
     {
@@ -2091,7 +2091,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_application_metrics_formulas_current_wip_metrics_currentwipmetrics",
-      "community": 12,
+      "community": 39,
       "norm_label": "currentwipmetrics"
     },
     {
@@ -2211,7 +2211,7 @@
       "source_location": "L61",
       "_origin": "ast",
       "id": "src_application_metrics_formulas_duration_metrics_cycletimeoutlier",
-      "community": 69,
+      "community": 39,
       "norm_label": "cycletimeoutlier"
     },
     {
@@ -2371,7 +2371,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_metrics_period_test",
-      "community": 22,
+      "community": 1,
       "norm_label": "period.test.ts"
     },
     {
@@ -2381,7 +2381,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_metrics_period",
-      "community": 22,
+      "community": 181,
       "norm_label": "period.ts"
     },
     {
@@ -2391,7 +2391,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_metrics_period_periodtype",
-      "community": 16,
+      "community": 181,
       "norm_label": "periodtype"
     },
     {
@@ -2401,7 +2401,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_application_metrics_period_periodrange",
-      "community": 22,
+      "community": 181,
       "norm_label": "periodrange"
     },
     {
@@ -2411,7 +2411,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_application_metrics_period_getperiodrange",
-      "community": 22,
+      "community": 1,
       "norm_label": "getperiodrange()"
     },
     {
@@ -2421,7 +2421,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_application_metrics_period_getpreviousperiods",
-      "community": 22,
+      "community": 1,
       "norm_label": "getpreviousperiods()"
     },
     {
@@ -2431,7 +2431,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_application_metrics_period_getrollingrange",
-      "community": 22,
+      "community": 1,
       "norm_label": "getrollingrange()"
     },
     {
@@ -2441,7 +2441,7 @@
       "source_location": "L47",
       "_origin": "ast",
       "id": "src_application_metrics_period_getweekrange",
-      "community": 22,
+      "community": 1,
       "norm_label": "getweekrange()"
     },
     {
@@ -2451,7 +2451,7 @@
       "source_location": "L51",
       "_origin": "ast",
       "id": "src_application_metrics_period_getfortnightrange",
-      "community": 22,
+      "community": 1,
       "norm_label": "getfortnightrange()"
     },
     {
@@ -2461,7 +2461,7 @@
       "source_location": "L55",
       "_origin": "ast",
       "id": "src_application_metrics_period_getmonthrange",
-      "community": 22,
+      "community": 1,
       "norm_label": "getmonthrange()"
     },
     {
@@ -2581,7 +2581,7 @@
       "source_location": "L54",
       "_origin": "ast",
       "id": "src_application_metrics_ports_metrics_query_port_bugevent",
-      "community": 33,
+      "community": 18,
       "norm_label": "bugevent"
     },
     {
@@ -2641,7 +2641,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_application_metrics_use_cases_get_developer_metrics_developermetricevidence",
-      "community": 39,
+      "community": 12,
       "norm_label": "developermetricevidence"
     },
     {
@@ -2771,7 +2771,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_metrics_use_cases_get_metrics_for_period",
-      "community": 33,
+      "community": 18,
       "norm_label": "get-metrics-for-period.ts"
     },
     {
@@ -2791,7 +2791,7 @@
       "source_location": "L52",
       "_origin": "ast",
       "id": "src_application_metrics_use_cases_get_metrics_for_period_historicalperiodmetrics",
-      "community": 16,
+      "community": 69,
       "norm_label": "historicalperiodmetrics"
     },
     {
@@ -2813,6 +2813,56 @@
       "id": "src_application_metrics_use_cases_get_metrics_for_period_getmetricsforrange",
       "community": 33,
       "norm_label": "getmetricsforrange()"
+    },
+    {
+      "label": "get-metrics-for-sprint.test.ts",
+      "file_type": "code",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.test.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_application_metrics_use_cases_get_metrics_for_sprint_test",
+      "community": 33,
+      "norm_label": "get-metrics-for-sprint.test.ts"
+    },
+    {
+      "label": "emptyMetricsQueryPort",
+      "file_type": "code",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.test.ts",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "src_application_metrics_use_cases_get_metrics_for_sprint_test_emptymetricsqueryport",
+      "community": 33,
+      "norm_label": "emptymetricsqueryport"
+    },
+    {
+      "label": "loadSnapshot()",
+      "file_type": "code",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.test.ts",
+      "source_location": "L75",
+      "_origin": "ast",
+      "id": "src_application_metrics_use_cases_get_metrics_for_sprint_test_loadsnapshot",
+      "community": 33,
+      "norm_label": "loadsnapshot()"
+    },
+    {
+      "label": "get-metrics-for-sprint.ts",
+      "file_type": "code",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "community": 33,
+      "norm_label": "get-metrics-for-sprint.ts"
+    },
+    {
+      "label": "getMetricsForSprint()",
+      "file_type": "code",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L10",
+      "_origin": "ast",
+      "id": "src_application_metrics_use_cases_get_metrics_for_sprint_getmetricsforsprint",
+      "community": 33,
+      "norm_label": "getmetricsforsprint()"
     },
     {
       "label": "metrics-period-preference.ts",
@@ -2901,7 +2951,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_shared_validation_test",
-      "community": 21,
+      "community": 5,
       "norm_label": "validation.test.ts"
     },
     {
@@ -2911,7 +2961,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_shared_validation",
-      "community": 21,
+      "community": 5,
       "norm_label": "validation.ts"
     },
     {
@@ -2961,7 +3011,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_ports_program_increment_repository",
-      "community": 18,
+      "community": 3,
       "norm_label": "program-increment-repository.ts"
     },
     {
@@ -2971,7 +3021,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_application_sprint_ports_program_increment_repository_createprogramincrementdata",
-      "community": 18,
+      "community": 3,
       "norm_label": "createprogramincrementdata"
     },
     {
@@ -2981,7 +3031,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_application_sprint_ports_program_increment_repository_programincrementrepository",
-      "community": 18,
+      "community": 3,
       "norm_label": "programincrementrepository"
     },
     {
@@ -2991,7 +3041,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_ports_sprint_metrics_snapshot_repository",
-      "community": 18,
+      "community": 33,
       "norm_label": "sprint-metrics-snapshot-repository.ts"
     },
     {
@@ -3001,7 +3051,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_application_sprint_ports_sprint_metrics_snapshot_repository_sprintmetricssnapshotrepository",
-      "community": 18,
+      "community": 33,
       "norm_label": "sprintmetricssnapshotrepository"
     },
     {
@@ -3011,7 +3061,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_ports_sprint_repository",
-      "community": 18,
+      "community": 33,
       "norm_label": "sprint-repository.ts"
     },
     {
@@ -3021,7 +3071,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_application_sprint_ports_sprint_repository_createsprintdata",
-      "community": 18,
+      "community": 33,
       "norm_label": "createsprintdata"
     },
     {
@@ -3031,7 +3081,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_application_sprint_ports_sprint_repository_sprintrepository",
-      "community": 18,
+      "community": 33,
       "norm_label": "sprintrepository"
     },
     {
@@ -3071,7 +3121,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_create_program_increment_test",
-      "community": 18,
+      "community": 21,
       "norm_label": "create-program-increment.test.ts"
     },
     {
@@ -3081,7 +3131,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_create_program_increment",
-      "community": 18,
+      "community": 21,
       "norm_label": "create-program-increment.ts"
     },
     {
@@ -3091,7 +3141,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_create_program_increment_createprogramincrement",
-      "community": 18,
+      "community": 21,
       "norm_label": "createprogramincrement()"
     },
     {
@@ -3101,7 +3151,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_create_sprint_test",
-      "community": 18,
+      "community": 33,
       "norm_label": "create-sprint.test.ts"
     },
     {
@@ -3111,7 +3161,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_create_sprint_test_seedpi",
-      "community": 18,
+      "community": 33,
       "norm_label": "seedpi()"
     },
     {
@@ -3121,7 +3171,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_create_sprint",
-      "community": 18,
+      "community": 33,
       "norm_label": "create-sprint.ts"
     },
     {
@@ -3131,7 +3181,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_create_sprint_createsprint",
-      "community": 18,
+      "community": 33,
       "norm_label": "createsprint()"
     },
     {
@@ -3141,7 +3191,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_finish_sprint_test",
-      "community": 18,
+      "community": 33,
       "norm_label": "finish-sprint.test.ts"
     },
     {
@@ -3151,7 +3201,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_finish_sprint_test_emptymetricsqueryport",
-      "community": 18,
+      "community": 33,
       "norm_label": "emptymetricsqueryport"
     },
     {
@@ -3161,7 +3211,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_finish_sprint_test_setup",
-      "community": 18,
+      "community": 33,
       "norm_label": "setup()"
     },
     {
@@ -3171,7 +3221,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_finish_sprint",
-      "community": 21,
+      "community": 33,
       "norm_label": "finish-sprint.ts"
     },
     {
@@ -3181,7 +3231,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_finish_sprint_finishsprint",
-      "community": 18,
+      "community": 33,
       "norm_label": "finishsprint()"
     },
     {
@@ -3191,7 +3241,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_get_sprint_history_test",
-      "community": 18,
+      "community": 185,
       "norm_label": "get-sprint-history.test.ts"
     },
     {
@@ -3201,7 +3251,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_get_sprint_history",
-      "community": 18,
+      "community": 185,
       "norm_label": "get-sprint-history.ts"
     },
     {
@@ -3211,7 +3261,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_get_sprint_history_getsprinthistory",
-      "community": 18,
+      "community": 185,
       "norm_label": "getsprinthistory()"
     },
     {
@@ -3221,7 +3271,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_list_program_increments_by_team_test",
-      "community": 18,
+      "community": 3,
       "norm_label": "list-program-increments-by-team.test.ts"
     },
     {
@@ -3231,7 +3281,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_list_program_increments_by_team",
-      "community": 18,
+      "community": 3,
       "norm_label": "list-program-increments-by-team.ts"
     },
     {
@@ -3241,7 +3291,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_list_program_increments_by_team_listprogramincrementsbyteam",
-      "community": 18,
+      "community": 3,
       "norm_label": "listprogramincrementsbyteam()"
     },
     {
@@ -3251,7 +3301,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_list_sprints_by_pi_test",
-      "community": 18,
+      "community": 33,
       "norm_label": "list-sprints-by-pi.test.ts"
     },
     {
@@ -3261,7 +3311,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_list_sprints_by_pi",
-      "community": 18,
+      "community": 33,
       "norm_label": "list-sprints-by-pi.ts"
     },
     {
@@ -3271,7 +3321,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_list_sprints_by_pi_listsprintsbypi",
-      "community": 18,
+      "community": 33,
       "norm_label": "listsprintsbypi()"
     },
     {
@@ -3281,7 +3331,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_list_sprints_by_team_test",
-      "community": 18,
+      "community": 33,
       "norm_label": "list-sprints-by-team.test.ts"
     },
     {
@@ -3291,7 +3341,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_list_sprints_by_team",
-      "community": 18,
+      "community": 33,
       "norm_label": "list-sprints-by-team.ts"
     },
     {
@@ -3301,7 +3351,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_list_sprints_by_team_listsprintsbyteam",
-      "community": 18,
+      "community": 33,
       "norm_label": "listsprintsbyteam()"
     },
     {
@@ -3311,7 +3361,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_start_sprint_test",
-      "community": 18,
+      "community": 33,
       "norm_label": "start-sprint.test.ts"
     },
     {
@@ -3321,7 +3371,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_start_sprint",
-      "community": 18,
+      "community": 33,
       "norm_label": "start-sprint.ts"
     },
     {
@@ -3331,7 +3381,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_start_sprint_startsprint",
-      "community": 18,
+      "community": 33,
       "norm_label": "startsprint()"
     },
     {
@@ -3341,7 +3391,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_test_helpers_create_fake_program_increment_repository",
-      "community": 18,
+      "community": 3,
       "norm_label": "create-fake-program-increment-repository.ts"
     },
     {
@@ -3351,7 +3401,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_test_helpers_create_fake_program_increment_repository_createfakeprogramincrementrepository",
-      "community": 18,
+      "community": 3,
       "norm_label": "createfakeprogramincrementrepository()"
     },
     {
@@ -3361,7 +3411,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_test_helpers_create_fake_sprint_metrics_snapshot_repository",
-      "community": 18,
+      "community": 33,
       "norm_label": "create-fake-sprint-metrics-snapshot-repository.ts"
     },
     {
@@ -3371,7 +3421,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_test_helpers_create_fake_sprint_metrics_snapshot_repository_createfakesprintmetricssnapshotrepository",
-      "community": 18,
+      "community": 33,
       "norm_label": "createfakesprintmetricssnapshotrepository()"
     },
     {
@@ -3381,7 +3431,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_test_helpers_create_fake_sprint_repository",
-      "community": 18,
+      "community": 33,
       "norm_label": "create-fake-sprint-repository.ts"
     },
     {
@@ -3391,7 +3441,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_test_helpers_create_fake_sprint_repository_createfakesprintrepository",
-      "community": 18,
+      "community": 33,
       "norm_label": "createfakesprintrepository()"
     },
     {
@@ -3411,7 +3461,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_application_sprint_use_cases_test_helpers_create_fake_sprint_task_snapshot_repository_createfakesprinttasksnapshotrepository",
-      "community": 18,
+      "community": 33,
       "norm_label": "createfakesprinttasksnapshotrepository()"
     },
     {
@@ -3461,7 +3511,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_task_ports_task_history_repository",
-      "community": 182,
+      "community": 3,
       "norm_label": "task-history-repository.ts"
     },
     {
@@ -3471,7 +3521,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_task_ports_task_history_repository_taskhistoryrepository",
-      "community": 182,
+      "community": 3,
       "norm_label": "taskhistoryrepository"
     },
     {
@@ -3701,7 +3751,7 @@
       "source_location": "L12",
       "_origin": "ast",
       "id": "src_application_task_use_cases_create_task_createtaskinput",
-      "community": 21,
+      "community": 0,
       "norm_label": "createtaskinput"
     },
     {
@@ -3911,7 +3961,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_task_use_cases_list_tasks_by_team",
-      "community": 182,
+      "community": 0,
       "norm_label": "list-tasks-by-team.ts"
     },
     {
@@ -3921,7 +3971,7 @@
       "source_location": "L8",
       "_origin": "ast",
       "id": "src_application_task_use_cases_list_tasks_by_team_taskwithstatussince",
-      "community": 182,
+      "community": 183,
       "norm_label": "taskwithstatussince"
     },
     {
@@ -4011,7 +4061,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_application_task_use_cases_test_helpers_create_fake_task_history_repository",
-      "community": 182,
+      "community": 21,
       "norm_label": "create-fake-task-history-repository.ts"
     },
     {
@@ -4021,7 +4071,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_application_task_use_cases_test_helpers_create_fake_task_history_repository_faketaskhistoryrepository",
-      "community": 182,
+      "community": 21,
       "norm_label": "faketaskhistoryrepository"
     },
     {
@@ -4828,7 +4878,7 @@
       "label": "createMetricsUseCases()",
       "file_type": "code",
       "source_file": "src/composition/metrics.ts",
-      "source_location": "L15",
+      "source_location": "L18",
       "_origin": "ast",
       "id": "src_composition_metrics_createmetricsusecases",
       "community": 1,
@@ -4841,7 +4891,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_composition_sprint",
-      "community": 18,
+      "community": 3,
       "norm_label": "sprint.ts"
     },
     {
@@ -4851,7 +4901,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_composition_sprint_createsprintusecases",
-      "community": 18,
+      "community": 58,
       "norm_label": "createsprintusecases()"
     },
     {
@@ -4901,7 +4951,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_domain_sprint_entities_program_increment",
-      "community": 18,
+      "community": 3,
       "norm_label": "program-increment.ts"
     },
     {
@@ -4911,7 +4961,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_domain_sprint_entities_program_increment_programincrement",
-      "community": 18,
+      "community": 3,
       "norm_label": "programincrement"
     },
     {
@@ -4971,7 +5021,7 @@
       "source_location": "L2",
       "_origin": "ast",
       "id": "src_domain_sprint_entities_sprint_sprintstatus",
-      "community": 3,
+      "community": 186,
       "norm_label": "sprintstatus"
     },
     {
@@ -5041,7 +5091,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_domain_task_entities_task_status_change",
-      "community": 182,
+      "community": 21,
       "norm_label": "task-status-change.ts"
     },
     {
@@ -5051,7 +5101,7 @@
       "source_location": "L3",
       "_origin": "ast",
       "id": "src_domain_task_entities_task_status_change_taskstatuschange",
-      "community": 182,
+      "community": 21,
       "norm_label": "taskstatuschange"
     },
     {
@@ -5061,7 +5111,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_domain_task_entities_task_type",
-      "community": 21,
+      "community": 0,
       "norm_label": "task-type.ts"
     },
     {
@@ -5071,7 +5121,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_domain_task_entities_task_type_tasktype",
-      "community": 21,
+      "community": 0,
       "norm_label": "tasktype"
     },
     {
@@ -5101,7 +5151,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_domain_task_entities_task",
-      "community": 185,
+      "community": 0,
       "norm_label": "task.ts"
     },
     {
@@ -5121,7 +5171,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_domain_task_entities_task_taskstatus",
-      "community": 185,
+      "community": 0,
       "norm_label": "taskstatus"
     },
     {
@@ -5141,7 +5191,7 @@
       "source_location": "L13",
       "_origin": "ast",
       "id": "src_domain_task_entities_task_task",
-      "community": 182,
+      "community": 0,
       "norm_label": "task"
     },
     {
@@ -5151,7 +5201,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_domain_team_entities_member",
-      "community": 0,
+      "community": 22,
       "norm_label": "member.ts"
     },
     {
@@ -5161,7 +5211,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_domain_team_entities_member_member",
-      "community": 0,
+      "community": 22,
       "norm_label": "member"
     },
     {
@@ -5391,7 +5441,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_infrastructure_sprint_drizzle_program_increment_repository",
-      "community": 18,
+      "community": 3,
       "norm_label": "drizzle-program-increment-repository.ts"
     },
     {
@@ -5611,7 +5661,7 @@
       "source_location": "L50",
       "_origin": "ast",
       "id": "src_infrastructure_sprint_drizzle_schema_sprinttasksnapshots",
-      "community": 3,
+      "community": 185,
       "norm_label": "sprinttasksnapshots"
     },
     {
@@ -5991,7 +6041,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_developer_metrics_developer_metrics_dashboard",
-      "community": 39,
+      "community": 12,
       "norm_label": "developer-metrics-dashboard.tsx"
     },
     {
@@ -6001,7 +6051,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_presentation_developer_metrics_developer_metrics_dashboard_developermetricsdashboardprops",
-      "community": 39,
+      "community": 12,
       "norm_label": "developermetricsdashboardprops"
     },
     {
@@ -6011,7 +6061,7 @@
       "source_location": "L34",
       "_origin": "ast",
       "id": "src_presentation_developer_metrics_developer_metrics_dashboard_formatdurationorempty",
-      "community": 39,
+      "community": 12,
       "norm_label": "formatdurationorempty()"
     },
     {
@@ -6021,7 +6071,7 @@
       "source_location": "L36",
       "_origin": "ast",
       "id": "src_presentation_developer_metrics_developer_metrics_dashboard_formatpercentorempty",
-      "community": 39,
+      "community": 12,
       "norm_label": "formatpercentorempty()"
     },
     {
@@ -6031,7 +6081,7 @@
       "source_location": "L38",
       "_origin": "ast",
       "id": "src_presentation_developer_metrics_developer_metrics_dashboard_nullablecount",
-      "community": 39,
+      "community": 12,
       "norm_label": "nullablecount()"
     },
     {
@@ -6041,7 +6091,7 @@
       "source_location": "L41",
       "_origin": "ast",
       "id": "src_presentation_developer_metrics_developer_metrics_dashboard_metricsection",
-      "community": 39,
+      "community": 12,
       "norm_label": "metricsection()"
     },
     {
@@ -6051,7 +6101,7 @@
       "source_location": "L56",
       "_origin": "ast",
       "id": "src_presentation_developer_metrics_developer_metrics_dashboard_developermetricsdashboard",
-      "community": 39,
+      "community": 12,
       "norm_label": "developermetricsdashboard()"
     },
     {
@@ -6061,7 +6111,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_developer_metrics_developer_selector",
-      "community": 39,
+      "community": 22,
       "norm_label": "developer-selector.tsx"
     },
     {
@@ -6071,7 +6121,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_presentation_developer_metrics_developer_selector_developerselectorprops",
-      "community": 39,
+      "community": 22,
       "norm_label": "developerselectorprops"
     },
     {
@@ -6081,7 +6131,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_presentation_developer_metrics_developer_selector_developerselector",
-      "community": 39,
+      "community": 22,
       "norm_label": "developerselector()"
     },
     {
@@ -6251,7 +6301,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_cycle_time_outliers_list",
-      "community": 69,
+      "community": 39,
       "norm_label": "cycle-time-outliers-list.tsx"
     },
     {
@@ -6261,7 +6311,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_cycle_time_outliers_list_cycletimeoutlierslistprops",
-      "community": 69,
+      "community": 39,
       "norm_label": "cycletimeoutlierslistprops"
     },
     {
@@ -6271,7 +6321,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_cycle_time_outliers_list_cycletimeoutlierslist",
-      "community": 69,
+      "community": 39,
       "norm_label": "cycletimeoutlierslist()"
     },
     {
@@ -6321,7 +6371,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_lead_cycle_time_chart",
-      "community": 69,
+      "community": 182,
       "norm_label": "lead-cycle-time-chart.tsx"
     },
     {
@@ -6331,7 +6381,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_lead_cycle_time_chart_leadcycletimechartprops",
-      "community": 69,
+      "community": 182,
       "norm_label": "leadcycletimechartprops"
     },
     {
@@ -6341,7 +6391,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_lead_cycle_time_chart_leadcycletimechart",
-      "community": 69,
+      "community": 182,
       "norm_label": "leadcycletimechart()"
     },
     {
@@ -6351,7 +6401,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_planned_delivered_chart",
-      "community": 16,
+      "community": 69,
       "norm_label": "planned-delivered-chart.tsx"
     },
     {
@@ -6361,7 +6411,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_planned_delivered_chart_planneddeliveredchartprops",
-      "community": 16,
+      "community": 69,
       "norm_label": "planneddeliveredchartprops"
     },
     {
@@ -6371,7 +6421,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_planned_delivered_chart_planneddeliveredchart",
-      "community": 16,
+      "community": 69,
       "norm_label": "planneddeliveredchart()"
     },
     {
@@ -6381,7 +6431,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_throughput_chart",
-      "community": 16,
+      "community": 181,
       "norm_label": "throughput-chart.tsx"
     },
     {
@@ -6391,7 +6441,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_throughput_chart_throughputchartprops",
-      "community": 16,
+      "community": 181,
       "norm_label": "throughputchartprops"
     },
     {
@@ -6401,7 +6451,7 @@
       "source_location": "L22",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_throughput_chart_throughputchart",
-      "community": 16,
+      "community": 181,
       "norm_label": "throughputchart()"
     },
     {
@@ -6411,7 +6461,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_to_bugs_opened_series_test",
-      "community": 181,
+      "community": 69,
       "norm_label": "to-bugs-opened-series.test.ts"
     },
     {
@@ -6421,7 +6471,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_to_bugs_opened_series_test_historicalentry",
-      "community": 181,
+      "community": 69,
       "norm_label": "historicalentry()"
     },
     {
@@ -6451,7 +6501,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_to_bugs_opened_series_tobugsopenedseries",
-      "community": 181,
+      "community": 69,
       "norm_label": "tobugsopenedseries()"
     },
     {
@@ -6461,7 +6511,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_to_duration_trend_series_test",
-      "community": 69,
+      "community": 182,
       "norm_label": "to-duration-trend-series.test.ts"
     },
     {
@@ -6471,7 +6521,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_to_duration_trend_series_test_historicalentry",
-      "community": 69,
+      "community": 182,
       "norm_label": "historicalentry()"
     },
     {
@@ -6481,7 +6531,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_to_duration_trend_series",
-      "community": 69,
+      "community": 182,
       "norm_label": "to-duration-trend-series.ts"
     },
     {
@@ -6491,7 +6541,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_to_duration_trend_series_durationtrendpoint",
-      "community": 69,
+      "community": 182,
       "norm_label": "durationtrendpoint"
     },
     {
@@ -6501,7 +6551,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_to_duration_trend_series_todurationtrendseries",
-      "community": 69,
+      "community": 182,
       "norm_label": "todurationtrendseries()"
     },
     {
@@ -6591,7 +6641,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_to_planned_delivered_series_test",
-      "community": 16,
+      "community": 69,
       "norm_label": "to-planned-delivered-series.test.ts"
     },
     {
@@ -6601,7 +6651,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_to_planned_delivered_series_test_historicalentry",
-      "community": 16,
+      "community": 69,
       "norm_label": "historicalentry()"
     },
     {
@@ -6611,7 +6661,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_to_planned_delivered_series",
-      "community": 16,
+      "community": 69,
       "norm_label": "to-planned-delivered-series.ts"
     },
     {
@@ -6621,7 +6671,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_to_planned_delivered_series_planneddeliveredpoint",
-      "community": 16,
+      "community": 69,
       "norm_label": "planneddeliveredpoint"
     },
     {
@@ -6631,7 +6681,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_to_planned_delivered_series_toplanneddeliveredseries",
-      "community": 16,
+      "community": 69,
       "norm_label": "toplanneddeliveredseries()"
     },
     {
@@ -6641,7 +6691,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_to_throughput_series_test",
-      "community": 16,
+      "community": 181,
       "norm_label": "to-throughput-series.test.ts"
     },
     {
@@ -6651,7 +6701,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_to_throughput_series_test_historicalentry",
-      "community": 16,
+      "community": 181,
       "norm_label": "historicalentry()"
     },
     {
@@ -6661,7 +6711,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_to_throughput_series",
-      "community": 16,
+      "community": 181,
       "norm_label": "to-throughput-series.ts"
     },
     {
@@ -6671,7 +6721,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_to_throughput_series_throughputpoint",
-      "community": 16,
+      "community": 181,
       "norm_label": "throughputpoint"
     },
     {
@@ -6681,7 +6731,7 @@
       "source_location": "L7",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_charts_to_throughput_series_tothroughputseries",
-      "community": 16,
+      "community": 181,
       "norm_label": "tothroughputseries()"
     },
     {
@@ -6691,7 +6741,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_current_status_section",
-      "community": 12,
+      "community": 39,
       "norm_label": "current-status-section.tsx"
     },
     {
@@ -6701,7 +6751,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_current_status_section_currentstatussectionprops",
-      "community": 12,
+      "community": 39,
       "norm_label": "currentstatussectionprops"
     },
     {
@@ -6711,7 +6761,7 @@
       "source_location": "L10",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_current_status_section_agedetail",
-      "community": 12,
+      "community": 39,
       "norm_label": "agedetail()"
     },
     {
@@ -6721,7 +6771,7 @@
       "source_location": "L16",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_current_status_section_wiplimitdetail",
-      "community": 12,
+      "community": 39,
       "norm_label": "wiplimitdetail()"
     },
     {
@@ -6731,7 +6781,7 @@
       "source_location": "L23",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_current_status_section_currentstatussection",
-      "community": 12,
+      "community": 39,
       "norm_label": "currentstatussection()"
     },
     {
@@ -6761,7 +6811,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_flow_time_section_durationtile",
-      "community": 12,
+      "community": 39,
       "norm_label": "durationtile()"
     },
     {
@@ -6811,7 +6861,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_format_metric_value_formatpercent",
-      "community": 39,
+      "community": 12,
       "norm_label": "formatpercent()"
     },
     {
@@ -6978,7 +7028,7 @@
       "label": "MetricsDashboardProps",
       "file_type": "code",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L19",
+      "source_location": "L21",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_metrics_dashboard_metricsdashboardprops",
       "community": 181,
@@ -6988,11 +7038,51 @@
       "label": "MetricsDashboard()",
       "file_type": "code",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L33",
+      "source_location": "L36",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_metrics_dashboard_metricsdashboard",
       "community": 181,
       "norm_label": "metricsdashboard()"
+    },
+    {
+      "label": "metrics-sprint-filter.tsx",
+      "file_type": "code",
+      "source_file": "src/presentation/metrics-dashboard/metrics-sprint-filter.tsx",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "src_presentation_metrics_dashboard_metrics_sprint_filter",
+      "community": 186,
+      "norm_label": "metrics-sprint-filter.tsx"
+    },
+    {
+      "label": "MetricsSprintFilterProps",
+      "file_type": "code",
+      "source_file": "src/presentation/metrics-dashboard/metrics-sprint-filter.tsx",
+      "source_location": "L7",
+      "_origin": "ast",
+      "id": "src_presentation_metrics_dashboard_metrics_sprint_filter_metricssprintfilterprops",
+      "community": 186,
+      "norm_label": "metricssprintfilterprops"
+    },
+    {
+      "label": "defaultSprintId()",
+      "file_type": "code",
+      "source_file": "src/presentation/metrics-dashboard/metrics-sprint-filter.tsx",
+      "source_location": "L12",
+      "_origin": "ast",
+      "id": "src_presentation_metrics_dashboard_metrics_sprint_filter_defaultsprintid",
+      "community": 186,
+      "norm_label": "defaultsprintid()"
+    },
+    {
+      "label": "MetricsSprintFilter()",
+      "file_type": "code",
+      "source_file": "src/presentation/metrics-dashboard/metrics-sprint-filter.tsx",
+      "source_location": "L19",
+      "_origin": "ast",
+      "id": "src_presentation_metrics_dashboard_metrics_sprint_filter_metricssprintfilter",
+      "community": 186,
+      "norm_label": "metricssprintfilter()"
     },
     {
       "label": "parse-metrics-search-params.test.ts",
@@ -7028,7 +7118,7 @@
       "label": "MetricsFilter",
       "file_type": "code",
       "source_file": "src/presentation/metrics-dashboard/parse-metrics-search-params.ts",
-      "source_location": "L14",
+      "source_location": "L15",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_parse_metrics_search_params_metricsfilter",
       "community": 1,
@@ -7038,7 +7128,7 @@
       "label": "parseMetricsFilter()",
       "file_type": "code",
       "source_file": "src/presentation/metrics-dashboard/parse-metrics-search-params.ts",
-      "source_location": "L18",
+      "source_location": "L19",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_parse_metrics_search_params_parsemetricsfilter",
       "community": 1,
@@ -7048,7 +7138,7 @@
       "label": "parseTagIds()",
       "file_type": "code",
       "source_file": "src/presentation/metrics-dashboard/parse-metrics-search-params.ts",
-      "source_location": "L49",
+      "source_location": "L50",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_parse_metrics_search_params_parsetagids",
       "community": 1,
@@ -7261,7 +7351,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_week_result_section",
-      "community": 39,
+      "community": 12,
       "norm_label": "week-result-section.tsx"
     },
     {
@@ -7271,7 +7361,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_week_result_section_weekresultsectionprops",
-      "community": 39,
+      "community": 12,
       "norm_label": "weekresultsectionprops"
     },
     {
@@ -7281,7 +7371,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_week_result_section_result_title",
-      "community": 39,
+      "community": 12,
       "norm_label": "result_title"
     },
     {
@@ -7291,7 +7381,7 @@
       "source_location": "L18",
       "_origin": "ast",
       "id": "src_presentation_metrics_dashboard_week_result_section_weekresultsection",
-      "community": 39,
+      "community": 12,
       "norm_label": "weekresultsection()"
     },
     {
@@ -7541,7 +7631,7 @@
       "source_location": "L17",
       "_origin": "ast",
       "id": "src_presentation_sprint_program_increment_form_programincrementform",
-      "community": 18,
+      "community": 58,
       "norm_label": "programincrementform()"
     },
     {
@@ -7551,7 +7641,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_sprint_program_increment_list",
-      "community": 7,
+      "community": 3,
       "norm_label": "program-increment-list.tsx"
     },
     {
@@ -7561,7 +7651,7 @@
       "source_location": "L6",
       "_origin": "ast",
       "id": "src_presentation_sprint_program_increment_list_programincrementlistprops",
-      "community": 7,
+      "community": 3,
       "norm_label": "programincrementlistprops"
     },
     {
@@ -7571,7 +7661,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_presentation_sprint_program_increment_list_programincrementlist",
-      "community": 18,
+      "community": 58,
       "norm_label": "programincrementlist()"
     },
     {
@@ -7601,7 +7691,7 @@
       "source_location": "L19",
       "_origin": "ast",
       "id": "src_presentation_sprint_sprint_form_sprintform",
-      "community": 7,
+      "community": 3,
       "norm_label": "sprintform()"
     },
     {
@@ -7611,7 +7701,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_task_board_summary",
-      "community": 0,
+      "community": 22,
       "norm_label": "board-summary.tsx"
     },
     {
@@ -7621,7 +7711,7 @@
       "source_location": "L4",
       "_origin": "ast",
       "id": "src_presentation_task_board_summary_boardsummaryprops",
-      "community": 0,
+      "community": 22,
       "norm_label": "boardsummaryprops"
     },
     {
@@ -7631,7 +7721,7 @@
       "source_location": "L9",
       "_origin": "ast",
       "id": "src_presentation_task_board_summary_boardsummary",
-      "community": 0,
+      "community": 22,
       "norm_label": "boardsummary()"
     },
     {
@@ -7691,7 +7781,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_task_filter_tasks_by_sprint_test",
-      "community": 182,
+      "community": 58,
       "norm_label": "filter-tasks-by-sprint.test.ts"
     },
     {
@@ -7701,7 +7791,7 @@
       "source_location": "L5",
       "_origin": "ast",
       "id": "src_presentation_task_filter_tasks_by_sprint_test_task",
-      "community": 182,
+      "community": 58,
       "norm_label": "task()"
     },
     {
@@ -7711,7 +7801,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_task_filter_tasks_by_sprint",
-      "community": 182,
+      "community": 58,
       "norm_label": "filter-tasks-by-sprint.ts"
     },
     {
@@ -7851,7 +7941,7 @@
       "source_location": "L15",
       "_origin": "ast",
       "id": "src_presentation_task_sprint_history_board_sprinthistoryboard",
-      "community": 58,
+      "community": 186,
       "norm_label": "sprinthistoryboard()"
     },
     {
@@ -7881,7 +7971,7 @@
       "source_location": "L24",
       "_origin": "ast",
       "id": "src_presentation_task_sprint_lifecycle_control_sprintlifecyclecontrol",
-      "community": 0,
+      "community": 7,
       "norm_label": "sprintlifecyclecontrol()"
     },
     {
@@ -8041,7 +8131,7 @@
       "source_location": "L21",
       "_origin": "ast",
       "id": "src_presentation_task_task_form_modal_teamtaskoption",
-      "community": 0,
+      "community": 183,
       "norm_label": "teamtaskoption"
     },
     {
@@ -8231,7 +8321,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_team_team_manage_view",
-      "community": 7,
+      "community": 5,
       "norm_label": "team-manage-view.tsx"
     },
     {
@@ -8241,7 +8331,7 @@
       "source_location": "L14",
       "_origin": "ast",
       "id": "src_presentation_team_team_manage_view_teammanageviewprops",
-      "community": 7,
+      "community": 5,
       "norm_label": "teammanageviewprops"
     },
     {
@@ -8251,7 +8341,7 @@
       "source_location": "L46",
       "_origin": "ast",
       "id": "src_presentation_team_team_manage_view_memberrow",
-      "community": 7,
+      "community": 5,
       "norm_label": "memberrow()"
     },
     {
@@ -8271,7 +8361,7 @@
       "source_location": "L1",
       "_origin": "ast",
       "id": "src_presentation_team_team_select_view",
-      "community": 7,
+      "community": 5,
       "norm_label": "team-select-view.tsx"
     },
     {
@@ -8281,7 +8371,7 @@
       "source_location": "L11",
       "_origin": "ast",
       "id": "src_presentation_team_team_select_view_teamselectviewprops",
-      "community": 7,
+      "community": 5,
       "norm_label": "teamselectviewprops"
     },
     {
@@ -11783,6 +11873,136 @@
       "id": "docs_superpowers_plans_2026_07_23_pi_sprints_ciclo_de_vida_pr\u00f3ximo_plano_fora_deste_escopo",
       "community": 81,
       "norm_label": "proximo plano (fora deste escopo)"
+    },
+    {
+      "label": "2026-07-23-pi-sprints-filtro-metricas.md",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas",
+      "community": 16,
+      "norm_label": "2026-07-23-pi-sprints-filtro-metricas.md"
+    },
+    {
+      "label": "PIs e Sprints \u2014 Filtro de sprint nas m\u00e9tricas Implementation Plan",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L1",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_pis_e_sprints_filtro_de_sprint_nas_m\u00e9tricas_implementation_plan",
+      "community": 16,
+      "norm_label": "pis e sprints \u2014 filtro de sprint nas metricas implementation plan"
+    },
+    {
+      "label": "Global Constraints",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L11",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_global_constraints",
+      "community": 16,
+      "norm_label": "global constraints"
+    },
+    {
+      "label": "File Structure",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L22",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_file_structure",
+      "community": 16,
+      "norm_label": "file structure"
+    },
+    {
+      "label": "Task 1: Corrigir `findBySprint` para reconstruir `Date`",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L42",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_task_1_corrigir_findbysprint_para_reconstruir_date",
+      "community": 16,
+      "norm_label": "task 1: corrigir `findbysprint` para reconstruir `date`"
+    },
+    {
+      "label": "Task 2: Use-case `getMetricsForSprint`",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L148",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_task_2_use_case_getmetricsforsprint",
+      "community": 16,
+      "norm_label": "task 2: use-case `getmetricsforsprint`"
+    },
+    {
+      "label": "Task 3: Composition root",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L471",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_task_3_composition_root",
+      "community": 16,
+      "norm_label": "task 3: composition root"
+    },
+    {
+      "label": "Task 4: `sprintId` em `MetricsSearchParams`",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L517",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_task_4_sprintid_em_metricssearchparams",
+      "community": 16,
+      "norm_label": "task 4: `sprintid` em `metricssearchparams`"
+    },
+    {
+      "label": "Task 5: Componente `MetricsSprintFilter`",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L556",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_task_5_componente_metricssprintfilter",
+      "community": 16,
+      "norm_label": "task 5: componente `metricssprintfilter`"
+    },
+    {
+      "label": "Task 6: Integrar ao `MetricsDashboard`",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L675",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_task_6_integrar_ao_metricsdashboard",
+      "community": 16,
+      "norm_label": "task 6: integrar ao `metricsdashboard`"
+    },
+    {
+      "label": "Task 7: `app/metrics/page.tsx` \u2014 branch Per\u00edodo/Sprint",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L745",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_task_7_app_metrics_page_tsx_branch_per\u00edodo_sprint",
+      "community": 16,
+      "norm_label": "task 7: `app/metrics/page.tsx` \u2014 branch periodo/sprint"
+    },
+    {
+      "label": "Task 8: Verifica\u00e7\u00e3o final",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L870",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_task_8_verifica\u00e7\u00e3o_final",
+      "community": 16,
+      "norm_label": "task 8: verificacao final"
+    },
+    {
+      "label": "Encerramento da spec",
+      "file_type": "document",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L908",
+      "_origin": "ast",
+      "id": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_encerramento_da_spec",
+      "community": 16,
+      "norm_label": "encerramento da spec"
     },
     {
       "label": "2026-07-23-pi-sprints-fundacao.md",
@@ -19373,7 +19593,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/app/metrics/page.tsx",
-      "source_location": "L13",
+      "source_location": "L14",
       "weight": 1.0,
       "source": "src_app_metrics_page",
       "target": "src_app_metrics_page_metricspage",
@@ -19409,7 +19629,7 @@
       "source_location": "L4",
       "weight": 1.0,
       "source": "src_app_metrics_page",
-      "target": "src_composition_task",
+      "target": "src_composition_sprint",
       "confidence_score": 1.0
     },
     {
@@ -19420,7 +19640,7 @@
       "source_location": "L4",
       "weight": 1.0,
       "source": "src_app_metrics_page",
-      "target": "src_composition_task_createtaskusecases",
+      "target": "src_composition_sprint_createsprintusecases",
       "confidence_score": 1.0
     },
     {
@@ -19429,6 +19649,28 @@
       "confidence": "EXTRACTED",
       "source_file": "src/app/metrics/page.tsx",
       "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_app_metrics_page",
+      "target": "src_composition_task",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/metrics/page.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_app_metrics_page",
+      "target": "src_composition_task_createtaskusecases",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/app/metrics/page.tsx",
+      "source_location": "L6",
       "weight": 1.0,
       "source": "src_app_metrics_page",
       "target": "src_composition_team",
@@ -19439,7 +19681,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/metrics/page.tsx",
-      "source_location": "L5",
+      "source_location": "L6",
       "weight": 1.0,
       "source": "src_app_metrics_page",
       "target": "src_composition_team_createteamusecases",
@@ -19450,7 +19692,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/metrics/page.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "source": "src_app_metrics_page",
       "target": "src_presentation_metrics_dashboard_metrics_dashboard",
@@ -19461,7 +19703,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/metrics/page.tsx",
-      "source_location": "L6",
+      "source_location": "L7",
       "weight": 1.0,
       "source": "src_app_metrics_page",
       "target": "src_presentation_metrics_dashboard_metrics_dashboard_metricsdashboard",
@@ -19472,7 +19714,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/metrics/page.tsx",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "source": "src_app_metrics_page",
       "target": "src_presentation_metrics_dashboard_parse_metrics_search_params",
@@ -19483,7 +19725,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/metrics/page.tsx",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "source": "src_app_metrics_page",
       "target": "src_presentation_metrics_dashboard_parse_metrics_search_params_metricssearchparams",
@@ -19494,7 +19736,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/metrics/page.tsx",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "source": "src_app_metrics_page",
       "target": "src_presentation_metrics_dashboard_parse_metrics_search_params_parsemetricsfilter",
@@ -19505,7 +19747,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/app/metrics/page.tsx",
-      "source_location": "L7",
+      "source_location": "L8",
       "weight": 1.0,
       "source": "src_app_metrics_page",
       "target": "src_presentation_metrics_dashboard_parse_metrics_search_params_parsetagids",
@@ -19517,7 +19759,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/app/metrics/page.tsx",
-      "source_location": "L24",
+      "source_location": "L25",
       "weight": 1.0,
       "source": "src_app_metrics_page_metricspage",
       "target": "src_composition_metrics_createmetricsusecases"
@@ -19528,21 +19770,10 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/app/metrics/page.tsx",
-      "source_location": "L35",
+      "source_location": "L26",
       "weight": 1.0,
       "source": "src_app_metrics_page_metricspage",
-      "target": "src_composition_task_createtaskusecases"
-    },
-    {
-      "relation": "calls",
-      "context": "call",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "src/app/metrics/page.tsx",
-      "source_location": "L18",
-      "weight": 1.0,
-      "source": "src_app_metrics_page_metricspage",
-      "target": "src_composition_team_createteamusecases"
+      "target": "src_composition_sprint_createsprintusecases"
     },
     {
       "relation": "calls",
@@ -19553,6 +19784,28 @@
       "source_location": "L29",
       "weight": 1.0,
       "source": "src_app_metrics_page_metricspage",
+      "target": "src_composition_task_createtaskusecases"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/app/metrics/page.tsx",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "src_app_metrics_page_metricspage",
+      "target": "src_composition_team_createteamusecases"
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/app/metrics/page.tsx",
+      "source_location": "L60",
+      "weight": 1.0,
+      "source": "src_app_metrics_page_metricspage",
       "target": "src_presentation_metrics_dashboard_parse_metrics_search_params_parsemetricsfilter"
     },
     {
@@ -19561,7 +19814,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/app/metrics/page.tsx",
-      "source_location": "L34",
+      "source_location": "L65",
       "weight": 1.0,
       "source": "src_app_metrics_page_metricspage",
       "target": "src_presentation_metrics_dashboard_parse_metrics_search_params_parsetagids"
@@ -22108,6 +22361,17 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "target": "src_application_metrics_formulas_current_wip_metrics",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/current-status-section.tsx",
       "source_location": "L2",
       "weight": 1.0,
@@ -22201,6 +22465,28 @@
       "source_location": "L73",
       "weight": 1.0,
       "source": "src_application_metrics_use_cases_get_metrics_dashboard_getmetricsdashboardforrange",
+      "target": "src_application_metrics_formulas_current_wip_metrics_calculatecurrentwipmetrics"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "target": "src_application_metrics_formulas_current_wip_metrics_calculatecurrentwipmetrics",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L68",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint_getmetricsforsprint",
       "target": "src_application_metrics_formulas_current_wip_metrics_calculatecurrentwipmetrics"
     },
     {
@@ -24257,6 +24543,28 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "target": "src_application_metrics_ports_metrics_query_port",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.test.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint_test",
+      "target": "src_application_metrics_ports_metrics_query_port",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/application/sprint/use-cases/finish-sprint.ts",
       "source_location": "L1",
       "weight": 1.0,
@@ -24481,6 +24789,39 @@
       "source_location": "L2",
       "weight": 1.0,
       "source": "src_application_metrics_use_cases_get_metrics_dashboard_test",
+      "target": "src_application_metrics_ports_metrics_query_port_metricsqueryport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "target": "src_application_metrics_ports_metrics_query_port_metricsqueryport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "references",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L58",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint_getmetricsforsprint",
+      "target": "src_application_metrics_ports_metrics_query_port_metricsqueryport"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.test.ts",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint_test",
       "target": "src_application_metrics_ports_metrics_query_port_metricsqueryport",
       "confidence_score": 1.0
     },
@@ -24769,7 +25110,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/composition/metrics.ts",
-      "source_location": "L24",
+      "source_location": "L27",
       "weight": 1.0,
       "source": "src_composition_metrics_createmetricsusecases",
       "target": "src_application_metrics_use_cases_get_developer_metrics_getdevelopermetrics"
@@ -24895,11 +25236,33 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "target": "src_application_metrics_use_cases_get_metrics_dashboard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/composition/metrics.ts",
       "source_location": "L4",
       "weight": 1.0,
       "source": "src_composition_metrics",
       "target": "src_application_metrics_use_cases_get_metrics_dashboard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "target": "src_application_metrics_use_cases_get_metrics_dashboard_metricsdashboardresult",
       "confidence_score": 1.0
     },
     {
@@ -24930,7 +25293,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/composition/metrics.ts",
-      "source_location": "L39",
+      "source_location": "L42",
       "weight": 1.0,
       "source": "src_composition_metrics_createmetricsusecases",
       "target": "src_application_metrics_use_cases_get_metrics_dashboard_getmetricsdashboard"
@@ -24963,7 +25326,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/composition/metrics.ts",
-      "source_location": "L54",
+      "source_location": "L57",
       "weight": 1.0,
       "source": "src_composition_metrics_createmetricsusecases",
       "target": "src_application_metrics_use_cases_get_metrics_dashboard_getmetricsdashboardforrange"
@@ -25028,6 +25391,17 @@
       "weight": 1.0,
       "source": "src_application_metrics_use_cases_get_metrics_for_period",
       "target": "src_application_metrics_use_cases_get_metrics_for_period_periodmetrics",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "target": "src_application_metrics_use_cases_get_metrics_for_period",
       "confidence_score": 1.0
     },
     {
@@ -25595,6 +25969,28 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "target": "src_application_metrics_use_cases_get_metrics_for_period_getmetricsforrange",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L64",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint_getmetricsforsprint",
+      "target": "src_application_metrics_use_cases_get_metrics_for_period_getmetricsforrange"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/application/sprint/use-cases/finish-sprint.ts",
       "source_location": "L2",
       "weight": 1.0,
@@ -25612,6 +26008,256 @@
       "weight": 1.0,
       "source": "src_application_sprint_use_cases_finish_sprint_finishsprint",
       "target": "src_application_metrics_use_cases_get_metrics_for_period_getmetricsforrange"
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint_test",
+      "target": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.test.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint_test",
+      "target": "src_application_metrics_use_cases_get_metrics_for_sprint_getmetricsforsprint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.test.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint_test",
+      "target": "src_application_metrics_use_cases_get_metrics_for_sprint_test_emptymetricsqueryport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.test.ts",
+      "source_location": "L75",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint_test",
+      "target": "src_application_metrics_use_cases_get_metrics_for_sprint_test_loadsnapshot",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint_test",
+      "target": "src_application_sprint_use_cases_test_helpers_create_fake_sprint_metrics_snapshot_repository",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.test.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint_test",
+      "target": "src_application_sprint_use_cases_test_helpers_create_fake_sprint_metrics_snapshot_repository_createfakesprintmetricssnapshotrepository",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint_test",
+      "target": "src_application_sprint_use_cases_test_helpers_create_fake_sprint_repository",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.test.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint_test",
+      "target": "src_application_sprint_use_cases_test_helpers_create_fake_sprint_repository_createfakesprintrepository",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "target": "src_application_metrics_use_cases_get_metrics_for_sprint_getmetricsforsprint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "target": "src_application_shared_application_error",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "target": "src_application_shared_application_error_applicationerror",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "target": "src_application_shared_validation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "target": "src_application_shared_validation_parsedateonly",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "target": "src_application_sprint_ports_sprint_metrics_snapshot_repository",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "target": "src_application_sprint_ports_sprint_metrics_snapshot_repository_sprintmetricssnapshotrepository",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "target": "src_application_sprint_ports_sprint_repository",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "target": "src_application_sprint_ports_sprint_repository_sprintrepository",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/composition/metrics.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "src_composition_metrics",
+      "target": "src_application_metrics_use_cases_get_metrics_for_sprint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L49",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint_getmetricsforsprint",
+      "target": "src_application_shared_validation_parsedateonly"
+    },
+    {
+      "relation": "references",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint_getmetricsforsprint",
+      "target": "src_application_sprint_ports_sprint_metrics_snapshot_repository_sprintmetricssnapshotrepository"
+    },
+    {
+      "relation": "references",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/application/metrics/use-cases/get-metrics-for-sprint.ts",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "src_application_metrics_use_cases_get_metrics_for_sprint_getmetricsforsprint",
+      "target": "src_application_sprint_ports_sprint_repository_sprintrepository"
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/composition/metrics.ts",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "src_composition_metrics",
+      "target": "src_application_metrics_use_cases_get_metrics_for_sprint_getmetricsforsprint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "src/composition/metrics.ts",
+      "source_location": "L66",
+      "weight": 1.0,
+      "source": "src_composition_metrics_createmetricsusecases",
+      "target": "src_application_metrics_use_cases_get_metrics_for_sprint_getmetricsforsprint"
     },
     {
       "relation": "contains",
@@ -25638,7 +26284,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/composition/metrics.ts",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "source": "src_composition_metrics",
       "target": "src_application_metrics_use_cases_metrics_period_preference",
@@ -25649,7 +26295,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/composition/metrics.ts",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "source": "src_composition_metrics",
       "target": "src_application_metrics_use_cases_metrics_period_preference_getmetricsperiodpreference",
@@ -25661,7 +26307,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/composition/metrics.ts",
-      "source_location": "L63",
+      "source_location": "L75",
       "weight": 1.0,
       "source": "src_composition_metrics_createmetricsusecases",
       "target": "src_application_metrics_use_cases_metrics_period_preference_getmetricsperiodpreference"
@@ -25671,7 +26317,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/composition/metrics.ts",
-      "source_location": "L8",
+      "source_location": "L9",
       "weight": 1.0,
       "source": "src_composition_metrics",
       "target": "src_application_metrics_use_cases_metrics_period_preference_setmetricsperiodpreference",
@@ -25683,7 +26329,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/composition/metrics.ts",
-      "source_location": "L68",
+      "source_location": "L80",
       "weight": 1.0,
       "source": "src_composition_metrics_createmetricsusecases",
       "target": "src_application_metrics_use_cases_metrics_period_preference_setmetricsperiodpreference"
@@ -27042,7 +27688,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/presentation/metrics-dashboard/parse-metrics-search-params.ts",
-      "source_location": "L27",
+      "source_location": "L28",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_parse_metrics_search_params_parsemetricsfilter",
       "target": "src_application_shared_validation_parsedateonly"
@@ -35320,7 +35966,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/composition/metrics.ts",
-      "source_location": "L15",
+      "source_location": "L18",
       "weight": 1.0,
       "source": "src_composition_metrics",
       "target": "src_composition_metrics_createmetricsusecases",
@@ -35331,7 +35977,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/composition/metrics.ts",
-      "source_location": "L12",
+      "source_location": "L13",
       "weight": 1.0,
       "source": "src_composition_metrics",
       "target": "src_infrastructure_metrics_cookie_metrics_period_preference_store",
@@ -35342,7 +35988,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/composition/metrics.ts",
-      "source_location": "L12",
+      "source_location": "L13",
       "weight": 1.0,
       "source": "src_composition_metrics",
       "target": "src_infrastructure_metrics_cookie_metrics_period_preference_store_cookiemetricsperiodpreferencestore",
@@ -35353,7 +35999,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/composition/metrics.ts",
-      "source_location": "L13",
+      "source_location": "L14",
       "weight": 1.0,
       "source": "src_composition_metrics",
       "target": "src_infrastructure_metrics_drizzle_metrics_query_port",
@@ -35364,10 +36010,54 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/composition/metrics.ts",
-      "source_location": "L13",
+      "source_location": "L14",
       "weight": 1.0,
       "source": "src_composition_metrics",
       "target": "src_infrastructure_metrics_drizzle_metrics_query_port_drizzlemetricsqueryport",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/composition/metrics.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "src_composition_metrics",
+      "target": "src_infrastructure_sprint_drizzle_sprint_metrics_snapshot_repository",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/composition/metrics.ts",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "src_composition_metrics",
+      "target": "src_infrastructure_sprint_drizzle_sprint_metrics_snapshot_repository_drizzlesprintmetricssnapshotrepository",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/composition/metrics.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "src_composition_metrics",
+      "target": "src_infrastructure_sprint_drizzle_sprint_repository",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/composition/metrics.ts",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "src_composition_metrics",
+      "target": "src_infrastructure_sprint_drizzle_sprint_repository_drizzlesprintrepository",
       "confidence_score": 1.0
     },
     {
@@ -35970,6 +36660,28 @@
       "relation": "imports_from",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_presentation_metrics_dashboard_metrics_dashboard",
+      "target": "src_domain_sprint_entities_sprint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/metrics-dashboard/metrics-sprint-filter.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_presentation_metrics_dashboard_metrics_sprint_filter",
+      "target": "src_domain_sprint_entities_sprint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/presentation/sprint/program-increment-list.tsx",
       "source_location": "L3",
       "weight": 1.0,
@@ -36080,6 +36792,28 @@
       "relation": "imports",
       "context": "import",
       "confidence": "EXTRACTED",
+      "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "src_presentation_metrics_dashboard_metrics_dashboard",
+      "target": "src_domain_sprint_entities_sprint_sprint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/metrics-dashboard/metrics-sprint-filter.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "src_presentation_metrics_dashboard_metrics_sprint_filter",
+      "target": "src_domain_sprint_entities_sprint_sprint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
       "source_file": "src/presentation/sprint/program-increment-list.tsx",
       "source_location": "L3",
       "weight": 1.0,
@@ -36179,7 +36913,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_domain_task_entities_tag",
@@ -36267,7 +37001,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L9",
+      "source_location": "L10",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_domain_task_entities_tag_tag",
@@ -40017,7 +40751,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_presentation_metrics_dashboard_charts_charts_section",
@@ -40028,7 +40762,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L10",
+      "source_location": "L11",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_presentation_metrics_dashboard_charts_charts_section_chartssection",
@@ -40941,7 +41675,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_presentation_metrics_dashboard_current_status_section",
@@ -40985,7 +41719,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L11",
+      "source_location": "L12",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_presentation_metrics_dashboard_current_status_section_currentstatussection",
@@ -41092,7 +41826,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L12",
+      "source_location": "L13",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_presentation_metrics_dashboard_flow_time_section",
@@ -41114,7 +41848,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L12",
+      "source_location": "L13",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_presentation_metrics_dashboard_flow_time_section_flowtimesection",
@@ -41306,7 +42040,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L13",
+      "source_location": "L14",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_presentation_metrics_dashboard_format_period_label",
@@ -41339,7 +42073,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L13",
+      "source_location": "L14",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_presentation_metrics_dashboard_format_period_label_formatperiodrangelabel",
@@ -41351,7 +42085,7 @@
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L58",
+      "source_location": "L62",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard_metricsdashboard",
       "target": "src_presentation_metrics_dashboard_format_period_label_formatperiodrangelabel"
@@ -41541,7 +42275,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L14",
+      "source_location": "L15",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_presentation_metrics_dashboard_metric_info_button",
@@ -41552,7 +42286,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L14",
+      "source_location": "L15",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_presentation_metrics_dashboard_metric_info_button_metricinfobutton",
@@ -41562,7 +42296,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L33",
+      "source_location": "L36",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_presentation_metrics_dashboard_metrics_dashboard_metricsdashboard",
@@ -41572,7 +42306,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L19",
+      "source_location": "L21",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_presentation_metrics_dashboard_metrics_dashboard_metricsdashboardprops",
@@ -41583,7 +42317,29 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L15",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "src_presentation_metrics_dashboard_metrics_dashboard",
+      "target": "src_presentation_metrics_dashboard_metrics_sprint_filter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "src_presentation_metrics_dashboard_metrics_dashboard",
+      "target": "src_presentation_metrics_dashboard_metrics_sprint_filter_metricssprintfilter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "imports_from",
+      "context": "import",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
+      "source_location": "L17",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_presentation_metrics_dashboard_period_filter",
@@ -41594,7 +42350,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L15",
+      "source_location": "L17",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_presentation_metrics_dashboard_period_filter_periodfilter",
@@ -41605,7 +42361,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L16",
+      "source_location": "L18",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_presentation_metrics_dashboard_tag_filter",
@@ -41616,7 +42372,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L16",
+      "source_location": "L18",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_presentation_metrics_dashboard_tag_filter_tagfilter",
@@ -41627,7 +42383,7 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L17",
+      "source_location": "L19",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_presentation_metrics_dashboard_week_result_section",
@@ -41638,10 +42394,51 @@
       "context": "import",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/metrics-dashboard.tsx",
-      "source_location": "L17",
+      "source_location": "L19",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_metrics_dashboard",
       "target": "src_presentation_metrics_dashboard_week_result_section_weekresultsection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/metrics-dashboard/metrics-sprint-filter.tsx",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "src_presentation_metrics_dashboard_metrics_sprint_filter",
+      "target": "src_presentation_metrics_dashboard_metrics_sprint_filter_defaultsprintid",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/metrics-dashboard/metrics-sprint-filter.tsx",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "src_presentation_metrics_dashboard_metrics_sprint_filter",
+      "target": "src_presentation_metrics_dashboard_metrics_sprint_filter_metricssprintfilter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/metrics-dashboard/metrics-sprint-filter.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "src_presentation_metrics_dashboard_metrics_sprint_filter",
+      "target": "src_presentation_metrics_dashboard_metrics_sprint_filter_metricssprintfilterprops",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "src/presentation/metrics-dashboard/metrics-sprint-filter.tsx",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "src_presentation_metrics_dashboard_metrics_sprint_filter_metricssprintfilter",
+      "target": "src_presentation_metrics_dashboard_metrics_sprint_filter_defaultsprintid",
       "confidence_score": 1.0
     },
     {
@@ -41681,7 +42478,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/parse-metrics-search-params.ts",
-      "source_location": "L14",
+      "source_location": "L15",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_parse_metrics_search_params",
       "target": "src_presentation_metrics_dashboard_parse_metrics_search_params_metricsfilter",
@@ -41701,7 +42498,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/parse-metrics-search-params.ts",
-      "source_location": "L18",
+      "source_location": "L19",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_parse_metrics_search_params",
       "target": "src_presentation_metrics_dashboard_parse_metrics_search_params_parsemetricsfilter",
@@ -41711,7 +42508,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "src/presentation/metrics-dashboard/parse-metrics-search-params.ts",
-      "source_location": "L49",
+      "source_location": "L50",
       "weight": 1.0,
       "source": "src_presentation_metrics_dashboard_parse_metrics_search_params",
       "target": "src_presentation_metrics_dashboard_parse_metrics_search_params_parsetagids",
@@ -47079,6 +47876,126 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas",
+      "target": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_pis_e_sprints_filtro_de_sprint_nas_m\u00e9tricas_implementation_plan",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L908",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_pis_e_sprints_filtro_de_sprint_nas_m\u00e9tricas_implementation_plan",
+      "target": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_encerramento_da_spec",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_pis_e_sprints_filtro_de_sprint_nas_m\u00e9tricas_implementation_plan",
+      "target": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_file_structure",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_pis_e_sprints_filtro_de_sprint_nas_m\u00e9tricas_implementation_plan",
+      "target": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_global_constraints",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_file_structure",
+      "target": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_task_1_corrigir_findbysprint_para_reconstruir_date",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L148",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_file_structure",
+      "target": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_task_2_use_case_getmetricsforsprint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L471",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_file_structure",
+      "target": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_task_3_composition_root",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L517",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_file_structure",
+      "target": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_task_4_sprintid_em_metricssearchparams",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L556",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_file_structure",
+      "target": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_task_5_componente_metricssprintfilter",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L675",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_file_structure",
+      "target": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_task_6_integrar_ao_metricsdashboard",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L745",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_file_structure",
+      "target": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_task_7_app_metrics_page_tsx_branch_per\u00edodo_sprint",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-filtro-metricas.md",
+      "source_location": "L870",
+      "weight": 1.0,
+      "source": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_file_structure",
+      "target": "docs_superpowers_plans_2026_07_23_pi_sprints_filtro_metricas_task_8_verifica\u00e7\u00e3o_final",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "docs/superpowers/plans/2026-07-23-pi-sprints-fundacao.md",
       "source_location": "L1",
       "weight": 1.0,
@@ -49949,5 +50866,5 @@
       "source_file": "docs/superpowers/plans/2026-07-18-metrics-engine.md"
     }
   ],
-  "built_at_commit": "e2a8c921e186c1517bbe9c4a6eba066a061ac0fd"
+  "built_at_commit": "f9761a47d00e68469d967938c3735f37240e2ffb"
 }
