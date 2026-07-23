@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { saveMetricsPeriodPreferenceAction } from "@/app/actions";
 import { createMetricsUseCases } from "@/composition/metrics";
+import { createSprintUseCases } from "@/composition/sprint";
 import { createTaskUseCases } from "@/composition/task";
 import { createTeamUseCases } from "@/composition/team";
 import { MetricsDashboard } from "@/presentation/metrics-dashboard/metrics-dashboard";
@@ -22,17 +23,46 @@ export default async function MetricsPage({
 	}
 
 	const metricsUseCases = createMetricsUseCases();
+	const sprints = await createSprintUseCases().listSprintsByTeam(
+		currentTeam.id,
+	);
+	const tags = await createTaskUseCases().listTags();
+	const resolvedSearchParams = await searchParams;
+
+	const selectedSprint = resolvedSearchParams.sprintId
+		? sprints.find((sprint) => sprint.id === resolvedSearchParams.sprintId)
+		: undefined;
+
+	if (selectedSprint) {
+		const { current, history } = await metricsUseCases.getMetricsForSprint(
+			selectedSprint.id,
+			currentTeam.id,
+			currentTeam.wipLimit,
+		);
+		return (
+			<MetricsDashboard
+				teamId={currentTeam.id}
+				saveMetricsPeriodPreferenceAction={saveMetricsPeriodPreferenceAction}
+				periodType="CUSTOM"
+				referenceDate={current.periodStart}
+				current={current}
+				history={history}
+				tags={tags}
+				selectedTagIds={[]}
+				sprints={sprints}
+			/>
+		);
+	}
+
 	const preference = await metricsUseCases.getMetricsPeriodPreference(
 		currentTeam.id,
 	);
-	const resolvedSearchParams = await searchParams;
 	const filter = parseMetricsFilter(
 		resolvedSearchParams,
 		undefined,
 		preference,
 	);
 	const tagIds = parseTagIds(resolvedSearchParams);
-	const tags = await createTaskUseCases().listTags();
 
 	const { current, history } =
 		filter.periodType === "CUSTOM"
@@ -61,6 +91,7 @@ export default async function MetricsPage({
 			history={history}
 			tags={tags}
 			selectedTagIds={tagIds}
+			sprints={sprints}
 		/>
 	);
 }
