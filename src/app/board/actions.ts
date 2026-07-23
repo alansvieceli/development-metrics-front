@@ -6,6 +6,7 @@ import { ApplicationError } from "@/application/shared/application-error";
 import { isUuid, parseDateOnly } from "@/application/shared/validation";
 import type { CreateTaskInput } from "@/application/task/use-cases/create-task";
 import type { UpdateTaskInput } from "@/application/task/use-cases/update-task";
+import { createSprintUseCases } from "@/composition/sprint";
 import { createTaskUseCases } from "@/composition/task";
 import { createTeamUseCases } from "@/composition/team";
 import { isTaskStatus, type TaskStatus } from "@/domain/task/entities/task";
@@ -182,5 +183,27 @@ export async function toggleBlockedAction(taskId: string, blocked: boolean) {
 			throw new ApplicationError("Bloqueio inválido");
 		const teamId = await getCurrentTeamId();
 		await createTaskUseCases().toggleBlocked(teamId, taskId, blocked);
+	});
+}
+
+export async function startSprintAction(
+	_previousState: ActionState,
+	_formData: FormData,
+) {
+	return runTaskAction(async () => {
+		const teamId = await getCurrentTeamId();
+		await createSprintUseCases().startSprint(teamId);
+	});
+}
+
+export async function finishSprintAction(
+	_previousState: ActionState,
+	formData: FormData,
+) {
+	return runTaskAction(async () => {
+		const sprintId = String(formData.get("sprintId") ?? "");
+		validateUuid(sprintId, "Sprint inválida");
+		const teamId = await getCurrentTeamId();
+		await createSprintUseCases().finishSprint(sprintId, teamId);
 	});
 }
