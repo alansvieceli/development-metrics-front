@@ -11,6 +11,7 @@ import type { Member } from "@/domain/team/entities/member";
 import { BoardSummary } from "@/presentation/task/board-summary";
 import { HistoricalTaskFormModal } from "@/presentation/task/historical-task-form-modal";
 import { SprintBoardFilter } from "@/presentation/task/sprint-board-filter";
+import { SprintLifecycleControl } from "@/presentation/task/sprint-lifecycle-control";
 import { TaskCard } from "@/presentation/task/task-card";
 import { TaskFormModal } from "@/presentation/task/task-form-modal";
 import {
@@ -41,6 +42,14 @@ type KanbanBoardProps = {
 		taskId: string,
 		blocked: boolean,
 	) => Promise<ActionState>;
+	startSprintAction: (
+		previousState: ActionState,
+		formData: FormData,
+	) => Promise<ActionState>;
+	finishSprintAction: (
+		previousState: ActionState,
+		formData: FormData,
+	) => Promise<ActionState>;
 };
 
 export function KanbanBoard({
@@ -56,6 +65,8 @@ export function KanbanBoard({
 	deleteTaskAction,
 	moveTaskAction,
 	toggleBlockedAction,
+	startSprintAction,
+	finishSprintAction,
 }: KanbanBoardProps) {
 	const taskTypesById = new Map(
 		taskTypes.map((taskType) => [taskType.id, taskType]),
@@ -96,6 +107,14 @@ export function KanbanBoard({
 				<div className="flex flex-col gap-2">
 					<h1 className="text-xl font-semibold">Quadro</h1>
 					<BoardSummary tasksByStatus={tasksByStatus} members={members} />
+					<SprintLifecycleControl
+						activeSprint={sprints.find((sprint) => sprint.status === "ACTIVE")}
+						hasPlannedSprint={sprints.some(
+							(sprint) => sprint.status === "PLANNED",
+						)}
+						startSprintAction={startSprintAction}
+						finishSprintAction={finishSprintAction}
+					/>
 				</div>
 				<div className="flex items-center gap-2">
 					<SprintBoardFilter sprints={sprints} />
