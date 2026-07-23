@@ -435,4 +435,17 @@ describe("drizzleTaskRepository", () => {
 		});
 		expect(cleared.sprintId).toBeNull();
 	});
+
+	it("lista as tasks de uma sprint", async () => {
+		const sprintId = "44444444-4444-4444-4444-444444444444";
+		const created = await drizzleTaskRepository.createWithInitialHistory(
+			baseData({ sprintId }),
+		);
+		await drizzleTaskRepository.createWithInitialHistory(
+			baseData({ externalId: "TASK-2", sprintId: null }),
+		);
+		expect(await drizzleTaskRepository.listBySprint(sprintId)).toEqual([
+			created,
+		]);
+	});
 });

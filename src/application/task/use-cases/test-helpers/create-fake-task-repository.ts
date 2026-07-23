@@ -158,6 +158,9 @@ export function createFakeTaskRepository(): FakeTaskRepository {
 		async listByTeam(teamId) {
 			return tasks.filter((task) => task.teamId === teamId);
 		},
+		async listBySprint(sprintId) {
+			return tasks.filter((task) => task.sprintId === sprintId);
+		},
 		async countByType(typeId) {
 			return tasks.filter((task) => task.typeId === typeId).length;
 		},

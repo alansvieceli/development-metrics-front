@@ -177,6 +177,13 @@ export const drizzleTaskRepository: TaskRepository = {
 		const rows = await db.select().from(tasks).where(eq(tasks.teamId, teamId));
 		return rows.map(toTask);
 	},
+	async listBySprint(sprintId: string) {
+		const rows = await db
+			.select()
+			.from(tasks)
+			.where(eq(tasks.sprintId, sprintId));
+		return rows.map(toTask);
+	},
 	async countByType(typeId: string) {
 		const [result] = await db
 			.select({ count: sql<number>`count(*)::int` })
