@@ -1,6 +1,8 @@
 import { ApplicationError } from "@/application/shared/application-error";
+import type { TagRepository } from "@/application/task/ports/tag-repository";
 import type { TaskRepository } from "@/application/task/ports/task-repository";
 import type { TaskTypeRepository } from "@/application/task/ports/task-type-repository";
+import { validateTagIds } from "@/application/task/validate-tag-ids";
 import { validateTaskReferences } from "@/application/task/validate-task-references";
 import type { TeamAccess } from "@/application/team/contracts/team-access";
 import type { TaskStatus } from "@/domain/task/entities/task";
@@ -14,6 +16,7 @@ export type CreateTaskInput = {
 	status: TaskStatus;
 	dueDate: string;
 	parentTaskId: string | null;
+	tagIds?: string[];
 };
 
 export async function createTask(
@@ -21,6 +24,7 @@ export async function createTask(
 	typeRepository: TaskTypeRepository,
 	teamAccess: TeamAccess,
 	input: CreateTaskInput,
+	tagRepository?: TagRepository,
 ) {
 	const externalId = input.externalId.trim();
 	const description = input.description.trim();
@@ -38,6 +42,9 @@ export async function createTask(
 		externalId,
 		parentTaskId: input.parentTaskId,
 	});
+	if (tagRepository && input.tagIds) {
+		await validateTagIds(tagRepository, input.tagIds);
+	}
 	return repository.createWithInitialHistory({
 		externalId,
 		description,
@@ -47,5 +54,6 @@ export async function createTask(
 		status: input.status,
 		dueDate: input.dueDate,
 		parentTaskId: input.parentTaskId,
+		tagIds: input.tagIds,
 	});
 }

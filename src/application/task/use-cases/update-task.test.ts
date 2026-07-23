@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { createFakeTagRepository } from "./test-helpers/create-fake-tag-repository";
 import { createFakeTaskRepository } from "./test-helpers/create-fake-task-repository";
 import { createFakeTaskTypeRepository } from "./test-helpers/create-fake-task-type-repository";
 import { updateTask } from "./update-task";
@@ -174,5 +175,63 @@ describe("updateTask", () => {
 				parentTaskId: "missing",
 			}),
 		).rejects.toThrow("Task de origem não encontrada");
+	});
+
+	it("substitui as tarjas da task", async () => {
+		const { repository, typeRepository, teamAccess, task, type } =
+			await setup();
+		const tagRepository = createFakeTagRepository();
+		const tag = await tagRepository.create("Cliente Acme", "#2563eb");
+		await updateTask(
+			repository,
+			typeRepository,
+			teamAccess,
+			"team-1",
+			task.id,
+			{
+				externalId: task.externalId,
+				description: task.description,
+				typeId: type.id,
+				assigneeId: null,
+				dueDate: "2026-07-01",
+				parentTaskId: null,
+				tagIds: [tag.id],
+			},
+			tagRepository,
+		);
+		expect(await repository.listTagIdsForTasks([task.id])).toEqual({
+			[task.id]: [tag.id],
+		});
+	});
+
+	it("rejeita mais de 3 tarjas", async () => {
+		const { repository, typeRepository, teamAccess, task, type } =
+			await setup();
+		const tagRepository = createFakeTagRepository();
+		const ids = await Promise.all(
+			["A", "B", "C", "D"].map(async (name) => {
+				const tag = await tagRepository.create(name, "#2563eb");
+				return tag.id;
+			}),
+		);
+		await expect(
+			updateTask(
+				repository,
+				typeRepository,
+				teamAccess,
+				"team-1",
+				task.id,
+				{
+					externalId: task.externalId,
+					description: task.description,
+					typeId: type.id,
+					assigneeId: null,
+					dueDate: "2026-07-01",
+					parentTaskId: null,
+					tagIds: ids,
+				},
+				tagRepository,
+			),
+		).rejects.toThrow("Uma task pode ter no máximo 3 tarjas");
 	});
 });

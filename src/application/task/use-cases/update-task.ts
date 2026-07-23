@@ -1,7 +1,9 @@
 import { ApplicationError } from "@/application/shared/application-error";
 import { parseDateOnly } from "@/application/shared/validation";
+import type { TagRepository } from "@/application/task/ports/tag-repository";
 import type { TaskRepository } from "@/application/task/ports/task-repository";
 import type { TaskTypeRepository } from "@/application/task/ports/task-type-repository";
+import { validateTagIds } from "@/application/task/validate-tag-ids";
 import type { TeamAccess } from "@/application/team/contracts/team-access";
 
 export type UpdateTaskInput = {
@@ -11,6 +13,7 @@ export type UpdateTaskInput = {
 	assigneeId: string | null;
 	dueDate: string;
 	parentTaskId: string | null;
+	tagIds?: string[];
 };
 
 export async function updateTask(
@@ -20,6 +23,7 @@ export async function updateTask(
 	teamId: string,
 	taskId: string,
 	input: UpdateTaskInput,
+	tagRepository?: TagRepository,
 ) {
 	const externalId = input.externalId.trim();
 	const description = input.description.trim();
@@ -57,6 +61,9 @@ export async function updateTask(
 			throw new ApplicationError("Task de origem não encontrada");
 		}
 	}
+	if (tagRepository && input.tagIds) {
+		await validateTagIds(tagRepository, input.tagIds);
+	}
 	const existing = await repository.findByExternalId(task.teamId, externalId);
 	if (existing && existing.id !== taskId) {
 		throw new ApplicationError(
@@ -70,5 +77,6 @@ export async function updateTask(
 		assigneeId: input.assigneeId,
 		dueDate: input.dueDate,
 		parentTaskId: input.parentTaskId,
+		tagIds: input.tagIds,
 	});
 }

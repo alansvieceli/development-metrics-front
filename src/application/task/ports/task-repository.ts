@@ -10,6 +10,7 @@ export type CreateTaskData = {
 	status: TaskStatus;
 	dueDate: string;
 	parentTaskId: string | null;
+	tagIds?: string[];
 };
 
 export type UpdateTaskData = {
@@ -19,6 +20,7 @@ export type UpdateTaskData = {
 	assigneeId: string | null;
 	dueDate: string;
 	parentTaskId: string | null;
+	tagIds?: string[];
 };
 
 export type TaskRepository = TaskUsageQuery & {
@@ -38,4 +40,5 @@ export type TaskRepository = TaskUsageQuery & {
 	listUsedTypeIds(): Promise<string[]>;
 	countByTag(tagId: string): Promise<number>;
 	listUsedTagIds(): Promise<string[]>;
+	listTagIdsForTasks(taskIds: string[]): Promise<Record<string, string[]>>;
 };

@@ -53,6 +53,11 @@ export function createFakeTaskRepository(): FakeTaskRepository {
 				toStatus: task.status,
 				changedAt: new Date(),
 			});
+			if (data.tagIds) {
+				taskTagIds.push(
+					...data.tagIds.map((tagId) => ({ taskId: task.id, tagId })),
+				);
+			}
 			return task;
 		},
 		async createWithExplicitHistory(data, history) {
@@ -123,6 +128,12 @@ export function createFakeTaskRepository(): FakeTaskRepository {
 			const task = tasks.find((item) => item.id === taskId);
 			if (!task) throw new ApplicationError("Task não encontrada");
 			Object.assign(task, data, { updatedAt: new Date() });
+			if (data.tagIds) {
+				const remaining = taskTagIds.filter((a) => a.taskId !== taskId);
+				remaining.push(...data.tagIds.map((tagId) => ({ taskId, tagId })));
+				taskTagIds.length = 0;
+				taskTagIds.push(...remaining);
+			}
 			return task;
 		},
 		async delete(taskId) {
@@ -159,6 +170,15 @@ export function createFakeTaskRepository(): FakeTaskRepository {
 		},
 		async listUsedTagIds() {
 			return [...new Set(taskTagIds.map((a) => a.tagId))];
+		},
+		async listTagIdsForTasks(taskIds) {
+			const result: Record<string, string[]> = {};
+			for (const taskId of taskIds) {
+				result[taskId] = taskTagIds
+					.filter((a) => a.taskId === taskId)
+					.map((a) => a.tagId);
+			}
+			return result;
 		},
 	};
 }
