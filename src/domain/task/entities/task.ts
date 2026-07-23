@@ -21,6 +21,7 @@ export type Task = {
 	blocked: boolean;
 	dueDate: string;
 	parentTaskId: string | null;
+	sprintId: string | null;
 	createdAt: Date;
 	updatedAt: Date;
 };

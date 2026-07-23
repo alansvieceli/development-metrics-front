@@ -40,6 +40,9 @@ export const tasks = pgTable(
 			(): AnyPgColumn => tasks.id,
 			{ onDelete: "set null" },
 		),
+		// sprintId sem FK: contextos não se acoplam a nível de schema (mesmo
+		// padrão de teamId). Sprint pode não existir ainda (feature opcional).
+		sprintId: uuid("sprint_id"),
 		createdAt: timestamp("created_at").notNull().defaultNow(),
 		updatedAt: timestamp("updated_at")
 			.notNull()
@@ -60,6 +63,7 @@ export const tasks = pgTable(
 		index("tasks_team_id_status_idx").on(table.teamId, table.status),
 		index("tasks_team_id_due_date_idx").on(table.teamId, table.dueDate),
 		index("tasks_parent_task_id_idx").on(table.parentTaskId),
+		index("tasks_team_id_sprint_id_idx").on(table.teamId, table.sprintId),
 	],
 );
 
