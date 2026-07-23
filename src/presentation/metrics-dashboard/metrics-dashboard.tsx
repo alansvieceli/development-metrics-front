@@ -60,7 +60,6 @@ export function MetricsDashboard({
 					>
 						Por desenvolvedor
 					</Link>
-					<MetricInfoButton />
 					<PeriodFilter
 						teamId={teamId}
 						saveMetricsPeriodPreferenceAction={
@@ -73,6 +72,7 @@ export function MetricsDashboard({
 						}
 						customEnd={periodType === "CUSTOM" ? current.periodEnd : undefined}
 					/>
+					<MetricInfoButton />
 				</div>
 			</header>
 			<div className="grid items-stretch gap-6 xl:grid-cols-2">

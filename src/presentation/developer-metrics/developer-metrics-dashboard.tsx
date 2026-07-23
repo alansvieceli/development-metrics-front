@@ -95,7 +95,6 @@ export function DeveloperMetricsDashboard({
 						members={members}
 						selectedMemberId={selectedMember.id}
 					/>
-					<MetricInfoButton />
 					<PeriodFilter
 						teamId={teamId}
 						saveMetricsPeriodPreferenceAction={
@@ -108,6 +107,7 @@ export function DeveloperMetricsDashboard({
 						}
 						customEnd={periodType === "CUSTOM" ? current.periodEnd : undefined}
 					/>
+					<MetricInfoButton />
 				</div>
 			</header>
 
