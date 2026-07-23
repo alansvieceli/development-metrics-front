@@ -6,12 +6,14 @@ import type {
 	HistoricalPeriodMetrics,
 	PeriodMetrics,
 } from "@/application/metrics/use-cases/get-metrics-for-period";
+import type { Sprint } from "@/domain/sprint/entities/sprint";
 import type { Tag } from "@/domain/task/entities/tag";
 import { ChartsSection } from "./charts/charts-section";
 import { CurrentStatusSection } from "./current-status-section";
 import { FlowTimeSection } from "./flow-time-section";
 import { formatPeriodRangeLabel } from "./format-period-label";
 import { MetricInfoButton } from "./metric-info-button";
+import { MetricsSprintFilter } from "./metrics-sprint-filter";
 import { PeriodFilter } from "./period-filter";
 import { TagFilter } from "./tag-filter";
 import { WeekResultSection } from "./week-result-section";
@@ -28,6 +30,7 @@ type MetricsDashboardProps = {
 	history: HistoricalPeriodMetrics[];
 	tags: Tag[];
 	selectedTagIds: string[];
+	sprints: Sprint[];
 };
 
 export function MetricsDashboard({
@@ -39,6 +42,7 @@ export function MetricsDashboard({
 	history,
 	tags,
 	selectedTagIds,
+	sprints,
 }: MetricsDashboardProps) {
 	return (
 		<div className="flex flex-1 flex-col gap-8 px-4 py-6 sm:px-6 lg:px-8">
@@ -66,17 +70,24 @@ export function MetricsDashboard({
 					>
 						Por desenvolvedor
 					</Link>
-					<PeriodFilter
-						teamId={teamId}
-						saveMetricsPeriodPreferenceAction={
-							saveMetricsPeriodPreferenceAction
+					<MetricsSprintFilter
+						sprints={sprints}
+						periodFilter={
+							<PeriodFilter
+								teamId={teamId}
+								saveMetricsPeriodPreferenceAction={
+									saveMetricsPeriodPreferenceAction
+								}
+								periodType={periodType}
+								referenceDate={referenceDate}
+								customStart={
+									periodType === "CUSTOM" ? current.periodStart : undefined
+								}
+								customEnd={
+									periodType === "CUSTOM" ? current.periodEnd : undefined
+								}
+							/>
 						}
-						periodType={periodType}
-						referenceDate={referenceDate}
-						customStart={
-							periodType === "CUSTOM" ? current.periodStart : undefined
-						}
-						customEnd={periodType === "CUSTOM" ? current.periodEnd : undefined}
 					/>
 					<TagFilter tags={tags} selectedTagIds={selectedTagIds} />
 					<MetricInfoButton />
