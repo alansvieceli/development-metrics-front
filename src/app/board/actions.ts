@@ -76,7 +76,19 @@ export type CreateHistoricalTaskActionInput = {
 	assigneeId: string | null;
 	dueDate: string;
 	steps: { status: TaskStatus; date: string }[];
+	tagIds?: string[];
 };
+
+function validateTagIdsInput(
+	tagIds: unknown,
+): asserts tagIds is string[] | undefined {
+	if (
+		tagIds !== undefined &&
+		(!Array.isArray(tagIds) || tagIds.some((tagId) => !isUuid(tagId)))
+	) {
+		throw new ApplicationError("Tarjas inválidas");
+	}
+}
 
 function validateSteps(
 	steps: unknown,
@@ -109,6 +121,7 @@ export async function createHistoricalTaskAction(
 		if (!parseDateOnly(input.dueDate))
 			throw new ApplicationError("Data prevista inválida");
 		validateSteps(input.steps);
+		validateTagIdsInput(input.tagIds);
 		const teamId = await getCurrentTeamId();
 		await createTaskUseCases().createHistoricalTask({
 			externalId: input.externalId,
@@ -118,6 +131,7 @@ export async function createHistoricalTaskAction(
 			teamId,
 			dueDate: input.dueDate,
 			steps: input.steps,
+			tagIds: input.tagIds,
 		});
 	});
 }

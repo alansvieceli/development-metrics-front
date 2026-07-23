@@ -39,6 +39,7 @@ export function createTaskUseCases() {
 				drizzleTaskTypeRepository,
 				drizzleTeamRepository,
 				input,
+				drizzleTagRepository,
 			),
 		updateTask: (teamId: string, taskId: string, input: UpdateTaskInput) =>
 			updateTask(

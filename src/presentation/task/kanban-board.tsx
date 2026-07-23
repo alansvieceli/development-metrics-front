@@ -97,6 +97,7 @@ export function KanbanBoard({
 					<HistoricalTaskFormModal
 						taskTypes={taskTypes}
 						members={members}
+						tags={tags}
 						createHistoricalTaskAction={createHistoricalTaskAction}
 					/>
 					<TaskFormModal

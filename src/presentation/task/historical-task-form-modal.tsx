@@ -5,10 +5,12 @@ import type { FormEvent } from "react";
 import { useState } from "react";
 import type { CreateHistoricalTaskActionInput } from "@/app/board/actions";
 import type { ActionState } from "@/application/shared/action-state";
+import type { Tag } from "@/domain/task/entities/tag";
 import type { TaskStatus } from "@/domain/task/entities/task";
 import type { TaskType } from "@/domain/task/entities/task-type";
 import type { Member } from "@/domain/team/entities/member";
 import { Modal } from "@/presentation/shared/modal";
+import { TagCombobox } from "@/presentation/shared/tag-combobox";
 import {
 	STATUS_LABELS,
 	STATUS_ORDER,
@@ -19,6 +21,7 @@ type Step = { status: TaskStatus; date: string };
 type HistoricalTaskFormModalProps = {
 	taskTypes: TaskType[];
 	members: Member[];
+	tags: Tag[];
 	createHistoricalTaskAction: (
 		input: CreateHistoricalTaskActionInput,
 	) => Promise<ActionState>;
@@ -27,12 +30,14 @@ type HistoricalTaskFormModalProps = {
 export function HistoricalTaskFormModal({
 	taskTypes,
 	members,
+	tags,
 	createHistoricalTaskAction,
 }: HistoricalTaskFormModalProps) {
 	const [open, setOpen] = useState(false);
 	const [pending, setPending] = useState(false);
 	const [error, setError] = useState<string | null>(null);
 	const [steps, setSteps] = useState<Step[]>([{ status: "TODO", date: "" }]);
+	const [tagIds, setTagIds] = useState<string[]>([]);
 
 	function updateStep(index: number, patch: Partial<Step>) {
 		setSteps((current) =>
@@ -60,6 +65,7 @@ export function HistoricalTaskFormModal({
 				assigneeId,
 				dueDate,
 				steps,
+				tagIds,
 			});
 			if (result.error) {
 				setError(result.error);
@@ -67,6 +73,7 @@ export function HistoricalTaskFormModal({
 			}
 			setOpen(false);
 			setSteps([{ status: "TODO", date: "" }]);
+			setTagIds([]);
 		} catch {
 			setError("Não foi possível concluir a operação");
 		} finally {
@@ -219,6 +226,14 @@ export function HistoricalTaskFormModal({
 								+ Adicionar etapa
 							</button>
 						</div>
+						<TagCombobox
+							id="hist-tags"
+							label="Tarjas"
+							catalog={tags}
+							selectedIds={tagIds}
+							max={3}
+							onChange={setTagIds}
+						/>
 						{error ? <p role="alert">{error}</p> : null}
 						<button
 							type="submit"
