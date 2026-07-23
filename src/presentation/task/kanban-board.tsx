@@ -3,12 +3,14 @@ import type { ActionState } from "@/application/shared/action-state";
 import type { CreateTaskInput } from "@/application/task/use-cases/create-task";
 import type { TasksByStatus } from "@/application/task/use-cases/list-tasks-by-team";
 import type { UpdateTaskInput } from "@/application/task/use-cases/update-task";
+import type { Sprint } from "@/domain/sprint/entities/sprint";
 import type { Tag } from "@/domain/task/entities/tag";
 import type { Task, TaskStatus } from "@/domain/task/entities/task";
 import type { TaskType } from "@/domain/task/entities/task-type";
 import type { Member } from "@/domain/team/entities/member";
 import { BoardSummary } from "@/presentation/task/board-summary";
 import { HistoricalTaskFormModal } from "@/presentation/task/historical-task-form-modal";
+import { SprintBoardFilter } from "@/presentation/task/sprint-board-filter";
 import { TaskCard } from "@/presentation/task/task-card";
 import { TaskFormModal } from "@/presentation/task/task-form-modal";
 import {
@@ -21,6 +23,7 @@ type KanbanBoardProps = {
 	completedTaskLimit: number;
 	taskTypes: TaskType[];
 	tags: Tag[];
+	sprints: Sprint[];
 	members: Member[];
 	createTaskAction: (
 		input: Omit<CreateTaskInput, "teamId">,
@@ -45,6 +48,7 @@ export function KanbanBoard({
 	completedTaskLimit,
 	taskTypes,
 	tags,
+	sprints,
 	members,
 	createTaskAction,
 	createHistoricalTaskAction,
@@ -94,6 +98,7 @@ export function KanbanBoard({
 					<BoardSummary tasksByStatus={tasksByStatus} members={members} />
 				</div>
 				<div className="flex items-center gap-2">
+					<SprintBoardFilter sprints={sprints} />
 					<HistoricalTaskFormModal
 						taskTypes={taskTypes}
 						members={members}
@@ -106,6 +111,7 @@ export function KanbanBoard({
 						members={members}
 						teamTasks={teamTasks}
 						tags={tags}
+						sprints={sprints}
 						createTaskAction={createTaskAction}
 					/>
 				</div>
@@ -133,6 +139,7 @@ export function KanbanBoard({
 								}
 								taskTypes={taskTypes}
 								tags={tags}
+								sprints={sprints}
 								members={members}
 								teamTasks={teamTasks}
 								updateTaskAction={updateTaskAction}

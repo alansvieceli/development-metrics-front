@@ -1,6 +1,7 @@
 import type { ActionState } from "@/application/shared/action-state";
 import type { TaskWithStatusSince } from "@/application/task/use-cases/list-tasks-by-team";
 import type { UpdateTaskInput } from "@/application/task/use-cases/update-task";
+import type { Sprint } from "@/domain/sprint/entities/sprint";
 import type { Tag } from "@/domain/task/entities/tag";
 import type { TaskStatus } from "@/domain/task/entities/task";
 import type { TaskType } from "@/domain/task/entities/task-type";
@@ -18,6 +19,7 @@ type TaskCardProps = {
 	tags: Tag[];
 	members: Member[];
 	teamTasks: TeamTaskOption[];
+	sprints: Sprint[];
 	updateTaskAction: (
 		taskId: string,
 		input: UpdateTaskInput,
@@ -65,6 +67,7 @@ export function TaskCard({
 	tags,
 	members,
 	teamTasks,
+	sprints,
 	updateTaskAction,
 	deleteTaskAction,
 	moveTaskAction,
@@ -85,6 +88,7 @@ export function TaskCard({
 					members={members}
 					teamTasks={teamTasks}
 					tags={tags}
+					sprints={sprints}
 					initialTagIds={task.tags.map((tag) => tag.id)}
 					updateTaskAction={updateTaskAction}
 					deleteTaskAction={deleteTaskAction}
