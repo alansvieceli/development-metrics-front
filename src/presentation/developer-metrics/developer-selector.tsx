@@ -25,7 +25,7 @@ export function DeveloperSelector({
 				params.set("developer", event.target.value);
 				router.push(`${pathname}?${params.toString()}`);
 			}}
-			className="h-9 w-44 cursor-pointer truncate rounded-lg border border-(--border) bg-(--background) px-3"
+			className="h-9 w-44 shrink-0 cursor-pointer truncate rounded-lg border border-(--border) bg-(--background) px-3"
 		>
 			{members.map((member) => (
 				<option key={member.id} value={member.id}>

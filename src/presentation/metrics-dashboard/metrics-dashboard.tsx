@@ -53,10 +53,10 @@ export function MetricsDashboard({
 						</span>
 					</div>
 				</div>
-				<div className="flex flex-wrap items-center gap-2 self-start rounded-xl border border-(--border) bg-(--surface) p-2 lg:self-auto">
+				<div className="flex flex-nowrap items-center gap-2 self-start overflow-x-auto rounded-xl border border-(--border) bg-(--surface) p-2 lg:self-auto">
 					<Link
 						href="/metrics/developers"
-						className="flex h-9 items-center rounded-lg border border-(--border) px-3 text-sm transition-colors hover:bg-white/10"
+						className="flex h-9 shrink-0 items-center rounded-lg border border-(--border) px-3 text-sm whitespace-nowrap transition-colors hover:bg-white/10"
 					>
 						Por desenvolvedor
 					</Link>

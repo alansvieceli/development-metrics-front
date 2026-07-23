@@ -66,7 +66,7 @@ export function MetricInfoButton() {
 				type="button"
 				aria-label="O que significa cada métrica"
 				onClick={() => setOpen(true)}
-				className="flex h-9 w-9 cursor-pointer items-center justify-center rounded-lg border border-(--border) opacity-70 transition-colors hover:bg-white/10 hover:opacity-100"
+				className="flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-(--border) opacity-70 transition-colors hover:bg-white/10 hover:opacity-100"
 			>
 				<Info size={16} aria-hidden="true" />
 			</button>

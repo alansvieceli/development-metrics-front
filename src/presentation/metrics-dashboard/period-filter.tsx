@@ -75,8 +75,8 @@ export function PeriodFilter({
 	}
 
 	return (
-		<div className="flex flex-wrap items-center gap-2">
-			<div className="flex h-9 rounded-lg border border-(--border)">
+		<div className="flex flex-nowrap items-center gap-2">
+			<div className="flex h-9 shrink-0 rounded-lg border border-(--border)">
 				<button
 					type="button"
 					onClick={() => goTo("WEEK", referenceDate)}
@@ -118,7 +118,7 @@ export function PeriodFilter({
 				type="button"
 				onClick={() => setCustomModalOpen(true)}
 				aria-pressed={periodType === "CUSTOM"}
-				className={`flex h-9 cursor-pointer items-center rounded-lg border border-(--border) px-3 text-sm transition-colors ${
+				className={`flex h-9 shrink-0 cursor-pointer items-center rounded-lg border border-(--border) px-3 text-sm whitespace-nowrap transition-colors ${
 					periodType === "CUSTOM"
 						? "bg-(--accent) text-(--accent-fg)"
 						: "hover:bg-white/10"
@@ -130,7 +130,7 @@ export function PeriodFilter({
 				type="button"
 				disabled={periodType === "CUSTOM"}
 				onClick={() => periodType !== "CUSTOM" && goTo(periodType, new Date())}
-				className="flex h-9 cursor-pointer items-center rounded-lg border border-(--border) px-3 text-sm transition-colors hover:bg-white/10 disabled:pointer-events-none disabled:opacity-40"
+				className="flex h-9 shrink-0 cursor-pointer items-center rounded-lg border border-(--border) px-3 text-sm whitespace-nowrap transition-colors hover:bg-white/10 disabled:pointer-events-none disabled:opacity-40"
 			>
 				Período atual
 			</button>
@@ -142,7 +142,7 @@ export function PeriodFilter({
 					periodType !== "CUSTOM" &&
 					goTo(periodType, shiftReferenceDate(periodType, referenceDate, -1))
 				}
-				className="flex h-9 w-10 cursor-pointer items-center justify-center rounded-lg border border-(--border) transition-colors hover:bg-white/10 disabled:pointer-events-none disabled:opacity-40"
+				className="flex h-9 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-(--border) transition-colors hover:bg-white/10 disabled:pointer-events-none disabled:opacity-40"
 			>
 				‹
 			</button>
@@ -154,7 +154,7 @@ export function PeriodFilter({
 					periodType !== "CUSTOM" &&
 					goTo(periodType, shiftReferenceDate(periodType, referenceDate, 1))
 				}
-				className="flex h-9 w-10 cursor-pointer items-center justify-center rounded-lg border border-(--border) transition-colors hover:bg-white/10 disabled:pointer-events-none disabled:opacity-40"
+				className="flex h-9 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-(--border) transition-colors hover:bg-white/10 disabled:pointer-events-none disabled:opacity-40"
 			>
 				›
 			</button>

@@ -71,15 +71,13 @@ export function DeveloperMetricsDashboard({
 
 	return (
 		<div className="flex flex-1 flex-col gap-8 px-4 py-6 sm:px-6 lg:px-8">
-			<header className="flex flex-col gap-5 border-b border-(--border) pb-6 xl:flex-row xl:items-end xl:justify-between">
+			<header className="flex flex-col gap-5 border-b border-(--border) pb-6 lg:flex-row lg:items-end lg:justify-between">
 				<div className="min-w-0">
 					<p className="mb-2 font-mono text-xs font-semibold tracking-[0.2em] text-(--accent) uppercase">
 						Visão individual
 					</p>
 					<div className="flex flex-wrap items-center gap-3">
-						<h1 className="text-2xl font-semibold sm:text-3xl">
-							Métricas de {selectedMember.name}
-						</h1>
+						<h1 className="text-2xl font-semibold sm:text-3xl">Métricas</h1>
 						<span className="flex items-center gap-2 rounded-lg border border-(--border) bg-(--surface) px-3 py-1.5 font-mono text-sm font-semibold sm:text-base">
 							<CalendarDays
 								size={16}
@@ -90,7 +88,7 @@ export function DeveloperMetricsDashboard({
 						</span>
 					</div>
 				</div>
-				<div className="flex flex-wrap items-center gap-2 self-start rounded-xl border border-(--border) bg-(--surface) p-2 xl:self-auto">
+				<div className="flex flex-nowrap items-center gap-2 self-start overflow-x-auto rounded-xl border border-(--border) bg-(--surface) p-2 lg:self-auto">
 					<DeveloperSelector
 						members={members}
 						selectedMemberId={selectedMember.id}
