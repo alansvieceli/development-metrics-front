@@ -2,6 +2,7 @@ import {
 	and,
 	asc,
 	eq,
+	exists,
 	gte,
 	inArray,
 	isNotNull,
@@ -22,6 +23,7 @@ import { db } from "@/infrastructure/db/client";
 import {
 	taskBlockedPeriods,
 	taskStatusChanges,
+	taskTags,
 	tasks,
 	taskTypes,
 } from "@/infrastructure/task/drizzle/schema";
@@ -36,13 +38,27 @@ export function createDrizzleMetricsQueryPort(
 	database: typeof db = db,
 ): MetricsQueryPort {
 	return {
-		async loadSnapshot(teamId, periodStart, periodEnd, assigneeId) {
+		async loadSnapshot(teamId, periodStart, periodEnd, assigneeId, tagIds) {
 			const taskAssigneeCondition = assigneeId
 				? eq(tasks.assigneeId, assigneeId)
 				: undefined;
 			const parentAssigneeCondition = assigneeId
 				? eq(parentTasks.assigneeId, assigneeId)
 				: undefined;
+			const tagCondition =
+				tagIds && tagIds.length > 0
+					? exists(
+							database
+								.select({ one: sql`1` })
+								.from(taskTags)
+								.where(
+									and(
+										eq(taskTags.taskId, tasks.id),
+										inArray(taskTags.tagId, tagIds),
+									),
+								),
+						)
+					: undefined;
 			const [completionEvents, dueDateRows, currentWipRows, bugRows] =
 				await Promise.all([
 					database
@@ -60,6 +76,7 @@ export function createDrizzleMetricsQueryPort(
 							and(
 								eq(tasks.teamId, teamId),
 								taskAssigneeCondition,
+								tagCondition,
 								eq(taskStatusChanges.toStatus, "DONE"),
 								gte(taskStatusChanges.changedAt, periodStart),
 								lt(taskStatusChanges.changedAt, periodEnd),
@@ -86,6 +103,7 @@ export function createDrizzleMetricsQueryPort(
 							and(
 								eq(tasks.teamId, teamId),
 								taskAssigneeCondition,
+								tagCondition,
 								isNotNull(tasks.dueDate),
 								gte(tasks.dueDate, toDateOnly(periodStart)),
 								lt(tasks.dueDate, toDateOnly(periodEnd)),
@@ -128,6 +146,7 @@ export function createDrizzleMetricsQueryPort(
 							and(
 								eq(tasks.teamId, teamId),
 								taskAssigneeCondition,
+								tagCondition,
 								notInArray(tasks.status, ["TODO", "DONE"]),
 							),
 						)
@@ -147,6 +166,7 @@ export function createDrizzleMetricsQueryPort(
 							and(
 								eq(tasks.teamId, teamId),
 								parentAssigneeCondition,
+								tagCondition,
 								eq(taskTypes.isBug, true),
 								gte(tasks.createdAt, periodStart),
 								lt(tasks.createdAt, periodEnd),

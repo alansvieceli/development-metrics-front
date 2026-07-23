@@ -7,9 +7,11 @@ import { db } from "@/infrastructure/db/client";
 import {
 	taskBlockedPeriods,
 	taskStatusChanges,
+	taskTags,
 	tasks,
 	taskTypes,
 } from "@/infrastructure/task/drizzle/schema";
+import { drizzleTagRepository } from "@/infrastructure/task/drizzle-tag-repository";
 import { drizzleTaskTypeRepository } from "@/infrastructure/task/drizzle-task-type-repository";
 import { getTestDatabaseUrl } from "../../../scripts/test-database-url";
 import {
@@ -348,6 +350,116 @@ describe("drizzleMetricsQueryPort", () => {
 			expect(queryCount).toBeLessThanOrEqual(6);
 		} finally {
 			await client.end();
+		}
+	});
+
+	it("filtra tasks concluídas por qualquer uma das tarjas selecionadas (OR)", async () => {
+		const tagA = await drizzleTagRepository.create("Tarja A", "#2563eb");
+		const tagB = await drizzleTagRepository.create("Tarja B", "#dc2626");
+		const taskWithA = await insertTask({ externalId: "TASK-A", status: "DONE" });
+		const taskWithB = await insertTask({ externalId: "TASK-B", status: "DONE" });
+		const taskWithoutTag = await insertTask({
+			externalId: "TASK-C",
+			status: "DONE",
+		});
+		await db.insert(taskTags).values([
+			{ taskId: taskWithA.id, tagId: tagA.id },
+			{ taskId: taskWithB.id, tagId: tagB.id },
+		]);
+		await db.insert(taskStatusChanges).values([
+			{ taskId: taskWithA.id, fromStatus: null, toStatus: "DONE" },
+			{ taskId: taskWithB.id, fromStatus: null, toStatus: "DONE" },
+			{ taskId: taskWithoutTag.id, fromStatus: null, toStatus: "DONE" },
+		]);
+
+		try {
+			const periodStart = new Date(Date.now() - 24 * 60 * 60 * 1000);
+			const periodEnd = new Date(Date.now() + 24 * 60 * 60 * 1000);
+			const snapshot = await drizzleMetricsQueryPort.loadSnapshot(
+				TEAM_ID,
+				periodStart,
+				periodEnd,
+				undefined,
+				[tagA.id, tagB.id],
+			);
+
+			expect(
+				snapshot.completionEvents.map((event) => event.taskId).sort(),
+			).toEqual([taskWithA.id, taskWithB.id].sort());
+		} finally {
+			await resetTasksTable();
+			await drizzleTagRepository.delete(tagA.id);
+			await drizzleTagRepository.delete(tagB.id);
+		}
+	});
+
+	it("sem tarja selecionada, não filtra nada", async () => {
+		const task = await insertTask({ externalId: "TASK-A", status: "DONE" });
+		await db.insert(taskStatusChanges).values({
+			taskId: task.id,
+			fromStatus: null,
+			toStatus: "DONE",
+		});
+
+		const periodStart = new Date(Date.now() - 24 * 60 * 60 * 1000);
+		const periodEnd = new Date(Date.now() + 24 * 60 * 60 * 1000);
+		const snapshot = await drizzleMetricsQueryPort.loadSnapshot(
+			TEAM_ID,
+			periodStart,
+			periodEnd,
+			undefined,
+			[],
+		);
+
+		expect(snapshot.completionEvents).toHaveLength(1);
+	});
+
+	it("filtra bugs abertos pela tarja do próprio bug, não da task de origem", async () => {
+		const [bugType] = await db
+			.insert(taskTypes)
+			.values({ name: "Bug-tarja", color: "#dc2626", isBug: true })
+			.returning();
+		const tagOnParent = await drizzleTagRepository.create(
+			"Na origem",
+			"#2563eb",
+		);
+		const tagOnBug = await drizzleTagRepository.create("No bug", "#dc2626");
+		try {
+			const parent = await insertTask({ externalId: "TASK-PAI" });
+			const bug = await insertTask({
+				externalId: "TASK-BUG",
+				typeId: bugType.id,
+				parentTaskId: parent.id,
+			});
+			await db.insert(taskTags).values([
+				{ taskId: parent.id, tagId: tagOnParent.id },
+				{ taskId: bug.id, tagId: tagOnBug.id },
+			]);
+
+			const start = new Date("2026-07-01T00:00:00Z");
+			const end = new Date("2026-08-01T00:00:00Z");
+			const filteredByBugTag = await drizzleMetricsQueryPort.loadSnapshot(
+				TEAM_ID,
+				start,
+				end,
+				undefined,
+				[tagOnBug.id],
+			);
+			const filteredByParentTag = await drizzleMetricsQueryPort.loadSnapshot(
+				TEAM_ID,
+				start,
+				end,
+				undefined,
+				[tagOnParent.id],
+			);
+
+			expect(filteredByBugTag.bugEvents).toHaveLength(1);
+			expect(filteredByParentTag.bugEvents).toHaveLength(0);
+		} finally {
+			await resetTasksTable();
+			await db.delete(taskTypes).where(eq(taskTypes.id, bugType.id));
+			await drizzleTagRepository.delete(tagOnParent.id);
+			await drizzleTagRepository.delete(tagOnBug.id);
 		}
 	});
 });

@@ -74,5 +74,6 @@ export type MetricsQueryPort = {
 		periodStart: Date,
 		periodEnd: Date,
 		assigneeId?: string,
+		tagIds?: string[],
 	): Promise<MetricsSnapshot>;
 };
