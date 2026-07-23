@@ -11,6 +11,8 @@ import { listTags } from "@/application/task/use-cases/list-tags";
 import { listTaskTypes } from "@/application/task/use-cases/list-task-types";
 import { listTasksByTeam } from "@/application/task/use-cases/list-tasks-by-team";
 import { moveTask } from "@/application/task/use-cases/move-task";
+import type { CardImportPreview } from "@/application/task/use-cases/preview-card-import";
+import { previewCardImport } from "@/application/task/use-cases/preview-card-import";
 import { toggleBlocked } from "@/application/task/use-cases/toggle-blocked";
 import { updateTag } from "@/application/task/use-cases/update-tag";
 import type { UpdateTaskInput } from "@/application/task/use-cases/update-task";
@@ -18,6 +20,7 @@ import { updateTask } from "@/application/task/use-cases/update-task";
 import { updateTaskType } from "@/application/task/use-cases/update-task-type";
 import type { TaskStatus } from "@/domain/task/entities/task";
 import { drizzleSprintRepository } from "@/infrastructure/sprint/drizzle-sprint-repository";
+import { businessmapCardProvider } from "@/infrastructure/task/businessmap-card-provider";
 import { drizzleTagRepository } from "@/infrastructure/task/drizzle-tag-repository";
 import { drizzleTaskHistoryRepository } from "@/infrastructure/task/drizzle-task-history-repository";
 import { drizzleTaskRepository } from "@/infrastructure/task/drizzle-task-repository";
@@ -41,6 +44,35 @@ export function createTaskUseCases() {
 				drizzleTaskTypeRepository,
 				drizzleTeamRepository,
 				input,
+				drizzleTagRepository,
+			),
+		previewCardImport: (teamId: string, cardId: string) =>
+			previewCardImport(
+				businessmapCardProvider,
+				drizzleTeamRepository,
+				teamId,
+				cardId,
+			),
+		importCard: (
+			teamId: string,
+			preview: CardImportPreview,
+			typeId: string,
+			tagIds?: string[],
+		) =>
+			createHistoricalTask(
+				drizzleTaskRepository,
+				drizzleTaskTypeRepository,
+				drizzleTeamRepository,
+				{
+					externalId: preview.externalId,
+					description: preview.description,
+					typeId,
+					assigneeId: preview.resolvedAssigneeId,
+					teamId,
+					dueDate: preview.dueDate,
+					steps: preview.steps,
+					tagIds,
+				},
 				drizzleTagRepository,
 			),
 		updateTask: (teamId: string, taskId: string, input: UpdateTaskInput) =>
