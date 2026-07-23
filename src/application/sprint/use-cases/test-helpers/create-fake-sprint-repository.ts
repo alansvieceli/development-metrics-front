@@ -1,3 +1,4 @@
+import { ApplicationError } from "@/application/shared/application-error";
 import type {
 	CreateSprintData,
 	SprintRepository,
@@ -26,6 +27,12 @@ export function createFakeSprintRepository(): SprintRepository {
 		},
 		async findById(id) {
 			return sprints.find((sprint) => sprint.id === id) ?? null;
+		},
+		async updateStatus(sprintId, status) {
+			const sprint = sprints.find((item) => item.id === sprintId);
+			if (!sprint) throw new ApplicationError("Sprint não encontrada");
+			sprint.status = status;
+			return sprint;
 		},
 	};
 }

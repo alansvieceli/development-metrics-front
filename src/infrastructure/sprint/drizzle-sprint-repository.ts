@@ -31,4 +31,13 @@ export const drizzleSprintRepository: SprintRepository = {
 		const [row] = await db.select().from(sprints).where(eq(sprints.id, id));
 		return row ? toSprint(row) : null;
 	},
+	async updateStatus(id, status) {
+		const [row] = await db
+			.update(sprints)
+			.set({ status })
+			.where(eq(sprints.id, id))
+			.returning();
+		if (!row) throw new Error("Sprint não encontrada");
+		return toSprint(row);
+	},
 };

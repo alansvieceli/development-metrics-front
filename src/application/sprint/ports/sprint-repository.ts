@@ -1,4 +1,4 @@
-import type { Sprint } from "@/domain/sprint/entities/sprint";
+import type { Sprint, SprintStatus } from "@/domain/sprint/entities/sprint";
 
 export type CreateSprintData = {
 	piId: string;
@@ -13,4 +13,5 @@ export type SprintRepository = {
 	listByPi(piId: string): Promise<Sprint[]>;
 	listByTeam(teamId: string): Promise<Sprint[]>;
 	findById(id: string): Promise<Sprint | null>;
+	updateStatus(sprintId: string, status: SprintStatus): Promise<Sprint>;
 };

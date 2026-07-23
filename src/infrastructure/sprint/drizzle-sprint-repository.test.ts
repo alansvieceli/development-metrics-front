@@ -75,4 +75,24 @@ describe("drizzleSprintRepository", () => {
 			.where(eq(sprints.id, created.id));
 		expect(row).toBeUndefined();
 	});
+
+	it("atualiza o status da sprint", async () => {
+		const pi = await seedPi();
+		try {
+			const created = await drizzleSprintRepository.create({
+				piId: pi.id,
+				teamId,
+				name: "Sprint 1",
+				startDate: "2026-07-01",
+				endDate: "2026-07-14",
+			});
+			const updated = await drizzleSprintRepository.updateStatus(
+				created.id,
+				"ACTIVE",
+			);
+			expect(updated.status).toBe("ACTIVE");
+		} finally {
+			await deletePi(pi.id);
+		}
+	});
 });
