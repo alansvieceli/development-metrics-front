@@ -45,6 +45,12 @@ function formatDueDate(dueDate: string): string {
 	return `${day}/${month}`;
 }
 
+function formatDate(date: Date): string {
+	const day = String(date.getDate()).padStart(2, "0");
+	const month = String(date.getMonth() + 1).padStart(2, "0");
+	return `${day}/${month}`;
+}
+
 function dueDateClassName(status: ReturnType<typeof getDueDateStatus>): string {
 	if (status === "warning") return "text-(--warn)";
 	if (status === "overdue") return "text-(--critical)";
@@ -98,6 +104,9 @@ export function TaskCard({
 				)}`}
 			>
 				Prazo: {formatDueDate(task.dueDate)}
+				{task.status === "DONE"
+					? ` · Concluído: ${formatDate(task.statusChangedAt)}`
+					: null}
 			</p>
 			{task.blocked ? (
 				<p className="text-xs font-semibold text-(--critical)">⛔ Bloqueado</p>
