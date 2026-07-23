@@ -234,4 +234,96 @@ describe("updateTask", () => {
 			),
 		).rejects.toThrow("Uma task pode ter no máximo 3 tarjas");
 	});
+
+	it("associa a sprint informada quando validada", async () => {
+		const { repository, typeRepository, teamAccess, task, type } = await setup();
+		const sprintAccess = {
+			findById: async (id: string) =>
+				id === "sprint-1"
+					? {
+							id: "sprint-1",
+							piId: "pi-1",
+							teamId: "team-1",
+							name: "Sprint 1",
+							startDate: "2026-07-01",
+							endDate: "2026-07-14",
+							status: "PLANNED" as const,
+						}
+					: null,
+		};
+		const updated = await updateTask(
+			repository,
+			typeRepository,
+			teamAccess,
+			"team-1",
+			task.id,
+			{
+				externalId: task.externalId,
+				description: task.description,
+				typeId: type.id,
+				assigneeId: null,
+				dueDate: "2026-07-01",
+				parentTaskId: null,
+				sprintId: "sprint-1",
+			},
+			undefined,
+			sprintAccess,
+		);
+		expect(updated.sprintId).toBe("sprint-1");
+	});
+
+	it("rejeita sprint que não existe", async () => {
+		const { repository, typeRepository, teamAccess, task, type } = await setup();
+		const sprintAccess = { findById: async () => null };
+		await expect(
+			updateTask(
+				repository,
+				typeRepository,
+				teamAccess,
+				"team-1",
+				task.id,
+				{
+					externalId: task.externalId,
+					description: task.description,
+					typeId: type.id,
+					assigneeId: null,
+					dueDate: "2026-07-01",
+					parentTaskId: null,
+					sprintId: "sprint-missing",
+				},
+				undefined,
+				sprintAccess,
+			),
+		).rejects.toThrow("Sprint não encontrada");
+	});
+
+	it("limpa a sprint quando sprintId é null", async () => {
+		const { repository, typeRepository, teamAccess, task, type } = await setup();
+		await repository.update(task.id, {
+			externalId: task.externalId,
+			description: task.description,
+			typeId: type.id,
+			assigneeId: null,
+			dueDate: "2026-07-01",
+			parentTaskId: null,
+			sprintId: "sprint-1",
+		});
+		const updated = await updateTask(
+			repository,
+			typeRepository,
+			teamAccess,
+			"team-1",
+			task.id,
+			{
+				externalId: task.externalId,
+				description: task.description,
+				typeId: type.id,
+				assigneeId: null,
+				dueDate: "2026-07-01",
+				parentTaskId: null,
+				sprintId: null,
+			},
+		);
+		expect(updated.sprintId).toBeNull();
+	});
 });

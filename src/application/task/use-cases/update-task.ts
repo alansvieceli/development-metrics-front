@@ -1,8 +1,10 @@
 import { ApplicationError } from "@/application/shared/application-error";
 import { parseDateOnly } from "@/application/shared/validation";
+import type { SprintAccess } from "@/application/sprint/contracts/sprint-access";
 import type { TagRepository } from "@/application/task/ports/tag-repository";
 import type { TaskRepository } from "@/application/task/ports/task-repository";
 import type { TaskTypeRepository } from "@/application/task/ports/task-type-repository";
+import { validateSprintId } from "@/application/task/validate-sprint-id";
 import { validateTagIds } from "@/application/task/validate-tag-ids";
 import type { TeamAccess } from "@/application/team/contracts/team-access";
 
@@ -13,6 +15,7 @@ export type UpdateTaskInput = {
 	assigneeId: string | null;
 	dueDate: string;
 	parentTaskId: string | null;
+	sprintId?: string | null;
 	tagIds?: string[];
 };
 
@@ -24,6 +27,7 @@ export async function updateTask(
 	taskId: string,
 	input: UpdateTaskInput,
 	tagRepository?: TagRepository,
+	sprintAccess?: SprintAccess,
 ) {
 	const externalId = input.externalId.trim();
 	const description = input.description.trim();
@@ -64,6 +68,9 @@ export async function updateTask(
 	if (tagRepository && input.tagIds) {
 		await validateTagIds(tagRepository, input.tagIds);
 	}
+	if (sprintAccess && input.sprintId) {
+		await validateSprintId(sprintAccess, input.sprintId, teamId);
+	}
 	const existing = await repository.findByExternalId(task.teamId, externalId);
 	if (existing && existing.id !== taskId) {
 		throw new ApplicationError(
@@ -77,6 +84,7 @@ export async function updateTask(
 		assigneeId: input.assigneeId,
 		dueDate: input.dueDate,
 		parentTaskId: input.parentTaskId,
+		sprintId: input.sprintId,
 		tagIds: input.tagIds,
 	});
 }
