@@ -21,11 +21,18 @@ export async function getMetricsDashboard(
 	periodType: PeriodType,
 	referenceDate: Date,
 	wipLimit: number,
+	tagIds: string[] = [],
 ): Promise<MetricsDashboardResult> {
 	const periods = getPreviousPeriods(periodType, referenceDate, HISTORY_LENGTH);
 	const windowStart = periods[0].start;
 	const windowEnd = periods[periods.length - 1].end;
-	const snapshot = await port.loadSnapshot(teamId, windowStart, windowEnd);
+	const snapshot = await port.loadSnapshot(
+		teamId,
+		windowStart,
+		windowEnd,
+		undefined,
+		tagIds,
+	);
 	const now = new Date();
 
 	const history = periods.map((range) =>
@@ -48,8 +55,9 @@ export async function getMetricsDashboardForRange(
 	start: Date,
 	end: Date,
 	wipLimit: number,
+	tagIds: string[] = [],
 ): Promise<MetricsDashboardResult> {
-	const snapshot = await port.loadSnapshot(teamId, start, end);
+	const snapshot = await port.loadSnapshot(teamId, start, end, undefined, tagIds);
 	const now = new Date();
 	const current = getMetricsForRange(snapshot, start, end, now);
 

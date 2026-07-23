@@ -165,4 +165,43 @@ describe("getMetricsDashboard", () => {
 		expect(dashboard.current.periodEnd).toEqual(end);
 		expect(dashboard.current.throughput).toBe(1);
 	});
+
+	it("repassa tagIds pro port de consulta", async () => {
+		vi.setSystemTime(new Date("2026-07-19T12:00:00Z"));
+		const emptySnapshot: MetricsSnapshot = {
+			completionEvents: [],
+			statusChanges: [],
+			blockedPeriods: [],
+			dueDateTasks: [],
+			currentWipTasks: [],
+			bugEvents: [],
+		};
+		let capturedTagIds: string[] | undefined;
+		const port: MetricsQueryPort = {
+			async loadSnapshot(_teamId, _start, _end, _assigneeId, tagIds) {
+				capturedTagIds = tagIds;
+				return emptySnapshot;
+			},
+		};
+
+		await getMetricsDashboard(
+			port,
+			"team-1",
+			"WEEK",
+			new Date("2026-07-15T12:00:00Z"),
+			8,
+			["tag-1", "tag-2"],
+		);
+		expect(capturedTagIds).toEqual(["tag-1", "tag-2"]);
+
+		await getMetricsDashboardForRange(
+			port,
+			"team-1",
+			new Date("2026-07-01T00:00:00Z"),
+			new Date("2026-07-08T00:00:00Z"),
+			8,
+			["tag-3"],
+		);
+		expect(capturedTagIds).toEqual(["tag-3"]);
+	});
 });
