@@ -50,10 +50,10 @@ Casos de uso `create-tag.ts`, `update-tag.ts`, `delete-tag.ts`, `list-tags.ts` e
 
 - `CreateTaskData` e `UpdateTaskData` ganham `tagIds: string[]`.
 - `setTagsForTask(taskId: string, tagIds: string[]): Promise<void>` — substitui o conjunto de tarjas da task (delete + insert dentro da mesma transação de create/update).
-- `listTagsForTasks(taskIds: string[]): Promise<Record<string, Tag[]>>` — usado por `listTasksByTeam` pra anexar as tarjas de cada task do kanban.
+- `listTagIdsForTasks(taskIds: string[]): Promise<Record<string, string[]>>` — só ids, sem juntar com o catálogo. `listTasksByTeam` já resolve `TaskType` a partir de ids desse jeito hoje (busca `typeRepository.listAll()` e cruza na própria use case pra calcular `bugChildCount`); tarja segue o mesmo padrão: `listTasksByTeam` passa a receber também `TagRepository` e faz `tagRepository.listAll()` + o cruzamento com `listTagIdsForTasks` pra montar `Tag[]` por task. Evita duplicar a resolução id→objeto em infra e em fake de teste.
 - `countByTag(tagId: string): Promise<number>` e `listUsedTagIds(): Promise<string[]>` — mesmo papel de `countByType`/`listUsedTypeIds`.
 
-`src/application/task/validate-task-references.ts`: ganha validação de `tagIds` — rejeita mais de 3 ids e rejeita id que não existe no catálogo (via `TagRepository.findById` ou uma checagem em lote). Chamado por `create-task.ts` e `update-task.ts`, que passam a receber `tagIds` no input e repassá-lo pro repositório.
+Nova função `src/application/task/validate-tag-ids.ts` (`validateTagIds(tagRepository, tagIds)`) — rejeita mais de 3 ids e rejeita id que não existe no catálogo. Fica separada de `validate-task-references.ts` porque essa função hoje só é chamada por `create-task.ts`; `update-task.ts` faz suas próprias checagens inline (não usa `validateTaskReferences`) e `create-historical-task.ts` (criação de card retroativo) fica fora do escopo desta entrega — não ganha suporte a tarjas agora. `create-task.ts` e `update-task.ts` passam a chamar `validateTagIds` diretamente e a receber `tagIds` no input, repassando pro repositório.
 
 ### Filtro de métricas
 
@@ -95,6 +95,7 @@ Uso 2 — filtro em `/metrics`: novo componente client `src/presentation/metrics
 
 ## Fora do escopo
 
+- Sem suporte a tarjas em `create-historical-task.ts` / `HistoricalTaskFormModal` (criação de card retroativo) — fica pra uma entrega futura, se necessário.
 - Sem tela de gerenciamento de tarja por time — catálogo é global, como `task_types`.
 - Sem filtro de tarja em `/metrics/developers` (fica só em `/metrics`, decisão explícita).
 - Sem herança de tarja do parent pra tasks filhas (bug herda tipo `isBug` do próprio tipo, mas tarja é atribuída card a card, sem propagação automática).
