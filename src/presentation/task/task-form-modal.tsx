@@ -11,6 +11,14 @@ import type { Tag } from "@/domain/task/entities/tag";
 import type { Task, TaskStatus } from "@/domain/task/entities/task";
 import type { TaskType } from "@/domain/task/entities/task-type";
 import type { Member } from "@/domain/team/entities/member";
+import { Button } from "@/presentation/shared/button";
+import {
+	FormFooter,
+	FormSection,
+	SelectField,
+	TextareaField,
+	TextField,
+} from "@/presentation/shared/form-field";
 import { Modal } from "@/presentation/shared/modal";
 import { TagCombobox } from "@/presentation/shared/tag-combobox";
 import {
@@ -193,44 +201,25 @@ export function TaskFormModal(props: TaskFormModalProps) {
 				<Modal
 					label={isEdit ? "Editar task" : "Nova task"}
 					onClose={() => setOpen(false)}
+					size="xl"
 				>
-					<form onSubmit={handleSubmit} className="flex flex-col gap-4">
-						<div className="flex flex-col gap-2">
-							<label htmlFor="externalId" className="text-sm opacity-70">
-								Id externo
-							</label>
-							<input
-								id="externalId"
-								name="externalId"
-								defaultValue={isEdit ? props.task.externalId : ""}
-								className="rounded-lg border border-(--border) px-3 py-2"
-								required
-							/>
-						</div>
-						<div className="flex flex-col gap-2">
-							<label htmlFor="description" className="text-sm opacity-70">
-								Descrição
-							</label>
-							<textarea
-								id="description"
-								name="description"
-								defaultValue={isEdit ? props.task.description : ""}
-								className="rounded-lg border border-(--border) px-3 py-2"
-								required
-							/>
-						</div>
-						<div className="grid grid-cols-2 gap-4">
-							<div className="flex flex-col gap-2">
-								<label htmlFor="typeId" className="text-sm opacity-70">
-									Tipo
-								</label>
-								<select
+					<form onSubmit={handleSubmit} className="flex flex-col gap-5">
+						<FormSection title="Identificação">
+							<div className="grid grid-cols-2 gap-4">
+								<TextField
+									id="externalId"
+									name="externalId"
+									label="Id externo"
+									defaultValue={isEdit ? props.task.externalId : ""}
+									required
+								/>
+								<SelectField
 									id="typeId"
 									name="typeId"
+									label="Tipo"
 									defaultValue={
 										isEdit ? props.task.typeId : props.taskTypes[0]?.id
 									}
-									className="rounded-lg border border-(--border) px-3 py-2"
 									required
 								>
 									{props.taskTypes.map((taskType) => (
@@ -238,17 +227,24 @@ export function TaskFormModal(props: TaskFormModalProps) {
 											{taskType.name}
 										</option>
 									))}
-								</select>
+								</SelectField>
 							</div>
-							<div className="flex flex-col gap-2">
-								<label htmlFor="assigneeId" className="text-sm opacity-70">
-									Responsável
-								</label>
-								<select
+							<TextareaField
+								id="description"
+								name="description"
+								label="Descrição"
+								defaultValue={isEdit ? props.task.description : ""}
+								required
+							/>
+						</FormSection>
+
+						<FormSection title="Planejamento">
+							<div className="grid grid-cols-2 gap-4">
+								<SelectField
 									id="assigneeId"
 									name="assigneeId"
+									label="Responsável"
 									defaultValue={isEdit ? (props.task.assigneeId ?? "") : ""}
-									className="rounded-lg border border-(--border) px-3 py-2"
 								>
 									<option value="">Sem responsável</option>
 									{props.members.map((member) => (
@@ -256,120 +252,101 @@ export function TaskFormModal(props: TaskFormModalProps) {
 											{member.name}
 										</option>
 									))}
-								</select>
-							</div>
-						</div>
-						<div className={isEdit ? "" : "grid grid-cols-2 gap-4"}>
-							<div className="flex flex-col gap-2">
-								<label htmlFor="dueDate" className="text-sm opacity-70">
-									Data prevista de entrega
-								</label>
-								<input
+								</SelectField>
+								<TextField
 									id="dueDate"
 									type="date"
 									name="dueDate"
+									label="Data prevista de entrega"
 									defaultValue={isEdit ? props.task.dueDate : ""}
-									className="rounded-lg border border-(--border) px-3 py-2"
 									required
 								/>
-							</div>
-							{!isEdit ? (
-								<div className="flex flex-col gap-2">
-									<label htmlFor="status" className="text-sm opacity-70">
-										Coluna inicial
-									</label>
-									<select
+								{!isEdit ? (
+									<SelectField
 										id="status"
 										name="status"
+										label="Coluna inicial"
 										defaultValue="TODO"
-										className="rounded-lg border border-(--border) px-3 py-2"
 									>
 										{STATUS_ORDER.map((status) => (
 											<option key={status} value={status}>
 												{STATUS_LABELS[status]}
 											</option>
 										))}
-									</select>
-								</div>
-							) : null}
-						</div>
-						<div className="flex flex-col gap-2">
-							<label htmlFor="parentTaskId" className="text-sm opacity-70">
-								Task de origem (opcional)
-							</label>
-							<select
-								id="parentTaskId"
-								name="parentTaskId"
-								defaultValue={isEdit ? (props.task.parentTaskId ?? "") : ""}
-								className="rounded-lg border border-(--border) px-3 py-2"
-							>
-								<option value="">Nenhuma</option>
-								{props.teamTasks
-									.filter(
-										(teamTask) => !isEdit || teamTask.id !== props.task.id,
-									)
-									.map((teamTask) => (
-										<option key={teamTask.id} value={teamTask.id}>
-											{teamTask.externalId} — {teamTask.description}
+									</SelectField>
+								) : null}
+								<SelectField
+									id="sprintId"
+									name="sprintId"
+									label="Sprint (opcional)"
+									defaultValue={isEdit ? (props.task.sprintId ?? "") : ""}
+								>
+									<option value="">Sem sprint</option>
+									{props.sprints.map((sprint) => (
+										<option key={sprint.id} value={sprint.id}>
+											{sprint.name}
 										</option>
 									))}
-							</select>
-						</div>
-						<div className="flex flex-col gap-2">
-							<label htmlFor="sprintId" className="text-sm opacity-70">
-								Sprint (opcional)
-							</label>
-							<select
-								id="sprintId"
-								name="sprintId"
-								defaultValue={isEdit ? (props.task.sprintId ?? "") : ""}
-								className="rounded-lg border border-(--border) px-3 py-2"
-							>
-								<option value="">Sem sprint</option>
-								{props.sprints.map((sprint) => (
-									<option key={sprint.id} value={sprint.id}>
-										{sprint.name}
-									</option>
-								))}
-							</select>
-						</div>
-						<TagCombobox
-							id="task-tags"
-							label="Tarjas"
-							catalog={props.tags}
-							selectedIds={tagIds}
-							max={3}
-							onChange={setTagIds}
-						/>
-						{isEdit ? (
-							<label className="flex items-center gap-2 text-sm">
-								<input
-									type="checkbox"
-									checked={props.task.blocked}
-									onChange={handleToggleBlocked}
-									disabled={pending}
-								/>
-								⛔ Bloqueado
-							</label>
-						) : null}
+								</SelectField>
+								<SelectField
+									id="parentTaskId"
+									name="parentTaskId"
+									label="Task de origem (opcional)"
+									defaultValue={isEdit ? (props.task.parentTaskId ?? "") : ""}
+									fieldClassName="col-span-2"
+								>
+									<option value="">Nenhuma</option>
+									{props.teamTasks
+										.filter(
+											(teamTask) => !isEdit || teamTask.id !== props.task.id,
+										)
+										.map((teamTask) => (
+											<option key={teamTask.id} value={teamTask.id}>
+												{teamTask.externalId} — {teamTask.description}
+											</option>
+										))}
+								</SelectField>
+							</div>
+						</FormSection>
+
+						<FormSection title="Tarjas & status">
+							<TagCombobox
+								id="task-tags"
+								label="Tarjas"
+								catalog={props.tags}
+								selectedIds={tagIds}
+								max={3}
+								onChange={setTagIds}
+							/>
+							{isEdit ? (
+								<label className="flex w-fit items-center gap-2 rounded-lg border border-(--warn)/40 bg-(--warn)/10 px-3 py-2 text-sm">
+									<input
+										type="checkbox"
+										checked={props.task.blocked}
+										onChange={handleToggleBlocked}
+										disabled={pending}
+									/>
+									⛔ Bloqueado
+								</label>
+							) : null}
+						</FormSection>
+
 						{error ? <p role="alert">{error}</p> : null}
-						<button
-							type="submit"
-							disabled={pending}
-							className="rounded-lg bg-(--accent) px-4 py-2 text-(--accent-fg) disabled:opacity-60"
-						>
-							Salvar
-						</button>
-						{isEdit ? (
-							<button
-								type="button"
-								onClick={handleDelete}
-								disabled={pending}
-								className="rounded-lg bg-red-700 px-4 py-2 text-white disabled:opacity-60"
-							>
-								Excluir task
-							</button>
-						) : null}
+						<FormFooter>
+							{isEdit ? (
+								<Button
+									type="button"
+									variant="danger-ghost"
+									onClick={handleDelete}
+									disabled={pending}
+								>
+									Excluir task
+								</Button>
+							) : null}
+							<Button type="submit" disabled={pending}>
+								Salvar
+							</Button>
+						</FormFooter>
 					</form>
 				</Modal>
 			) : null}

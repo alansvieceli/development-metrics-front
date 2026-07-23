@@ -7,12 +7,13 @@ type ModalProps = {
 	children: ReactNode;
 	label: string;
 	onClose: () => void;
-	size?: "md" | "lg";
+	size?: "md" | "lg" | "xl";
 };
 
 const SIZE_CLASSES = {
 	md: "max-w-md",
 	lg: "max-w-lg",
+	xl: "max-w-2xl",
 } as const;
 
 export function Modal({ children, label, onClose, size = "md" }: ModalProps) {
