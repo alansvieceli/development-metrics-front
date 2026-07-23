@@ -233,7 +233,12 @@ describe("createTask", () => {
 
 	it("cria sem sprint quando sprintId não é informado", async () => {
 		const { repository, typeRepository, teamAccess, input } = await setup();
-		const task = await createTask(repository, typeRepository, teamAccess, input);
+		const task = await createTask(
+			repository,
+			typeRepository,
+			teamAccess,
+			input,
+		);
 		expect(task.sprintId).toBeNull();
 	});
 });

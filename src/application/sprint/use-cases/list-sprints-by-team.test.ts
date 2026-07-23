@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createFakeSprintRepository } from "./test-helpers/create-fake-sprint-repository";
 import { listSprintsByTeam } from "./list-sprints-by-team";
+import { createFakeSprintRepository } from "./test-helpers/create-fake-sprint-repository";
 
 describe("listSprintsByTeam", () => {
 	it("lista apenas as sprints do time informado", async () => {

@@ -31,7 +31,9 @@ export default async function BoardPage({
 	const tasksByStatus = await taskUseCases.listTasksByTeam(currentTeam.id);
 	const taskTypes = await taskUseCases.listTaskTypes();
 	const tags = await taskUseCases.listTags();
-	const sprints = await createSprintUseCases().listSprintsByTeam(currentTeam.id);
+	const sprints = await createSprintUseCases().listSprintsByTeam(
+		currentTeam.id,
+	);
 
 	const { sprintId } = await searchParams;
 	const boardTasksByStatus =

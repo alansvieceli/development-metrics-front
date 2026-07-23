@@ -236,7 +236,8 @@ describe("updateTask", () => {
 	});
 
 	it("associa a sprint informada quando validada", async () => {
-		const { repository, typeRepository, teamAccess, task, type } = await setup();
+		const { repository, typeRepository, teamAccess, task, type } =
+			await setup();
 		const sprintAccess = {
 			findById: async (id: string) =>
 				id === "sprint-1"
@@ -273,7 +274,8 @@ describe("updateTask", () => {
 	});
 
 	it("rejeita sprint que não existe", async () => {
-		const { repository, typeRepository, teamAccess, task, type } = await setup();
+		const { repository, typeRepository, teamAccess, task, type } =
+			await setup();
 		const sprintAccess = { findById: async () => null };
 		await expect(
 			updateTask(
@@ -298,7 +300,8 @@ describe("updateTask", () => {
 	});
 
 	it("limpa a sprint quando sprintId é null", async () => {
-		const { repository, typeRepository, teamAccess, task, type } = await setup();
+		const { repository, typeRepository, teamAccess, task, type } =
+			await setup();
 		await repository.update(task.id, {
 			externalId: task.externalId,
 			description: task.description,
