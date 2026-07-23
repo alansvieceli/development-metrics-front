@@ -1,8 +1,8 @@
 "use client";
 
-import type { Tag } from "@/domain/task/entities/tag";
 import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import type { Tag } from "@/domain/task/entities/tag";
 
 type TagComboboxProps = {
 	id: string;
@@ -99,9 +99,7 @@ export function TagCombobox({
 					autoComplete="off"
 					value={query}
 					disabled={atMax}
-					placeholder={
-						atMax ? `Máximo de ${max} tarjas atingido` : "Tarjas..."
-					}
+					placeholder={atMax ? `Máximo de ${max} tarjas atingido` : "Tarjas..."}
 					onChange={(event) => {
 						setQuery(event.target.value);
 						openDropdown();
@@ -113,44 +111,44 @@ export function TagCombobox({
 			</div>
 			{open && !atMax && position
 				? createPortal(
-					<div
-						id={listboxId}
-						role="listbox"
-						style={{
-							position: "fixed",
-							top: position.top,
-							left: position.left,
-							width: position.width,
-						}}
-						className="z-50 mt-1 max-h-52 overflow-y-auto rounded-lg border border-(--border) bg-(--surface) shadow-lg"
-					>
-						{matches.length === 0 ? (
-							<div className="px-3 py-2 text-sm opacity-60">
-								Nenhuma tarja encontrada
-							</div>
-						) : (
-							matches.map((tag) => (
-								<button
-									key={tag.id}
-									type="button"
-									role="option"
-									aria-selected={false}
-									onMouseDown={(event) => event.preventDefault()}
-									onClick={() => add(tag.id)}
-									className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-white/10"
-								>
-									<span
-										aria-hidden="true"
-										className="h-2.5 w-2.5 shrink-0 rounded-full"
-										style={{ background: tag.color }}
-									/>
-									{tag.name}
-								</button>
-							))
-						)}
-					</div>,
-					inputRef.current?.closest("dialog") ?? document.body,
-				)
+						<div
+							id={listboxId}
+							role="listbox"
+							style={{
+								position: "fixed",
+								top: position.top,
+								left: position.left,
+								width: position.width,
+							}}
+							className="z-50 mt-1 max-h-52 overflow-y-auto rounded-lg border border-(--border) bg-(--surface) shadow-lg"
+						>
+							{matches.length === 0 ? (
+								<div className="px-3 py-2 text-sm opacity-60">
+									Nenhuma tarja encontrada
+								</div>
+							) : (
+								matches.map((tag) => (
+									<button
+										key={tag.id}
+										type="button"
+										role="option"
+										aria-selected={false}
+										onMouseDown={(event) => event.preventDefault()}
+										onClick={() => add(tag.id)}
+										className="flex w-full items-center gap-2 px-3 py-2 text-left text-sm hover:bg-white/10"
+									>
+										<span
+											aria-hidden="true"
+											className="h-2.5 w-2.5 shrink-0 rounded-full"
+											style={{ background: tag.color }}
+										/>
+										{tag.name}
+									</button>
+								))
+							)}
+						</div>,
+						inputRef.current?.closest("dialog") ?? document.body,
+					)
 				: null}
 		</div>
 	);

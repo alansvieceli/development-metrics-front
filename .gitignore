@@ -43,3 +43,4 @@ graphify-out/*
 
 # script local para subir o projeto (não versionado)
 /start.sh
+.mcp.json
