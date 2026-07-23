@@ -9,6 +9,10 @@ import {
 	toggleBlockedAction,
 	updateTaskAction,
 } from "@/app/board/actions";
+import {
+	confirmCardImportAction,
+	previewCardImportAction,
+} from "@/app/board/import-card-actions";
 import { createSprintUseCases } from "@/composition/sprint";
 import { createTaskUseCases } from "@/composition/task";
 import { createTeamUseCases } from "@/composition/team";
@@ -67,6 +71,8 @@ export default async function BoardPage({
 			members={members}
 			createTaskAction={createTaskAction}
 			createHistoricalTaskAction={createHistoricalTaskAction}
+			previewCardImportAction={previewCardImportAction}
+			confirmCardImportAction={confirmCardImportAction}
 			updateTaskAction={updateTaskAction}
 			deleteTaskAction={deleteTaskAction}
 			moveTaskAction={moveTaskAction}

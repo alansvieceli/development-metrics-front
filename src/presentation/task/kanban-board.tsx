@@ -1,4 +1,8 @@
 import type { CreateHistoricalTaskActionInput } from "@/app/board/actions";
+import type {
+	ConfirmCardImportInput,
+	PreviewCardImportResult,
+} from "@/app/board/import-card-actions";
 import type { ActionState } from "@/application/shared/action-state";
 import type { CreateTaskInput } from "@/application/task/use-cases/create-task";
 import type { TasksByStatus } from "@/application/task/use-cases/list-tasks-by-team";
@@ -10,6 +14,7 @@ import type { TaskType } from "@/domain/task/entities/task-type";
 import type { Member } from "@/domain/team/entities/member";
 import { BoardSummary } from "@/presentation/task/board-summary";
 import { HistoricalTaskFormModal } from "@/presentation/task/historical-task-form-modal";
+import { ImportCardModal } from "@/presentation/task/import-card-modal";
 import { SprintBoardFilter } from "@/presentation/task/sprint-board-filter";
 import { SprintLifecycleControl } from "@/presentation/task/sprint-lifecycle-control";
 import { TaskCard } from "@/presentation/task/task-card";
@@ -31,6 +36,10 @@ type KanbanBoardProps = {
 	) => Promise<ActionState>;
 	createHistoricalTaskAction: (
 		input: CreateHistoricalTaskActionInput,
+	) => Promise<ActionState>;
+	previewCardImportAction: (cardId: string) => Promise<PreviewCardImportResult>;
+	confirmCardImportAction: (
+		input: ConfirmCardImportInput,
 	) => Promise<ActionState>;
 	updateTaskAction: (
 		taskId: string,
@@ -61,6 +70,8 @@ export function KanbanBoard({
 	members,
 	createTaskAction,
 	createHistoricalTaskAction,
+	previewCardImportAction,
+	confirmCardImportAction,
 	updateTaskAction,
 	deleteTaskAction,
 	moveTaskAction,
@@ -118,6 +129,12 @@ export function KanbanBoard({
 				</div>
 				<div className="flex items-center gap-2">
 					<SprintBoardFilter sprints={sprints} />
+					<ImportCardModal
+						taskTypes={taskTypes}
+						tags={tags}
+						previewCardImportAction={previewCardImportAction}
+						confirmCardImportAction={confirmCardImportAction}
+					/>
 					<HistoricalTaskFormModal
 						taskTypes={taskTypes}
 						members={members}
