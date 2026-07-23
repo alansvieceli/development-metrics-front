@@ -73,4 +73,37 @@ describe("drizzleSprintMetricsSnapshotRepository", () => {
 			),
 		).toBeNull();
 	});
+
+	it("reconstrói periodStart e periodEnd como Date ao ler de volta", async () => {
+		const { pi, sprint } = await seedSprint();
+		try {
+			await drizzleSprintMetricsSnapshotRepository.save(sprint.id, {
+				periodStart: new Date("2026-07-01T00:00:00Z"),
+				periodEnd: new Date("2026-07-15T00:00:00Z"),
+				leadTime: null,
+				cycleTime: null,
+				cycleTimeOutliers: [],
+				blockedTime: null,
+				codeReviewTime: null,
+				testingTime: null,
+				awaitingPublicationTime: null,
+				reworkRate: null,
+				reworkCount: null,
+				throughput: 0,
+				predictability: null,
+				predictabilityCounts: null,
+				unplannedCount: null,
+				bugsOpened: 0,
+				bugsRanking: [],
+			});
+			const found = await drizzleSprintMetricsSnapshotRepository.findBySprint(
+				sprint.id,
+			);
+			expect(found?.periodStart).toBeInstanceOf(Date);
+			expect(found?.periodEnd).toBeInstanceOf(Date);
+			expect(found?.periodStart.toISOString()).toBe("2026-07-01T00:00:00.000Z");
+		} finally {
+			await deletePi(pi.id);
+		}
+	});
 });

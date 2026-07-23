@@ -20,6 +20,14 @@ export const drizzleSprintMetricsSnapshotRepository: SprintMetricsSnapshotReposi
 				.select()
 				.from(sprintMetricsSnapshots)
 				.where(eq(sprintMetricsSnapshots.sprintId, sprintId));
-			return (row?.metrics as HistoricalPeriodMetrics) ?? null;
+			if (!row) return null;
+			// jsonb desserializa Date como string — reconstrói os dois campos de
+			// data conhecidos do snapshot antes de devolver ao chamador.
+			const stored = row.metrics as HistoricalPeriodMetrics;
+			return {
+				...stored,
+				periodStart: new Date(stored.periodStart),
+				periodEnd: new Date(stored.periodEnd),
+			};
 		},
 	};
