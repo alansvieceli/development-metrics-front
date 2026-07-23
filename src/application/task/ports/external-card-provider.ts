@@ -1,4 +1,4 @@
-export type ExternalCardStep = {
+type ExternalCardStep = {
 	columnLabel: string;
 	changedAt: Date;
 };
