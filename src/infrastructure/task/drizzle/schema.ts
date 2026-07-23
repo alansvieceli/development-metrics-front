@@ -6,6 +6,7 @@ import {
 	date,
 	index,
 	pgTable,
+	primaryKey,
 	text,
 	timestamp,
 	uniqueIndex,
@@ -108,5 +109,27 @@ export const taskBlockedPeriods = pgTable(
 			table.taskId,
 			table.blockedAt,
 		),
+	],
+);
+
+export const tags = pgTable("tags", {
+	id: uuid("id").defaultRandom().primaryKey(),
+	name: text("name").notNull(),
+	color: text("color").notNull(),
+});
+
+export const taskTags = pgTable(
+	"task_tags",
+	{
+		taskId: uuid("task_id")
+			.notNull()
+			.references(() => tasks.id, { onDelete: "cascade" }),
+		tagId: uuid("tag_id")
+			.notNull()
+			.references(() => tags.id, { onDelete: "restrict" }),
+	},
+	(table) => [
+		primaryKey({ columns: [table.taskId, table.tagId] }),
+		index("task_tags_tag_id_idx").on(table.tagId),
 	],
 );
