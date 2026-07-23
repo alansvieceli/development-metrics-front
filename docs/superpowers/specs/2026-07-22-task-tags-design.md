@@ -49,7 +49,7 @@ Casos de uso `create-tag.ts`, `update-tag.ts`, `delete-tag.ts`, `list-tags.ts` e
 `TaskRepository` (`src/application/task/ports/task-repository.ts`) ganha:
 
 - `CreateTaskData` e `UpdateTaskData` ganham `tagIds: string[]`.
-- `setTagsForTask(taskId: string, tagIds: string[]): Promise<void>` — substitui o conjunto de tarjas da task (delete + insert dentro da mesma transação de create/update).
+- Não há um método `setTagsForTask` à parte no port: `CreateTaskData`/`UpdateTaskData` já carregam `tagIds`, e `createWithInitialHistory`/`createWithExplicitHistory`/`update` gravam a associação em `task_tags` como parte da própria transação de escrita da task — um método separado nunca teria chamador.
 - `listTagIdsForTasks(taskIds: string[]): Promise<Record<string, string[]>>` — só ids, sem juntar com o catálogo. `listTasksByTeam` já resolve `TaskType` a partir de ids desse jeito hoje (busca `typeRepository.listAll()` e cruza na própria use case pra calcular `bugChildCount`); tarja segue o mesmo padrão: `listTasksByTeam` passa a receber também `TagRepository` e faz `tagRepository.listAll()` + o cruzamento com `listTagIdsForTasks` pra montar `Tag[]` por task. Evita duplicar a resolução id→objeto em infra e em fake de teste.
 - `countByTag(tagId: string): Promise<number>` e `listUsedTagIds(): Promise<string[]>` — mesmo papel de `countByType`/`listUsedTypeIds`.
 
