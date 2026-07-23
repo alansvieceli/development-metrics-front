@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseMetricsFilter } from "./parse-metrics-search-params";
+import { parseMetricsFilter, parseTagIds } from "./parse-metrics-search-params";
 
 describe("parseMetricsFilter", () => {
 	it("usa semana e a data atual quando não há parâmetros", () => {
@@ -121,5 +121,26 @@ describe("parseMetricsFilter", () => {
 			periodType: "WEEK",
 			referenceDate: now,
 		});
+	});
+});
+
+describe("parseTagIds", () => {
+	it("retorna lista vazia quando não há parâmetro tags", () => {
+		expect(parseTagIds({})).toEqual([]);
+	});
+
+	it("separa os ids por vírgula", () => {
+		expect(parseTagIds({ tags: "tag-1,tag-2" })).toEqual(["tag-1", "tag-2"]);
+	});
+
+	it("trunca em 2 ids mesmo se a url tiver mais", () => {
+		expect(parseTagIds({ tags: "tag-1,tag-2,tag-3" })).toEqual([
+			"tag-1",
+			"tag-2",
+		]);
+	});
+
+	it("ignora entradas vazias", () => {
+		expect(parseTagIds({ tags: "tag-1,,tag-2" })).toEqual(["tag-1", "tag-2"]);
 	});
 });

@@ -106,6 +106,9 @@ export function TaskFormModal(props: TaskFormModalProps) {
 				return;
 			}
 			setOpen(false);
+			if (props.mode === "create") {
+				setTagIds([]);
+			}
 		} catch {
 			setError("Não foi possível concluir a operação");
 		} finally {

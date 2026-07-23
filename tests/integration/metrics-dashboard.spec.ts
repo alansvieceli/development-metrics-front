@@ -263,3 +263,46 @@ test("mostra bugs abertos e o ranking de tasks com mais bugs", async ({
 			.getByText("#TASK-ORIGEM — 2 bugs"),
 	).toBeVisible();
 });
+
+test("o filtro de tarjas na URL restringe o WIP às tasks com a tarja selecionada", async ({
+	page,
+}) => {
+	await expect(page).toHaveURL("/board");
+	await page.goto("/tags");
+	await page.getByPlaceholder("Nome da tarja").fill("Cliente Acme");
+	await page.getByRole("button", { name: "Adicionar tarja" }).click();
+
+	await page.goto("/board");
+	await page.getByRole("button", { name: "Task" }).click();
+	await page.getByLabel("Id externo").fill("TASK-COM-TARJA");
+	await page.getByLabel("Descrição").fill("Task com tarja");
+	await page
+		.getByLabel("Coluna inicial")
+		.selectOption({ label: "Desenvolvimento" });
+	await page.getByLabel("Tarjas").fill("Cliente");
+	await page.getByRole("option", { name: "Cliente Acme" }).click();
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
+	await page.getByRole("button", { name: "Salvar" }).click();
+
+	await page.getByRole("button", { name: "Task", exact: true }).click();
+	await page.getByLabel("Id externo").fill("TASK-SEM-TARJA");
+	await page.getByLabel("Descrição").fill("Task sem tarja");
+	await page
+		.getByLabel("Coluna inicial")
+		.selectOption({ label: "Desenvolvimento" });
+	await page.getByLabel("Data prevista de entrega").fill("2026-12-31");
+	await page.getByRole("button", { name: "Salvar" }).click();
+
+	await page.getByRole("link", { name: "Métricas" }).click();
+	await expect(
+		page.getByTestId("metric-tile-wip").getByText("2"),
+	).toBeVisible();
+
+	await page.getByLabel("Tarjas").fill("Cliente");
+	await page.getByRole("option", { name: "Cliente Acme" }).click();
+	await page.waitForURL(/tags=/);
+
+	await expect(
+		page.getByTestId("metric-tile-wip").getByText("1"),
+	).toBeVisible();
+});

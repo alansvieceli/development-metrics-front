@@ -34,6 +34,7 @@ export function createMetricsUseCases() {
 			periodType: PeriodType,
 			referenceDate: Date,
 			wipLimit: number,
+			tagIds: string[],
 		) =>
 			getMetricsDashboard(
 				drizzleMetricsQueryPort,
@@ -41,12 +42,14 @@ export function createMetricsUseCases() {
 				periodType,
 				referenceDate,
 				wipLimit,
+				tagIds,
 			),
 		getMetricsDashboardForRange: (
 			teamId: string,
 			start: Date,
 			end: Date,
 			wipLimit: number,
+			tagIds: string[],
 		) =>
 			getMetricsDashboardForRange(
 				drizzleMetricsQueryPort,
@@ -54,6 +57,7 @@ export function createMetricsUseCases() {
 				start,
 				end,
 				wipLimit,
+				tagIds,
 			),
 		getMetricsPeriodPreference: (teamId: string) =>
 			getMetricsPeriodPreference(cookieMetricsPeriodPreferenceStore, teamId),

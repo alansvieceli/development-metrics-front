@@ -1,11 +1,13 @@
 import { redirect } from "next/navigation";
 import { saveMetricsPeriodPreferenceAction } from "@/app/actions";
 import { createMetricsUseCases } from "@/composition/metrics";
+import { createTaskUseCases } from "@/composition/task";
 import { createTeamUseCases } from "@/composition/team";
 import { MetricsDashboard } from "@/presentation/metrics-dashboard/metrics-dashboard";
 import {
 	type MetricsSearchParams,
 	parseMetricsFilter,
+	parseTagIds,
 } from "@/presentation/metrics-dashboard/parse-metrics-search-params";
 
 export default async function MetricsPage({
@@ -29,6 +31,8 @@ export default async function MetricsPage({
 		undefined,
 		preference,
 	);
+	const tagIds = parseTagIds(resolvedSearchParams);
+	const tags = await createTaskUseCases().listTags();
 
 	const { current, history } =
 		filter.periodType === "CUSTOM"
@@ -37,12 +41,14 @@ export default async function MetricsPage({
 					filter.start,
 					filter.end,
 					currentTeam.wipLimit,
+					tagIds,
 				)
 			: await metricsUseCases.getMetricsDashboard(
 					currentTeam.id,
 					filter.periodType,
 					filter.referenceDate,
 					currentTeam.wipLimit,
+					tagIds,
 				);
 
 	return (
@@ -53,6 +59,8 @@ export default async function MetricsPage({
 			referenceDate={filter.referenceDate}
 			current={current}
 			history={history}
+			tags={tags}
+			selectedTagIds={tagIds}
 		/>
 	);
 }

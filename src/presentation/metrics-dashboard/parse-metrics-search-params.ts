@@ -8,6 +8,7 @@ export type MetricsSearchParams = {
 	start?: string;
 	end?: string;
 	developer?: string;
+	tags?: string;
 };
 
 export type MetricsFilter =
@@ -41,4 +42,15 @@ export function parseMetricsFilter(
 		periodType,
 		referenceDate: parseDateOnly(effective.date) ?? now,
 	};
+}
+
+const MAX_FILTER_TAGS = 2;
+
+export function parseTagIds(searchParams: MetricsSearchParams): string[] {
+	if (!searchParams.tags) return [];
+	return searchParams.tags
+		.split(",")
+		.map((id) => id.trim())
+		.filter(Boolean)
+		.slice(0, MAX_FILTER_TAGS);
 }
