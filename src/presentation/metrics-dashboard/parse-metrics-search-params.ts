@@ -9,6 +9,7 @@ export type MetricsSearchParams = {
 	end?: string;
 	developer?: string;
 	tags?: string;
+	sprintId?: string;
 };
 
 export type MetricsFilter =
