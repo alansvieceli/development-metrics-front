@@ -28,6 +28,7 @@ export function createFakeTaskRepository(): FakeTaskRepository {
 		const task: Task = {
 			id: `task-${nextId++}`,
 			...data,
+			sprintId: data.sprintId ?? null,
 			blocked: false,
 			createdAt: now,
 			updatedAt: now,
@@ -64,6 +65,7 @@ export function createFakeTaskRepository(): FakeTaskRepository {
 			const task: Task = {
 				id: `task-${nextId++}`,
 				...data,
+				sprintId: data.sprintId ?? null,
 				status: data.status,
 				blocked: false,
 				createdAt: history[0].changedAt,
@@ -127,10 +129,14 @@ export function createFakeTaskRepository(): FakeTaskRepository {
 		async update(taskId: string, data: UpdateTaskData) {
 			const task = tasks.find((item) => item.id === taskId);
 			if (!task) throw new ApplicationError("Task não encontrada");
-			Object.assign(task, data, { updatedAt: new Date() });
-			if (data.tagIds) {
+			const { sprintId, tagIds, ...rest } = data;
+			Object.assign(task, rest, { updatedAt: new Date() });
+			if (sprintId !== undefined) {
+				task.sprintId = sprintId;
+			}
+			if (tagIds) {
 				const remaining = taskTagIds.filter((a) => a.taskId !== taskId);
-				remaining.push(...data.tagIds.map((tagId) => ({ taskId, tagId })));
+				remaining.push(...tagIds.map((tagId) => ({ taskId, tagId })));
 				taskTagIds.length = 0;
 				taskTagIds.push(...remaining);
 			}

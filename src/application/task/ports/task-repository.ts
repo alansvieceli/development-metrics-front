@@ -10,6 +10,7 @@ export type CreateTaskData = {
 	status: TaskStatus;
 	dueDate: string;
 	parentTaskId: string | null;
+	sprintId?: string | null;
 	tagIds?: string[];
 };
 
@@ -20,6 +21,7 @@ export type UpdateTaskData = {
 	assigneeId: string | null;
 	dueDate: string;
 	parentTaskId: string | null;
+	sprintId?: string | null;
 	tagIds?: string[];
 };
 
