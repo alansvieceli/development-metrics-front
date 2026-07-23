@@ -1,0 +1,16 @@
+{
+	"data": [
+		{
+			"type_id": 1,
+			"icon_type": 0,
+			"icon_id": 1014,
+			"name": "História de Negócio",
+			"description": "",
+			"color": "42af49",
+			"card_color_sync": 1,
+			"all_properties_are_locked": 0,
+			"availability": 2,
+			"is_enabled": 1
+		}
+	]
+}

@@ -7,7 +7,9 @@ export type ExternalCard = {
 	externalId: string;
 	description: string;
 	ownerName: string | null;
+	typeName: string | null;
 	dueDate: string | null;
+	blocked: boolean;
 	steps: ExternalCardStep[];
 };
 

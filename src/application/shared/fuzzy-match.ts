@@ -1,9 +1,5 @@
 export function normalizeForMatch(value: string): string {
-	return value
-		.normalize("NFD")
-		.replace(/[̀-ͯ]/g, "")
-		.toLowerCase()
-		.trim();
+	return value.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
 }
 
 export function matchesEitherWay(a: string, b: string): boolean {

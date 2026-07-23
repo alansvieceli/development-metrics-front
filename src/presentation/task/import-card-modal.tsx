@@ -54,6 +54,7 @@ export function ImportCardModal({
 				return;
 			}
 			setPreview(result.preview);
+			setTypeId(result.preview.resolvedTypeId ?? taskTypes[0]?.id ?? "");
 		} catch {
 			setError("Não foi possível buscar o card");
 		} finally {
@@ -143,6 +144,14 @@ export function ImportCardModal({
 									{!preview.resolvedAssigneeId
 										? " (sem correspondência no time)"
 										: ""}
+								</p>
+							</div>
+							<div>
+								<p className="text-sm opacity-70">Bloqueio</p>
+								<p>
+									{preview.blocked
+										? "Bloqueado no Businessmap"
+										: "Não bloqueado"}
 								</p>
 							</div>
 							<div>

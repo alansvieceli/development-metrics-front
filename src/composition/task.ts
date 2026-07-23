@@ -7,6 +7,7 @@ import { createTaskType } from "@/application/task/use-cases/create-task-type";
 import { deleteTag } from "@/application/task/use-cases/delete-tag";
 import { deleteTask } from "@/application/task/use-cases/delete-task";
 import { deleteTaskType } from "@/application/task/use-cases/delete-task-type";
+import { importCard } from "@/application/task/use-cases/import-card";
 import { listTags } from "@/application/task/use-cases/list-tags";
 import { listTaskTypes } from "@/application/task/use-cases/list-task-types";
 import { listTasksByTeam } from "@/application/task/use-cases/list-tasks-by-team";
@@ -50,6 +51,7 @@ export function createTaskUseCases() {
 			previewCardImport(
 				businessmapCardProvider,
 				drizzleTeamRepository,
+				drizzleTaskTypeRepository,
 				teamId,
 				cardId,
 			),
@@ -59,20 +61,14 @@ export function createTaskUseCases() {
 			typeId: string,
 			tagIds?: string[],
 		) =>
-			createHistoricalTask(
+			importCard(
 				drizzleTaskRepository,
 				drizzleTaskTypeRepository,
 				drizzleTeamRepository,
-				{
-					externalId: preview.externalId,
-					description: preview.description,
-					typeId,
-					assigneeId: preview.resolvedAssigneeId,
-					teamId,
-					dueDate: preview.dueDate,
-					steps: preview.steps,
-					tagIds,
-				},
+				teamId,
+				preview,
+				typeId,
+				tagIds,
 				drizzleTagRepository,
 			),
 		updateTask: (teamId: string, taskId: string, input: UpdateTaskInput) =>

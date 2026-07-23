@@ -7,18 +7,25 @@ type BusinessmapCard = {
 	card_id: number;
 	board_id: number;
 	column_id: number;
+	type_id: number;
 	description: string;
 	deadline: string | null;
 	owner_user_id: number | null;
+	is_blocked: number;
 	created_at: string;
 };
 
-type BusinessmapRevision = { revision: number; user_id: number; replaced_at: string };
+type BusinessmapRevision = {
+	revision: number;
+	user_id: number;
+	replaced_at: string;
+};
 type BusinessmapColumn = {
 	column_id: number;
 	parent_column_id: number | null;
 	name: string;
 };
+type BusinessmapCardType = { type_id: number; name: string };
 type BusinessmapUser = { username: string };
 
 function baseUrl(): string {
@@ -40,7 +47,9 @@ function authHeaders(): HeadersInit {
 async function getJson<T>(url: string, headers: HeadersInit): Promise<T> {
 	const response = await fetch(url, { headers });
 	if (!response.ok) {
-		throw new Error(`Businessmap respondeu ${response.status} ao chamar ${url}`);
+		throw new Error(
+			`Businessmap respondeu ${response.status} ao chamar ${url}`,
+		);
 	}
 	const body = (await response.json()) as { data: T };
 	return body.data;
@@ -63,12 +72,17 @@ export const businessmapCardProvider: ExternalCardProvider = {
 		const headers = authHeaders();
 		const url = baseUrl();
 
-		const card = await getJson<BusinessmapCard>(`${url}/cards/${cardId}`, headers);
+		const card = await getJson<BusinessmapCard>(
+			`${url}/cards/${cardId}`,
+			headers,
+		);
 		const columns = await getJson<BusinessmapColumn[]>(
 			`${url}/boards/${card.board_id}/columns`,
 			headers,
 		);
-		const columnsById = new Map(columns.map((column) => [column.column_id, column]));
+		const columnsById = new Map(
+			columns.map((column) => [column.column_id, column]),
+		);
 
 		const revisions = await getJson<BusinessmapRevision[]>(
 			`${url}/cards/${cardId}/revisions`,
@@ -120,11 +134,20 @@ export const businessmapCardProvider: ExternalCardProvider = {
 			ownerName = owner.username;
 		}
 
+		const cardTypes = await getJson<BusinessmapCardType[]>(
+			`${url}/cardTypes`,
+			headers,
+		);
+		const typeName =
+			cardTypes.find((type) => type.type_id === card.type_id)?.name ?? null;
+
 		return {
 			externalId: String(card.card_id),
 			description: card.description,
 			ownerName,
+			typeName,
 			dueDate: card.deadline ? card.deadline.slice(0, 10) : null,
+			blocked: Boolean(card.is_blocked),
 			steps,
 		};
 	},

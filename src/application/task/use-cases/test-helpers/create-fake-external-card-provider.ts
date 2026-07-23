@@ -15,7 +15,8 @@ export function createFakeExternalCardProvider(): FakeExternalCardProvider {
 		},
 		async fetchCard(cardId) {
 			const card = cards.get(cardId);
-			if (!card) throw new Error(`Card ${cardId} não encontrado no fake provider`);
+			if (!card)
+				throw new Error(`Card ${cardId} não encontrado no fake provider`);
 			return card;
 		},
 	};

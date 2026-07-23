@@ -1,10 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import cardDetails from "./__fixtures__/businessmap-card-415931-details.json";
 import columns from "./__fixtures__/businessmap-board-108-columns.json";
+import cardDetails from "./__fixtures__/businessmap-card-415931-details.json";
 import revision1 from "./__fixtures__/businessmap-card-415931-revision-1.json";
 import revision9 from "./__fixtures__/businessmap-card-415931-revision-9.json";
 import revision10 from "./__fixtures__/businessmap-card-415931-revision-10.json";
 import revisions from "./__fixtures__/businessmap-card-415931-revisions-trimmed.json";
+import cardTypes from "./__fixtures__/businessmap-card-types-trimmed.json";
 import user from "./__fixtures__/businessmap-user-1460.json";
 import { businessmapCardProvider } from "./businessmap-card-provider";
 
@@ -24,6 +25,7 @@ describe("businessmapCardProvider", () => {
 				if (url.endsWith("/revisions/10")) return jsonResponse(revision10);
 				if (url.endsWith("/revisions")) return jsonResponse(revisions);
 				if (url.endsWith("/boards/108/columns")) return jsonResponse(columns);
+				if (url.endsWith("/cardTypes")) return jsonResponse(cardTypes);
 				if (url.endsWith("/users/1460")) return jsonResponse(user);
 				if (url.endsWith("/cards/415931")) return jsonResponse(cardDetails);
 				throw new Error(`URL não mockada: ${url}`);
@@ -41,6 +43,8 @@ describe("businessmapCardProvider", () => {
 
 		expect(card.externalId).toBe("415931");
 		expect(card.ownerName).toBe("jose.hudson.ext");
+		expect(card.typeName).toBe("História de Negócio");
+		expect(card.blocked).toBe(false);
 		expect(card.dueDate).toBe("2026-10-29");
 		expect(card.steps).toEqual([
 			{ columnLabel: "Backlog", changedAt: new Date("2026-06-10T17:48:37Z") },

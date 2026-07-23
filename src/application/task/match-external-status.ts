@@ -16,7 +16,9 @@ export function matchExternalStatus(rawLabel: string): TaskStatus | null {
 		: rawLabel;
 	for (const status of TASK_STATUSES) {
 		if (
-			STATUS_ALIASES[status].some((alias) => matchesEitherWay(columnPart, alias))
+			STATUS_ALIASES[status].some((alias) =>
+				matchesEitherWay(columnPart, alias),
+			)
 		) {
 			return status;
 		}
