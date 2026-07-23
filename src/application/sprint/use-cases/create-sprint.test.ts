@@ -1,10 +1,12 @@
 import { describe, expect, it } from "vitest";
+import { createSprint } from "./create-sprint";
 import { createFakeProgramIncrementRepository } from "./test-helpers/create-fake-program-increment-repository";
 import { createFakeSprintRepository } from "./test-helpers/create-fake-sprint-repository";
-import { createSprint } from "./create-sprint";
 
 async function seedPi(
-	programIncrementRepository: ReturnType<typeof createFakeProgramIncrementRepository>,
+	programIncrementRepository: ReturnType<
+		typeof createFakeProgramIncrementRepository
+	>,
 	teamId = "team-1",
 ) {
 	return programIncrementRepository.create({
@@ -21,13 +23,17 @@ describe("createSprint", () => {
 		const programIncrementRepository = createFakeProgramIncrementRepository();
 		const pi = await seedPi(programIncrementRepository);
 
-		const sprint = await createSprint(sprintRepository, programIncrementRepository, {
-			piId: pi.id,
-			teamId: "team-1",
-			name: "Sprint 1",
-			startDate: "2026-07-01",
-			endDate: "2026-07-14",
-		});
+		const sprint = await createSprint(
+			sprintRepository,
+			programIncrementRepository,
+			{
+				piId: pi.id,
+				teamId: "team-1",
+				name: "Sprint 1",
+				startDate: "2026-07-01",
+				endDate: "2026-07-14",
+			},
+		);
 
 		expect(sprint.name).toBe("Sprint 1");
 		expect(sprint.status).toBe("PLANNED");

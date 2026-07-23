@@ -23,7 +23,10 @@ export function ProgramIncrementList({
 	return (
 		<ul className="flex flex-col gap-6">
 			{programIncrements.map(({ pi, sprints }) => (
-				<li key={pi.id} className="flex flex-col gap-3 rounded-lg border border-(--border) p-4">
+				<li
+					key={pi.id}
+					className="flex flex-col gap-3 rounded-lg border border-(--border) p-4"
+				>
 					<div>
 						<p className="font-semibold">{pi.name}</p>
 						<p className="text-xs opacity-70">

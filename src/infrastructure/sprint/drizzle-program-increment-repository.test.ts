@@ -17,7 +17,9 @@ describe("drizzleProgramIncrementRepository", () => {
 			endDate: "2026-09-30",
 		});
 		try {
-			const found = await drizzleProgramIncrementRepository.findById(created.id);
+			const found = await drizzleProgramIncrementRepository.findById(
+				created.id,
+			);
 			expect(found).toEqual(created);
 		} finally {
 			await deletePi(created.id);

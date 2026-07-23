@@ -14,7 +14,12 @@ export function createSprintUseCases() {
 		listProgramIncrementsByTeam: (teamId: string) =>
 			listProgramIncrementsByTeam(drizzleProgramIncrementRepository, teamId),
 		createSprint: (data: CreateSprintData) =>
-			createSprint(drizzleSprintRepository, drizzleProgramIncrementRepository, data),
-		listSprintsByPi: (piId: string) => listSprintsByPi(drizzleSprintRepository, piId),
+			createSprint(
+				drizzleSprintRepository,
+				drizzleProgramIncrementRepository,
+				data,
+			),
+		listSprintsByPi: (piId: string) =>
+			listSprintsByPi(drizzleSprintRepository, piId),
 	};
 }

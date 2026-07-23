@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createFakeProgramIncrementRepository } from "./test-helpers/create-fake-program-increment-repository";
 import { createProgramIncrement } from "./create-program-increment";
+import { createFakeProgramIncrementRepository } from "./test-helpers/create-fake-program-increment-repository";
 
 describe("createProgramIncrement", () => {
 	it("cria um pi com nome e datas válidas", async () => {

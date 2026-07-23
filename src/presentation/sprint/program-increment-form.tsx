@@ -22,7 +22,10 @@ export function ProgramIncrementForm({
 		INITIAL_ACTION_STATE,
 	);
 	return (
-		<form action={action} className="flex flex-col gap-2 border-t border-(--border) pt-4">
+		<form
+			action={action}
+			className="flex flex-col gap-2 border-t border-(--border) pt-4"
+		>
 			<p className="text-sm opacity-70">Novo PI</p>
 			<input
 				name="name"

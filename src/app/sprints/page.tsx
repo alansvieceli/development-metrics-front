@@ -30,7 +30,9 @@ export default async function SprintsPage() {
 				}))}
 				createSprintAction={createSprintAction}
 			/>
-			<ProgramIncrementForm createProgramIncrementAction={createProgramIncrementAction} />
+			<ProgramIncrementForm
+				createProgramIncrementAction={createProgramIncrementAction}
+			/>
 		</main>
 	);
 }

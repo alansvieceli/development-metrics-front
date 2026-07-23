@@ -44,7 +44,11 @@ export function SprintForm({ piId, createSprintAction }: SprintFormProps) {
 			<SubmitButton className="rounded-lg border border-(--border) px-3 py-1 text-sm disabled:opacity-60">
 				Adicionar sprint
 			</SubmitButton>
-			{state.error ? <p role="alert" className="w-full text-sm">{state.error}</p> : null}
+			{state.error ? (
+				<p role="alert" className="w-full text-sm">
+					{state.error}
+				</p>
+			) : null}
 		</form>
 	);
 }

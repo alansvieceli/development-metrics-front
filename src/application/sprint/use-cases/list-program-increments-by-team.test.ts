@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createFakeProgramIncrementRepository } from "./test-helpers/create-fake-program-increment-repository";
 import { listProgramIncrementsByTeam } from "./list-program-increments-by-team";
+import { createFakeProgramIncrementRepository } from "./test-helpers/create-fake-program-increment-repository";
 
 describe("listProgramIncrementsByTeam", () => {
 	it("lista apenas os pis do time informado", async () => {

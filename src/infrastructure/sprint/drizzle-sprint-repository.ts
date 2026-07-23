@@ -21,7 +21,10 @@ export const drizzleSprintRepository: SprintRepository = {
 		return rows.map(toSprint);
 	},
 	async listByTeam(teamId) {
-		const rows = await db.select().from(sprints).where(eq(sprints.teamId, teamId));
+		const rows = await db
+			.select()
+			.from(sprints)
+			.where(eq(sprints.teamId, teamId));
 		return rows.map(toSprint);
 	},
 	async findById(id) {

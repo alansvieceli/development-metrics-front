@@ -69,7 +69,10 @@ describe("drizzleSprintRepository", () => {
 			endDate: "2026-07-14",
 		});
 		await deletePi(pi.id);
-		const [row] = await db.select().from(sprints).where(eq(sprints.id, created.id));
+		const [row] = await db
+			.select()
+			.from(sprints)
+			.where(eq(sprints.id, created.id));
 		expect(row).toBeUndefined();
 	});
 });
