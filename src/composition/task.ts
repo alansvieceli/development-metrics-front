@@ -2,17 +2,22 @@ import type { CreateHistoricalTaskInput } from "@/application/task/use-cases/cre
 import { createHistoricalTask } from "@/application/task/use-cases/create-historical-task";
 import type { CreateTaskInput } from "@/application/task/use-cases/create-task";
 import { createTask } from "@/application/task/use-cases/create-task";
+import { createTag } from "@/application/task/use-cases/create-tag";
 import { createTaskType } from "@/application/task/use-cases/create-task-type";
 import { deleteTask } from "@/application/task/use-cases/delete-task";
+import { deleteTag } from "@/application/task/use-cases/delete-tag";
 import { deleteTaskType } from "@/application/task/use-cases/delete-task-type";
+import { listTags } from "@/application/task/use-cases/list-tags";
 import { listTaskTypes } from "@/application/task/use-cases/list-task-types";
 import { listTasksByTeam } from "@/application/task/use-cases/list-tasks-by-team";
 import { moveTask } from "@/application/task/use-cases/move-task";
 import { toggleBlocked } from "@/application/task/use-cases/toggle-blocked";
+import { updateTag } from "@/application/task/use-cases/update-tag";
 import type { UpdateTaskInput } from "@/application/task/use-cases/update-task";
 import { updateTask } from "@/application/task/use-cases/update-task";
 import { updateTaskType } from "@/application/task/use-cases/update-task-type";
 import type { TaskStatus } from "@/domain/task/entities/task";
+import { drizzleTagRepository } from "@/infrastructure/task/drizzle-tag-repository";
 import { drizzleTaskHistoryRepository } from "@/infrastructure/task/drizzle-task-history-repository";
 import { drizzleTaskRepository } from "@/infrastructure/task/drizzle-task-repository";
 import { drizzleTaskTypeRepository } from "@/infrastructure/task/drizzle-task-type-repository";
@@ -64,5 +69,12 @@ export function createTaskUseCases() {
 			deleteTaskType(drizzleTaskTypeRepository, drizzleTaskRepository, typeId),
 		listTaskTypes: () =>
 			listTaskTypes(drizzleTaskTypeRepository, drizzleTaskRepository),
+		createTag: (name: string, color: string) =>
+			createTag(drizzleTagRepository, name, color),
+		updateTag: (tagId: string, name: string, color: string) =>
+			updateTag(drizzleTagRepository, tagId, name, color),
+		deleteTag: (tagId: string) =>
+			deleteTag(drizzleTagRepository, drizzleTaskRepository, tagId),
+		listTags: () => listTags(drizzleTagRepository, drizzleTaskRepository),
 	};
 }

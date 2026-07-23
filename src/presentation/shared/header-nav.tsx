@@ -7,6 +7,7 @@ const NAV_LINKS = [
 	{ href: "/board", label: "Quadro" },
 	{ href: "/metrics", label: "Métricas" },
 	{ href: "/task-types", label: "Tipos de task" },
+	{ href: "/tags", label: "Tarjas" },
 ] as const;
 
 export function HeaderNav() {
