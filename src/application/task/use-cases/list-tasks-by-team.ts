@@ -1,6 +1,8 @@
+import type { TagRepository } from "@/application/task/ports/tag-repository";
 import type { TaskHistoryRepository } from "@/application/task/ports/task-history-repository";
 import type { TaskRepository } from "@/application/task/ports/task-repository";
 import type { TaskTypeRepository } from "@/application/task/ports/task-type-repository";
+import type { Tag } from "@/domain/task/entities/tag";
 import type { Task, TaskStatus } from "@/domain/task/entities/task";
 
 export type TaskWithStatusSince = Task & {
@@ -8,6 +10,7 @@ export type TaskWithStatusSince = Task & {
 	bugChildCount: number;
 	otherChildCount: number;
 	parentTask: { id: string; externalId: string } | null;
+	tags: Tag[];
 };
 export type TasksByStatus = Record<TaskStatus, TaskWithStatusSince[]>;
 
@@ -15,6 +18,7 @@ export async function listTasksByTeam(
 	repository: TaskRepository,
 	historyRepository: TaskHistoryRepository,
 	typeRepository: TaskTypeRepository,
+	tagRepository: TagRepository,
 	teamId: string,
 ): Promise<TasksByStatus> {
 	const tasks = await repository.listByTeam(teamId);
@@ -24,6 +28,11 @@ export async function listTasksByTeam(
 	const taskTypes = await typeRepository.listAll();
 	const bugTypeIds = new Set(
 		taskTypes.filter((type) => type.isBug).map((type) => type.id),
+	);
+	const allTags = await tagRepository.listAll();
+	const tagsById = new Map(allTags.map((tag) => [tag.id, tag]));
+	const tagIdsByTaskId = await repository.listTagIdsForTasks(
+		tasks.map((task) => task.id),
 	);
 	const tasksById = new Map(tasks.map((task) => [task.id, task]));
 	const childrenByParentId = new Map<string, Task[]>();
@@ -50,6 +59,9 @@ export async function listTasksByTeam(
 		const parent = task.parentTaskId
 			? tasksById.get(task.parentTaskId)
 			: undefined;
+		const tags = (tagIdsByTaskId[task.id] ?? [])
+			.map((tagId) => tagsById.get(tagId))
+			.filter((tag): tag is Tag => tag !== undefined);
 		grouped[task.status].push({
 			...task,
 			statusChangedAt: changedAtByTaskId[task.id] ?? task.createdAt,
@@ -58,6 +70,7 @@ export async function listTasksByTeam(
 			parentTask: parent
 				? { id: parent.id, externalId: parent.externalId }
 				: null,
+			tags,
 		});
 	}
 	return grouped;

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { listTasksByTeam } from "./list-tasks-by-team";
+import { createFakeTagRepository } from "./test-helpers/create-fake-tag-repository";
 import { createFakeTaskHistoryRepository } from "./test-helpers/create-fake-task-history-repository";
 import { createFakeTaskRepository } from "./test-helpers/create-fake-task-repository";
 import { createFakeTaskTypeRepository } from "./test-helpers/create-fake-task-type-repository";
@@ -39,6 +40,7 @@ describe("listTasksByTeam", () => {
 			repository,
 			historyRepository,
 			typeRepository,
+			createFakeTagRepository(),
 			"team-1",
 		);
 
@@ -77,6 +79,7 @@ describe("listTasksByTeam", () => {
 			repository,
 			historyRepository,
 			typeRepository,
+			createFakeTagRepository(),
 			"team-1",
 		);
 
@@ -97,6 +100,7 @@ describe("listTasksByTeam", () => {
 			repository,
 			historyRepository,
 			typeRepository,
+			createFakeTagRepository(),
 			"team-1",
 		);
 
@@ -118,6 +122,7 @@ describe("listTasksByTeam", () => {
 			repository,
 			historyRepository,
 			typeRepository,
+			createFakeTagRepository(),
 			"team-1",
 		);
 
@@ -173,6 +178,7 @@ describe("listTasksByTeam", () => {
 			repository,
 			historyRepository,
 			typeRepository,
+			createFakeTagRepository(),
 			"team-1",
 		);
 
@@ -188,5 +194,29 @@ describe("listTasksByTeam", () => {
 		});
 		expect(childResult?.bugChildCount).toBe(0);
 		expect(childResult?.otherChildCount).toBe(0);
+	});
+
+	it("resolve as tarjas de cada task a partir dos ids associados", async () => {
+		const repository = createFakeTaskRepository();
+		const historyRepository = createFakeTaskHistoryRepository();
+		const typeRepository = createFakeTaskTypeRepository();
+		const tagRepository = createFakeTagRepository();
+		const tag = await tagRepository.create("Cliente Acme", "#2563eb");
+		const task = await repository.seed({
+			...baseData,
+			externalId: "TASK-1",
+			status: "TODO",
+		});
+		repository.seedTagAssociation(task.id, tag.id);
+
+		const result = await listTasksByTeam(
+			repository,
+			historyRepository,
+			typeRepository,
+			tagRepository,
+			"team-1",
+		);
+
+		expect(result.TODO[0].tags).toEqual([tag]);
 	});
 });
