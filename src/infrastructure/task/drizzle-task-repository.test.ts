@@ -404,4 +404,35 @@ describe("drizzleTaskRepository", () => {
 			await drizzleTagRepository.delete(tag.id);
 		}
 	});
+
+	it("persiste, atualiza e limpa o sprintId (sem FK, referência cross-context)", async () => {
+		const sprintId = "22222222-2222-2222-2222-222222222222";
+		const created = await drizzleTaskRepository.createWithInitialHistory(
+			baseData({ sprintId }),
+		);
+		expect(created.sprintId).toBe(sprintId);
+
+		const otherSprintId = "33333333-3333-3333-3333-333333333333";
+		const updated = await drizzleTaskRepository.update(created.id, {
+			externalId: created.externalId,
+			description: created.description,
+			typeId: created.typeId,
+			assigneeId: created.assigneeId,
+			dueDate: created.dueDate,
+			parentTaskId: created.parentTaskId,
+			sprintId: otherSprintId,
+		});
+		expect(updated.sprintId).toBe(otherSprintId);
+
+		const cleared = await drizzleTaskRepository.update(created.id, {
+			externalId: created.externalId,
+			description: created.description,
+			typeId: created.typeId,
+			assigneeId: created.assigneeId,
+			dueDate: created.dueDate,
+			parentTaskId: created.parentTaskId,
+			sprintId: null,
+		});
+		expect(cleared.sprintId).toBeNull();
+	});
 });
