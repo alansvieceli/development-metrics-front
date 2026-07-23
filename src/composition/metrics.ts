@@ -5,12 +5,15 @@ import {
 	getMetricsDashboard,
 	getMetricsDashboardForRange,
 } from "@/application/metrics/use-cases/get-metrics-dashboard";
+import { getMetricsForSprint } from "@/application/metrics/use-cases/get-metrics-for-sprint";
 import {
 	getMetricsPeriodPreference,
 	setMetricsPeriodPreference,
 } from "@/application/metrics/use-cases/metrics-period-preference";
 import { cookieMetricsPeriodPreferenceStore } from "@/infrastructure/metrics/cookie-metrics-period-preference-store";
 import { drizzleMetricsQueryPort } from "@/infrastructure/metrics/drizzle-metrics-query-port";
+import { drizzleSprintMetricsSnapshotRepository } from "@/infrastructure/sprint/drizzle-sprint-metrics-snapshot-repository";
+import { drizzleSprintRepository } from "@/infrastructure/sprint/drizzle-sprint-repository";
 
 export function createMetricsUseCases() {
 	return {
@@ -58,6 +61,15 @@ export function createMetricsUseCases() {
 				end,
 				wipLimit,
 				tagIds,
+			),
+		getMetricsForSprint: (sprintId: string, teamId: string, wipLimit: number) =>
+			getMetricsForSprint(
+				drizzleSprintRepository,
+				drizzleSprintMetricsSnapshotRepository,
+				drizzleMetricsQueryPort,
+				sprintId,
+				teamId,
+				wipLimit,
 			),
 		getMetricsPeriodPreference: (teamId: string) =>
 			getMetricsPeriodPreference(cookieMetricsPeriodPreferenceStore, teamId),
