@@ -35,4 +35,10 @@ describe("matchExternalStatus", () => {
 	it("retorna null para coluna desconhecida", () => {
 		expect(matchExternalStatus("Refinamento.Refinamento Técnico")).toBeNull();
 	});
+
+	it("não confunde 'Pronto para Desenvolvimento' (fila, ainda não iniciado) com IN_DEVELOPMENT", () => {
+		expect(
+			matchExternalStatus("Refinamento.Pronto para Desenvolvimento"),
+		).toBeNull();
+	});
 });

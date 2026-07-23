@@ -3,7 +3,7 @@ import { TASK_STATUSES, type TaskStatus } from "@/domain/task/entities/task";
 
 const STATUS_ALIASES: Record<TaskStatus, string[]> = {
 	TODO: ["Backlog", "Card created"],
-	IN_DEVELOPMENT: ["Desenvolvimento", "Em Andamento"],
+	IN_DEVELOPMENT: ["Em Andamento"],
 	CODE_REVIEW: ["Revisão", "Code Review"],
 	TESTING: ["Testes", "Para Testar"],
 	AWAITING_PUBLICATION: ["Publicação", "Homologação"],
