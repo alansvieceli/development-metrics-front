@@ -17,6 +17,7 @@ import type { UpdateTaskInput } from "@/application/task/use-cases/update-task";
 import { updateTask } from "@/application/task/use-cases/update-task";
 import { updateTaskType } from "@/application/task/use-cases/update-task-type";
 import type { TaskStatus } from "@/domain/task/entities/task";
+import { drizzleSprintRepository } from "@/infrastructure/sprint/drizzle-sprint-repository";
 import { drizzleTagRepository } from "@/infrastructure/task/drizzle-tag-repository";
 import { drizzleTaskHistoryRepository } from "@/infrastructure/task/drizzle-task-history-repository";
 import { drizzleTaskRepository } from "@/infrastructure/task/drizzle-task-repository";
@@ -32,6 +33,7 @@ export function createTaskUseCases() {
 				drizzleTeamRepository,
 				input,
 				drizzleTagRepository,
+				drizzleSprintRepository,
 			),
 		createHistoricalTask: (input: CreateHistoricalTaskInput) =>
 			createHistoricalTask(
@@ -50,6 +52,7 @@ export function createTaskUseCases() {
 				taskId,
 				input,
 				drizzleTagRepository,
+				drizzleSprintRepository,
 			),
 		deleteTask: (teamId: string, taskId: string) =>
 			deleteTask(drizzleTaskRepository, teamId, taskId),

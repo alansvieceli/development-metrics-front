@@ -4,6 +4,7 @@ import { createProgramIncrement } from "@/application/sprint/use-cases/create-pr
 import { createSprint } from "@/application/sprint/use-cases/create-sprint";
 import { listProgramIncrementsByTeam } from "@/application/sprint/use-cases/list-program-increments-by-team";
 import { listSprintsByPi } from "@/application/sprint/use-cases/list-sprints-by-pi";
+import { listSprintsByTeam } from "@/application/sprint/use-cases/list-sprints-by-team";
 import { drizzleProgramIncrementRepository } from "@/infrastructure/sprint/drizzle-program-increment-repository";
 import { drizzleSprintRepository } from "@/infrastructure/sprint/drizzle-sprint-repository";
 
@@ -21,5 +22,7 @@ export function createSprintUseCases() {
 			),
 		listSprintsByPi: (piId: string) =>
 			listSprintsByPi(drizzleSprintRepository, piId),
+		listSprintsByTeam: (teamId: string) =>
+			listSprintsByTeam(drizzleSprintRepository, teamId),
 	};
 }
