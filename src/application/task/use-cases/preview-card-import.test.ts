@@ -71,7 +71,7 @@ describe("previewCardImport", () => {
 		]);
 	});
 
-	it("rejeita etapa que não mapeia para nenhum status conhecido", async () => {
+	it("aproxima etapa não mapeada para o último status válido (ex.: card 439020 do BM)", async () => {
 		const { provider, teamRepository, typeRepository, teamId } = await setup();
 		provider.seed("2", {
 			externalId: "2",
@@ -86,14 +86,90 @@ describe("previewCardImport", () => {
 					columnLabel: "Refinamento.Refinamento Funcional",
 					changedAt: new Date("2026-06-02"),
 				},
+				{
+					columnLabel: "Refinamento.Refinamento Técnico",
+					changedAt: new Date("2026-06-03"),
+				},
+				{
+					columnLabel: "Refinamento.Pronto para Desenvolvimento",
+					changedAt: new Date("2026-06-04"),
+				},
 			],
 		});
 
-		await expect(
-			previewCardImport(provider, teamRepository, typeRepository, teamId, "2"),
-		).rejects.toThrow(
-			'Não foi possível mapear a etapa "Refinamento.Refinamento Funcional" para um status conhecido',
+		const preview = await previewCardImport(
+			provider,
+			teamRepository,
+			typeRepository,
+			teamId,
+			"2",
 		);
+
+		expect(preview.steps).toEqual([{ status: "TODO", date: "2026-06-01" }]);
+		expect(preview.warnings).toContain(
+			'Etapa "Refinamento.Refinamento Funcional" não reconhecida no Businessmap; aproximada para TODO',
+		);
+	});
+
+	it("aproxima para TODO quando nem a primeira etapa é mapeável (ex.: card 435235 do BM)", async () => {
+		const { provider, teamRepository, typeRepository, teamId } = await setup();
+		provider.seed("2b", {
+			externalId: "2b",
+			description: "Card no funil",
+			ownerName: null,
+			typeName: null,
+			dueDate: "2026-08-01",
+			blocked: false,
+			steps: [
+				{ columnLabel: "Funil/Parking Lot", changedAt: new Date("2026-06-01") },
+			],
+		});
+
+		const preview = await previewCardImport(
+			provider,
+			teamRepository,
+			typeRepository,
+			teamId,
+			"2b",
+		);
+
+		expect(preview.steps).toEqual([{ status: "TODO", date: "2026-06-01" }]);
+	});
+
+	it("aproxima para o último status válido quando a etapa mais recente não mapeia (ex.: card 430894 do BM)", async () => {
+		const { provider, teamRepository, typeRepository, teamId } = await setup();
+		provider.seed("2c", {
+			externalId: "2c",
+			description: "Card em homologação",
+			ownerName: null,
+			typeName: null,
+			dueDate: "2026-08-01",
+			blocked: false,
+			steps: [
+				{ columnLabel: "Card created", changedAt: new Date("2026-06-01") },
+				{
+					columnLabel: "Testes.Para Testar",
+					changedAt: new Date("2026-06-02"),
+				},
+				{
+					columnLabel: "Homologação.Para Homologar",
+					changedAt: new Date("2026-06-03"),
+				},
+			],
+		});
+
+		const preview = await previewCardImport(
+			provider,
+			teamRepository,
+			typeRepository,
+			teamId,
+			"2c",
+		);
+
+		expect(preview.steps).toEqual([
+			{ status: "TODO", date: "2026-06-01" },
+			{ status: "TESTING", date: "2026-06-02" },
+		]);
 	});
 
 	it("rejeita card sem deadline", async () => {

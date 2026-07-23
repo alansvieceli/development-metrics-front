@@ -62,14 +62,18 @@ export async function previewCardImport(
 		throw new ApplicationError("O card não possui histórico de movimentação");
 	}
 
+	const warnings: string[] = [];
 	const steps: { status: TaskStatus; date: string }[] = [];
+	let lastStatus: TaskStatus | null = null;
 	for (const step of card.steps) {
-		const status = matchExternalStatus(step.columnLabel);
+		let status = matchExternalStatus(step.columnLabel);
 		if (!status) {
-			throw new ApplicationError(
-				`Não foi possível mapear a etapa "${step.columnLabel}" para um status conhecido`,
+			status = lastStatus ?? "TODO";
+			warnings.push(
+				`Etapa "${step.columnLabel}" não reconhecida no Businessmap; aproximada para ${status}`,
 			);
 		}
+		lastStatus = status;
 		const date = step.changedAt.toISOString().slice(0, 10);
 		const last = steps[steps.length - 1];
 		if (last && last.status === status) continue;
@@ -81,7 +85,6 @@ export async function previewCardImport(
 		);
 	}
 
-	const warnings: string[] = [];
 	let resolvedAssigneeId: string | null = null;
 	if (card.ownerName) {
 		const members = await teamRepository.listMembers(teamId);
