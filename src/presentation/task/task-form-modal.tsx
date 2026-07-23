@@ -6,6 +6,7 @@ import { useState } from "react";
 import type { ActionState } from "@/application/shared/action-state";
 import type { CreateTaskInput } from "@/application/task/use-cases/create-task";
 import type { UpdateTaskInput } from "@/application/task/use-cases/update-task";
+import type { Sprint } from "@/domain/sprint/entities/sprint";
 import type { Tag } from "@/domain/task/entities/tag";
 import type { Task, TaskStatus } from "@/domain/task/entities/task";
 import type { TaskType } from "@/domain/task/entities/task-type";
@@ -30,6 +31,7 @@ type TaskFormModalProps =
 			members: Member[];
 			teamTasks: TeamTaskOption[];
 			tags: Tag[];
+			sprints: Sprint[];
 			createTaskAction: (
 				input: Omit<CreateTaskInput, "teamId">,
 			) => Promise<ActionState>;
@@ -41,6 +43,7 @@ type TaskFormModalProps =
 			members: Member[];
 			teamTasks: TeamTaskOption[];
 			tags: Tag[];
+			sprints: Sprint[];
 			initialTagIds: string[];
 			updateTaskAction: (
 				taskId: string,
@@ -73,6 +76,8 @@ export function TaskFormModal(props: TaskFormModalProps) {
 		const dueDate = String(formData.get("dueDate") ?? "");
 		const parentTaskIdValue = String(formData.get("parentTaskId") ?? "");
 		const parentTaskId = parentTaskIdValue === "" ? null : parentTaskIdValue;
+		const sprintIdValue = String(formData.get("sprintId") ?? "");
+		const sprintId = sprintIdValue === "" ? null : sprintIdValue;
 
 		setPending(true);
 		setError(null);
@@ -88,6 +93,7 @@ export function TaskFormModal(props: TaskFormModalProps) {
 					dueDate,
 					status,
 					parentTaskId,
+					sprintId,
 					tagIds,
 				});
 			} else {
@@ -98,6 +104,7 @@ export function TaskFormModal(props: TaskFormModalProps) {
 					assigneeId,
 					dueDate,
 					parentTaskId,
+					sprintId,
 					tagIds,
 				});
 			}
@@ -306,6 +313,24 @@ export function TaskFormModal(props: TaskFormModalProps) {
 											{teamTask.externalId} — {teamTask.description}
 										</option>
 									))}
+							</select>
+						</div>
+						<div className="flex flex-col gap-2">
+							<label htmlFor="sprintId" className="text-sm opacity-70">
+								Sprint (opcional)
+							</label>
+							<select
+								id="sprintId"
+								name="sprintId"
+								defaultValue={isEdit ? (props.task.sprintId ?? "") : ""}
+								className="rounded-lg border border-(--border) px-3 py-2"
+							>
+								<option value="">Sem sprint</option>
+								{props.sprints.map((sprint) => (
+									<option key={sprint.id} value={sprint.id}>
+										{sprint.name}
+									</option>
+								))}
 							</select>
 						</div>
 						<TagCombobox
