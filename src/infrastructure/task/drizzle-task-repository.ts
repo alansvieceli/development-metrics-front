@@ -7,7 +7,12 @@ import type {
 } from "@/application/task/ports/task-repository";
 import type { Task, TaskStatus } from "@/domain/task/entities/task";
 import { db } from "@/infrastructure/db/client";
-import { taskBlockedPeriods, taskStatusChanges, tasks } from "./drizzle/schema";
+import {
+	taskBlockedPeriods,
+	taskStatusChanges,
+	taskTags,
+	tasks,
+} from "./drizzle/schema";
 
 function toTask(row: typeof tasks.$inferSelect): Task {
 	return { ...row, status: row.status as TaskStatus };
@@ -175,5 +180,18 @@ export const drizzleTaskRepository: TaskRepository = {
 			.where(eq(tasks.assigneeId, assigneeId))
 			.limit(1);
 		return Boolean(row);
+	},
+	async countByTag(tagId: string) {
+		const [result] = await db
+			.select({ count: sql<number>`count(*)::int` })
+			.from(taskTags)
+			.where(eq(taskTags.tagId, tagId));
+		return result?.count ?? 0;
+	},
+	async listUsedTagIds() {
+		const rows = await db
+			.selectDistinct({ tagId: taskTags.tagId })
+			.from(taskTags);
+		return rows.map((row) => row.tagId);
 	},
 };

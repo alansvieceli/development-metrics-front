@@ -1,7 +1,13 @@
 import { and, eq, isNull, sql } from "drizzle-orm";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { db } from "@/infrastructure/db/client";
-import { taskBlockedPeriods, taskStatusChanges, tasks } from "./drizzle/schema";
+import {
+	taskBlockedPeriods,
+	taskStatusChanges,
+	taskTags,
+	tasks,
+} from "./drizzle/schema";
+import { drizzleTagRepository } from "./drizzle-tag-repository";
 import { drizzleTaskRepository } from "./drizzle-task-repository";
 import { drizzleTaskTypeRepository } from "./drizzle-task-type-repository";
 
@@ -305,5 +311,33 @@ describe("drizzleTaskRepository", () => {
 		);
 
 		expect(await drizzleTaskRepository.listUsedTypeIds()).toEqual([typeId]);
+	});
+
+	it("conta tasks associadas a uma tarja", async () => {
+		const tag = await drizzleTagRepository.create("Cliente Acme", "#2563eb");
+		const task = await drizzleTaskRepository.createWithInitialHistory(
+			baseData(),
+		);
+		await db.insert(taskTags).values({ taskId: task.id, tagId: tag.id });
+		try {
+			expect(await drizzleTaskRepository.countByTag(tag.id)).toBe(1);
+		} finally {
+			await resetTasksTable();
+			await drizzleTagRepository.delete(tag.id);
+		}
+	});
+
+	it("lista os ids de tarja em uso", async () => {
+		const tag = await drizzleTagRepository.create("Cliente Acme", "#2563eb");
+		const task = await drizzleTaskRepository.createWithInitialHistory(
+			baseData(),
+		);
+		await db.insert(taskTags).values({ taskId: task.id, tagId: tag.id });
+		try {
+			expect(await drizzleTaskRepository.listUsedTagIds()).toEqual([tag.id]);
+		} finally {
+			await resetTasksTable();
+			await drizzleTagRepository.delete(tag.id);
+		}
 	});
 });

@@ -36,4 +36,6 @@ export type TaskRepository = TaskUsageQuery & {
 	listByTeam(teamId: string): Promise<Task[]>;
 	countByType(typeId: string): Promise<number>;
 	listUsedTypeIds(): Promise<string[]>;
+	countByTag(tagId: string): Promise<number>;
+	listUsedTagIds(): Promise<string[]>;
 };

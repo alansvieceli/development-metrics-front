@@ -13,6 +13,7 @@ export type FakeTaskRepository = TaskRepository & {
 	blockedPeriods: TaskBlockedPeriod[];
 	listUsedTypeIdsCalls: number;
 	seed(data: CreateTaskData): Promise<Task>;
+	seedTagAssociation(taskId: string, tagId: string): void;
 };
 
 export function createFakeTaskRepository(): FakeTaskRepository {
@@ -20,6 +21,7 @@ export function createFakeTaskRepository(): FakeTaskRepository {
 	let nextId = 1;
 	const statusChanges: TaskStatusChange[] = [];
 	const blockedPeriods: TaskBlockedPeriod[] = [];
+	const taskTagIds: { taskId: string; tagId: string }[] = [];
 
 	async function seed(data: CreateTaskData) {
 		const now = new Date();
@@ -39,6 +41,9 @@ export function createFakeTaskRepository(): FakeTaskRepository {
 		blockedPeriods,
 		listUsedTypeIdsCalls: 0,
 		seed,
+		seedTagAssociation(taskId, tagId) {
+			taskTagIds.push({ taskId, tagId });
+		},
 		async createWithInitialHistory(data) {
 			const task = await seed(data);
 			statusChanges.push({
@@ -148,6 +153,12 @@ export function createFakeTaskRepository(): FakeTaskRepository {
 		},
 		async hasTasksForAssignee(assigneeId) {
 			return tasks.some((task) => task.assigneeId === assigneeId);
+		},
+		async countByTag(tagId) {
+			return taskTagIds.filter((a) => a.tagId === tagId).length;
+		},
+		async listUsedTagIds() {
+			return [...new Set(taskTagIds.map((a) => a.tagId))];
 		},
 	};
 }
