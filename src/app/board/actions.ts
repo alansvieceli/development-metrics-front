@@ -53,6 +53,9 @@ function validateInput(input: unknown): asserts input is UpdateTaskInput {
 		throw new ApplicationError("Data prevista inválida");
 	if (value.parentTaskId !== null)
 		validateUuid(value.parentTaskId, "Task de origem inválida");
+	if (value.sprintId !== undefined && value.sprintId !== null) {
+		validateUuid(value.sprintId, "Sprint inválida");
+	}
 	if (value.tagIds !== undefined) {
 		if (
 			!Array.isArray(value.tagIds) ||
