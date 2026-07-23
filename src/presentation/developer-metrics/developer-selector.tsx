@@ -17,24 +17,21 @@ export function DeveloperSelector({
 	const searchParams = useSearchParams();
 
 	return (
-		<label className="flex items-center gap-2 text-sm">
-			<span className="text-(--foreground-muted)">Desenvolvedor</span>
-			<select
-				aria-label="Desenvolvedor"
-				value={selectedMemberId}
-				onChange={(event) => {
-					const params = new URLSearchParams(searchParams.toString());
-					params.set("developer", event.target.value);
-					router.push(`${pathname}?${params.toString()}`);
-				}}
-				className="h-9 min-w-40 cursor-pointer rounded-lg border border-(--border) bg-(--background) px-3"
-			>
-				{members.map((member) => (
-					<option key={member.id} value={member.id}>
-						{member.name}
-					</option>
-				))}
-			</select>
-		</label>
+		<select
+			aria-label="Desenvolvedor"
+			value={selectedMemberId}
+			onChange={(event) => {
+				const params = new URLSearchParams(searchParams.toString());
+				params.set("developer", event.target.value);
+				router.push(`${pathname}?${params.toString()}`);
+			}}
+			className="h-9 min-w-40 cursor-pointer rounded-lg border border-(--border) bg-(--background) px-3"
+		>
+			{members.map((member) => (
+				<option key={member.id} value={member.id}>
+					{member.name}
+				</option>
+			))}
+		</select>
 	);
 }

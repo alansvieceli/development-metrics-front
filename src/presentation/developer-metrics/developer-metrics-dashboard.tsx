@@ -90,7 +90,7 @@ export function DeveloperMetricsDashboard({
 						</span>
 					</div>
 				</div>
-				<div className="flex flex-wrap items-center gap-3 self-start rounded-xl border border-(--border) bg-(--surface) p-2 xl:self-auto">
+				<div className="flex flex-wrap items-center gap-2 self-start rounded-xl border border-(--border) bg-(--surface) p-2 xl:self-auto">
 					<DeveloperSelector
 						members={members}
 						selectedMemberId={selectedMember.id}
