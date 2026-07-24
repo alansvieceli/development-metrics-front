@@ -6,6 +6,7 @@ import type { Tag } from "@/domain/task/entities/tag";
 import type { TaskStatus } from "@/domain/task/entities/task";
 import type { TaskType } from "@/domain/task/entities/task-type";
 import type { Member } from "@/domain/team/entities/member";
+import { CardSyncBadge } from "@/presentation/task/card-sync-badge";
 import { getDueDateStatus } from "@/presentation/task/due-date-status";
 import type { TeamTaskOption } from "@/presentation/task/task-form-modal";
 import { TaskFormModal } from "@/presentation/task/task-form-modal";
@@ -30,6 +31,12 @@ type TaskCardProps = {
 		taskId: string,
 		blocked: boolean,
 	) => Promise<ActionState>;
+	checkCardSyncAction: (
+		externalId: string,
+		localStatus: TaskStatus,
+	) => Promise<
+		import("@/app/board/businessmap-sync-actions").CheckCardSyncActionResult
+	>;
 };
 
 function formatElapsed(since: Date): string {
@@ -72,6 +79,7 @@ export function TaskCard({
 	deleteTaskAction,
 	moveTaskAction,
 	toggleBlockedAction,
+	checkCardSyncAction,
 }: TaskCardProps) {
 	return (
 		<div
@@ -81,19 +89,26 @@ export function TaskCard({
 		>
 			<div className="flex items-start justify-between gap-2">
 				<span className="font-mono text-xs opacity-70">{task.externalId}</span>
-				<TaskFormModal
-					mode="edit"
-					task={task}
-					taskTypes={taskTypes}
-					members={members}
-					teamTasks={teamTasks}
-					tags={tags}
-					sprints={sprints}
-					initialTagIds={task.tags.map((tag) => tag.id)}
-					updateTaskAction={updateTaskAction}
-					deleteTaskAction={deleteTaskAction}
-					toggleBlockedAction={toggleBlockedAction}
-				/>
+				<div className="flex items-center gap-1">
+					<CardSyncBadge
+						externalId={task.externalId}
+						status={task.status}
+						checkCardSyncAction={checkCardSyncAction}
+					/>
+					<TaskFormModal
+						mode="edit"
+						task={task}
+						taskTypes={taskTypes}
+						members={members}
+						teamTasks={teamTasks}
+						tags={tags}
+						sprints={sprints}
+						initialTagIds={task.tags.map((tag) => tag.id)}
+						updateTaskAction={updateTaskAction}
+						deleteTaskAction={deleteTaskAction}
+						toggleBlockedAction={toggleBlockedAction}
+					/>
+				</div>
 			</div>
 			<p className="text-sm">{task.description}</p>
 			<p className="text-xs opacity-70">

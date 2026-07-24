@@ -51,6 +51,12 @@ type KanbanBoardProps = {
 		taskId: string,
 		blocked: boolean,
 	) => Promise<ActionState>;
+	checkCardSyncAction: (
+		externalId: string,
+		localStatus: TaskStatus,
+	) => Promise<
+		import("@/app/board/businessmap-sync-actions").CheckCardSyncActionResult
+	>;
 	startSprintAction: (
 		previousState: ActionState,
 		formData: FormData,
@@ -76,6 +82,7 @@ export function KanbanBoard({
 	deleteTaskAction,
 	moveTaskAction,
 	toggleBlockedAction,
+	checkCardSyncAction,
 	startSprintAction,
 	finishSprintAction,
 }: KanbanBoardProps) {
@@ -182,6 +189,7 @@ export function KanbanBoard({
 								deleteTaskAction={deleteTaskAction}
 								moveTaskAction={moveTaskAction}
 								toggleBlockedAction={toggleBlockedAction}
+								checkCardSyncAction={checkCardSyncAction}
 							/>
 						))}
 					</div>
