@@ -1,3 +1,4 @@
+import { checkCardSync } from "@/application/task/use-cases/check-card-sync";
 import type { CreateHistoricalTaskInput } from "@/application/task/use-cases/create-historical-task";
 import { createHistoricalTask } from "@/application/task/use-cases/create-historical-task";
 import { createTag } from "@/application/task/use-cases/create-tag";
@@ -7,6 +8,7 @@ import { createTaskType } from "@/application/task/use-cases/create-task-type";
 import { deleteTag } from "@/application/task/use-cases/delete-tag";
 import { deleteTask } from "@/application/task/use-cases/delete-task";
 import { deleteTaskType } from "@/application/task/use-cases/delete-task-type";
+import { diffColumnWithBusinessmap } from "@/application/task/use-cases/diff-column-with-businessmap";
 import { importCard } from "@/application/task/use-cases/import-card";
 import { listTags } from "@/application/task/use-cases/list-tags";
 import { listTaskTypes } from "@/application/task/use-cases/list-task-types";
@@ -70,6 +72,17 @@ export function createTaskUseCases() {
 				typeId,
 				tagIds,
 				drizzleTagRepository,
+			),
+		checkCardSync: (externalId: string, localStatus: TaskStatus) =>
+			checkCardSync(businessmapCardProvider, externalId, localStatus),
+		diffColumnWithBusinessmap: (
+			status: TaskStatus,
+			localExternalIds: string[],
+		) =>
+			diffColumnWithBusinessmap(
+				businessmapCardProvider,
+				status,
+				localExternalIds,
 			),
 		updateTask: (teamId: string, taskId: string, input: UpdateTaskInput) =>
 			updateTask(
