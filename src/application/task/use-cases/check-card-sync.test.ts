@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createFakeExternalCardProvider } from "./test-helpers/create-fake-external-card-provider";
 import { checkCardSync } from "./check-card-sync";
+import { createFakeExternalCardProvider } from "./test-helpers/create-fake-external-card-provider";
 
 describe("checkCardSync", () => {
 	it("retorna inSync=true quando a coluna atual do Businessmap mapeia para o mesmo status local", async () => {

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createFakeExternalCardProvider } from "./test-helpers/create-fake-external-card-provider";
 import { diffColumnWithBusinessmap } from "./diff-column-with-businessmap";
+import { createFakeExternalCardProvider } from "./test-helpers/create-fake-external-card-provider";
 
 describe("diffColumnWithBusinessmap", () => {
 	it("separa ids batendo, só locais e só no Businessmap para o status pedido", async () => {
@@ -11,11 +11,10 @@ describe("diffColumnWithBusinessmap", () => {
 			{ externalId: "3", columnLabel: "Testes.Para Testar" },
 		]);
 
-		const result = await diffColumnWithBusinessmap(
-			provider,
-			"IN_DEVELOPMENT",
-			["1", "4"],
-		);
+		const result = await diffColumnWithBusinessmap(provider, "IN_DEVELOPMENT", [
+			"1",
+			"4",
+		]);
 
 		expect(result).toEqual({
 			matched: ["1"],
