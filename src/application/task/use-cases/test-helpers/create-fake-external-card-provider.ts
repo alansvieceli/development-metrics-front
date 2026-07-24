@@ -5,13 +5,18 @@ import type {
 
 export type FakeExternalCardProvider = ExternalCardProvider & {
 	seed(cardId: string, card: ExternalCard): void;
+	seedColumn(cardId: string, column: { columnLabel: string }): void;
 };
 
 export function createFakeExternalCardProvider(): FakeExternalCardProvider {
 	const cards = new Map<string, ExternalCard>();
+	const columns = new Map<string, { columnLabel: string }>();
 	return {
 		seed(cardId, card) {
 			cards.set(cardId, card);
+		},
+		seedColumn(cardId, column) {
+			columns.set(cardId, column);
 		},
 		async fetchCard(cardId) {
 			const card = cards.get(cardId);
@@ -20,12 +25,7 @@ export function createFakeExternalCardProvider(): FakeExternalCardProvider {
 			return card;
 		},
 		async fetchCardColumn(cardId) {
-			const card = cards.get(cardId);
-			if (!card) return null;
-			const lastStep = card.steps[card.steps.length - 1];
-			return lastStep
-				? { columnLabel: lastStep.columnLabel }
-				: { columnLabel: "Desconhecido" };
+			return columns.get(cardId) ?? null;
 		},
 	};
 }
