@@ -9,7 +9,10 @@ import {
 	toggleBlockedAction,
 	updateTaskAction,
 } from "@/app/board/actions";
-import { checkCardSyncAction } from "@/app/board/businessmap-sync-actions";
+import {
+	checkCardSyncAction,
+	diffColumnAction,
+} from "@/app/board/businessmap-sync-actions";
 import {
 	confirmCardImportAction,
 	previewCardImportAction,
@@ -79,6 +82,7 @@ export default async function BoardPage({
 			moveTaskAction={moveTaskAction}
 			toggleBlockedAction={toggleBlockedAction}
 			checkCardSyncAction={checkCardSyncAction}
+			diffColumnAction={diffColumnAction}
 			startSprintAction={startSprintAction}
 			finishSprintAction={finishSprintAction}
 		/>

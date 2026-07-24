@@ -13,6 +13,7 @@ import type { Task, TaskStatus } from "@/domain/task/entities/task";
 import type { TaskType } from "@/domain/task/entities/task-type";
 import type { Member } from "@/domain/team/entities/member";
 import { BoardSummary } from "@/presentation/task/board-summary";
+import { ColumnSyncModal } from "@/presentation/task/column-sync-modal";
 import { HistoricalTaskFormModal } from "@/presentation/task/historical-task-form-modal";
 import { ImportCardModal } from "@/presentation/task/import-card-modal";
 import { SprintBoardFilter } from "@/presentation/task/sprint-board-filter";
@@ -57,6 +58,12 @@ type KanbanBoardProps = {
 	) => Promise<
 		import("@/app/board/businessmap-sync-actions").CheckCardSyncActionResult
 	>;
+	diffColumnAction: (
+		status: TaskStatus,
+		localExternalIds: string[],
+	) => Promise<
+		import("@/app/board/businessmap-sync-actions").DiffColumnActionResult
+	>;
 	startSprintAction: (
 		previousState: ActionState,
 		formData: FormData,
@@ -83,6 +90,7 @@ export function KanbanBoard({
 	moveTaskAction,
 	toggleBlockedAction,
 	checkCardSyncAction,
+	diffColumnAction,
 	startSprintAction,
 	finishSprintAction,
 }: KanbanBoardProps) {
@@ -169,9 +177,18 @@ export function KanbanBoard({
 							index > 0 ? "border-l border-(--border)" : ""
 						}`}
 					>
-						<h2 className="text-sm font-semibold text-balance opacity-70">
-							{STATUS_LABELS[status]} ({tasksByStatus[status].length})
-						</h2>
+						<div className="flex items-center justify-between gap-2">
+							<h2 className="text-sm font-semibold text-balance opacity-70">
+								{STATUS_LABELS[status]} ({tasksByStatus[status].length})
+							</h2>
+							<ColumnSyncModal
+								status={status}
+								localExternalIds={tasksByStatus[status].map(
+									(task) => task.externalId,
+								)}
+								diffColumnAction={diffColumnAction}
+							/>
+						</div>
 						{visibleTasksByStatus[status].map((task) => (
 							<TaskCard
 								key={task.id}
