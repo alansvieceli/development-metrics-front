@@ -27,6 +27,15 @@ type BusinessmapColumn = {
 };
 type BusinessmapCardType = { type_id: number; name: string };
 type BusinessmapUser = { username: string };
+type BusinessmapCardListItem = { card_id: number; column_id: number };
+type BusinessmapCardListResponse = {
+	pagination: {
+		all_pages: number;
+		current_page: number;
+		results_per_page: number;
+	};
+	data: BusinessmapCardListItem[];
+};
 
 function baseUrl(): string {
 	const companyName = process.env.BUSINESSMAP_COMPANY_NAME;
@@ -173,5 +182,26 @@ export const businessmapCardProvider: ExternalCardProvider = {
 		const card = body.data;
 		const columnsById = await fetchColumnsById(card.board_id, headers, url);
 		return { columnLabel: columnLabel(card.column_id, columnsById) };
+	},
+	async listBoardCards(): Promise<
+		{ externalId: string; columnLabel: string }[]
+	> {
+		const headers = authHeaders();
+		const url = baseUrl();
+		const boardId = process.env.BUSINESSMAP_BOARD_ID;
+		if (!boardId) {
+			throw new Error("BUSINESSMAP_BOARD_ID não configurado");
+		}
+		// ponytail: per_page=1000 evita paginar; board 108 tem 460 cards hoje.
+		// Se algum board passar de 1000 cards, isso vai truncar silenciosamente.
+		const list = await getJson<BusinessmapCardListResponse>(
+			`${url}/cards?board_ids[]=${boardId}&per_page=1000`,
+			headers,
+		);
+		const columnsById = await fetchColumnsById(Number(boardId), headers, url);
+		return list.data.map((card) => ({
+			externalId: String(card.card_id),
+			columnLabel: columnLabel(card.column_id, columnsById),
+		}));
 	},
 };

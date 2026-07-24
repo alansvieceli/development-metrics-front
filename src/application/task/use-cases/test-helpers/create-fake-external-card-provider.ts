@@ -27,5 +27,8 @@ export function createFakeExternalCardProvider(): FakeExternalCardProvider {
 		async fetchCardColumn(cardId) {
 			return columns.get(cardId) ?? null;
 		},
+		async listBoardCards() {
+			return [];
+		},
 	};
 }

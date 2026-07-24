@@ -347,28 +347,17 @@ git commit -m "feat: adiciona use-case checkCardSync"
 
 **⚠️ Contrato do endpoint de listagem ainda não confirmado.** Diferente das Tasks 1/2, esta task começa com uma investigação real contra a API (mesmo padrão usado para descobrir o contrato de histórico do card, documentado no início de `docs/superpowers/plans/2026-07-23-importar-card-businessmap.md`). O board `108` (do card `415931` já usado nos fixtures) serve de board de teste.
 
-- [ ] **Step 1: Descobrir o endpoint real de listagem de cards por board**
+- [x] **Step 1: Descobrir o endpoint real de listagem de cards por board** — ✅ concluída
 
-Usando as credenciais do `.env` local (`BUSINESSMAP_COMPANY_NAME`, `BUSINESSMAP_API_KEY`), rode:
+**⚠️ Contrato real da API (confirmado via curl nesta execução, board `108`):**
 
-```bash
-source .env
-curl -s -H "apikey: $BUSINESSMAP_API_KEY" \
-  "https://$BUSINESSMAP_COMPANY_NAME.kanbanize.com/api/v2/cards?board_ids[]=108" | head -c 2000
-```
+- O primeiro candidato funciona direto: `GET /api/v2/cards?board_ids[]=108` → HTTP 200.
+- **Formato de resposta é duplamente aninhado**, diferente de todos os outros fixtures do diretório: `{ "data": { "pagination": {...}, "data": [...] } }` — ou seja, o `data` de nível superior não é a lista de cards, é um objeto com `pagination` + `data` (a lista de fato). Isso é específico deste endpoint de listagem; os endpoints de recurso único (`/cards/{id}`, `/boards/{id}/columns`, etc.) continuam `{ "data": <objeto ou lista> }` simples.
+- Cada item tem `card_id` e `column_id` (mesmos campos de `BusinessmapCard`), mas **não** tem `description`, `deadline`, `is_blocked` nem `created_at` — só campos de resumo (`card_id`, `custom_id`, `board_id`, `workflow_id`, `title`, `owner_user_id`, `type_id`, `color`, `section`, `column_id`, `lane_id`, `position`). Suficiente para o par `{ externalId, columnLabel }` que a Task precisa; não dá para reaproveitar o tipo `BusinessmapCard` para os itens da lista.
+- **É paginado**: sem parâmetros extras, o board `108` retorna `pagination: { all_pages: 3, current_page: 1, results_per_page: 200 }` (200 cards por página, 3 páginas). Testado `per_page=1000` como query param — a API aceita e devolve tudo numa página só: `pagination: { all_pages: 1, current_page: 1, results_per_page: 1000 }` com 460 cards no `data`. Board `108` tem 460 cards hoje, bem abaixo de 1000 — então `?board_ids[]={boardId}&per_page=1000` numa chamada só é suficiente e evita implementar loop de paginação nesta primeira versão. Se o board crescer além de 1000 cards, isso vai truncar silenciosamente — ok para agora, mas é uma limitação conhecida (não implementar paginação multi-página não foi pedido pelo escopo desta task).
+- Card `415931` (o mesmo usado nos outros fixtures) aparece na lista com `column_id: 5270`, que resolve para `"Desenvolvimento.Em Andamento"` via `businessmap-board-108-columns.json` — mesmo label já usado no teste de `fetchCardColumn`.
 
-Se retornar 404 ou erro de parâmetro, tente o formato alternativo:
-
-```bash
-curl -s -H "apikey: $BUSINESSMAP_API_KEY" \
-  "https://$BUSINESSMAP_COMPANY_NAME.kanbanize.com/api/v2/boards/108/cards" | head -c 2000
-```
-
-Confirme no corpo da resposta: (a) qual desses dois formatos funciona, (b) se cada item tem `card_id` e `column_id` (mesmos campos já usados em `BusinessmapCard`), (c) se a resposta é paginada (procure por `page`/`per_page`/`next_page` no corpo ou nos headers — se houver paginação, anote quantas páginas o board `108` tem hoje).
-
-Salve a resposta completa (sem a api key) em `src/infrastructure/task/__fixtures__/businessmap-board-108-cards.json`, no mesmo formato `{ "data": [...] }` dos outros fixtures do diretório.
-
-**Depois de confirmar:** atualize este arquivo de plano (Step 1 desta Task) com o endpoint e formato reais encontrados, igual ao que foi feito na Task 1 do plano de importação — isso evita que quem executar os próximos steps assuma o candidato errado.
+Fixture salva (trimmed, 5 cards incluindo o 415931, sem api key) em `src/infrastructure/task/__fixtures__/businessmap-board-108-cards.json`.
 
 - [ ] **Step 2: Escrever o teste do adapter**
 
@@ -380,10 +369,10 @@ Import no topo do arquivo:
 import boardCards from "./__fixtures__/businessmap-board-108-cards.json";
 ```
 
-E no mock de `fetch` dentro do `beforeEach`, adicione (ajuste a condição de URL para o endpoint confirmado no Step 1):
+E no mock de `fetch` dentro do `beforeEach`, adicione (endpoint real confirmado no Step 1, com `per_page=1000` para evitar paginação):
 
 ```typescript
-				if (url.endsWith("/cards?board_ids[]=108"))
+				if (url.endsWith("/cards?board_ids[]=108&per_page=1000"))
 					return jsonResponse(boardCards);
 ```
 
@@ -428,9 +417,17 @@ export type ExternalCardProvider = {
 
 - [ ] **Step 5: Implementar no adapter**
 
-Ajuste a URL abaixo para o endpoint confirmado no Step 1. Adicione ao final de `src/infrastructure/task/businessmap-card-provider.ts`, dentro do objeto `businessmapCardProvider`:
+O endpoint de listagem devolve `{ data: { pagination: {...}, data: [...] } }` (aninhamento duplo, diferente dos outros endpoints), então não dá pra reaproveitar `getJson<BusinessmapCard[]>` direto — o `T` aqui é o objeto com `pagination` + `data`. `per_page=1000` evita ter que paginar (board `108` tem 460 cards hoje). Adicione ao final de `src/infrastructure/task/businessmap-card-provider.ts`, dentro do objeto `businessmapCardProvider` (e um novo tipo `BusinessmapCardListItem`/`BusinessmapCardListResponse` perto dos outros tipos do arquivo):
 
 ```typescript
+type BusinessmapCardListItem = { card_id: number; column_id: number };
+type BusinessmapCardListResponse = {
+	pagination: { all_pages: number; current_page: number; results_per_page: number };
+	data: BusinessmapCardListItem[];
+};
+
+// ...
+
 	async listBoardCards(): Promise<
 		{ externalId: string; columnLabel: string }[]
 	> {
@@ -440,12 +437,12 @@ Ajuste a URL abaixo para o endpoint confirmado no Step 1. Adicione ao final de `
 		if (!boardId) {
 			throw new Error("BUSINESSMAP_BOARD_ID não configurado");
 		}
-		const cards = await getJson<BusinessmapCard[]>(
-			`${url}/cards?board_ids[]=${boardId}`,
+		const list = await getJson<BusinessmapCardListResponse>(
+			`${url}/cards?board_ids[]=${boardId}&per_page=1000`,
 			headers,
 		);
 		const columnsById = await fetchColumnsById(Number(boardId), headers, url);
-		return cards.map((card) => ({
+		return list.data.map((card) => ({
 			externalId: String(card.card_id),
 			columnLabel: columnLabel(card.column_id, columnsById),
 		}));

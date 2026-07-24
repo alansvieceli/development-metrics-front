@@ -1,4 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import boardCards from "./__fixtures__/businessmap-board-108-cards.json";
 import columns from "./__fixtures__/businessmap-board-108-columns.json";
 import cardDetails from "./__fixtures__/businessmap-card-415931-details.json";
 import revision1 from "./__fixtures__/businessmap-card-415931-revision-1.json";
@@ -28,6 +29,8 @@ describe("businessmapCardProvider", () => {
 				if (url.endsWith("/cardTypes")) return jsonResponse(cardTypes);
 				if (url.endsWith("/users/1460")) return jsonResponse(user);
 				if (url.endsWith("/cards/415931")) return jsonResponse(cardDetails);
+				if (url.endsWith("/cards?board_ids[]=108&per_page=1000"))
+					return jsonResponse(boardCards);
 				throw new Error(`URL não mockada: ${url}`);
 			}),
 		);
@@ -79,6 +82,24 @@ describe("businessmapCardProvider", () => {
 			);
 			const result = await businessmapCardProvider.fetchCardColumn("999999");
 			expect(result).toBeNull();
+		});
+	});
+
+	describe("listBoardCards", () => {
+		it("lança erro quando BUSINESSMAP_BOARD_ID não está configurado", async () => {
+			process.env.BUSINESSMAP_BOARD_ID = "";
+			await expect(businessmapCardProvider.listBoardCards()).rejects.toThrow(
+				"BUSINESSMAP_BOARD_ID não configurado",
+			);
+		});
+
+		it("lista todos os cards do board com sua coluna atual", async () => {
+			process.env.BUSINESSMAP_BOARD_ID = "108";
+			const cards = await businessmapCardProvider.listBoardCards();
+			expect(cards).toContainEqual({
+				externalId: "415931",
+				columnLabel: "Desenvolvimento.Em Andamento",
+			});
 		});
 	});
 });
