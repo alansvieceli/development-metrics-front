@@ -38,6 +38,14 @@ Frontend do projeto Development Metrics.
   criar a task; qualquer etapa não mapeável ou deadline ausente interrompe a
   importação com erro. Requer `BUSINESSMAP_COMPANY_NAME` e
   `BUSINESSMAP_API_KEY` configurados (ver "Como rodar").
+- Sincronização com o Businessmap: um ícone em cada card verifica, sob
+  demanda, se a coluna atual do card no Businessmap mapeia para o mesmo
+  status local (mesma regra de correspondência usada na importação); um
+  ícone no cabeçalho de cada coluna compara os ids das tasks locais com os
+  cards que o Businessmap tem hoje naquele status, mostrando o que sobra de
+  um lado ou do outro. É só leitura e sob demanda — nada é corrigido
+  automaticamente. Requer `BUSINESSMAP_BOARD_ID` além das duas variáveis
+  acima (ver "Como rodar").
 - Toda mudança de status gera histórico. Bloqueios são registrados como períodos
   com início e fim, que alimentam o cálculo das métricas.
 - Dashboard com 15 indicadores do time atual, filtros semanal, quinzenal ou
@@ -123,17 +131,20 @@ TEST_DATABASE_URL=postgresql://postgres:postgres@localhost:5432/development_metr
 
 Os testes recusam bancos cujo nome não termine em `_test`.
 
-Para a importação de card do Businessmap, adicione também (ver
-`.env.example`):
+Para a importação de card e a sincronização com o Businessmap, adicione
+também (ver `.env.example`):
 
 ```
 BUSINESSMAP_COMPANY_NAME=
 BUSINESSMAP_API_KEY=
+BUSINESSMAP_BOARD_ID=
 ```
 
 `BUSINESSMAP_COMPANY_NAME` é o subdomínio da empresa em
 `https://{empresa}.kanbanize.com`; `BUSINESSMAP_API_KEY` é o token de API
-gerado em "My account" > "API" no Businessmap.
+gerado em "My account" > "API" no Businessmap. `BUSINESSMAP_BOARD_ID` é o id
+numérico do board do Businessmap comparado com o quadro local pela
+sincronização (só é necessário para o diff por coluna).
 
 Aplicar as migrações e subir o servidor:
 
