@@ -6,17 +6,22 @@ import type {
 export type FakeExternalCardProvider = ExternalCardProvider & {
 	seed(cardId: string, card: ExternalCard): void;
 	seedColumn(cardId: string, column: { columnLabel: string }): void;
+	seedBoardCards(cards: { externalId: string; columnLabel: string }[]): void;
 };
 
 export function createFakeExternalCardProvider(): FakeExternalCardProvider {
 	const cards = new Map<string, ExternalCard>();
 	const columns = new Map<string, { columnLabel: string }>();
+	let boardCards: { externalId: string; columnLabel: string }[] = [];
 	return {
 		seed(cardId, card) {
 			cards.set(cardId, card);
 		},
 		seedColumn(cardId, column) {
 			columns.set(cardId, column);
+		},
+		seedBoardCards(cardsToSeed) {
+			boardCards = cardsToSeed;
 		},
 		async fetchCard(cardId) {
 			const card = cards.get(cardId);
@@ -28,7 +33,7 @@ export function createFakeExternalCardProvider(): FakeExternalCardProvider {
 			return columns.get(cardId) ?? null;
 		},
 		async listBoardCards() {
-			return [];
+			return boardCards;
 		},
 	};
 }
