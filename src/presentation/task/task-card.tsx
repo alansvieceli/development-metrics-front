@@ -1,3 +1,4 @@
+import { Info } from "lucide-react";
 import type { ActionState } from "@/application/shared/action-state";
 import type { TaskWithStatusSince } from "@/application/task/use-cases/list-tasks-by-team";
 import type { UpdateTaskInput } from "@/application/task/use-cases/update-task";
@@ -110,7 +111,13 @@ export function TaskCard({
 					/>
 				</div>
 			</div>
-			<p className="text-sm">{task.description}</p>
+			<p
+				title={task.description}
+				className="flex min-w-0 cursor-help items-center gap-1 text-sm"
+			>
+				<span className="truncate">{task.description}</span>
+				<Info size={12} aria-hidden="true" className="shrink-0 opacity-60" />
+			</p>
 			<p className="text-xs opacity-70">
 				{assignee ? assignee.name : "Sem responsável"}
 			</p>
