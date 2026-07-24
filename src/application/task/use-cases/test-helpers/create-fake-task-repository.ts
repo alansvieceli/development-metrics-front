@@ -155,8 +155,14 @@ export function createFakeTaskRepository(): FakeTaskRepository {
 				) ?? null
 			);
 		},
-		async listByTeam(teamId) {
-			return tasks.filter((task) => task.teamId === teamId);
+		async listByTeam(teamId, completedTaskLimit = 50) {
+			const teamTasks = tasks.filter((task) => task.teamId === teamId);
+			return [
+				...teamTasks.filter((task) => task.status !== "DONE"),
+				...teamTasks
+					.filter((task) => task.status === "DONE")
+					.slice(0, completedTaskLimit),
+			];
 		},
 		async listBySprint(sprintId) {
 			return tasks.filter((task) => task.sprintId === sprintId);

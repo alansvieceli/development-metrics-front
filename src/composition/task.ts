@@ -101,13 +101,14 @@ export function createTaskUseCases() {
 			moveTask(drizzleTaskRepository, teamId, taskId, toStatus),
 		toggleBlocked: (teamId: string, taskId: string, blocked: boolean) =>
 			toggleBlocked(drizzleTaskRepository, teamId, taskId, blocked),
-		listTasksByTeam: (teamId: string) =>
+		listTasksByTeam: (teamId: string, completedTaskLimit?: number) =>
 			listTasksByTeam(
 				drizzleTaskRepository,
 				drizzleTaskHistoryRepository,
 				drizzleTaskTypeRepository,
 				drizzleTagRepository,
 				teamId,
+				completedTaskLimit,
 			),
 		createTaskType: (name: string, color: string) =>
 			createTaskType(drizzleTaskTypeRepository, name, color),

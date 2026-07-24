@@ -20,8 +20,9 @@ export async function listTasksByTeam(
 	typeRepository: TaskTypeRepository,
 	tagRepository: TagRepository,
 	teamId: string,
+	completedTaskLimit?: number,
 ): Promise<TasksByStatus> {
-	const tasks = await repository.listByTeam(teamId);
+	const tasks = await repository.listByTeam(teamId, completedTaskLimit);
 	const changedAtByTaskId = await historyRepository.getStatusChangedAtForTasks(
 		tasks.map((task) => task.id),
 	);

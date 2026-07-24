@@ -57,7 +57,10 @@ export default async function BoardPage({
 	const members = teamResult?.members ?? [];
 
 	const taskUseCases = createTaskUseCases();
-	const tasksByStatus = await taskUseCases.listTasksByTeam(currentTeam.id);
+	const tasksByStatus = await taskUseCases.listTasksByTeam(
+		currentTeam.id,
+		currentTeam.completedTaskLimit,
+	);
 	const taskTypes = await taskUseCases.listTaskTypes();
 	const tags = await taskUseCases.listTags();
 

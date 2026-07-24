@@ -37,7 +37,7 @@ export type TaskRepository = TaskUsageQuery & {
 	delete(taskId: string): Promise<void>;
 	findById(taskId: string): Promise<Task | null>;
 	findByExternalId(teamId: string, externalId: string): Promise<Task | null>;
-	listByTeam(teamId: string): Promise<Task[]>;
+	listByTeam(teamId: string, completedTaskLimit?: number): Promise<Task[]>;
 	listBySprint(sprintId: string): Promise<Task[]>;
 	countByType(typeId: string): Promise<number>;
 	listUsedTypeIds(): Promise<string[]>;

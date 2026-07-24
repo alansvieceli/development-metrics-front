@@ -148,6 +148,36 @@ describe("drizzleTaskRepository", () => {
 		).toEqual(["TASK-1"]);
 	});
 
+	it("limita tasks concluídas às mais recentes, mas sempre traz as ativas", async () => {
+		const teamId = "11111111-1111-1111-1111-111111111111";
+		const active = await drizzleTaskRepository.createWithInitialHistory(
+			baseData({ externalId: "TASK-ATIVA", teamId, status: "IN_DEVELOPMENT" }),
+		);
+		const doneOld = await drizzleTaskRepository.createWithExplicitHistory(
+			baseData({ externalId: "TASK-DONE-ANTIGA", teamId, status: "DONE" }),
+			[
+				{ status: "TODO", changedAt: new Date("2026-01-01T00:00:00Z") },
+				{ status: "DONE", changedAt: new Date("2026-01-02T00:00:00Z") },
+			],
+		);
+		const doneRecent = await drizzleTaskRepository.createWithExplicitHistory(
+			baseData({ externalId: "TASK-DONE-RECENTE", teamId, status: "DONE" }),
+			[
+				{ status: "TODO", changedAt: new Date("2026-07-01T00:00:00Z") },
+				{ status: "DONE", changedAt: new Date("2026-07-02T00:00:00Z") },
+			],
+		);
+
+		const result = await drizzleTaskRepository.listByTeam(teamId, 1);
+
+		expect(result.map((task) => task.externalId).sort()).toEqual(
+			[active.externalId, doneRecent.externalId].sort(),
+		);
+		expect(result.some((task) => task.externalId === doneOld.externalId)).toBe(
+			false,
+		);
+	});
+
 	it("move a task e registra uma única transição", async () => {
 		const created = await drizzleTaskRepository.createWithInitialHistory(
 			baseData(),

@@ -1,4 +1,14 @@
-import { and, desc, eq, inArray, isNull, sql } from "drizzle-orm";
+import {
+	and,
+	desc,
+	eq,
+	getTableColumns,
+	inArray,
+	isNull,
+	max,
+	ne,
+	sql,
+} from "drizzle-orm";
 import { ApplicationError } from "@/application/shared/application-error";
 import type {
 	CreateTaskData,
@@ -173,9 +183,28 @@ export const drizzleTaskRepository: TaskRepository = {
 			.where(and(eq(tasks.teamId, teamId), eq(tasks.externalId, externalId)));
 		return row ? toTask(row) : null;
 	},
-	async listByTeam(teamId: string) {
-		const rows = await db.select().from(tasks).where(eq(tasks.teamId, teamId));
-		return rows.map(toTask);
+	async listByTeam(teamId: string, completedTaskLimit = 50) {
+		const [activeRows, doneRows] = await Promise.all([
+			db
+				.select()
+				.from(tasks)
+				.where(and(eq(tasks.teamId, teamId), ne(tasks.status, "DONE"))),
+			db
+				.select(getTableColumns(tasks))
+				.from(tasks)
+				.innerJoin(
+					taskStatusChanges,
+					and(
+						eq(taskStatusChanges.taskId, tasks.id),
+						eq(taskStatusChanges.toStatus, "DONE"),
+					),
+				)
+				.where(and(eq(tasks.teamId, teamId), eq(tasks.status, "DONE")))
+				.groupBy(tasks.id)
+				.orderBy(desc(max(taskStatusChanges.changedAt)))
+				.limit(completedTaskLimit),
+		]);
+		return [...activeRows, ...doneRows].map(toTask);
 	},
 	async listBySprint(sprintId: string) {
 		const rows = await db
