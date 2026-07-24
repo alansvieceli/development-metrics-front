@@ -23,6 +23,7 @@ describe("getCurrentTeam", () => {
 			name: "Time A",
 			wipLimit: 6,
 			completedTaskLimit: 10,
+			businessmapBoardId: null,
 		};
 		vi.spyOn(repository, "findById").mockResolvedValue(team);
 		const store = createFakeCurrentTeamStore(team.id);

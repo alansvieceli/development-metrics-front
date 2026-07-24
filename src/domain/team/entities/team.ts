@@ -6,6 +6,7 @@ export type Team = {
 	name: string;
 	wipLimit: number;
 	completedTaskLimit: number;
+	businessmapBoardId: string | null;
 };
 
 export function isValidWipLimit(value: number): boolean {

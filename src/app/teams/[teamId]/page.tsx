@@ -8,6 +8,7 @@ import {
 	removeMemberAction,
 	renameMemberAction,
 	renameTeamAction,
+	setBusinessmapBoardIdAction,
 	setCompletedTaskLimitAction,
 	setWipLimitAction,
 } from "./actions";
@@ -37,6 +38,10 @@ export default async function ManageTeamPage({
 				renameTeamAction={renameTeamAction.bind(null, teamId)}
 				setWipLimitAction={setWipLimitAction.bind(null, teamId)}
 				setCompletedTaskLimitAction={setCompletedTaskLimitAction.bind(
+					null,
+					teamId,
+				)}
+				setBusinessmapBoardIdAction={setBusinessmapBoardIdAction.bind(
 					null,
 					teamId,
 				)}

@@ -82,6 +82,27 @@ export async function setCompletedTaskLimitAction(
 	redirect(path);
 }
 
+export async function setBusinessmapBoardIdAction(
+	teamId: string,
+	_previousState: ActionState,
+	formData: FormData,
+): Promise<ActionState> {
+	const path = `/teams/${teamId}`;
+	try {
+		validateUuid(teamId, "Time inválido");
+		const useCases = createTeamUseCases();
+		await useCases.setBusinessmapBoardId(
+			teamId,
+			String(formData.get("businessmapBoardId") ?? ""),
+		);
+		revalidatePath(path);
+		revalidatePath("/board");
+	} catch (error) {
+		return toActionState(error);
+	}
+	redirect(path);
+}
+
 export async function deleteTeamAction(teamId: string): Promise<ActionState> {
 	try {
 		validateUuid(teamId, "Time inválido");

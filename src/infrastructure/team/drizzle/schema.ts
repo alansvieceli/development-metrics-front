@@ -15,6 +15,7 @@ export const teams = pgTable(
 		name: text("name").notNull(),
 		wipLimit: integer("wip_limit").notNull().default(6),
 		completedTaskLimit: integer("completed_task_limit").notNull().default(10),
+		businessmapBoardId: text("businessmap_board_id"),
 	},
 	(table) => [
 		check("teams_wip_limit_check", sql`${table.wipLimit} > 0`),

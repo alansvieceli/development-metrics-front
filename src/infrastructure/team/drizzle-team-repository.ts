@@ -51,6 +51,17 @@ export const drizzleTeamRepository: TeamRepository = {
 		}
 		return team as Team;
 	},
+	async setBusinessmapBoardId(teamId, businessmapBoardId) {
+		const [team] = await db
+			.update(teams)
+			.set({ businessmapBoardId })
+			.where(eq(teams.id, teamId))
+			.returning();
+		if (!team) {
+			throw new Error("Time não encontrado");
+		}
+		return team as Team;
+	},
 	async rename(teamId, name) {
 		const [team] = await db
 			.update(teams)

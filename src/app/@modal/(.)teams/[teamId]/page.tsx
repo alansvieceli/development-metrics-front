@@ -9,6 +9,7 @@ import {
 	removeMemberAction,
 	renameMemberAction,
 	renameTeamAction,
+	setBusinessmapBoardIdAction,
 	setCompletedTaskLimitAction,
 	setWipLimitAction,
 } from "../../../teams/[teamId]/actions";
@@ -37,6 +38,10 @@ export default async function ManageTeamModal({
 				renameTeamAction={renameTeamAction.bind(null, teamId)}
 				setWipLimitAction={setWipLimitAction.bind(null, teamId)}
 				setCompletedTaskLimitAction={setCompletedTaskLimitAction.bind(
+					null,
+					teamId,
+				)}
+				setBusinessmapBoardIdAction={setBusinessmapBoardIdAction.bind(
 					null,
 					teamId,
 				)}

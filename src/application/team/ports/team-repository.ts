@@ -10,6 +10,10 @@ export type TeamRepository = TeamAccess & {
 		teamId: string,
 		completedTaskLimit: number,
 	): Promise<Team>;
+	setBusinessmapBoardId(
+		teamId: string,
+		businessmapBoardId: string | null,
+	): Promise<Team>;
 	delete(teamId: string): Promise<void>;
 	listAll(): Promise<Team[]>;
 	findById(teamId: string): Promise<Team | null>;

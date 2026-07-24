@@ -8,6 +8,7 @@ import { removeMember } from "@/application/team/use-cases/remove-member";
 import { renameMember } from "@/application/team/use-cases/rename-member";
 import { renameTeam } from "@/application/team/use-cases/rename-team";
 import { selectTeam } from "@/application/team/use-cases/select-team";
+import { setBusinessmapBoardId } from "@/application/team/use-cases/set-businessmap-board-id";
 import { setCompletedTaskLimit } from "@/application/team/use-cases/set-completed-task-limit";
 import { setWipLimit } from "@/application/team/use-cases/set-wip-limit";
 import { drizzleTaskRepository } from "@/infrastructure/task/drizzle-task-repository";
@@ -43,5 +44,7 @@ export function createTeamUseCases() {
 			setWipLimit(drizzleTeamRepository, teamId, wipLimit),
 		setCompletedTaskLimit: (teamId: string, completedTaskLimit: number) =>
 			setCompletedTaskLimit(drizzleTeamRepository, teamId, completedTaskLimit),
+		setBusinessmapBoardId: (teamId: string, businessmapBoardId: string) =>
+			setBusinessmapBoardId(drizzleTeamRepository, teamId, businessmapBoardId),
 	};
 }

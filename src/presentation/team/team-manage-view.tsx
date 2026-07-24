@@ -26,6 +26,10 @@ type TeamManageViewProps = {
 		previousState: ActionState,
 		formData: FormData,
 	) => Promise<ActionState>;
+	setBusinessmapBoardIdAction: (
+		previousState: ActionState,
+		formData: FormData,
+	) => Promise<ActionState>;
 	addMemberAction: (
 		previousState: ActionState,
 		formData: FormData,
@@ -100,6 +104,7 @@ export function TeamManageView({
 	renameTeamAction,
 	setWipLimitAction,
 	setCompletedTaskLimitAction,
+	setBusinessmapBoardIdAction,
 	addMemberAction,
 	renameMemberAction,
 	removeMemberAction,
@@ -119,6 +124,10 @@ export function TeamManageView({
 	);
 	const [completedTaskLimitState, completedTaskLimitAction] = useActionState(
 		setCompletedTaskLimitAction,
+		INITIAL_ACTION_STATE,
+	);
+	const [businessmapBoardIdState, businessmapBoardIdAction] = useActionState(
+		setBusinessmapBoardIdAction,
 		INITIAL_ACTION_STATE,
 	);
 
@@ -198,6 +207,33 @@ export function TeamManageView({
 				</div>
 				{completedTaskLimitState.error ? (
 					<p role="alert">{completedTaskLimitState.error}</p>
+				) : null}
+			</form>
+
+			<form action={businessmapBoardIdAction} className="flex flex-col gap-2">
+				<label
+					htmlFor="team-businessmap-board-id"
+					className="text-sm opacity-70"
+				>
+					Id do quadro Businessmap
+				</label>
+				<div className="flex gap-2">
+					<input
+						id="team-businessmap-board-id"
+						name="businessmapBoardId"
+						defaultValue={team.businessmapBoardId ?? ""}
+						placeholder="Ex: 108"
+						className="min-w-0 flex-1 rounded-lg border border-(--border) px-3 py-2"
+					/>
+					<SubmitButton
+						aria-label="Salvar id do quadro Businessmap"
+						className="rounded-lg border border-(--border) p-2.5 disabled:opacity-60"
+					>
+						<Check size={16} aria-hidden="true" />
+					</SubmitButton>
+				</div>
+				{businessmapBoardIdState.error ? (
+					<p role="alert">{businessmapBoardIdState.error}</p>
 				) : null}
 			</form>
 

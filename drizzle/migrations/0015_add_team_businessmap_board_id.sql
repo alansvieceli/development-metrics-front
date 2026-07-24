@@ -1,0 +1,1 @@
+ALTER TABLE "teams" ADD COLUMN "businessmap_board_id" text;

@@ -1,5 +1,7 @@
+import { ApplicationError } from "@/application/shared/application-error";
 import { matchExternalStatus } from "@/application/task/match-external-status";
 import type { ExternalCardProvider } from "@/application/task/ports/external-card-provider";
+import type { TeamRepository } from "@/application/team/ports/team-repository";
 import type { TaskStatus } from "@/domain/task/entities/task";
 
 export type ColumnDiffResult = {
@@ -10,10 +12,18 @@ export type ColumnDiffResult = {
 
 export async function diffColumnWithBusinessmap(
 	provider: ExternalCardProvider,
+	teamRepository: TeamRepository,
+	teamId: string,
 	status: TaskStatus,
 	localExternalIds: string[],
 ): Promise<ColumnDiffResult> {
-	const boardCards = await provider.listBoardCards();
+	const team = await teamRepository.findById(teamId);
+	if (!team?.businessmapBoardId) {
+		throw new ApplicationError(
+			"Id do quadro Businessmap não configurado para este time",
+		);
+	}
+	const boardCards = await provider.listBoardCards(team.businessmapBoardId);
 	const businessmapIds = new Set(
 		boardCards
 			.filter((card) => matchExternalStatus(card.columnLabel) === status)

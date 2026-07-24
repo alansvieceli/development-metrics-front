@@ -76,11 +76,14 @@ export function createTaskUseCases() {
 		checkCardSync: (externalId: string, localStatus: TaskStatus) =>
 			checkCardSync(businessmapCardProvider, externalId, localStatus),
 		diffColumnWithBusinessmap: (
+			teamId: string,
 			status: TaskStatus,
 			localExternalIds: string[],
 		) =>
 			diffColumnWithBusinessmap(
 				businessmapCardProvider,
+				drizzleTeamRepository,
+				teamId,
 				status,
 				localExternalIds,
 			),

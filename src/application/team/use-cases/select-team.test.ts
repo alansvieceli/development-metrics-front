@@ -17,6 +17,7 @@ describe("selectTeam", () => {
 			name: "Time A",
 			wipLimit: 6,
 			completedTaskLimit: 10,
+			businessmapBoardId: null,
 		});
 		const store = createStore();
 

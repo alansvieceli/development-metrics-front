@@ -32,7 +32,7 @@ export function createFakeExternalCardProvider(): FakeExternalCardProvider {
 		async fetchCardColumn(cardId) {
 			return columns.get(cardId) ?? null;
 		},
-		async listBoardCards() {
+		async listBoardCards(_boardId) {
 			return boardCards;
 		},
 	};

@@ -86,16 +86,8 @@ describe("businessmapCardProvider", () => {
 	});
 
 	describe("listBoardCards", () => {
-		it("lança erro quando BUSINESSMAP_BOARD_ID não está configurado", async () => {
-			process.env.BUSINESSMAP_BOARD_ID = "";
-			await expect(businessmapCardProvider.listBoardCards()).rejects.toThrow(
-				"BUSINESSMAP_BOARD_ID não configurado",
-			);
-		});
-
 		it("lista todos os cards do board com sua coluna atual", async () => {
-			process.env.BUSINESSMAP_BOARD_ID = "108";
-			const cards = await businessmapCardProvider.listBoardCards();
+			const cards = await businessmapCardProvider.listBoardCards("108");
 			expect(cards).toContainEqual({
 				externalId: "415931",
 				columnLabel: "Desenvolvimento.Em Andamento",

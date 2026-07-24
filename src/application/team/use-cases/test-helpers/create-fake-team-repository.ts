@@ -26,6 +26,7 @@ export function createFakeTeamRepository(): TeamRepository {
 				name,
 				wipLimit,
 				completedTaskLimit: DEFAULT_COMPLETED_TASK_LIMIT,
+				businessmapBoardId: null,
 			};
 			teams.push(team);
 			return team;
@@ -52,6 +53,14 @@ export function createFakeTeamRepository(): TeamRepository {
 				throw new Error("Time não encontrado");
 			}
 			team.completedTaskLimit = completedTaskLimit;
+			return team;
+		},
+		async setBusinessmapBoardId(teamId, businessmapBoardId) {
+			const team = teams.find((item) => item.id === teamId);
+			if (!team) {
+				throw new Error("Time não encontrado");
+			}
+			team.businessmapBoardId = businessmapBoardId;
 			return team;
 		},
 		async delete(teamId) {
