@@ -1,6 +1,6 @@
 "use client";
 
-import { Plus, X } from "lucide-react";
+import { IdCard, ListOrdered, Plus, Tags, X } from "lucide-react";
 import type { FormEvent } from "react";
 import { useState } from "react";
 import type { CreateHistoricalTaskActionInput } from "@/app/board/actions";
@@ -102,7 +102,10 @@ export function HistoricalTaskFormModal({
 			{open ? (
 				<Modal label="Card retroativo" onClose={() => setOpen(false)} size="xl">
 					<form onSubmit={handleSubmit} className="flex flex-col gap-5">
-						<FormSection title="Identificação">
+						<FormSection
+							title="Identificação"
+							icon={<IdCard size={14} aria-hidden="true" />}
+						>
 							<div className="grid grid-cols-2 gap-4">
 								<TextField
 									id="hist-externalId"
@@ -152,7 +155,10 @@ export function HistoricalTaskFormModal({
 							/>
 						</FormSection>
 
-						<FormSection title="Etapas — histórico de status">
+						<FormSection
+							title="Etapas — histórico de status"
+							icon={<ListOrdered size={14} aria-hidden="true" />}
+						>
 							<div className="flex flex-col gap-2">
 								{steps.map((step, index) => (
 									<div
@@ -214,13 +220,17 @@ export function HistoricalTaskFormModal({
 										{ status: "TODO", date: "" },
 									])
 								}
-								className="self-start rounded-lg border border-(--border) border-dashed px-3 py-1.5 text-(--accent) text-sm"
+								className="flex items-center gap-1 self-start rounded-lg border border-(--border) border-dashed px-3 py-1.5 text-(--accent) text-sm"
 							>
-								+ Adicionar etapa
+								<Plus size={14} aria-hidden="true" />
+								Adicionar etapa
 							</button>
 						</FormSection>
 
-						<FormSection title="Tarjas">
+						<FormSection
+							title="Tarjas"
+							icon={<Tags size={14} aria-hidden="true" />}
+						>
 							<TagCombobox
 								id="hist-tags"
 								label="Tarjas"

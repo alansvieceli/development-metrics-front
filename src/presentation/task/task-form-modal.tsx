@@ -1,6 +1,14 @@
 "use client";
 
-import { Pencil, Plus } from "lucide-react";
+import {
+	Ban,
+	CalendarClock,
+	IdCard,
+	Pencil,
+	Plus,
+	Tags,
+	Trash2,
+} from "lucide-react";
 import type { FormEvent } from "react";
 import { useState } from "react";
 import type { ActionState } from "@/application/shared/action-state";
@@ -204,7 +212,10 @@ export function TaskFormModal(props: TaskFormModalProps) {
 					size="xl"
 				>
 					<form onSubmit={handleSubmit} className="flex flex-col gap-5">
-						<FormSection title="Identificação">
+						<FormSection
+							title="Identificação"
+							icon={<IdCard size={14} aria-hidden="true" />}
+						>
 							<div className="grid grid-cols-2 gap-4">
 								<TextField
 									id="externalId"
@@ -238,7 +249,10 @@ export function TaskFormModal(props: TaskFormModalProps) {
 							/>
 						</FormSection>
 
-						<FormSection title="Planejamento">
+						<FormSection
+							title="Planejamento"
+							icon={<CalendarClock size={14} aria-hidden="true" />}
+						>
 							<div className="grid grid-cols-2 gap-4">
 								<SelectField
 									id="assigneeId"
@@ -309,7 +323,10 @@ export function TaskFormModal(props: TaskFormModalProps) {
 							</div>
 						</FormSection>
 
-						<FormSection title="Tarjas & status">
+						<FormSection
+							title="Tarjas & status"
+							icon={<Tags size={14} aria-hidden="true" />}
+						>
 							<TagCombobox
 								id="task-tags"
 								label="Tarjas"
@@ -326,7 +343,8 @@ export function TaskFormModal(props: TaskFormModalProps) {
 										onChange={handleToggleBlocked}
 										disabled={pending}
 									/>
-									⛔ Bloqueado
+									<Ban size={14} aria-hidden="true" />
+									Bloqueado
 								</label>
 							) : null}
 						</FormSection>
@@ -339,7 +357,9 @@ export function TaskFormModal(props: TaskFormModalProps) {
 									variant="danger-ghost"
 									onClick={handleDelete}
 									disabled={pending}
+									className="flex items-center gap-1.5"
 								>
+									<Trash2 size={14} aria-hidden="true" />
 									Excluir task
 								</Button>
 							) : null}

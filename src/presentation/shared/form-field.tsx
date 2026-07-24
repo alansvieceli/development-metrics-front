@@ -102,14 +102,17 @@ export function SelectField({
 
 export function FormSection({
 	title,
+	icon,
 	children,
 }: {
 	title: string;
+	icon?: ReactNode;
 	children: ReactNode;
 }) {
 	return (
 		<div className="flex flex-col gap-4 border-(--border) border-t pt-5 first:border-t-0 first:pt-0">
-			<h3 className="font-semibold text-(--foreground-muted) text-xs uppercase tracking-wide">
+			<h3 className="flex items-center gap-1.5 font-semibold text-(--foreground-muted) text-xs uppercase tracking-wide">
+				{icon}
 				{title}
 			</h3>
 			{children}
