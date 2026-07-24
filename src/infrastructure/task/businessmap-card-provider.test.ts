@@ -65,4 +65,20 @@ describe("businessmapCardProvider", () => {
 			"BUSINESSMAP_COMPANY_NAME não configurado",
 		);
 	});
+
+	describe("fetchCardColumn", () => {
+		it("retorna a coluna atual do card", async () => {
+			const result = await businessmapCardProvider.fetchCardColumn("415931");
+			expect(result).toEqual({ columnLabel: "Desenvolvimento.Em Andamento" });
+		});
+
+		it("retorna null quando o card não existe no Businessmap (404)", async () => {
+			vi.stubGlobal(
+				"fetch",
+				vi.fn(async () => new Response(null, { status: 404 })),
+			);
+			const result = await businessmapCardProvider.fetchCardColumn("999999");
+			expect(result).toBeNull();
+		});
+	});
 });

@@ -15,4 +15,5 @@ export type ExternalCard = {
 
 export type ExternalCardProvider = {
 	fetchCard(cardId: string): Promise<ExternalCard>;
+	fetchCardColumn(cardId: string): Promise<{ columnLabel: string } | null>;
 };

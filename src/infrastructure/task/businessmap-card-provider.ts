@@ -67,6 +67,18 @@ function columnLabel(
 	return parent ? `${parent.name}.${column.name}` : column.name;
 }
 
+async function fetchColumnsById(
+	boardId: number,
+	headers: HeadersInit,
+	url: string,
+): Promise<Map<number, BusinessmapColumn>> {
+	const columns = await getJson<BusinessmapColumn[]>(
+		`${url}/boards/${boardId}/columns`,
+		headers,
+	);
+	return new Map(columns.map((column) => [column.column_id, column]));
+}
+
 export const businessmapCardProvider: ExternalCardProvider = {
 	async fetchCard(cardId: string): Promise<ExternalCard> {
 		const headers = authHeaders();
@@ -76,13 +88,7 @@ export const businessmapCardProvider: ExternalCardProvider = {
 			`${url}/cards/${cardId}`,
 			headers,
 		);
-		const columns = await getJson<BusinessmapColumn[]>(
-			`${url}/boards/${card.board_id}/columns`,
-			headers,
-		);
-		const columnsById = new Map(
-			columns.map((column) => [column.column_id, column]),
-		);
+		const columnsById = await fetchColumnsById(card.board_id, headers, url);
 
 		const revisions = await getJson<BusinessmapRevision[]>(
 			`${url}/cards/${cardId}/revisions`,
@@ -150,5 +156,22 @@ export const businessmapCardProvider: ExternalCardProvider = {
 			blocked: Boolean(card.is_blocked),
 			steps,
 		};
+	},
+	async fetchCardColumn(
+		cardId: string,
+	): Promise<{ columnLabel: string } | null> {
+		const headers = authHeaders();
+		const url = baseUrl();
+		const response = await fetch(`${url}/cards/${cardId}`, { headers });
+		if (response.status === 404) return null;
+		if (!response.ok) {
+			throw new Error(
+				`Businessmap respondeu ${response.status} ao chamar ${url}/cards/${cardId}`,
+			);
+		}
+		const body = (await response.json()) as { data: BusinessmapCard };
+		const card = body.data;
+		const columnsById = await fetchColumnsById(card.board_id, headers, url);
+		return { columnLabel: columnLabel(card.column_id, columnsById) };
 	},
 };
